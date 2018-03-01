@@ -6,12 +6,13 @@ services:
     Splash.Akeneo.Products.Transformer:
         class:      Splash\Akeneo\Services\ProductsTransformer
         arguments:  
-            -   "@doctrine.orm.entity_manager"
+            -   "@pim_catalog.object_manager.product"
             -   "@router"
             -   "@pim_catalog.builder.product"
             -   "@pim_catalog.updater.product"
             -   "@pim_catalog.validator.product"
             -   "@pim_catalog.saver.product"
+            -   "@pim_catalog.remover.product"
             -   "%splash_akeneo%"
             -   "%catalog_storage_dir%"
         

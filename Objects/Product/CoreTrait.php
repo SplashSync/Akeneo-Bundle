@@ -104,7 +104,7 @@ trait CoreTrait {
         //====================================================================//
         // Value is Similar for All Langs & All Channels
         if ( !$Attribute->isScopable() && !$Attribute->isLocalizable() ) {
-            $FieldsValues[$Attribute->getCode()] = [["locale" => null, "scope" => null, "data" => $Data]];  
+            $FieldsValues[$Attribute->getCode()] = [["locale" => null, "scope" => null, "data" => $Data]]; 
         }
         
         //====================================================================//

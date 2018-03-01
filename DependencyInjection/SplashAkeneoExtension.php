@@ -28,7 +28,11 @@ class SplashAkeneoExtension extends Extension
         // Add Bundle Widgets to Splash Parameters
 //        $Splash["widgets"][]    =   "Splash\Local\Widgets\DefaultWidget";
         $Splash["widgets"][]    =   "Splash\Local\Widgets\SelfTest";
-               
+
+        //====================================================================//
+        // Setup App Logo
+        $Splash["infos"]["logo"]    =   "/bundles/pimui/images/logo.svg";
+                
         //====================================================================//
         // Update Splash Bundle Parameters
         $container->setParameter('splash',$Splash);

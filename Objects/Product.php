@@ -18,7 +18,8 @@ use Splash\Akeneo\Objects\Product\CoreTrait;
  *              icon                    =   "fa fa-product-hunt",
  *              enable_push_created     =    false,
  *              target                  =   "Pim\Component\Catalog\Model\Product",
- *              transformer_service     =   "Splash.Akeneo.Products.Transformer"
+ *              transformer_service     =   "Splash.Akeneo.Products.Transformer",
+ *              repository_service      =   "pim_catalog.repository.product"
  * )
  * 
  */

@@ -86,7 +86,12 @@ class ProductsTransformer extends Transformer {
      * @var SaverInterface
      */
     private $Saver;    
-    
+
+    /**
+     * @var RemoverInterface
+     */
+    private $Remover;
+        
     /**
      * @var array
      */
@@ -106,6 +111,7 @@ class ProductsTransformer extends Transformer {
             ObjectUpdaterInterface      $Updater,
             RecursiveValidator          $Validator,
             SaverInterface              $Saver,
+            RemoverInterface            $Remover,
             
             array                       $Config, 
             string                      $Catalog_Storage_Dir 
@@ -118,6 +124,7 @@ class ProductsTransformer extends Transformer {
         $this->Updater              =   $Updater;
         $this->Validator            =   $Validator;
         $this->Saver                =   $Saver;
+        $this->Remover              =   $Remover;
         
         
         $this->Config               =   $Config;
@@ -255,17 +262,17 @@ class ProductsTransformer extends Transformer {
             case AttributeTypes::BOOLEAN:
                 return SPL_T_BOOL;
 
-            case AttributeTypes::DATE:
-                return SPL_T_DATE;
+//            case AttributeTypes::DATE:
+//                return SPL_T_DATE;
 
 //            case AttributeTypes::FILE:
 //                return SPL_T_FILE;
 
-            case AttributeTypes::IMAGE:
-                return SPL_T_IMG;
-
-            case AttributeTypes::PRICE_COLLECTION:
-                return SPL_T_PRICE; 
+//            case AttributeTypes::IMAGE:
+//                return SPL_T_IMG;
+//
+//            case AttributeTypes::PRICE_COLLECTION:
+//                return SPL_T_PRICE; 
 
             case AttributeTypes::IDENTIFIER:
             case AttributeTypes::OPTION_SIMPLE_SELECT:
