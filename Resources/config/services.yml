@@ -1,0 +1,42 @@
+services: 
+    
+    ########################################################################
+    # Akeneo Products Data Transformer
+    # Convert In/Out Doctrine Objects Fields to Splash Standard Format
+    Splash.Akeneo.Products.Transformer:
+        class:      Splash\Akeneo\Services\ProductsTransformer
+        arguments:  
+            -   "@doctrine.orm.entity_manager"
+            -   "@router"
+            -   "@pim_catalog.builder.product"
+            -   "@pim_catalog.updater.product"
+            -   "@pim_catalog.validator.product"
+            -   "@pim_catalog.saver.product"
+            -   "%splash_akeneo%"
+            -   "%catalog_storage_dir%"
+        
+#    ########################################################################
+#    # Sylius Products Data Transformer
+#    # Convert In/Out Sylius Products Objects Fields to Splash Standard Format
+#    Splash.Sylius.Products.Transformer:
+#        class:      Splash\Sylius\Services\ProductTransformer
+#        arguments:  
+#         - "@translator"
+#         - "@router"
+#         - "@sylius.factory.product"
+#         - "@sylius.manager.product"
+#         - "@sylius.repository.channel"
+#         - "%splash_sylius%"     
+#         
+         
+#    ########################################################################
+#    # Sylius Additionnal Object Event Listener
+#    # This Listner is Triggered on Any Object changes dont on ORM
+#    # It will detect impacted Splash Objects and Dispatch Commits to Splash Server
+#    Splash.Sylius.Objects.EventListener:
+#        class:      Splash\Sylius\EventListener\ObjectEventListener
+#        tags:
+##            - { name: doctrine.event_listener, event: postPersist,  method: postPersist }
+#            - { name: doctrine.event_listener, event: postUpdate,   method: postUpdate }
+##            - { name: doctrine.event_listener, event: preRemove,    method: preRemove }
+            

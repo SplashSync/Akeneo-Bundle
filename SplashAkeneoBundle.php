@@ -1,6 +1,6 @@
 <?php
 
-namespace Splash\Sylius;
+namespace Splash\Akeneo;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
