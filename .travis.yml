@@ -85,7 +85,7 @@ install:
 # Run script
 script:
   - phpunit
-  - phpunit
+#  - phpunit
 
 # After a build, send email notification with the build results
 #notifications:
