@@ -42,6 +42,7 @@ php:
 # Define an environment variable
 env:
   - AKENEO_VERSION="2.0"
+  - AKENEO_VERSION="2.1"
 
 before_install:
 # Update composer
