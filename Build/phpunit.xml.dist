@@ -8,7 +8,7 @@
     convertErrorsToExceptions   = "true"
     convertNoticesToExceptions  = "true"
     convertWarningsToExceptions = "true"
-    processIsolation            = "true"
+    processIsolation            = "false"
     stopOnFailure               = "true"
     syntaxCheck                 = "false"
     bootstrap                   = "app/autoload.php" 
@@ -19,18 +19,17 @@
 
     <testsuites>
         <testsuite name="All">
-            <directory>Tests/*</directory>
-            <directory>vendor/splash/php-bundle/Tests/*</directory>
+            <directory>vendor/splash/phpcore/Tests/*</directory>
+            <directory>vendor/splash/akeneo-bundle/Tests/*</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>Tests</directory>
-            <directory>vendor/splash/php-bundle</directory>
+            <directory>vendor/splash/phpcore/Tests/*</directory>
+            <directory>vendor/splash/akeneo-bundle/Tests/*</directory>
             <exclude>
                 <directory>vendor</directory>
-                <directory>vendor/splash/phpcore</directory>
             </exclude>
         </whitelist>
     </filter>
@@ -40,7 +39,13 @@
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
         <const  name="SPLASH_DEBUG" value="true" />
         <server name="SPLASH_TRAVIS" value="true" />    
-        <server name="SERVER_NAME" value="http://127.0.0.1:8000"/>        
+        <server name="SERVER_NAME" value="http://127.0.0.1:8000"/>
+        
+        <ini name="date.timezone" value="Europe/Paris"/>
+        <ini name="intl.default_locale" value="en"/>
+        <ini name="intl.error_level" value="0"/>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="zend.enable_gc" value="1"/>    
     </php>
     
 </phpunit>

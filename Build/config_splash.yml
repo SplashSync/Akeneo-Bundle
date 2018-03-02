@@ -1,0 +1,18 @@
+
+splash:
+    id:             812b124aa746e04c
+    key:            NTdlMDI2YWQ1NTQ5NjAuOTI3OTgxMTQ1N2UwMjZhZDU1NjFiMS
+    host:           http://dev.splashsync.local/ws/soap
+    
+    infos:
+        logo:       http://127.0.0.1/assets/shop/img/logo.png
+            
+#    objects:
+#        - Splash\Sylius\Objects\Address
+#        - Splash\Sylius\Objects\Customer
+#        - Splash\Sylius\Objects\Product
+       
+        
+splash_sylius:
+    default_channel:    US_WEB
+    
