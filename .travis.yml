@@ -69,11 +69,10 @@ before_install:
   - phpenv config-add build/x_memory.ini
 #  - phpenv config-add build/x_errors.ini
   - php -ini | grep memory_limit  
-  - phpenv config-add imagick.ini
   - if [[ "$(php -v | grep 'PHP 5')" ]]; then echo yes | pecl install apcu-4.0.8; fi
   - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install apcu; fi
+  - yes | pecl install imagick;
   - php -m
-#  - pecl install imagick -y;
 
   
 # Create database, schema and fixtures

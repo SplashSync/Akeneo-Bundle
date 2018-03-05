@@ -58,19 +58,19 @@ trait CoreTrait {
         //====================================================================//
         // Check if Attribute is Used for this Object
         if( !in_array($Attribute->getCode() , $Object->getUsedAttributeCodes() ) ) {           
-            return Null;
+            return $Attribute->isLocalizable() ? Array() : Null;
         }         
         
         //====================================================================//
         // Value is Similar for All Langs & All Channels
         if ( !$Attribute->isScopable() && !$Attribute->isLocalizable() ) {
-            return $Object->getValue( $Attribute->getCode() )->getData();
+            return (string) $Object->getValue( $Attribute->getCode() )->getData();
         }
         
         //====================================================================//
         // Value is Channels Specific
         if ( $Attribute->isScopable() && !$Attribute->isLocalizable() ) { 
-            return $Object->getValue( $Attribute->getCode() , Null, $this->Config["scope"]  )->getData();
+            return (string) $Object->getValue( $Attribute->getCode() , Null, $this->Config["scope"]  )->getData();
         }
         
         //====================================================================//
@@ -83,7 +83,7 @@ trait CoreTrait {
             return $Raw[$Attribute->getCode()][$this->Config["scope"]];
         }
                 
-        return Null;
+        return $Attribute->isLocalizable() ? Array() : Null;
     }    
     
     /**

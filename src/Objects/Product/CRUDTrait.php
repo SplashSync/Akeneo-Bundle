@@ -59,53 +59,37 @@ trait CRUDTrait {
         if ( !$Object ) { 
             return False; 
         }
-//dump($Object);
         try {
             //====================================================================//
             // If Product is New => Disable Doctrine postUpdate Event
             // This is done to prevent Repeated Commits (Create + Update)
             if ( !$Object->getId() ) {
                 Splash::Local()->setListnerState("postUpdate", False);
-//            } else {
-//                Splash::Local()->setListnerState("postPersist", False);
             }
-            
-            
-//            //====================================================================//
-//            // Re-Attach Product Unique Data 
-//            $UniqueDatas    =   $Object->getUniqueData();
-//            foreach ( $UniqueDatas as $Index => $UniqueData ) {
-//                $UniqueDatas[$Index] = $this->EntityManager->merge($UniqueData);
-//            }
-//            $Object->setUniqueData($UniqueDatas);
             //====================================================================//
-            // Delete Product
-//            $this->Remover->remove($this->EntityManager->merge($Object)); 
-            
-//error_reporting(E_ERROR | E_WARNING | E_PARSE);
-//Splash::Log()->www("Updated => " , $Object->getId());
+            // Re-Attach Product to Entity Manager 
+            $AttachedObject =   $this->Attach($Object);
             //====================================================================//
             // Validate Changes        
-            $this->Validator->validate($Object);         
+            $this->Validator->validate($AttachedObject);         
             //====================================================================//
             // Save Changes        
-            $this->Saver->save($Object);        
+            $this->Saver->save($AttachedObject);        
             
-            Splash::Log()->Err("Akeneo Product Update Done");
+            Splash::Log()->Msg("Akeneo Product Update Done");
+            Splash::Log()->Msg("Updated => " . $AttachedObject->getId());
             
         } catch ( \Exception $e) {
-            Splash::Log()->Err("Akeneo Product Update Failled");
-            Splash::Log()->Err($e->getMessage());    
-//dump($e);
+            Splash::Log()->Err("Akeneo Product Update Failed");
+            return Splash::Log()->Err($e->getMessage());    
         }
-//        $this->EntityManager->clear();
         //====================================================================//
         // Whatever => Enable Doctrine postUpdate Event Again!
         Splash::Local()->setListnerState("postPersist", True);
         Splash::Local()->setListnerState("postUpdate", True);
         //====================================================================//
         // Return Object Id
-        return  $Object->getId();
+        return  $AttachedObject->getId();
     } 
     
     //====================================================================//
@@ -127,33 +111,39 @@ trait CRUDTrait {
             return False; 
         }
         try {
-            //====================================================================//
-            // Re-Attach Product Unique Data 
-            $UniqueDatas    =   $Object->getUniqueData();
-            foreach ( $UniqueDatas as $Index => $UniqueData ) {
-                $UniqueDatas[$Index] = $this->EntityManager->merge($UniqueData);
-            }
-            $Object->setUniqueData($UniqueDatas);
-            //====================================================================//
-            // Delete Product
-            $this->Remover->remove($this->EntityManager->merge($Object));         
-
-//        $this->EntityManager->clear("Pim\Component\Catalog\Model\Product");   
-        $this->EntityManager->getRepository("PimCatalogBundle:Product")->clear();
-        $Manager->clear();         
-dump("CLEAR");
-exit;
-//            $this->Remover->remove($Object);         
+            $this->Remover->remove( $this->Attach($Object) );         
             
-//\Splash\Tests\Tools\TestCase::rebootKernel();            
+            Splash::Log()->Msg("Akeneo Product Delete Done");
+            Splash::Log()->Msg("Deleted => " . $Object->getId());
             
         } catch ( EntityNotFoundException $e) {
             return True;
         } catch ( \Exception $e) {
-            Splash::Log()->Err("Akeneo Product Delete Failled");
+            Splash::Log()->Err("Akeneo Product Delete Failed");
             return Splash::Log()->Err($e->getMessage());    
         }        
         return True;
-    }    
+    }   
+    
+    /**
+     *  @abstract       Ensure Product and Attributes are Correctly Attached to Entity Manager
+     */    
+    private function Attach($Object) {
+        //====================================================================//
+        // Re-Attach Detached Product Unique Data 
+        $UniqueDatas    =   $Object->getUniqueData();
+        foreach ( $UniqueDatas as $Index => $UniqueData ) {
+            if ( !$this->EntityManager->contains($UniqueData) ) {
+                $UniqueDatas[$Index] = $this->EntityManager->merge($UniqueData);
+            }
+        }
+        $Object->setUniqueData($UniqueDatas);
+        //====================================================================//
+        // Re-Attach Detached Product itSelf 
+        if ( !$this->EntityManager->contains($Object) ) {
+            return $this->EntityManager->merge($Object);
+        }
+        return $Object;
+    }
     
 }

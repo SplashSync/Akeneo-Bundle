@@ -22,6 +22,10 @@ parameters:
 
     locale: en
 
+    locales:
+        - en_US
+        - fr_FR
+
     database_unix_socket: ~
 
     mailer_transport:     smtp

@@ -31,6 +31,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Component\Catalog\Builder\ProductBuilder;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -235,13 +236,7 @@ class ProductsTransformer extends Transformer {
             //====================================================================//
             // Does the Field Have Choices Values ?
             if ( $Attribute->getType() == AttributeTypes::OPTION_SIMPLE_SELECT ) { 
-                foreach ($Attribute->getOptions() as $Option) {
-                    if ($Option->getOptionValues()->containsKey($this->Config["language"]) ) {
-                        $Field->choices[$Option->getCode()]     =   $Option->getOptionValues()->get($this->Config["language"])->getValue();
-                    } else {
-                        $Field->choices[$Option->getCode()]     =   $Option->getTranslation($this->Config["language"])->getLabel();
-                    }
-                }
+                $Field->choices     =   $this->exportChoices( $Attribute , $this->Config["language"] );
             } 
             
             //====================================================================//
@@ -282,8 +277,8 @@ class ProductsTransformer extends Transformer {
                 return $Attribute->isLocalizable() ? SPL_T_MVARCHAR : SPL_T_VARCHAR;
 
 
-            case AttributeTypes::TEXTAREA:
-                return $Attribute->isLocalizable() ? SPL_T_MTEXT : SPL_T_TEXT;
+//            case AttributeTypes::TEXTAREA:
+//                return $Attribute->isLocalizable() ? SPL_T_MTEXT : SPL_T_TEXT;
 
         }
 

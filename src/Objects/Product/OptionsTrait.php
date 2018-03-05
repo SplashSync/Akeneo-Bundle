@@ -5,8 +5,35 @@ namespace Splash\Akeneo\Objects\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
+use Pim\Component\Catalog\AttributeTypes;
+
+use Splash\Core\SplashCore as Splash;
 
 trait OptionsTrait {
+ 
+    /**
+     *  @abstract    Read Attribute Possibles Choices 
+     * 
+     *  @param  AttributeInterface  $Attribute      Akeneo Attribute Object
+     * 
+     *  @return mixed
+     */    
+    protected function exportChoices( AttributeInterface $Attribute , $Language )
+    {
+        if ( $Attribute->getType() != AttributeTypes::OPTION_SIMPLE_SELECT ) { 
+            return Null;
+        }
+        $Choices = array();
+        foreach ($Attribute->getOptions() as $Option) {
+            $Code   =  (string) $Option->getCode();  
+            if ($Option->getOptionValues()->containsKey($Language) ) {
+                $Choices[ $Code ]     =   $Option->getOptionValues()->get($Language)->getValue();
+            } else {
+                $Choices[ $Code ]     =   $Option->getTranslation($Language)->getLabel();
+            }
+        }
+        return $Choices;
+    } 
     
     /**
      *  @abstract    Read Attribute Data 
@@ -23,7 +50,11 @@ trait OptionsTrait {
         if( !in_array($Attribute->getCode() , $Object->getUsedAttributeCodes() ) ) {           
             return Null;
         }         
-        return  $this->getAttributeValue($Object, $Attribute)->getCode();
+        $Value  =   $this->getAttributeValue($Object, $Attribute);
+        if (is_object($Value)) {
+            return (string) $Value->getCode();
+        }
+        return  (string) substr( (string) $Value , 1 , strlen( (string) $Value) - 2 );
     } 
     
     /**
