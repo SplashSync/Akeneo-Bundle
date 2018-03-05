@@ -50,7 +50,7 @@ addons:
 matrix:
     include:
         # Akeneo V2.0 Branch       
-        - env: AKENEO_VERSION="2.0"
+#        - env: AKENEO_VERSION="2.0"
         # Akeneo V2.1 Branch       
         - env: AKENEO_VERSION="2.1"
 #        # Akeneo V2.2 Branch       
@@ -83,33 +83,17 @@ install:
 
     - echo "Install Akeneo & Splash Bundles"
     - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest  
-#    - composer update --no-interaction --prefer-dist
-    
-#    - composer create-project akeneo/pim-community-standard akeneo $AKENEO_VERSION --prefer-dist
-#    - cd akeneo
-#    
-#    - echo "Install Splash Bundles"
-#    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist
 
     - echo "Configuring Akeneo"
     - cp    vendor/akeneo/pim-community-dev/app/config/routing.yml app/config/routing.yml
     - cp    vendor/akeneo/pim-community-dev/app/PimRequirements.php app/PimRequirements.php
     - cat   build/routing_splash.yml   >> app/config/routing.yml
     
-#    - echo "Configuring Splash Bundles"
-#    - cp ../build/parameters.yml.dist app/config/parameters.yml
-#    - cp ../build/phpunit.xml.dist phpunit.xml.dist
-    
     - echo "Install Akeneo"
     - php bin/console pim:installer:assets  --symlink --clean --env=test --no-interaction --no-debug
     - php bin/console pim:install --force   --symlink --clean --env=test --no-interaction --no-debug
     - php bin/console debug:config splash --env=test --no-interaction --no-debug
 
-#    - echo "Enable Splash Bundles"
-##    - cp ../build/AppKernel.php app/AppKernel.php
-#    - cat ../Build/config_splash.yml    >> app/config/config.yml
-#    - cat ../Build/routing_splash.yml   >> app/config/routing.yml
-    
     - echo "Start Web Srever"
     - php bin/console server:start --env=test
 
