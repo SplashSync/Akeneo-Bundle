@@ -83,7 +83,7 @@ trait CRUDTrait {
 //            $this->Remover->remove($this->EntityManager->merge($Object)); 
             
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
-Splash::Log()->www("Updated => " , $Object->getId());
+//Splash::Log()->www("Updated => " , $Object->getId());
             //====================================================================//
             // Validate Changes        
             $this->Validator->validate($Object);         
