@@ -35,8 +35,8 @@ cache:
 # Versions of PHP to test against
 php:
 #    - "5.6"
-    - "7.0"
-#    - "7.1"
+#    - "7.0"
+    - "7.1"
 #    - "7.2"
     
 matrix:
@@ -68,7 +68,7 @@ before_install:
 # Install composer dependencies,
 install:   
     - echo "Install Akeneo & Splash Bundles"
-#    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-update    
+    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-update --prefer-dist   
     - composer update --no-interaction --prefer-dist
     
 #    - composer create-project akeneo/pim-community-standard akeneo $AKENEO_VERSION --prefer-dist
@@ -102,5 +102,7 @@ script:
 #  - phpunit
 
 # After a build, send email notification with the build results
-#notifications:
-#  email: your_email
+notifications:
+  email:         
+    on_success: never # default: change
+    on_failure: never # default: always
