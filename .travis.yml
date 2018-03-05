@@ -39,16 +39,31 @@ php:
 #    - "7.1"
 #    - "7.2"
     
-# Define an environment variable
 env:
-  - AKENEO_VERSION="2.0@dev"
-  - AKENEO_VERSION="2.1@dev"
-
+  global:
+    # moved CUBRID related env variables because token needs to be secure
+    - CUBRID_VERSION=9.3.0/CUBRID-9.3.0.0206
+    - CUBRID_PDO_VERSION=9.3.0.0001
+    - secure: secure_github_oauth_token_generated_with_travis
+    
+matrix:
+    include:
+        # Akeneo V2.0 Branch       
+        - env: AKENEO_VERSION="2.0@dev"
+        # Akeneo V2.1 Branch       
+        - env: AKENEO_VERSION="2.1@dev"
+        # Akeneo V2.2 Branch       
+        - env: AKENEO_VERSION="2.2@dev"
+    
 before_install:
+    
 # Update composer
   - composer self-update
+  - composer config -g github-oauth.github.com "$GITHUB_TOKEN"
+  
 # Install Yarn
   - yarn 
+  
 # Increase memory limit to 4GB  
   - phpenv config-rm xdebug.ini
   - phpenv config-add build/x_memory.ini
@@ -74,16 +89,16 @@ install:
     
     - echo "Configuring Splash Bundles"
     - cp ../build/parameters.yml.dist app/config/parameters.yml
-    - cp ../build/phpunit.xml.dist phpunit.xml.dist
+#    - cp ../build/phpunit.xml.dist phpunit.xml.dist
     
     - echo "Install Akeneo"
     - php bin/console pim:installer:assets  --symlink --clean --env=test --no-interaction --no-debug
     - php bin/console pim:install --force   --symlink --clean --env=test --no-interaction --no-debug
 
-    - echo "Enable Splash Bundles"
-#    - cp ../build/AppKernel.php app/AppKernel.php
-    - cat ../Build/config_splash.yml    >> app/config/config.yml
-    - cat ../Build/routing_splash.yml   >> app/config/routing.yml
+#    - echo "Enable Splash Bundles"
+##    - cp ../build/AppKernel.php app/AppKernel.php
+#    - cat ../Build/config_splash.yml    >> app/config/config.yml
+#    - cat ../Build/routing_splash.yml   >> app/config/routing.yml
     
     - echo "Start Web Srever"
     - php bin/console server:start --env=test
