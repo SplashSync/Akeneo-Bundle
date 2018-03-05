@@ -68,7 +68,7 @@ before_install:
 # Install composer dependencies,
 install:   
     - echo "Configuring Akeneo"
-    - cp ../build/parameters.yml.dist app/config/parameters.yml
+    - cp build/parameters.yml.dist app/config/parameters.yml
 
     - echo "Install Akeneo & Splash Bundles"
     - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-update --prefer-dist   
