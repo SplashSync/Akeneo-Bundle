@@ -39,27 +39,19 @@ php:
 #    - "7.1"
 #    - "7.2"
     
-env:
-  global:
-    # moved CUBRID related env variables because token needs to be secure
-    - CUBRID_VERSION=9.3.0/CUBRID-9.3.0.0206
-    - CUBRID_PDO_VERSION=9.3.0.0001
-    - secure: secure_github_oauth_token_generated_with_travis
-    
 matrix:
     include:
         # Akeneo V2.0 Branch       
-        - env: AKENEO_VERSION="2.0@dev"
+        - env: AKENEO_VERSION="2.0"
         # Akeneo V2.1 Branch       
-        - env: AKENEO_VERSION="2.1@dev"
+        - env: AKENEO_VERSION="2.1"
         # Akeneo V2.2 Branch       
-        - env: AKENEO_VERSION="2.2@dev"
+        - env: AKENEO_VERSION="2.2"
     
 before_install:
     
 # Update composer
   - composer self-update
-  - composer config -g github-oauth.github.com "$GITHUB_TOKEN"
   
 # Install Yarn
   - yarn 
