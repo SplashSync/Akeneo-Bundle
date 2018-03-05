@@ -4,7 +4,7 @@ language: php
 # Allows use container-based infrastructure
 sudo: false
 #sudo: required
-#dist: trusty
+dist: trusty
 
 # Start mysql service
 services:
@@ -39,6 +39,13 @@ php:
     - "7.1"
 #    - "7.2"
     
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+      
 matrix:
     include:
 #        # Akeneo V2.0 Branch       
@@ -61,7 +68,9 @@ before_install:
   - phpenv config-add build/x_memory.ini
 #  - phpenv config-add build/x_errors.ini
   - php -ini | grep memory_limit  
-
+  - if [[ "$(php -v | grep 'PHP 5')" ]]; then echo yes | pecl install apcu-4.0.8; fi
+  - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install apcu; fi
+  
 # Create database, schema and fixtures
   - mysql -e 'CREATE DATABASE IF NOT EXISTS akeneo;'
   
