@@ -38,7 +38,7 @@
         <server name="KERNEL_DIR" value="app" />
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
         <const  name="SPLASH_DEBUG" value="true" />
-        <!--<server name="SPLASH_TRAVIS" value="true" />-->    
+        <server name="SPLASH_TRAVIS" value="true" />    
         <server name="SERVER_NAME" value="http://dev.akeneo.local"/>   
         
         <ini name="date.timezone" value="Europe/Paris"/>

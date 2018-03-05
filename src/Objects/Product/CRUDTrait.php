@@ -139,9 +139,10 @@ Splash::Log()->www("Updated => " , $Object->getId());
             $this->Remover->remove($this->EntityManager->merge($Object));         
 
 //        $this->EntityManager->clear("Pim\Component\Catalog\Model\Product");   
-//        $this->EntityManager->getRepository("PimCatalogBundle:Product")->clear();
-//        $Manager->clear();         
-        
+        $this->EntityManager->getRepository("PimCatalogBundle:Product")->clear();
+        $Manager->clear();         
+dump("CLEAR");
+exit;
 //            $this->Remover->remove($Object);         
             
 //\Splash\Tests\Tools\TestCase::rebootKernel();            
