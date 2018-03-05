@@ -14,7 +14,7 @@
 
     "autoload": {
         "psr-4": { 
-            "Splash\\Akeneo\\":     "src/"
+            "Splash\\Akeneo\\":     "src"
         }
     },
     
