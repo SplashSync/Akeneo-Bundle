@@ -41,12 +41,12 @@ php:
     
 matrix:
     include:
-        # Akeneo V2.0 Branch       
-        - env: AKENEO_VERSION="2.0"
-        # Akeneo V2.1 Branch       
-        - env: AKENEO_VERSION="2.1"
+#        # Akeneo V2.0 Branch       
+#        - env: AKENEO_VERSION="~2.0.0"
+#        # Akeneo V2.1 Branch       
+#        - env: AKENEO_VERSION="~2.1.0"
         # Akeneo V2.2 Branch       
-        - env: AKENEO_VERSION="2.2"
+        - env: AKENEO_VERSION="~2.2.0"
     
 before_install:
     
@@ -68,6 +68,7 @@ before_install:
 # Install composer dependencies,
 install:   
     - echo "Install Akeneo & Splash Bundles"
+    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-update    
     - composer update --no-interaction --prefer-dist
     
 #    - composer create-project akeneo/pim-community-standard akeneo $AKENEO_VERSION --prefer-dist
