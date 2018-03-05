@@ -54,7 +54,7 @@ trait OptionsTrait {
         if (is_object($Value)) {
             return (string) $Value->getCode();
         }
-        return  (string) substr( (string) $Value , 1 , strlen( (string) $Value) - 2 );
+        return  (string) substr( $Value , 1 , strlen( $Value) - 2 );
     } 
     
     /**

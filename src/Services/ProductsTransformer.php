@@ -192,7 +192,7 @@ class ProductsTransformer extends Transformer {
     //====================================================================//
     
     public function Fields($ObjectType) {
-//return array();
+        
         if( $ObjectType != "Product") {
             return array();
         }
@@ -234,6 +234,12 @@ class ProductsTransformer extends Transformer {
             } 
             
             //====================================================================//
+            // is Field read Only ?
+            if ( in_array( $Attribute->getType() , [ AttributeTypes::FILE , AttributeTypes::IMAGE ] ) ) {   
+                $Field->write = False;  
+            } 
+            
+            //====================================================================//
             // Does the Field Have Choices Values ?
             if ( $Attribute->getType() == AttributeTypes::OPTION_SIMPLE_SELECT ) { 
                 $Field->choices     =   $this->exportChoices( $Attribute , $this->Config["language"] );
@@ -257,17 +263,17 @@ class ProductsTransformer extends Transformer {
             case AttributeTypes::BOOLEAN:
                 return SPL_T_BOOL;
 
-//            case AttributeTypes::DATE:
-//                return SPL_T_DATE;
+            case AttributeTypes::DATE:
+                return SPL_T_DATE;
 
 //            case AttributeTypes::FILE:
 //                return SPL_T_FILE;
 
-//            case AttributeTypes::IMAGE:
-//                return SPL_T_IMG;
-//
-//            case AttributeTypes::PRICE_COLLECTION:
-//                return SPL_T_PRICE; 
+            case AttributeTypes::IMAGE:
+                return SPL_T_IMG;
+
+            case AttributeTypes::PRICE_COLLECTION:
+                return SPL_T_PRICE; 
 
             case AttributeTypes::IDENTIFIER:
             case AttributeTypes::OPTION_SIMPLE_SELECT:
@@ -277,8 +283,8 @@ class ProductsTransformer extends Transformer {
                 return $Attribute->isLocalizable() ? SPL_T_MVARCHAR : SPL_T_VARCHAR;
 
 
-//            case AttributeTypes::TEXTAREA:
-//                return $Attribute->isLocalizable() ? SPL_T_MTEXT : SPL_T_TEXT;
+            case AttributeTypes::TEXTAREA:
+                return $Attribute->isLocalizable() ? SPL_T_MTEXT : SPL_T_TEXT;
 
         }
 
@@ -352,8 +358,7 @@ class ProductsTransformer extends Transformer {
                 return Null;
 
             case AttributeTypes::IMAGE:
-//                return $this->exportImage($Object, $Attribute, $Data);
-                return Null;
+                return $this->exportImage($Object, $Attribute, $Data);
 
             case AttributeTypes::OPTION_SIMPLE_SELECT:
                 return $this->importOption($Object, $Attribute, $Data);

@@ -57,33 +57,34 @@ trait CoreTrait {
     {    
         //====================================================================//
         // Check if Attribute is Used for this Object
-        if( !in_array($Attribute->getCode() , $Object->getUsedAttributeCodes() ) ) {           
-            return $Attribute->isLocalizable() ? Array() : Null;
+        if( !in_array($Attribute->getCode() , $Object->getUsedAttributeCodes() ) ) { 
+            return $Attribute->isLocalizable() ? [$this->Config["language"] => ""] : Null;
         }         
         
         //====================================================================//
-        // Value is Similar for All Langs & All Channels
-        if ( !$Attribute->isScopable() && !$Attribute->isLocalizable() ) {
-            return (string) $Object->getValue( $Attribute->getCode() )->getData();
-        }
-        
-        //====================================================================//
-        // Value is Channels Specific
-        if ( $Attribute->isScopable() && !$Attribute->isLocalizable() ) { 
-            return (string) $Object->getValue( $Attribute->getCode() , Null, $this->Config["scope"]  )->getData();
+        // Value is Monolanguage
+        if ( !$Attribute->isLocalizable() ) {
+            //====================================================================//
+            // Value is Similar for All Langs & All Channels
+            if ( !$Attribute->isScopable() ) {
+                return $Object->getValue( $Attribute->getCode() )->getData();
+            //====================================================================//
+            // Value is Channels Specific
+            } else { 
+                return $Object->getValue( $Attribute->getCode() , Null, $this->Config["scope"]  )->getData();
+            }
         }
         
         //====================================================================//
         // Value is Multilanguage Specific
         $Raw    =   $Object->getRawValues();
         if ( !$Attribute->isScopable() && $Attribute->isLocalizable() ) { 
-            return $Raw[$Attribute->getCode()]["<all_channels>"];
+            $Value =    $Raw[$Attribute->getCode()]["<all_channels>"]; 
         }
         if( isset( $Raw[$Attribute->getCode()][$this->Config["scope"]] ) ) {
-            return $Raw[$Attribute->getCode()][$this->Config["scope"]];
+            $Value =    $Raw[$Attribute->getCode()][$this->Config["scope"]];
         }
-                
-        return $Attribute->isLocalizable() ? Array() : Null;
+        return  is_array($Value) ? $Value : [$this->Config["language"] => ""];
     }    
     
     /**
