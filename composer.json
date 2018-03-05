@@ -32,7 +32,7 @@
     },
     
     "require-dev": {
-        "akeneo/pim-community-dev": "2.2.x-dev",
+        "akeneo/pim-community-dev": "2.1.4",
 
         "phpunit/phpunit": "*"
     },
