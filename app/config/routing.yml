@@ -65,3 +65,7 @@ fos_js_routing:
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+splash_ws:
+    resource: "@SplashBundle/Resources/config/routing.yml"
+    prefix: /ws

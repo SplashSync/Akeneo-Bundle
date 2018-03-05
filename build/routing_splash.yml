@@ -1,0 +1,5 @@
+
+splash_ws:
+    resource: "@SplashBundle/Resources/config/routing.yml"
+    prefix: /ws
+    
