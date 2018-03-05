@@ -1,0 +1,24 @@
+
+parameters:
+
+    database_driver:    pdo_mysql
+    database_host:      127.0.0.1
+    database_port:      null
+    database_name:      test
+    database_user:      root
+    database_password: 
+
+    mailer_transport:   null
+    mailer_host:        localhost
+    mailer_user:        null
+    mailer_password:    null
+
+    secret:             ThisTokenIsNotSoSecretChangeIt
+
+    installer_data:                        PimInstallerBundle:minimal
+    product_index_name: akeneo_pim_product
+    product_model_index_name: akeneo_pim_product_model
+    product_and_product_model_index_name: akeneo_pim_product_and_product_model
+    index_hosts: 'localhost: 9200'
+
+    locale: en
