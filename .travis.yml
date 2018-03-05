@@ -80,11 +80,11 @@ install:
 #    - echo "Install Splash Bundles"
 #    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist
 
-    - echo "Configuring Akeneo"
-    - cp    vendor/akeneo/pim-community-dev/app/config/pim_parameters.yml app/config/pim_parameters.yml
+#    - echo "Configuring Akeneo"
+#    - cp    vendor/akeneo/pim-community-dev/app/config/pim_parameters.yml app/config/pim_parameters.yml
     
-    - echo "Configuring Splash Bundles"
-    - cp ../build/parameters.yml.dist app/config/parameters.yml
+#    - echo "Configuring Splash Bundles"
+#    - cp ../build/parameters.yml.dist app/config/parameters.yml
 #    - cp ../build/phpunit.xml.dist phpunit.xml.dist
     
     - echo "Install Akeneo"
