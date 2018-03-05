@@ -1,6 +1,5 @@
 imports:
     - { resource: parameters.yml }
-    - { resource: pim_parameters.yml }
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
 
 framework:
