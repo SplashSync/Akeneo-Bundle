@@ -1,17 +1,29 @@
 {
-    "name": "splash/akeneo-bundle",
-    "description": "Splash Bundle for Akeneo PIM Solution",
-
-    "license": "MIT",
+    "name":                 "splash/akeneo-bundle",
+    "description":          "Splash Bundle for Akeneo PIM Solution",
+    "license":              "MIT",
+    "minimum-stability":    "dev",
+    "prefer-stable":        true,
+    
+    "authors": [
+        {
+            "name": "Splash Sync",
+            "homepage": "http://www.splashsync.com"
+        }
+    ],
 
     "autoload": {
         "psr-4": { 
-            "Splash\\Akeneo\\":     ""
+            "Splash\\Akeneo\\":     "src/"
         }
     },
     
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": { "Splash\\Tests\\": "Tests/" },
+        "files": [ "vendor/splash/php-bundle/Tests/KernelTestCase.php" ],
+        "classmap": [ "app/AppKernel.php" ]        
+    },    
+    
     
     "require": {
         "php":                      "^5.6|^7.0",
@@ -20,6 +32,45 @@
     },
     
     "require-dev": {
+        "akeneo/pim-community-dev": "~2.0.15",
+
         "phpunit/phpunit": "*"
+    },
+    
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/akeneo/pim-community-dev.git",
+            "branch": "master"
+        }
+    ],
+    "scripts": {
+        "post-install-cmd": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+            "php bin/console fos:js-routing:dump --target=web/js/routes.js"
+        ],
+        "post-update-cmd": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+            "php bin/console fos:js-routing:dump --target=web/js/routes.js",
+            "Pim\\Bundle\\InstallerBundle\\ComposerScripts::copyUpgradesFiles"
+        ]
+    },
+    "extra": {
+        "symfony-app-dir":              "app",
+        "symfony-bin-dir":              "bin",
+        "symfony-var-dir":              "var",
+        "symfony-web-dir":              "web",
+        "symfony-assets-install":       "relative"
     }
+    
 }
