@@ -35,8 +35,8 @@ cache:
 # Versions of PHP to test against
 php:
 #    - "5.6"
-#    - "7.0"
-    - "7.1"
+    - "7.0"
+#    - "7.1"
 #    - "7.2"
     
 # Define an environment variable
@@ -51,7 +51,7 @@ before_install:
   - yarn 
 # Increase memory limit to 4GB  
   - phpenv config-rm xdebug.ini
-  - phpenv config-add Build/x_memory.ini
+  - phpenv config-add build/x_memory.ini
 #  - phpenv config-add build/x_errors.ini
   - php -ini | grep memory_limit  
 
@@ -60,16 +60,21 @@ before_install:
   
 # Install composer dependencies,
 install:   
-    - composer create-project akeneo/pim-community-standard akeneo $AKENEO_VERSION --prefer-dist
-    - cd akeneo
+    - echo "Install Akeneo & Splash Bundles"
+    - composer update --no-interaction --prefer-dist
     
-    - echo "Install Splash Bundles"
-    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist
+#    - composer create-project akeneo/pim-community-standard akeneo $AKENEO_VERSION --prefer-dist
+#    - cd akeneo
+#    
+#    - echo "Install Splash Bundles"
+#    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist
+
+    - echo "Configuring Akeneo"
+    - cp    vendor/akeneo/pim-community-dev/app/config/pim_parameters.yml app/config/pim_parameters.yml
     
     - echo "Configuring Splash Bundles"
-    - cp ../Build/parameters.yml.dist app/config/parameters.yml
-    - cp ../Build/phpunit.xml.dist phpunit.xml.dist
-    - cp ../Build/autoload.php app/autoload.php
+    - cp ../build/parameters.yml.dist app/config/parameters.yml
+    - cp ../build/phpunit.xml.dist phpunit.xml.dist
     
     - echo "Install Akeneo"
     - php bin/console pim:installer:assets  --symlink --clean --env=test --no-interaction --no-debug

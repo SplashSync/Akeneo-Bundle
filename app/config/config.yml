@@ -1,0 +1,79 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: pim_parameters.yml }
+    - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
+
+framework:
+    test: ~
+    #esi:             ~
+    translator:      { fallback: en }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: "%kernel.debug%"
+    form:            true
+    csrf_protection: true
+    validation:
+        enable_annotations: true
+        enabled: true
+    templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    session:
+        storage_id: session.storage.mock_file
+    serializer:
+        enabled:              true
+    http_method_override: true
+        
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        uservoice_key: "%uservoice_key%"
+
+# Web Profiler Configuration
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+# Swiftmailer Configuration
+swiftmailer:
+    disable_delivery: true
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+
+# Security Configuration
+security:
+    
+    acl:
+        connection: default
+        cache:
+            id: security.acl.cache.doctrine
+            prefix: sf2_acl_
+    
+    providers:
+        chain_provider:
+            chain:
+                providers:                  [oro_user]
+        oro_user:
+            id:                             oro_user.security.provider
+    
+    firewalls:
+        main:
+            http_basic:
+                realm:      "Secured REST Area"
+            provider:       oro_user
+            form_login:     false
+            logout:         false
+            remember_me:    false
+            anonymous:      true
+            
+# Splash Bundle Configuration           
+splash:
+    id:     123456789
+    key:    123456789123456789123456789
+    
+    host:   http://127.0.0.1/ws/soap            
