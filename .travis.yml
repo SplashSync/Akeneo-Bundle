@@ -82,6 +82,7 @@ install:
 
     - echo "Configuring Akeneo"
     - cp    vendor/akeneo/pim-community-dev/app/config/routing.yml app/config/routing.yml
+    - cp    vendor/akeneo/pim-community-dev/app/PimRequirements.php app/PimRequirements.php
     - cat   build/routing_splash.yml   >> app/config/routing.yml
     
 #    - echo "Configuring Splash Bundles"
