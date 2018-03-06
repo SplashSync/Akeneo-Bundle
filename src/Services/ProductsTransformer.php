@@ -190,7 +190,14 @@ class ProductsTransformer extends Transformer {
     //====================================================================//
     // PRODUCT ATTRIBUTES FIELDS DEFINITION
     //====================================================================//
-    
+
+    /**
+     *  @abstract       Populate Product Object Fields Definition
+     * 
+     *  @param  string      $ObjectType          Splash Object Type Name
+     * 
+     *  @return         array           Splash Formated Fields Definitions
+     */    
     public function Fields($ObjectType) {
         
         if( $ObjectType != "Product") {
@@ -238,6 +245,14 @@ class ProductsTransformer extends Transformer {
             if ( in_array( $Attribute->getType() , [ AttributeTypes::FILE , AttributeTypes::IMAGE ] ) ) {   
                 $Field->write = False;  
             } 
+
+            //====================================================================//
+            // Does the Field Have MetaData ?
+            $MetaData   =   $this->getSplashAttributeMetaData($Attribute);
+            if ( $MetaData ) { 
+                $Field->itemprop    =   $MetaData["itemprop"];
+                $Field->itemtype    =   $MetaData["itemtype"];
+            } 
             
             //====================================================================//
             // Does the Field Have Choices Values ?
@@ -256,6 +271,13 @@ class ProductsTransformer extends Transformer {
         return $List;
     }
     
+    /**
+     *  @abstract       Convert Akeneo Attribute Type to Splash Field Type
+     * 
+     *  @param  AttributeInterface $Attribute       Akeneo Attribute Object
+     * 
+     *  @return         string
+     */    
     private function getSplashAttributeType(AttributeInterface $Attribute) {
 
         switch ( $Attribute->getType() ) 
@@ -280,15 +302,35 @@ class ProductsTransformer extends Transformer {
                 return SPL_T_VARCHAR;
 
             case AttributeTypes::TEXT:
-                return $Attribute->isLocalizable() ? SPL_T_MVARCHAR : SPL_T_VARCHAR;
-
-
             case AttributeTypes::TEXTAREA:
-                return $Attribute->isLocalizable() ? SPL_T_MTEXT : SPL_T_TEXT;
+                return $Attribute->isLocalizable() ? SPL_T_MVARCHAR : SPL_T_VARCHAR;
 
         }
 
         return Null;
+    }  
+    
+    /**
+     *  @abstract       Convert Akeneo Attribute Type to Splash Field Type
+     * 
+     *  @param  AttributeInterface $Attribute       Akeneo Attribute Object
+     * 
+     *  @return         string
+     */    
+    private function getSplashAttributeMetaData(AttributeInterface $Attribute) {
+        
+        //====================================================================//
+        // Check if Attribute Code is part of Known Codes 
+        if ( isset( $this->Config["products"][$Attribute->getCode()])) {
+            return $this->Config["products"][$Attribute->getCode()];
+        } 
+
+        //====================================================================//
+        // Return default Custom Field Metadata  
+        return array(
+            "itemtype"  =>  "http://meta.schema.org/additionalType",
+            "itemprop"  =>  $Attribute->getCode()
+        );
     }  
     
     /**

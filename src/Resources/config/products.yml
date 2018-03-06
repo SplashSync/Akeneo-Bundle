@@ -1,0 +1,59 @@
+
+   
+# Splash Akeneo Products Configuration           
+#splash_akeneo:
+#
+products:
+
+    sku:
+        itemtype:       http://schema.org/Product
+        itemprop:       model
+
+    erp_name:
+        itemtype:       http://schema.org/Product
+        itemprop:       alternateName
+
+    variation_name:
+        itemtype:       http://schema.org/Product
+        itemprop:       name
+
+    price:
+        itemtype:       http://schema.org/Product
+        itemprop:       price
+        
+    short_description:
+        itemtype:       http://schema.org/Product
+        itemprop:       description
+        
+    description:
+        itemtype:       http://schema.org/Article
+        itemprop:       articleBody        
+        
+    meta_title:
+        itemtype:       http://schema.org/Article
+        itemprop:       name        
+
+    meta_description:
+        itemtype:       http://schema.org/Article
+        itemprop:       headline        
+        
+    keywords:
+        itemtype:       http://schema.org/Article
+        itemprop:       keywords        
+        
+    main_color:
+        itemtype:       http://schema.org/Product
+        itemprop:       color   
+        
+    color:
+        itemtype:       http://schema.org/Product
+        itemprop:       color  
+        
+    brand:
+        itemtype:       http://schema.org/Product
+        itemprop:       brand 
+   
+    ean:
+        itemtype:       http://schema.org/Product
+        itemprop:       gtin13  
+        

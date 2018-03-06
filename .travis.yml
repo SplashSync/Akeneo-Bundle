@@ -88,6 +88,7 @@ install:
     - cp    vendor/akeneo/pim-community-dev/app/config/routing.yml app/config/routing.yml
     - cp    vendor/akeneo/pim-community-dev/app/PimRequirements.php app/PimRequirements.php
     - cat   build/routing_splash.yml   >> app/config/routing.yml
+    - rm    vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
     
     - echo "Install Akeneo"
     - php bin/console pim:installer:assets  --symlink --clean --env=test --no-interaction --no-debug

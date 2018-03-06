@@ -2,17 +2,8 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
-use Splash\Client\Splash;
 use Splash\Models\Objects\PricesTrait;
-use Splash\Models\Objects\ImagesTrait;
 
-use Splash\Bundle\Annotation as SPL;
-use Splash\Bundle\Annotation\Field;
-
-use Pim\Component\Catalog\Model\AbstractAttribute;
-use Pim\Component\Catalog\AttributeTypes;
-
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Intl\Intl;
 
 use Pim\Component\Catalog\Model\ProductInterface;

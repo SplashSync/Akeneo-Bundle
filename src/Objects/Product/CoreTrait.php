@@ -9,8 +9,6 @@ use Splash\Bundle\Annotation as SPL;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
-//use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-
 trait CoreTrait {
     
     //====================================================================//
@@ -22,7 +20,6 @@ trait CoreTrait {
      *          id      =   "identifier",
      *          type    =   "varchar",
      *          name    =   "Reference",
-     *          itemtype=   "http://schema.org/Product", itemprop="model",
      *          inlist  =   true,
      *          write   =   false,
      * )

@@ -34,6 +34,19 @@ class Configuration implements ConfigurationInterface
                     ->info('Default Channel for Products Outputs.')
                 ->end()   
                 
+                //====================================================================//
+                // COMMON Parameters
+                //====================================================================//
+
+                ->arrayNode('products')
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('itemtype')->cannotBeEmpty()->end()
+                            ->scalarNode('itemprop')->cannotBeEmpty()->end()
+                        ->end()
+                    ->end()
+                ->end()
+                
             ->end()
         ;
         

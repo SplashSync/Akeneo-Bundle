@@ -6,18 +6,20 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Yaml;
 
 class SplashAkeneoExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         
-        $container->setParameter('splash_akeneo',    $config);
+        $container->setParameter('splash_akeneo',    array_merge($config, Yaml::parseFile(__DIR__.'/../Resources/config/products.yml')));
         
         //====================================================================//
         // Add Bundle Objects to Splash Parameters
