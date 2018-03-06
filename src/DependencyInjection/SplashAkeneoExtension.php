@@ -24,7 +24,7 @@ class SplashAkeneoExtension extends Extension
         if (method_exists( Yaml::class , "parseFile")) {
             $config = array_merge_recursive( $config , Yaml::parseFile( __DIR__.'/../Resources/config/products.yml') );
         } else {
-            $config = array_merge_recursive( $config , Yaml::parse( __DIR__.'/../Resources/config/products.yml') );
+            $config = array_merge_recursive( $config , Yaml::parse( file_get_contents(__DIR__.'/../Resources/config/products.yml')) );
         }
 
         $container->setParameter('splash_akeneo',    $config);
