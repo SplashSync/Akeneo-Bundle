@@ -132,12 +132,12 @@ trait CRUDTrait {
         //====================================================================//
         // Re-Attach Detached Product Unique Data 
         $UniqueDatas    =   $Object->getUniqueData();
-        foreach ( $UniqueDatas as $Index => $UniqueData ) {
+        foreach ( $UniqueDatas as $Index => &$UniqueData ) {
             if ( !$this->EntityManager->contains($UniqueData) ) {
                 $UniqueDatas[$Index] = $this->EntityManager->merge($UniqueData);
             }
         }
-        $Object->setUniqueData($UniqueDatas);
+//        $Object->setUniqueData($UniqueDatas);
         //====================================================================//
         // Re-Attach Detached Product itSelf 
         if ( !$this->EntityManager->contains($Object) ) {

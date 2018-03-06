@@ -55,7 +55,7 @@ trait CoreTrait {
         //====================================================================//
         // Check if Attribute is Used for this Object
         if( !in_array($Attribute->getCode() , $Object->getUsedAttributeCodes() ) ) { 
-            return $Attribute->isLocalizable() ? [$this->Config["language"] => ""] : Null;
+            return Null;
         }         
         
         //====================================================================//
@@ -81,7 +81,7 @@ trait CoreTrait {
         if( isset( $Raw[$Attribute->getCode()][$this->Config["scope"]] ) ) {
             $Value =    $Raw[$Attribute->getCode()][$this->Config["scope"]];
         }
-        return  is_array($Value) ? $Value : [$this->Config["language"] => ""];
+        return  is_array($Value) ? $Value : Null;
     }    
     
     /**
