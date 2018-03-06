@@ -75,6 +75,7 @@ trait CoreTrait {
         //====================================================================//
         // Value is Multilanguage Specific
         $Raw    =   $Object->getRawValues();
+        $Value  =   Null;
         if ( !$Attribute->isScopable() && $Attribute->isLocalizable() ) { 
             $Value =    $Raw[$Attribute->getCode()]["<all_channels>"]; 
         }

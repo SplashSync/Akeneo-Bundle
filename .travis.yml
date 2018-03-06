@@ -34,8 +34,8 @@ matrix:
 #          env: AKENEO_VERSION="2.0"
 #        - php: 7.0
 #          env: AKENEO_VERSION="2.0"
-#        - php: 7.1
-#          env: AKENEO_VERSION="2.0"
+        - php: 7.1
+          env: AKENEO_VERSION="2.0"
           
         # Akeneo V2.1 Branch       
         - php: 7.1
@@ -43,7 +43,7 @@ matrix:
           
 #        # Akeneo V2.2 Branch       
 #        - php: 7.1
-          env: AKENEO_VERSION="2.2"
+#          env: AKENEO_VERSION="2.2"
 
     fast_finish: true
     
