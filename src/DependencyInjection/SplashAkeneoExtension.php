@@ -19,7 +19,15 @@ class SplashAkeneoExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         
-        $container->setParameter('splash_akeneo',    array_merge($config, Yaml::parseFile(__DIR__.'/../Resources/config/products.yml')));
+        //====================================================================//
+        // Import Products Standard Mappings
+        if (method_exists( Yaml::class , "parseFile")) {
+            $config = array_merge_recursive( $config , Yaml::parseFile( __DIR__.'/../Resources/config/products.yml') );
+        } else {
+            $config = array_merge_recursive( $config , Yaml::parse( __DIR__.'/../Resources/config/products.yml') );
+        }
+
+        $container->setParameter('splash_akeneo',    $config);
         
         //====================================================================//
         // Add Bundle Objects to Splash Parameters

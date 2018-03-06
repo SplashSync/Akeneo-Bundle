@@ -53,8 +53,8 @@ matrix:
         - env: AKENEO_VERSION="2.0"
         # Akeneo V2.1 Branch       
         - env: AKENEO_VERSION="2.1"
-        # Akeneo V2.2 Branch       
-        - env: AKENEO_VERSION="2.2"
+#        # Akeneo V2.2 Branch       
+#        - env: AKENEO_VERSION="2.2"
     
 before_install:
     
