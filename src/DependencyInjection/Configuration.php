@@ -19,20 +19,20 @@ class Configuration implements ConfigurationInterface
                 // COMMON Parameters
                 //====================================================================//
                 ->scalarNode('language')
-                    ->cannotBeEmpty()       
+                    ->cannotBeEmpty()
                     ->defaultValue("en_US")
                     ->info('Default Language for Products Outputs.')
-                ->end()   
+                ->end()
                 ->scalarNode('currency')
-                    ->cannotBeEmpty()       
+                    ->cannotBeEmpty()
                     ->defaultValue("EUR")
                     ->info('Default Channel for Products Outputs.')
-                ->end()   
+                ->end()
                 ->scalarNode('scope')
-                    ->cannotBeEmpty()       
+                    ->cannotBeEmpty()
                     ->defaultValue("ecommerce")
                     ->info('Default Channel for Products Outputs.')
-                ->end()   
+                ->end()
                 
                 //====================================================================//
                 // COMMON Parameters

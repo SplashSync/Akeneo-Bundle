@@ -49,8 +49,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
-class ProductsTransformer extends Transformer {
-    
+class ProductsTransformer extends Transformer
+{
     use \Splash\Akeneo\Objects\Product\CRUDTrait;
     use \Splash\Akeneo\Objects\Product\CoreTrait;
     use \Splash\Akeneo\Objects\Product\DatesTrait;
@@ -86,7 +86,7 @@ class ProductsTransformer extends Transformer {
     /**
      * @var SaverInterface
      */
-    private $Saver;    
+    private $Saver;
 
     /**
      * @var RemoverInterface
@@ -105,8 +105,8 @@ class ProductsTransformer extends Transformer {
     
     public function __construct(
             
-            EntityManagerInterface      $EntityManager, 
-            RouterInterface             $Router, 
+            EntityManagerInterface      $EntityManager,
+            RouterInterface             $Router,
             
             ProductBuilder              $Builder,
             ObjectUpdaterInterface      $Updater,
@@ -114,10 +114,9 @@ class ProductsTransformer extends Transformer {
             SaverInterface              $Saver,
             RemoverInterface            $Remover,
             
-            array                       $Config, 
-            string                      $Catalog_Storage_Dir 
+            array                       $Config,
+            string                      $Catalog_Storage_Dir
         ) {
-        
         $this->EntityManager        =   $EntityManager;
         $this->Router               =   $Router;
         
@@ -140,11 +139,11 @@ class ProductsTransformer extends Transformer {
 
     /**
      *  @abstract       Export Field Data from Local Object
-     * 
+     *
      *  @param  mixed   $Object         Current Local Object
      *  @param  string  $Id             Splash Field Id
      *  @param  string  $Type           Splash Field Type
-     * 
+     *
      *  @return         mixed           Splash Formated Data
      */
     public function exportCore($Object, string $Id, string $Type)
@@ -155,7 +154,7 @@ class ProductsTransformer extends Transformer {
                 ->getRepository("PimCatalogBundle:Attribute")
                 ->findOneByIdentifier($Id);
         
-        if( empty($Attribute) ) {
+        if (empty($Attribute)) {
             return parent::exportCore($Object, $Id, $Type);
         }
 
@@ -163,13 +162,13 @@ class ProductsTransformer extends Transformer {
     }
 
     /**
-     *  @abstract       Import Field Data to Local Object 
-     * 
+     *  @abstract       Import Field Data to Local Object
+     *
      *  @param  mixed   $Object         Current Local Object
      *  @param  string  $Id             Splash Field Id
      *  @param  string  $Type           Splash Field Type
      *  @param  mixed   $Data           Field Input Splash Formated Data
-     * 
+     *
      *  @return         mixed           Splash Formated Data
      */
     public function importCore($Object, string $Id, string $Type, $Data)
@@ -180,12 +179,12 @@ class ProductsTransformer extends Transformer {
                 ->getRepository("PimCatalogBundle:Attribute")
                 ->findOneByIdentifier($Id);
         
-        if( empty($Attribute) ) {
+        if (empty($Attribute)) {
             return parent::importCore($Object, $Id, $Type, $Data);
         }
 
         return $this->setAttributeData($Object, $Attribute, $Data);
-    }  
+    }
     
     //====================================================================//
     // PRODUCT ATTRIBUTES FIELDS DEFINITION
@@ -193,14 +192,14 @@ class ProductsTransformer extends Transformer {
 
     /**
      *  @abstract       Populate Product Object Fields Definition
-     * 
+     *
      *  @param  string      $ObjectType          Splash Object Type Name
-     * 
+     *
      *  @return         array           Splash Formated Fields Definitions
-     */    
-    public function Fields($ObjectType) {
-        
-        if( $ObjectType != "Product") {
+     */
+    public function Fields($ObjectType)
+    {
+        if ($ObjectType != "Product") {
             return array();
         }
         
@@ -212,16 +211,16 @@ class ProductsTransformer extends Transformer {
 
         //====================================================================//
         // Create Fields List Array
-        $List    =   Array();
+        $List    =   array();
         
         foreach ($Attributes as $Attribute) {
 
             //====================================================================//
             // Detect Field Type
             $FieldType  =   $this->getSplashAttributeType($Attribute);
-            if ( !$FieldType ) {
+            if (!$FieldType) {
                 continue;
-            } 
+            }
 
             //====================================================================//
             // Field Core Infos
@@ -236,29 +235,29 @@ class ProductsTransformer extends Transformer {
             
             //====================================================================//
             // is Field Required ?
-            if ( $Attribute->isRequired() ) {   
-                $Field->required = True;  
-            } 
+            if ($Attribute->isRequired()) {
+                $Field->required = true;
+            }
             
             //====================================================================//
             // is Field read Only ?
-            if ( in_array( $Attribute->getType() , [ AttributeTypes::FILE , AttributeTypes::IMAGE ] ) ) {   
-                $Field->write = False;  
-            } 
+            if (in_array($Attribute->getType(), [ AttributeTypes::FILE , AttributeTypes::IMAGE ])) {
+                $Field->write = false;
+            }
 
             //====================================================================//
             // Does the Field Have MetaData ?
             $MetaData   =   $this->getSplashAttributeMetaData($Attribute);
-            if ( $MetaData ) { 
+            if ($MetaData) {
                 $Field->itemprop    =   $MetaData["itemprop"];
                 $Field->itemtype    =   $MetaData["itemtype"];
-            } 
+            }
             
             //====================================================================//
             // Does the Field Have Choices Values ?
-            if ( $Attribute->getType() == AttributeTypes::OPTION_SIMPLE_SELECT ) { 
-                $Field->choices     =   $this->exportChoices( $Attribute , $this->Config["language"] );
-            } 
+            if ($Attribute->getType() == AttributeTypes::OPTION_SIMPLE_SELECT) {
+                $Field->choices     =   $this->exportChoices($Attribute, $this->Config["language"]);
+            }
             
             //====================================================================//
             // Add Field To List
@@ -273,15 +272,14 @@ class ProductsTransformer extends Transformer {
     
     /**
      *  @abstract       Convert Akeneo Attribute Type to Splash Field Type
-     * 
+     *
      *  @param  AttributeInterface $Attribute       Akeneo Attribute Object
-     * 
+     *
      *  @return         string
-     */    
-    private function getSplashAttributeType(AttributeInterface $Attribute) {
-
-        switch ( $Attribute->getType() ) 
-        {
+     */
+    private function getSplashAttributeType(AttributeInterface $Attribute)
+    {
+        switch ($Attribute->getType()) {
             case AttributeTypes::BOOLEAN:
                 return SPL_T_BOOL;
 
@@ -295,7 +293,7 @@ class ProductsTransformer extends Transformer {
                 return SPL_T_IMG;
 
             case AttributeTypes::PRICE_COLLECTION:
-                return SPL_T_PRICE; 
+                return SPL_T_PRICE;
 
             case AttributeTypes::IDENTIFIER:
             case AttributeTypes::OPTION_SIMPLE_SELECT:
@@ -307,46 +305,46 @@ class ProductsTransformer extends Transformer {
 
         }
 
-        return Null;
-    }  
+        return null;
+    }
     
     /**
      *  @abstract       Convert Akeneo Attribute Type to Splash Field Type
-     * 
+     *
      *  @param  AttributeInterface $Attribute       Akeneo Attribute Object
-     * 
+     *
      *  @return         string
-     */    
-    private function getSplashAttributeMetaData(AttributeInterface $Attribute) {
+     */
+    private function getSplashAttributeMetaData(AttributeInterface $Attribute)
+    {
         
         //====================================================================//
-        // Check if Attribute Code is part of Known Codes 
-        if ( isset( $this->Config["products"][$Attribute->getCode()])) {
+        // Check if Attribute Code is part of Known Codes
+        if (isset($this->Config["products"][$Attribute->getCode()])) {
             return $this->Config["products"][$Attribute->getCode()];
-        } 
+        }
 
         //====================================================================//
-        // Return default Custom Field Metadata  
+        // Return default Custom Field Metadata
         return array(
             "itemtype"  =>  "http://meta.schema.org/additionalType",
             "itemprop"  =>  $Attribute->getCode()
         );
-    }  
+    }
     
     /**
      *  @abstract       Export Field Data from Local Object
-     * 
+     *
      *  @param  ProductInterface   $Object          Akeneo Product Object
      *  @param  AttributeInterface $Attribute       Akeneo Attribute Object
-     * 
+     *
      *  @return         mixed           Splash Formated Data
      */
     public function getAttributeData(ProductInterface $Object, AttributeInterface $Attribute)
     {
         //====================================================================//
         // Read & Convert Attribute Value
-        switch ( $Attribute->getType() ) 
-        {
+        switch ($Attribute->getType()) {
             case AttributeTypes::BOOLEAN:
                 return $this->getAttributeValue($Object, $Attribute);
 
@@ -354,7 +352,7 @@ class ProductsTransformer extends Transformer {
                 return $this->exportDates($Object, $Attribute);
 
             case AttributeTypes::FILE:
-                return Null;
+                return null;
 
             case AttributeTypes::IMAGE:
                 return $this->exportImage($Object, $Attribute);
@@ -371,25 +369,24 @@ class ProductsTransformer extends Transformer {
                 return $this->exportPrice($Object, $Attribute);
 
         }
-        return Null;
-    }   
+        return null;
+    }
 
     /**
      *  @abstract       Export Field Data from Local Object
-     * 
+     *
      *  @param  ProductInterface    $Object         Akeneo Product Object
      *  @param  AttributeInterface  $Attribute      Akeneo Attribute Object
      *  @param  mixed               $Data           Field Input Splash Formated Data
-     * 
-     * 
+     *
+     *
      *  @return         bool
      */
     public function setAttributeData(ProductInterface $Object, AttributeInterface $Attribute, $Data)
     {
         //====================================================================//
         // Read & Convert Attribute Value
-        switch ( $Attribute->getType() ) 
-        {
+        switch ($Attribute->getType()) {
             case AttributeTypes::BOOLEAN:
                 return $this->setAttributeValue($Object, $Attribute, $Data);
 
@@ -397,7 +394,7 @@ class ProductsTransformer extends Transformer {
                 return $this->setAttributeValue($Object, $Attribute, $Data);
 
             case AttributeTypes::FILE:
-                return Null;
+                return null;
 
             case AttributeTypes::IMAGE:
                 return $this->exportImage($Object, $Attribute, $Data);
@@ -415,6 +412,6 @@ class ProductsTransformer extends Transformer {
 
         }
 
-        return Null;
-    }        
+        return null;
+    }
 }

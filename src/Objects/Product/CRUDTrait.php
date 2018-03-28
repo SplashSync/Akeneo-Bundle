@@ -8,33 +8,35 @@ use Splash\Bundle\Annotation as SPL;
 
 use Doctrine\ORM\EntityNotFoundException;
 
-trait CRUDTrait {
+trait CRUDTrait
+{
     
     //====================================================================//
     // PRODUCT CREATE
-    //====================================================================//    
+    //====================================================================//
     
     /**
      *  @abstract       Create a New Object
-     * 
+     *
      *  @param  mixed   $Manager        Local Object Entity/Document Manager
      *  @param  string  $Target         Local Object Class Name
-     * 
+     *
      *  @return         mixed
      */
-    public function create($Manager, $Target) {            
+    public function create($Manager, $Target)
+    {
         //====================================================================//
         // Saftey Check
-        if ( !$Target || !class_exists($Target) ) { 
-            return False; 
+        if (!$Target || !class_exists($Target)) {
+            return false;
         }
         try {
             //====================================================================//
             // Create a New PIM Product
-            $Object =   $this->Builder->createProduct();  
-        } catch ( \Exception $e) {
+            $Object =   $this->Builder->createProduct();
+        } catch (\Exception $e) {
             Splash::Log()->Err("Akeneo Product Create Failled");
-            Splash::Log()->Err($e->getMessage());    
+            Splash::Log()->Err($e->getMessage());
         }
         //====================================================================//
         // Return a New Object
@@ -47,103 +49,103 @@ trait CRUDTrait {
     
     /**
      *  @abstract       Update Object Data in Database
-     * 
+     *
      *  @param  mixed   $Manager        Local Object Entity/Document Manager
      *  @param  string  $Object         Local Object
-     * 
+     *
      *  @return         mixed
      */
-    public function update($Manager, $Object) {            
+    public function update($Manager, $Object)
+    {
         //====================================================================//
         // Saftey Check
-        if ( !$Object ) { 
-            return False; 
+        if (!$Object) {
+            return false;
         }
         try {
             //====================================================================//
             // If Product is New => Disable Doctrine postUpdate Event
             // This is done to prevent Repeated Commits (Create + Update)
-            if ( !$Object->getId() ) {
-                Splash::Local()->setListnerState("postUpdate", False);
+            if (!$Object->getId()) {
+                Splash::Local()->setListnerState("postUpdate", false);
             }
             //====================================================================//
-            // Re-Attach Product to Entity Manager 
+            // Re-Attach Product to Entity Manager
             $AttachedObject =   $this->Attach($Object);
             //====================================================================//
-            // Validate Changes        
-            $this->Validator->validate($AttachedObject);         
+            // Validate Changes
+            $this->Validator->validate($AttachedObject);
             //====================================================================//
-            // Save Changes        
-            $this->Saver->save($AttachedObject);        
+            // Save Changes
+            $this->Saver->save($AttachedObject);
             
             Splash::Log()->Msg("Akeneo Product Update Done");
             Splash::Log()->Msg("Updated => " . $AttachedObject->getId());
-            
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             Splash::Log()->Err("Akeneo Product Update Failed");
-            return Splash::Log()->Err($e->getMessage());    
+            return Splash::Log()->Err($e->getMessage());
         }
         //====================================================================//
         // Whatever => Enable Doctrine postUpdate Event Again!
-        Splash::Local()->setListnerState("postPersist", True);
-        Splash::Local()->setListnerState("postUpdate", True);
+        Splash::Local()->setListnerState("postPersist", true);
+        Splash::Local()->setListnerState("postUpdate", true);
         //====================================================================//
         // Return Object Id
         return  $AttachedObject->getId();
-    } 
+    }
     
     //====================================================================//
     // PRODUCT CREATE
-    //====================================================================//    
+    //====================================================================//
     
     /**
      *  @abstract       Delete a Product
-     * 
+     *
      *  @param  mixed   $Manager        Local Object Entity/Document Manager
      *  @param  string  $Object         Local Object
-     * 
+     *
      *  @return         mixed
      */
-    public function delete($Manager, $Object) {
+    public function delete($Manager, $Object)
+    {
         //====================================================================//
         // Saftey Check
-        if ( !$Object ) { 
-            return False; 
+        if (!$Object) {
+            return false;
         }
         try {
-            $this->Remover->remove( $this->Attach($Object) );         
+            $this->Remover->remove($this->Attach($Object));
             
             Splash::Log()->Msg("Akeneo Product Delete Done");
             Splash::Log()->Msg("Deleted => " . $Object->getId());
-            
-        } catch ( EntityNotFoundException $e) {
-            return True;
-        } catch ( \Exception $e) {
+        } catch (EntityNotFoundException $e) {
+            return true;
+        } catch (\Exception $e) {
             Splash::Log()->Err("Akeneo Product Delete Failed");
-            return Splash::Log()->Err($e->getMessage());    
-        }        
-        return True;
-    }   
+            return Splash::Log()->Err($e->getMessage());
+        }
+        return true;
+    }
     
     /**
      *  @abstract       Ensure Product and Attributes are Correctly Attached to Entity Manager
-     */    
-    private function Attach($Object) {
+     */
+    private function Attach($Object)
+    {
         //====================================================================//
-        // Re-Attach Detached Product Unique Data 
+        // Re-Attach Detached Product Unique Data
         $UniqueDatas    =   $Object->getUniqueData();
-        foreach ( $UniqueDatas as $Index => &$UniqueData ) {
-            if ( !$this->EntityManager->contains($UniqueData) ) {
+        foreach ($UniqueDatas as $Index => &$UniqueData) {
+            if (!$this->EntityManager->contains($UniqueData)) {
                 $UniqueDatas[$Index] = $this->EntityManager->merge($UniqueData);
             }
         }
 //        $Object->setUniqueData($UniqueDatas);
         //====================================================================//
-        // Re-Attach Detached Product itSelf 
-        if ( !$this->EntityManager->contains($Object) ) {
+        // Re-Attach Detached Product itSelf
+        if (!$this->EntityManager->contains($Object)) {
             return $this->EntityManager->merge($Object);
         }
         return $Object;
     }
-    
 }

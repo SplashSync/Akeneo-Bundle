@@ -21,11 +21,10 @@ use Splash\Akeneo\Objects\Product\CoreTrait;
  *              transformer_service     =   "Splash.Akeneo.Products.Transformer",
  *              repository_service      =   "pim_catalog.repository.product"
  * )
- * 
+ *
  */
-class Product {
-
+class Product
+{
     use ObjectMetadataTrait;
     use CoreTrait;
-    
 }

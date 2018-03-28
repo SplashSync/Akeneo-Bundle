@@ -4,14 +4,15 @@ namespace Splash\Akeneo\Objects\Core;
 
 use Splash\Bundle\Annotation as SPL;
 
-trait ObjectMetadataTrait {
+trait ObjectMetadataTrait
+{
     
     //====================================================================//
     // OBJECT METADATA
     //====================================================================//
     
     /**
-     * @SPL\Field(  
+     * @SPL\Field(
      *          id      =   "created",
      *          type    =   "date",
      *          name    =   "Creation Date",
@@ -23,7 +24,7 @@ trait ObjectMetadataTrait {
     protected $created;
     
     /**
-     * @SPL\Field(  
+     * @SPL\Field(
      *          id      =   "updated",
      *          type    =   "date",
      *          name    =   "Updated Date",
@@ -33,5 +34,4 @@ trait ObjectMetadataTrait {
      * )
      */
     protected $modified;
-    
 }

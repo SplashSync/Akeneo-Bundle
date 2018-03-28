@@ -12,7 +12,6 @@ class SplashAkeneoExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -21,13 +20,13 @@ class SplashAkeneoExtension extends Extension
         
         //====================================================================//
         // Import Products Standard Mappings
-        if (method_exists( Yaml::class , "parseFile")) {
-            $config = array_merge_recursive( $config , Yaml::parseFile( __DIR__.'/../Resources/config/products.yml') );
+        if (method_exists(Yaml::class, "parseFile")) {
+            $config = array_merge_recursive($config, Yaml::parseFile(__DIR__.'/../Resources/config/products.yml'));
         } else {
-            $config = array_merge_recursive( $config , Yaml::parse( file_get_contents(__DIR__.'/../Resources/config/products.yml')) );
+            $config = array_merge_recursive($config, Yaml::parse(file_get_contents(__DIR__.'/../Resources/config/products.yml')));
         }
 
-        $container->setParameter('splash_akeneo',    $config);
+        $container->setParameter('splash_akeneo', $config);
         
         //====================================================================//
         // Add Bundle Objects to Splash Parameters
@@ -45,7 +44,6 @@ class SplashAkeneoExtension extends Extension
                 
         //====================================================================//
         // Update Splash Bundle Parameters
-        $container->setParameter('splash',$Splash);
-        
+        $container->setParameter('splash', $Splash);
     }
 }
