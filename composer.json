@@ -27,8 +27,7 @@
     
     "require": {
         "php":                      "^5.6|^7.0",
-        "splash/phpcore":           "dev-master",
-        "splash/php-bundle":        "1.4.1"
+        "splash/php-bundle":        "dev-master"
     },
     
     "require-dev": {
