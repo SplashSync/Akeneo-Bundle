@@ -302,8 +302,10 @@ class ProductsTransformer extends Transformer {
                 return SPL_T_VARCHAR;
 
             case AttributeTypes::TEXT:
-            case AttributeTypes::TEXTAREA:
                 return $Attribute->isLocalizable() ? SPL_T_MVARCHAR : SPL_T_VARCHAR;
+                
+            case AttributeTypes::TEXTAREA:
+                return $Attribute->isLocalizable() ? SPL_T_MTEXT : SPL_T_TEXT;
 
         }
 
