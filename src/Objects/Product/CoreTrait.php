@@ -1,134 +1,105 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Akeneo\Objects\Product;
 
 use Splash\Core\SplashCore as Splash;
 
-use Splash\Bundle\Annotation as SPL;
-
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-
-trait CoreTrait {
-    
+trait CoreTrait
+{
     //====================================================================//
     // PRODUCT CORE INFOS
     //====================================================================//
-    
+
     /**
-     * @SPL\Field(  
-     *          id      =   "identifier",
-     *          type    =   "varchar",
-     *          name    =   "Reference",
-     *          inlist  =   true,
-     *          write   =   false,
-     * )
+     * Build Fields using FieldFactory
      */
-    protected $identifier;
-    
-    /**
-     * @SPL\Field(  
-     *          id      =   "enabled",
-     *          type    =   "bool",
-     *          name    =   "Active",
-     *          itemtype=   "http://schema.org/Product", itemprop="offered",
-     * )
-     */
-    protected $enabled; 
-    
-    public function getEnabled($Object)
+    public function buildCoreFields()
     {
-        return $Object->isEnabled();
+        //====================================================================//
+        // Product SKU
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->Identifier("identifier")
+            ->Name("Product SKU")
+            ->MicroData("http://schema.org/Product", "model")
+            ->isListed()
+            ->isReadOnly();
+
+        //====================================================================//
+        // Active => Product Is Enables & Visible
+        $this->fieldsFactory()->create(SPL_T_BOOL)
+            ->Identifier("enabled")
+            ->Name("Enabled")
+            ->MicroData("http://schema.org/Product", "active")
+            ->isListed();
     }
-    
-    
+
     /**
-     *  @abstract    Read Attribute Data with Lacal & Scope Detection 
-     * 
-     *  @param  ProductInterface    $Object         Akeneo Product Object
-     *  @param  AttributeInterface  $Attribute      Akeneo Attribute Object
-     * 
-     *  @return mixed
+     * Read requested Field
+     *
+     * @param string $key       Input List Key
+     * @param string $fieldName Field Identifier / Name
      */
-    public function getAttributeValue(ProductInterface $Object, AttributeInterface $Attribute)
-    {    
-        //====================================================================//
-        // Check if Attribute is Used for this Object
-        if( !in_array($Attribute->getCode() , $Object->getUsedAttributeCodes() ) ) { 
-            return Null;
-        }         
-        
-        //====================================================================//
-        // Value is Monolanguage
-        if ( !$Attribute->isLocalizable() ) {
+    public function getCoreFields(string $key, string $fieldName)
+    {
+        switch ($fieldName) {
             //====================================================================//
-            // Value is Similar for All Langs & All Channels
-            if ( !$Attribute->isScopable() ) {
-                return $Object->getValue( $Attribute->getCode() )->getData();
-            //====================================================================//
-            // Value is Channels Specific
-            } else { 
-                return $Object->getValue( $Attribute->getCode() , Null, $this->Config["scope"]  )->getData();
-            }
+            // Variant Readings
+            case 'identifier':
+                $this->getGeneric($fieldName);
+
+                break;
+            case 'enabled':
+                $this->getGenericBool($fieldName);
+
+                break;
+            default:
+                return;
         }
-        
-        //====================================================================//
-        // Value is Multilanguage Specific
-        $Raw    =   $Object->getRawValues();
-        $Value  =   Null;
-        if ( !$Attribute->isScopable() && $Attribute->isLocalizable() ) { 
-            $Value =    $Raw[$Attribute->getCode()]["<all_channels>"]; 
-        }
-        if( isset( $Raw[$Attribute->getCode()][$this->Config["scope"]] ) ) {
-            $Value =    $Raw[$Attribute->getCode()][$this->Config["scope"]];
-        }
-        return  is_array($Value) ? $Value : Null;
-    }    
-    
+        unset($this->in[$key]);
+    }
+
     /**
-     *  @abstract    Write Attribute Data with Local & Scope Detection 
-     * 
-     *  @param  ProductInterface    $Object         Akeneo Product Object
-     *  @param  AttributeInterface  $Attribute      Akeneo Attribute Object
-     *  @param  mixed               $Data           Field Input Splash Formated Data
-     * 
-     *  @return bool
+     * Write Given Fields
+     *
+     * @param string $fieldName Field Identifier / Name
+     * @param mixed  $fieldData Field Data
      */
-    public function setAttributeValue(ProductInterface $Object, AttributeInterface $Attribute, $Data)
-    {    
-    
-        
-        $FieldsValues = array();
-        
-        //====================================================================//
-        // Value is Similar for All Langs & All Channels
-        if ( !$Attribute->isScopable() && !$Attribute->isLocalizable() ) {
-            $FieldsValues[$Attribute->getCode()] = [["locale" => null, "scope" => null, "data" => $Data]]; 
+    protected function setCoreFields($fieldName, $fieldData)
+    {
+        switch ($fieldName) {
+            //====================================================================//
+            // Variant Readings
+//            case 'identifier':
+//Splash::Log()->www("data", get_class($this->setter));                
+//                
+////                $this->setGeneric($fieldName, $fieldData);
+//                $this->setter->setData($this->object, "sku", $fieldData, array(
+//                    "locale" => null,
+////                    "scope" => "ecommerce",
+//                    "scope" => null,
+//                ));
+//                break;
+            case 'enabled':
+                $this->setGenericBool($fieldName, $fieldData);
+
+                break;
+            default:
+                return;
         }
         
-        //====================================================================//
-        // Value is Channels Specific
-        if ( $Attribute->isScopable() && !$Attribute->isLocalizable() ) { 
-            $FieldsValues[$Attribute->getCode()] = [["locale" => null, "scope" => $this->Config["scope"], "data" => $Data]];  
-        }
-        
-        //====================================================================//
-        // Value is Multilanguage Specific
-        if ( $Attribute->isLocalizable() ) { 
-            $Scope  =   $Attribute->isScopable() ? $this->Config["scope"] : Null;
-            $LocalizedValues = [];
-            foreach ($Data as $Locale => $Value) {
-                $LocalizedValues[]  =   ["locale" => $Locale, "scope" => $Scope, "data" => $Value];
-            }
-            $FieldsValues[$Attribute->getCode()] = $LocalizedValues;  
-        } 
-        
-        //====================================================================//
-        // Update Attribute with Error detection
-        try {
-            return $this->Updater->update($Object, [ "values" => $FieldsValues ]);    
-        } catch ( \Exception $e) {
-            Splash::Log()->Err($e->getMessage());    
-        }
-    }     
+        unset($this->in[$fieldName]);
+    }
 }

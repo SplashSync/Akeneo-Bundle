@@ -3,32 +3,48 @@ services:
     ########################################################################
     # Akeneo Products Data Transformer
     # Convert In/Out Doctrine Objects Fields to Splash Standard Format
-    Splash.Akeneo.Products.Transformer:
-        class:      Splash\Akeneo\Services\ProductsTransformer
+    splash.akeneo.object.product:
+        class:      Splash\Akeneo\Objects\Product
         arguments:  
-            -   "@pim_catalog.object_manager.product"
-            -   "@router"
+            -   "@pim_catalog.repository.product"
+            -   "@splash.akeneo.product.crud"  
+            -   "@splash.akeneo.product.attributes"
+            -   "@splash.akeneo.locales"  
+#            -   "@router"
+
+##            -   "%splash_akeneo%"
+#            -   "%catalog_storage_dir%"
+        tags:
+            # Register as Standalone Connector Object           
+            - { name: "splash.standalone.object", type : "Product" }  
+            
+    ########################################################################
+    # Akeneo Products Crud Manager
+    splash.akeneo.product.crud:
+        class:      Splash\Akeneo\Services\CrudService
+        arguments:  
             -   "@pim_catalog.builder.product"
             -   "@pim_catalog.updater.product"
             -   "@pim_catalog.validator.product"
             -   "@pim_catalog.saver.product"
             -   "@pim_catalog.remover.product"
-            -   "%splash_akeneo%"
-            -   "%catalog_storage_dir%"
-        
-#    ########################################################################
-#    # Sylius Products Data Transformer
-#    # Convert In/Out Sylius Products Objects Fields to Splash Standard Format
-#    Splash.Sylius.Products.Transformer:
-#        class:      Splash\Sylius\Services\ProductTransformer
-#        arguments:  
-#         - "@translator"
-#         - "@router"
-#         - "@sylius.factory.product"
-#         - "@sylius.manager.product"
-#         - "@sylius.repository.channel"
-#         - "%splash_sylius%"     
-#         
+
+    ########################################################################
+    # Akeneo Products Crud Manager
+    splash.akeneo.product.attributes:
+        class:      Splash\Akeneo\Services\AttributesManager
+        arguments:  
+            -   "@pim_catalog.updater.property_setter"
+            -   "@pim_catalog.repository.attribute"
+            -   "@splash.akeneo.locales"  
+
+            
+    ########################################################################
+    # Akeneo Connector Locales Manager
+    splash.akeneo.locales:
+        class:      Splash\Akeneo\Services\LocalesManager
+        arguments:  
+            -   "@=service('pim_catalog.repository.locale').getActivatedLocaleCodes()"  
          
 #    ########################################################################
 #    # Sylius Additionnal Object Event Listener

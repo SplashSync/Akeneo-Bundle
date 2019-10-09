@@ -27,25 +27,25 @@ class SplashAkeneoExtension extends Extension
             $config = array_merge_recursive( $config , Yaml::parse( file_get_contents(__DIR__.'/../Resources/config/products.yml')) );
         }
 
-        $container->setParameter('splash_akeneo',    $config);
-        
-        //====================================================================//
-        // Add Bundle Objects to Splash Parameters
-        $Splash                 =   $container->getParameter('splash');
-        $Splash["objects"][]    =   "Splash\Akeneo\Objects\Product";
-
-        //====================================================================//
-        // Add Bundle Widgets to Splash Parameters
-//        $Splash["widgets"][]    =   "Splash\Local\Widgets\DefaultWidget";
-        $Splash["widgets"][]    =   "Splash\Local\Widgets\SelfTest";
-
-        //====================================================================//
-        // Setup App Logo
-        $Splash["infos"]["logo"]    =   "/bundles/pimui/images/logo.svg";
-                
-        //====================================================================//
-        // Update Splash Bundle Parameters
-        $container->setParameter('splash',$Splash);
+//        $container->setParameter('splash_akeneo',    $config);
+//        
+//        //====================================================================//
+//        // Add Bundle Objects to Splash Parameters
+//        $Splash                 =   $container->getParameter('splash');
+//        $Splash["objects"][]    =   "Splash\Akeneo\Objects\Product";
+//
+//        //====================================================================//
+//        // Add Bundle Widgets to Splash Parameters
+////        $Splash["widgets"][]    =   "Splash\Local\Widgets\DefaultWidget";
+//        $Splash["widgets"][]    =   "Splash\Local\Widgets\SelfTest";
+//
+//        //====================================================================//
+//        // Setup App Logo
+//        $Splash["infos"]["logo"]    =   "/bundles/pimui/images/logo.svg";
+//                
+//        //====================================================================//
+//        // Update Splash Bundle Parameters
+//        $container->setParameter('splash',$Splash);
         
     }
 }
