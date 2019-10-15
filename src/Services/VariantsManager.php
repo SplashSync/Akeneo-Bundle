@@ -131,20 +131,22 @@ class VariantsManager
 
             return $response;
         }
-
         //====================================================================//
         // PRODUCT MODEL HAS CHILD PRODUCTS
         $products = $model->getProducts();
-        if (count($products) > 0) {
-            foreach ($products as $product) {
+        if (count($products) == 0) {
+            return $response;
+        }            
+        //====================================================================//
+        // WALK ON MODEL CHILD PRODUCTS
+        foreach ($products as $product) {
+            if($product->getId()) {
                 $response[$product->getId()] = array(
                     "id" => self::objects()->encode("Product", $product->getId()),
                     "rawId" => $product->getId(),
                     "sku" => $product->getIdentifier(),
                 );
             }
-
-            return $response;
         }
 
         return $response;

@@ -178,7 +178,12 @@ trait CoreTrait
         if ($attribute["rawId"] != $this->object->getId()) {
             return true;
         }
-
+        //====================================================================//
+        // Empty Product Variant Id
+        if (empty($attribute["id"])) {
+            return true;
+        }
+        
         return false;
     }
 }

@@ -43,10 +43,7 @@ trait CrudTrait {
      * {@inheritdoc}
      */
     public function create() 
-    {  
-        //====================================================================//
-        // Ensure User Login
-        $this->security->ensureSessionUser($this->getParameter("username", "admin"));
+    {
         //====================================================================//
         // Create a New PIM Product
         $product =   $this->crud->createProduct($this->in);  
