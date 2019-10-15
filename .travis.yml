@@ -57,7 +57,7 @@ before_install:
   - composer self-update
   
 # Install Yarn
-  - yarn 
+#  - yarn 
   
 # Configure PHP  
   - phpenv config-rm xdebug.ini
@@ -86,8 +86,8 @@ install:
     - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
     
     - echo "Install Akeneo"
-    - php bin/console pim:installer:assets  --symlink --clean --env=test --no-interaction --no-debug
     - php bin/console pim:install --force   --symlink --clean --env=test --no-interaction --no-debug
+    - php bin/console pim:installer:assets  --symlink --clean --env=test --no-interaction --no-debug
     - php bin/console debug:config splash --env=test --no-interaction --no-debug
 
     - echo "Start Web Srever"
