@@ -95,7 +95,7 @@ install:
     - chmod 775 web/bundles
     
     - echo "Install Akeneo"
-    - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
+#    - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
     - php bin/console pim:install               --env=test  --force --symlink --clean --no-interaction --no-debug
     - php bin/console pim:installer:assets      --env=test  --symlink --clean --no-interaction --no-debug
     - php bin/console debug:config splash       --env=test
