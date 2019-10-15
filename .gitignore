@@ -39,3 +39,19 @@
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
 /app/config/pim_parameters.yml
+/app/archive/
+/app/file_storage/
+/app/uploads/
+/node_modules/
+/vendor/
+/web/cache/
+/web/css/
+/web/dist/
+/web/js/
+/yarn.lock
+/composer.lock
+/upgrades/
+/var/
+/app/config/parameters_test.yml
+/web/media/
+/.php_cs.cache

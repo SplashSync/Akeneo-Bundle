@@ -9,6 +9,10 @@
         {
             "name": "Splash Sync",
             "homepage": "http://www.splashsync.com"
+        },
+        {
+            "name": "BadPixxel",
+            "email": "eshop.bpaquier@gmail.com"
         }
     ],
 
@@ -20,20 +24,21 @@
     
     "autoload-dev": {
         "psr-4": { "Splash\\Tests\\": "Tests/" },
-        "files": [ "vendor/splash/php-bundle/Tests/KernelTestCase.php" ],
+        "files": [ "tests/KernelTestCase.php" ],
         "classmap": [ "app/AppKernel.php" ]        
     },    
     
     
     "require": {
-        "php":                      "^5.6|^7.0",
-        "splash/php-bundle":        "0.1.0"
+        "php":                      "^7.1",
+        "splash/php-bundle":        "dev-master"
     },
     
     "require-dev": {
-        "akeneo/pim-community-dev": "2.2.x-dev@dev",
+        "akeneo/pim-community-dev": "2.3.x-dev@dev",
 
-        "phpunit/phpunit": "*"
+        "splash/console":           "dev-master",
+        "phpunit/phpunit":          "*"
     },
     
     "repositories": [

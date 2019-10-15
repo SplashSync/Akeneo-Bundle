@@ -1,0 +1,142 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+# 
+#  Copyright (C) Splash Sync <www.splashsync.com>
+# 
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# 
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+# 
+#  @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+################################################################################
+# Docker Compose File
+#
+# This Docker File intend to Create a Complete Dev Envirenement 
+# for Splash Modules on Prestashop
+#
+# To us different PS Version coinfigured, you need to add hosts to /etc/hosts
+# 
+# 172.105.0.10        docker.akeneo.local
+# 172.105.0.11        toolkit.akeneo.local
+#
+################################################################################
+
+
+version: '3.4'
+
+services:
+    ################################################################################
+    # Pḧp Fpm Server Container   
+    fpm:
+        image: 'akeneo/fpm:php-7.1'
+        user: 'docker'
+        container_name: akeneo-php-fpm
+        environment:
+            COMPOSER_MEMORY_LIMIT: -1
+            COMPOSER_HOME: '/home/docker/.composer' 
+        volumes:
+            - './:/srv/pim'
+            - ~/.composer:/home/docker/.composer
+        working_dir: '/srv/pim'
+        networks:
+            - 'akeneo'
+            - 'splashsync'
+
+    ################################################################################
+    # Splash Toolkit Container   
+    toolkit:
+        image: 'splashsync/toolkit'
+        container_name: akeneo-toolkit
+        volumes:
+            # Specify Local Configuration File
+            - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
+            # Force Splash Php Core Package
+            - '~/WebDesign/GitHub/SplashSync-Php-Core:/app/vendor/splash/phpcore:ro'
+        hostname:           toolkit.akeneo.local
+        command:            ["php", "/app/bin/console", "server:run", "172.105.0.11:80"]
+        networks:
+            akeneo:         { ipv4_address: 172.105.0.11, aliases: [ toolkit.akeneo.local ] }
+            splashsync:     { aliases: [ toolkit.akeneo.local ] }
+        
+    ################################################################################
+    # Apache Server Container   
+    httpd:
+        image: 'httpd:2.4'
+        container_name: akeneo-apache
+        depends_on:
+            - 'fpm'
+        volumes:
+            - './:/srv/pim:ro'
+            - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+            - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
+        hostname:           docker.akeneo.local
+        networks:
+            akeneo:         { ipv4_address: 172.105.0.10, aliases: [ docker.akeneo.local ] }
+            splashsync:     { aliases: [ docker.akeneo.local ] }            
+            
+
+    ################################################################################
+    # MySql Container    
+    mysql:
+        image: 'mysql:5.7'
+        container_name: akeneo-mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_USER: 'akeneo_pim'
+            MYSQL_PASSWORD: 'akeneo_pim'
+            MYSQL_DATABASE: 'akeneo_pim'
+        networks:
+          - 'akeneo'
+
+    ################################################################################
+    # Node JS Container    
+    node:
+        image: 'node:8-slim'
+        user: 'node'
+        container_name: akeneo-nodeJs
+        volumes:
+            - './:/srv/pim'
+            - ~/.cache/yarn:/home/node/.yarn-cache
+        working_dir: '/srv/pim'
+        networks:
+          - 'akeneo'
+        
+    ################################################################################
+    # ElasticSearch Container    
+    elasticsearch:
+        image: 'docker.elastic.co/elasticsearch/elasticsearch:5.5.3'
+        container_name: akeneo-elastic
+        environment:
+            ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
+            discovery.type: 'single-node'
+        networks:
+          - 'akeneo'
+
+#  object-storage:
+#    image: 'minio/minio'
+#    entrypoint: '/bin/sh -c "mkdir -p /data/archive /data/catalog/ /data/jobs && minio server /data"'
+#    environment:
+#      MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
+#      MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
+#    networks:
+#      - akeneo
+
+networks:
+    ################################################################################
+    # Default Private Network
+    akeneo:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.105.0.0/24
+    ################################################################################
+    # External Splash Network
+    splashsync:
+        external: true
