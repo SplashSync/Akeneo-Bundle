@@ -86,9 +86,10 @@ install:
     - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
     
     - echo "Install Akeneo"
-    - php bin/console pim:install --force   --symlink --clean --env=test --no-interaction --no-debug
-    - php bin/console pim:installer:assets  --symlink --clean --env=test --no-interaction --no-debug
-    - php bin/console debug:config splash --env=test --no-interaction --no-debug
+    - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
+    - php bin/console pim:install               --env=test  --force --symlink --clean --no-interaction --no-debug
+    - php bin/console pim:installer:assets      --env=test  --symlink --clean --no-interaction --no-debug
+    - php bin/console debug:config splash       --env=test
 
     - echo "Start Web Srever"
     - php bin/console server:start --env=test
