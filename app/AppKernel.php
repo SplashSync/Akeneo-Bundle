@@ -40,7 +40,7 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
         }
 
-        $bundles = array_merge(
+        return array_merge(
             $this->getSymfonyBundles(),
             $this->getOroDependencies(),
             $this->getOroBundles(),
@@ -48,8 +48,6 @@ class AppKernel extends Kernel
             $this->getPimBundles(),
             $bundles
         );
-
-        return $bundles;
     }
 
     /**
@@ -57,11 +55,13 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->getRootDir() . '/config/config.yml');
-
-        if (is_file($file = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '_local.yml')) {
+        if (is_file($file = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml')) {
             $loader->load($file);
+            
+            return;
         }
+        
+        $loader->load($this->getRootDir() . '/config/config.yml');
     }
 
     /**
@@ -82,6 +82,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
             new Pim\Bundle\ApiBundle\PimApiBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
+            new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),

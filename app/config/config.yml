@@ -1,9 +1,11 @@
 imports:
-    - { resource: parameters.yml }
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
+    - { resource: pim_parameters.yml }
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: config_splash.yml }
 
 framework:
-    test: ~
     #esi:             ~
     translator:      { fallback: en }
     secret:          "%secret%"
@@ -18,11 +20,20 @@ framework:
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     session:
-        storage_id: session.storage.mock_file
+        name:                 BAPID
+        handler_id:           session.handler.pdo
+        gc_maxlifetime:       3600
+    fragments:
+        enabled:              true
+        path:                 /_fragment # used for controller action in template
     serializer:
         enabled:              true
     http_method_override: true
-        
+    assets:
+        packages:
+            frontend:
+                version_strategy: pim_enrich.version_strategy
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
@@ -30,55 +41,24 @@ twig:
     globals:
         uservoice_key: "%uservoice_key%"
 
-# Web Profiler Configuration
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
-
-# Swiftmailer Configuration
-swiftmailer:
-    disable_delivery: true
-
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     filters:
         cssrewrite: ~
-        
-# Security Configuration
-security:
-    
-    acl:
-        connection: default
-        cache:
-            id: security.acl.cache.doctrine
-            prefix: sf2_acl_
-    
-    providers:
-        chain_provider:
-            chain:
-                providers:                  [oro_user]
-        oro_user:
-            id:                             oro_user.security.provider
-    
-    encoders:
-        Pim\Bundle\UserBundle\Entity\User: sha512
-        Symfony\Component\Security\Core\User\User: plaintext
-    
-    firewalls:
-        main:
-            http_basic:
-                realm:      "Secured REST Area"
-            provider:       oro_user
-            form_login:     false
-            logout:         false
-            remember_me:    false
-            anonymous:      true
-            
-# Splash Bundle Configuration           
-splash:
-    id:     123456789
-    key:    123456789123456789123456789
-    
-    host:   http://127.0.0.1/ws/soap            
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport:                "%mailer_transport%"
+    host:                     "%mailer_host%"
+    port:                     "%mailer_port%"
+    encryption:               "%mailer_encryption%"
+    username:                 "%mailer_user%"
+    password:                 "%mailer_password%"
+    spool:                    { type: memory }
+
+pim_reference_data: ~
+
+parameters:
+    pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'

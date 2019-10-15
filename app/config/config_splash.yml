@@ -1,0 +1,15 @@
+
+splash:
+    connections:
+        akeneo:    
+            name:           Akeneo for Splash
+            id:             ThisIsSplashWsId
+            key:            ThisIsYourEncryptionKeyForSplash
+            host:           http://toolkit.akeneo.local/ws/soap
+            config:
+                local:          fr_FR
+                travis:         true
+                infos:
+                    logo:       http://docker.akeneo.local/bundles/pimui/images/info-user.png
+    test:
+        VAT:                0
