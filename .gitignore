@@ -38,7 +38,6 @@
 
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
-/app/config/pim_parameters.yml
 /app/archive/
 /app/file_storage/
 /app/uploads/
