@@ -43,7 +43,6 @@ trait SelectTrait
         return  (string) substr($value, 1, strlen($value) - 2);
     }
 
-
     /**
      * SELECT - Read Attribute Possibles Choices
      *
@@ -67,23 +66,34 @@ trait SelectTrait
 
         return $choices;
     }
-    
 
     /**
-     *  @abstract    Write Attribute Data with Local & Scope Detection
+     * CORE - Write Attribute Data with Local & Scope Detection
      *
-     *  @param  ProductInterface    $Object         Akeneo Product Object
-     *  @param  AttributeInterface  $Attribute      Akeneo Attribute Object
-     *  @param  mixed               $Data           Field Input Splash Formated Data
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     * @param mixed     $data
      *
-     *  @return bool
+     * @return mixed
      */
-    protected function importOption(ProductInterface $Object, AttributeInterface $Attribute, $Data)
+    protected function setSelectValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data)
     {
-        if (empty($Data)) {
-            return;
+        //====================================================================//
+        // Load Possible Select Values
+        $choices = array_keys($this->getSelectChoices($attribute, $isoLang));
+        //====================================================================//
+        // Check Value is Part of Possible Values
+        if (is_scalar($data) && in_array($data, $choices, true)) {
+            return $this->setCoreValue($product, $attribute, $isoLang, $channel, $data);
         }
-
-        return $this->setAttributeValue($Object, $Attribute, $Data);
-    }    
+        //====================================================================//
+        // Check Value is Empty
+        if (is_scalar($data) && empty($data)) {
+            return $this->setCoreValue($product, $attribute, $isoLang, $channel, null);
+        }
+        
+        return false;
+    }
 }

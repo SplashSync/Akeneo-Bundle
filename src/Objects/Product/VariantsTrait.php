@@ -11,4 +11,5 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 
 trait VariantsTrait {
     use Variants\CoreTrait;
+    use Variants\AttributesTrait;
 }

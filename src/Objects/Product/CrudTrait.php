@@ -5,7 +5,7 @@ namespace Splash\Akeneo\Objects\Product;
 use Splash\Core\SplashCore as Splash;
 
 use Pim\Component\Catalog\Model\Product;
-use Doctrine\ORM\EntityNotFoundException;
+
 
 trait CrudTrait {
     
@@ -32,7 +32,6 @@ trait CrudTrait {
             return Splash::Log()->errTrace("Unable to find Akeneo Product " . $objectId);
         }
         
-//        Splash::Log()->www("data", $product->getRawValues());
         return $product;
     }    
     
@@ -43,23 +42,20 @@ trait CrudTrait {
     /**
      * {@inheritdoc}
      */
-    public function create($Manager, $Target) {            
+    public function create() 
+    {  
         //====================================================================//
-        // Saftey Check
-        if ( !$Target || !class_exists($Target) ) { 
-            return False; 
-        }
-//        try {
-//            //====================================================================//
-//            // Create a New PIM Product
-//            $Object =   $this->Builder->createProduct();  
-//        } catch ( \Exception $e) {
-//            Splash::Log()->Err("Akeneo Product Create Failled");
-//            Splash::Log()->Err($e->getMessage());    
-//        }
+        // Ensure User Login
+        $this->security->ensureSessionUser($this->getParameter("username", "admin"));
+        //====================================================================//
+        // Create a New PIM Product
+        $product =   $this->crud->createProduct($this->in);  
+        if(null === $product) {
+            return Splash::Log()->errTrace("Akeneo Product Create Failled");
+        }        
         //====================================================================//
         // Return a New Object
-        return  $Object;
+        return  $product;
     }
     
     //====================================================================//
@@ -89,24 +85,20 @@ trait CrudTrait {
     /**
      * {@inheritdoc}
      */
-    public function delete($ibjectId = null) {
+    public function delete($objectId = null) 
+    {
         //====================================================================//
-        // Saftey Check
-        if ( !$ibjectId ) { 
-            return False; 
+        // Try Loading the Product
+        $product = $this->load($objectId);
+        if (!$product) {
+            return true;
         }
-        try {
-            $this->Remover->remove( $this->Attach($ibjectId) );         
-            
-            Splash::Log()->Msg("Akeneo Product Delete Done");
-            Splash::Log()->Msg("Deleted => " . $ibjectId->getId());
-            
-        } catch ( EntityNotFoundException $e) {
-            return True;
-        } catch ( \Exception $e) {
-            Splash::Log()->Err("Akeneo Product Delete Failed");
-            return Splash::Log()->Err($e->getMessage());    
-        }        
+        
+        
+        //====================================================================//
+        // Forward to Crud Service
+        $this->crud->delete($product);
+        
         return True;
     }   
     

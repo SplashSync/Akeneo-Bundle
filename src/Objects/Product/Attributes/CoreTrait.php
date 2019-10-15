@@ -8,12 +8,18 @@ use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 //use Pim\Component\Catalog\Model\ProductInterface as Product;
 //use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
+use Pim\Component\Catalog\Updater\PropertySetter;
 
 /**
  * Import / Export of Product Attribute Values
  */
 trait CoreTrait {
 
+    /**
+     * @var PropertySetter
+     */
+    protected $setter;
+    
     /**
      * CORE - Read Attribute Data with Local & Scope Detection
      *
@@ -57,4 +63,34 @@ trait CoreTrait {
         return $value->getData();   
     }
     
+    /**
+     * CORE - Write Attribute Data with Local & Scope Detection
+     *
+     * @param  Product    $product         Akeneo Product Object
+     * @param  Attribute  $attribute      Akeneo Attribute Object
+     * @param string $isoLang
+     * @param string $channel
+     * @param mixed $data
+     *
+     * @return mixed
+     */
+    protected function setCoreValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data)
+    {
+        //====================================================================//
+        // Get Attribute Code
+        $code = $attribute->getCode();
+        
+        //====================================================================//
+        // Prepare Setter Options
+        $options = array(
+            "locale" => $attribute->isLocalizable() ? $isoLang : null, 
+            "scope" => $attribute->isScopable() ? $channel : null
+        );        
+        
+        //====================================================================//
+        // Update Product Using Property Setter 
+        $this->setter->setData($product, $code, $data, $options);
+        
+        return true;
+    }    
 }

@@ -15,10 +15,11 @@
 
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
-use Splash\Core\SplashCore as Splash;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 use Pim\Component\Catalog\Model\ProductPrice as Price;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\Objects\PricesTrait;
 use Symfony\Component\Intl\Intl;
 
@@ -48,11 +49,19 @@ trait PricesCollectionsTrait
             return $this->buildPrice(0);
         }
         //====================================================================//
+        // Load Raw VAT Attribute Value (if Exists)
+        $vatValue = null;
+        $vatCode = $attribute->getCode()."_vat";
+        if ($this->hasForLocale($vatCode, $isoLang)) {
+            $vatValue = $this->getCoreValue($product, $this->getByCode($vatCode), $isoLang, $channel);
+        }
+
+        //====================================================================//
         // Search for Currency Price in Collection
         /** @var Price $prdPrice */
         foreach ($value as $prdPrice) {
             if (strtolower($prdPrice->getCurrency()) == strtolower($this->getCurrency())) {
-                return $this->buildPrice($prdPrice->getData());
+                return $this->buildPrice((float) $prdPrice->getData(), $vatValue);
             }
         }
 
@@ -60,17 +69,62 @@ trait PricesCollectionsTrait
     }
 
     /**
-     *  @abstract    Write Attribute Data
+     * PRICE - Write Attribute Data with Local & Scope Detection
      *
-     *  @param  ProductInterface    $Object         Akeneo Product Object
-     *  @param  AttributeInterface  $Attribute      Akeneo Attribute Object
-     *  @param  mixed               $Data           Field Input Splash Formated Data
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     * @param mixed     $data
      *
-     *  @return bool
+     * @return mixed
      */
-    protected function importPrice(ProductInterface $Object, AttributeInterface $Attribute, $Data)
+    protected function setPriceValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data)
     {
-        return $this->setAttributeValue($Object, $Attribute, array(array( "amount" => self::Prices()->TaxExcluded($Data), "currency" => $Data["code"] )));
+        $rawData = array(array(
+            "amount" => self::Prices()->TaxExcluded($data),
+            "currency" => $this->getCurrency()
+        ));
+
+        //====================================================================//
+        // Update Raw VAT Attribute Value (if Exists)
+        $vatValue = null;
+        $vatCode = $attribute->getCode()."_vat";
+        if ($this->hasForLocale($vatCode, $isoLang)) {
+            $vatValue = $this->setCoreValue(
+                $product,
+                $this->getByCode($vatCode),
+                $isoLang,
+                $channel,
+                self::Prices()->taxPercent($data)
+            );
+        }
+
+        return $this->setCoreValue($product, $attribute, $isoLang, $channel, $rawData);
+    }
+
+    /**
+     * Check if an Attribute Code is A Price VAT Field
+     *
+     * @param Attribute $attribute
+     *
+     * @return bool
+     */
+    protected function isPriceVatField(Attribute $attribute): bool
+    {
+        //====================================================================//
+        // Attribute is a Number
+        if (AttributeTypes::NUMBER != $attribute->getType()) {
+            return false;
+        }
+        $code = $attribute->getCode();
+        //====================================================================//
+        // Attribute Code Ends with _vat
+        if (strpos($code, "_vat") !== (strlen($code) - 4)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -78,13 +132,13 @@ trait PricesCollectionsTrait
      *
      * @return array
      */
-    private function buildPrice(float $htPrice): array
+    private function buildPrice(float $htPrice, float $vat = null): array
     {
         $currency = $this->getCurrency();
-        
+
         return self::Prices()->Encode(
             (double) $htPrice,
-            (double) 0,
+            (double) ($vat ? $vat : 0),
             null,
             $currency,
             Intl::getCurrencyBundle()->getCurrencySymbol($currency),

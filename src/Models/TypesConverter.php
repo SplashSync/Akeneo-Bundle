@@ -16,6 +16,8 @@
 namespace   Splash\Akeneo\Models;
 
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
+use Splash\Core\SplashCore      as Splash;
 
 /**
  * Map Akeneo Attributes Type to Splash Field Type
@@ -38,7 +40,7 @@ class TypesConverter
         AttributeTypes::BOOLEAN => SPL_T_BOOL,
         AttributeTypes::DATE => SPL_T_DATE,
         AttributeTypes::NUMBER => SPL_T_INT,
-        AttributeTypes::METRIC => SPL_T_DOUBLE,
+        AttributeTypes::METRIC => SPL_T_INT,
 //        AttributeTypes::FILE => SPL_T_FILE,
 //        AttributeTypes::IMAGE => SPL_T_IMG,
         AttributeTypes::PRICE_COLLECTION => SPL_T_PRICE,
@@ -69,6 +71,16 @@ class TypesConverter
     );    
     
     /**
+     * List of Select Akeneo Attributes Types
+     *
+     * @var array
+     */
+    const NUMBER = array(
+        AttributeTypes::NUMBER,
+        AttributeTypes::METRIC,
+    );    
+    
+    /**
      * Check if Attribute type Code is Known
      *
      *  @param  string $attrType       Akeneo Attribute Type
@@ -83,7 +95,7 @@ class TypesConverter
     /**
      * Check if Attribute type Code is a Core Type
      *
-     *  @param  string $attrType       Akeneo Attribute Type
+     * @param  string $attrType       Akeneo Attribute Type
      *
      * @return bool
      */
@@ -95,7 +107,7 @@ class TypesConverter
     /**
      * Check if Attribute type Code is Read Only Type
      *
-     *  @param  string $attrType       Akeneo Attribute Type
+     * @param  string $attrType       Akeneo Attribute Type
      *
      * @return bool
      */
@@ -107,7 +119,7 @@ class TypesConverter
     /**
      * Check if Attribute type Code is Select Type
      *
-     *  @param  string $attrType       Akeneo Attribute Type
+     * @param  string $attrType       Akeneo Attribute Type
      *
      * @return bool
      */
@@ -115,21 +127,56 @@ class TypesConverter
     {
         return self::isKnown($attrType) && in_array($attrType, self::SELECT, true);
     }    
+
+    /**
+     * Check if Attribute type Code is a Number Type
+     *
+     * @param  string $attrType       Akeneo Attribute Type
+     *
+     * @return bool
+     */
+    public static function isNumber(string $attrType): bool
+    {
+        return self::isKnown($attrType) && in_array($attrType, self::NUMBER, true);
+    }
     
     /**
-     *  Convert Akeneo Attribute Type to Splash Field Type
-     * 
-     *  @param  string $attrType       Akeneo Attribute Type
-     * 
-     *  @return         string|null
-     */    
-    public static function toSplash(string $attrType): ?string
+     * Check if Attribute type Code is a Metric Type
+     *
+     * @param  string $attrType       Akeneo Attribute Type
+     *
+     * @return bool
+     */
+    public static function isMetric(string $attrType): bool
     {
-        if (isset(self::TYPES[$attrType])) {
-            return self::TYPES[$attrType];
+        return self::isKnown($attrType) && ($attrType == AttributeTypes::METRIC);
+    }    
+    
+    /**
+     * Convert Akeneo Attribute Type to Splash Field Type
+     * 
+     * @param  Attribute $attribute       Akeneo Attribute Type
+     * 
+     * @return         string|null
+     */    
+    public static function toSplash(Attribute $attribute): ?string
+    {
+        $attrType = $attribute->getType();
+        //====================================================================//
+        // Ensure Attribute Type is Compatible with Splash
+        if (!isset(self::TYPES[$attrType])) {
+            return null;
+        }
+        $splashType = self::TYPES[$attrType];
+        
+        //====================================================================//
+        // Detect Mapping Exceptions
+        if (self::isNumber($attrType) && $attribute->isDecimalsAllowed()) {
+            $splashType = SPL_T_DOUBLE;
         }
         
-        return null;
+        
+        return $splashType;
     }      
     
 }

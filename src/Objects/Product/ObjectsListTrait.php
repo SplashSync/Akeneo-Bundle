@@ -35,26 +35,15 @@ trait ObjectsListTrait
      */
     protected function getObjectListArray(Product $variant): array
     {
-//        $product = $variant->getProduct();
-//Splash::log()->www("pOr", $variant->getId());
-//Splash::log()->www("pOr", get_class_methods(get_class($variant)));
 
-//        $dateUpdated = $variant->getUpdated();
-//            $variant->getLocale();
         return array(
             'id' => $variant->getId(),
             'identifier' => $variant->getIdentifier(),
             'enabled' => $variant->isEnabled(),
-            'isVariant' => $variant->isVariant(),
+            'variant' => $variant->isVariant(),
             'label' => $variant->getLabel(),
             'updated' => $variant->getUpdated()->format(SPL_T_DATETIMECAST),
-//            'id' => $variant->getId(),
-            
-//            'code' => $variant->getCode(),
-//            'enabled' => $product ? $product->isEnabled() : false,
-//            'email' => $variant->getName(),
-//            'phoneNumber' => $variant->getName(),
-//            'onHand' => $variant->getOnHand(),
         );
+        
     }
 }

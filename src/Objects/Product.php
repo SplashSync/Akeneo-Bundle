@@ -16,10 +16,13 @@
 namespace Splash\Akeneo\Objects;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository as Repository;
-use Splash\Akeneo\Services\AttributesManager;
-use Splash\Akeneo\Services\CrudService;
-use Splash\Akeneo\Services\LocalesManager;
+use Splash\Akeneo\Services\AttributesManager as Attributes;
+use Splash\Akeneo\Services\CrudService as Crud;
+use Splash\Akeneo\Services\LocalesManager as Locales;
+use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Bundle\Models\AbstractStandaloneObject;
+use Splash\Akeneo\Services\SecurityService as Security;
+use Splash\Client\Splash;
 
 /**
  * Splash Product Object
@@ -39,8 +42,8 @@ class Product extends AbstractStandaloneObject
     use Product\CrudTrait;
     use Product\CoreTrait;
     use Product\LabelTrait;
-    use Product\AttributesTrait;
     use Product\VariantsTrait;
+    use Product\AttributesTrait;
     use Product\ObjectsListTrait;
 
     //====================================================================//
@@ -68,31 +71,41 @@ class Product extends AbstractStandaloneObject
     protected static $ICO = 'fa fa-product-hunt';
 
     /**
-     * @var CrudService
+     * @var Crud
      */
     protected $crud;
 
     /**
-     * @var AttributesManager
+     * @var Attributes
      */
     protected $attr;
 
     /**
-     * @var LocalesManager
+     * @var Variants
+     */
+    protected $variants;
+
+    /**
+     * @var Locales
      */
     protected $locales;
 
     /**
+     * @var Security
+     */
+    protected $security;
+
+    /**
      * Service Constructor
      *
-     * @param Repository     $variants
+     * @param Repository     $repository
      * @param LocalesManager $locales
      */
-    public function __construct(Repository $variants, CrudService $crudService, AttributesManager $attr, LocalesManager $locales)
+    public function __construct(Repository $repository, Crud $crudService, Attributes $attr, Variants $variants, Locales $locales, Security $security)
     {
         //====================================================================//
         // Link to Product Variants Repository
-        $this->repository = $variants;
+        $this->repository = $repository;
         //====================================================================//
         // Link to Splash Akeneo Products Crud Manager
         $this->crud = $crudService;
@@ -103,7 +116,32 @@ class Product extends AbstractStandaloneObject
             $this->getParameter("currency", "EUR")
         );
         //====================================================================//
+        // Link to Splash Akeneo Products Variants Manager
+        $this->variants = $variants;
+        //====================================================================//
         // Store Availables Languages
         $this->locales = $locales->setDefault($this->getParameter("locale", "en_US"));
+        //====================================================================//
+        // Link to Splash Akeneo Security Service
+        $this->security = $security;
     }
+    
+    /**
+     * Check if System is in Debug Mode
+     *
+     * @return bool
+     */
+    protected function isDebugMode(): bool
+    {
+        //====================================================================//
+        // Not in PhpUnit/Travis Mode => Return All
+        $travisServer = Splash::input('SPLASH_TRAVIS');
+        $travisConfig = $this->getParameter("travis", false);
+        if (empty($travisServer) && empty($travisConfig)) {
+            return false;
+        }
+        Splash::log()->deb("Akeneo Works in Debug Mode...");
+
+        return true;
+    }    
 }

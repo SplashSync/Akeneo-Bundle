@@ -21,25 +21,27 @@ use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 /**
  * Import / Export of Product Attribute Values
  */
-trait BoolTrait
+trait NumberTrait
 {
     /**
-     * BOOL - Read Attribute Data with Local & Scope Detection
+     * NUMBER - Read Attribute Data with Local & Scope Detection
      *
      * @param Product   $product   Akeneo Product Object
      * @param Attribute $attribute Akeneo Attribute Object
      * @param string    $isoLang
      * @param string    $channel
      *
-     * @return mixed
+     * @return float|int
      */
-    protected function getBoolValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    protected function getNumberValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
     {
-        return (bool) $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        $data = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        
+        return $attribute->isDecimalsAllowed() ? (float) $data : (int) $data;
     }
 
     /**
-     * BOOL - Write Attribute Data with Local & Scope Detection
+     * NUMBER - Write Attribute Data with Local & Scope Detection
      *
      * @param Product   $product   Akeneo Product Object
      * @param Attribute $attribute Akeneo Attribute Object
@@ -49,8 +51,8 @@ trait BoolTrait
      *
      * @return bool
      */
-    protected function setBoolValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data): bool
+    protected function setNumberValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data): bool
     {
-        return $this->setCoreValue($product, $attribute, $isoLang, $channel, (bool) $data);
+        return $this->setCoreValue($product, $attribute, $isoLang, $channel, $data);
     }
 }

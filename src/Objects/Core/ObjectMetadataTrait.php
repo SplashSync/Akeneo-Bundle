@@ -20,7 +20,7 @@ trait ObjectMetadataTrait {
             ->Identifier("created")
             ->Name("Creation Date")
             ->MicroData("http://schema.org/DataFeedItem", "dateCreated")
-            ->group("Metedata")
+            ->group("Metadata")
             ->isReadOnly();
         
         //====================================================================//
@@ -29,7 +29,7 @@ trait ObjectMetadataTrait {
             ->Identifier("updated")
             ->Name("Updated Date")
             ->MicroData("http://schema.org/DataFeedItem", "dateModified")
-            ->group("Metedata")
+            ->group("Metadata")
             ->isListed()
             ->isReadOnly();
     }   

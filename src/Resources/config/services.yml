@@ -9,7 +9,9 @@ services:
             -   "@pim_catalog.repository.product"
             -   "@splash.akeneo.product.crud"  
             -   "@splash.akeneo.product.attributes"
+            -   "@splash.akeneo.product.variants"
             -   "@splash.akeneo.locales"  
+            -   "@splash.akeneo.security"  
 #            -   "@router"
 
 ##            -   "%splash_akeneo%"
@@ -23,11 +25,14 @@ services:
     splash.akeneo.product.crud:
         class:      Splash\Akeneo\Services\CrudService
         arguments:  
+            -   "@pim_catalog.repository.product"
             -   "@pim_catalog.builder.product"
             -   "@pim_catalog.updater.product"
             -   "@pim_catalog.validator.product"
             -   "@pim_catalog.saver.product"
             -   "@pim_catalog.remover.product"
+            -   "@splash.akeneo.product.variants"
+            -   "@splash.akeneo.product.models"
 
     ########################################################################
     # Akeneo Products Crud Manager
@@ -38,6 +43,27 @@ services:
             -   "@pim_catalog.repository.attribute"
             -   "@splash.akeneo.locales"  
 
+
+    ########################################################################
+    # Akeneo Products Variant Manager
+    splash.akeneo.product.variants:
+        class:      Splash\Akeneo\Services\VariantsManager
+        arguments:  
+            -   "@splash.akeneo.locales"
+            -   "@pim_catalog.repository.family_variant"
+            
+    ########################################################################
+    # Akeneo Products Models Manager
+    splash.akeneo.product.models:
+        class:      Splash\Akeneo\Services\ModelsManager
+        arguments:  
+            -   "@pim_catalog.repository.product_model"
+            -   "@pim_catalog.factory.product_model"
+            -   "@pim_catalog.updater.product_model"
+            -   "@pim_catalog.validator.product_model"
+            -   "@pim_catalog.saver.product_model"
+            -   "@pim_catalog.remover.product_model"
+            -   "@splash.akeneo.product.variants"
             
     ########################################################################
     # Akeneo Connector Locales Manager
@@ -45,6 +71,12 @@ services:
         class:      Splash\Akeneo\Services\LocalesManager
         arguments:  
             -   "@=service('pim_catalog.repository.locale').getActivatedLocaleCodes()"  
+         
+    ########################################################################
+    # Akeneo Connector Security Manager
+    splash.akeneo.security:
+        class:      Splash\Akeneo\Services\SecurityService
+        autowire:   true
          
 #    ########################################################################
 #    # Sylius Additionnal Object Event Listener

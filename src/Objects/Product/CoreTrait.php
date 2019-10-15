@@ -42,8 +42,43 @@ trait CoreTrait
         $this->fieldsFactory()->create(SPL_T_BOOL)
             ->Identifier("enabled")
             ->Name("Enabled")
-            ->MicroData("http://schema.org/Product", "active")
+            ->MicroData("http://schema.org/Product", "offered")
             ->isListed();
+        
+        //====================================================================//
+        // Product Familly
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->Identifier("family_code")
+            ->Name("Family Code")
+            ->Group("Metadata")
+            ->addChoices($this->variants->getFamilyChoices())
+            ->MicroData("http://schema.org/Product", "famillyCode")
+            ->isReadOnly();                
+        
+        //====================================================================//
+        // Product Familly Name
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->Identifier("family_label")
+            ->Name("Family Name")
+            ->Group("Metadata")
+            ->MicroData("http://schema.org/Product", "famillyName")
+            ->isReadOnly();
+        
+        //====================================================================//
+        // Product Familly Variant
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->Identifier("family_variant_code")
+            ->Name("Family Variant Code")
+            ->Group("Metadata")
+            ->addChoices($this->variants->getFamilyChoices())
+            ->MicroData("http://schema.org/Product", "famillyVariantCode")
+            ->isNotTested();  
+        
+        //====================================================================//
+        // PhpUnit/Travis Mode => Force Variation Types
+        if ($this->isDebugMode()) {
+            $this->fieldsFactory()->addChoice("clothing_color", "Color");
+        }           
     }
 
     /**
@@ -65,6 +100,23 @@ trait CoreTrait
                 $this->getGenericBool($fieldName);
 
                 break;
+            case 'family_code':
+                $family = $this->object->getFamily();
+                $this->out[$fieldName] = $family ? $family->getCode() : null;
+
+                break;
+            case 'family_label':
+                $family = $this->object->getFamily();
+                $this->out[$fieldName] = $family 
+                    ? $family->getTranslation($this->locales->getDefault())->getLabel()
+                    : null;
+
+                break;
+            case 'family_variant_code':
+                $family = $this->object->getFamilyVariant();
+                $this->out[$fieldName] = $family ? $family->getCode() : null;
+
+                break;            
             default:
                 return;
         }
@@ -80,22 +132,20 @@ trait CoreTrait
     protected function setCoreFields($fieldName, $fieldData)
     {
         switch ($fieldName) {
-            //====================================================================//
-            // Variant Readings
-//            case 'identifier':
-//Splash::Log()->www("data", get_class($this->setter));                
-//                
-////                $this->setGeneric($fieldName, $fieldData);
-//                $this->setter->setData($this->object, "sku", $fieldData, array(
-//                    "locale" => null,
-////                    "scope" => "ecommerce",
-//                    "scope" => null,
-//                ));
-//                break;
             case 'enabled':
                 $this->setGenericBool($fieldName, $fieldData);
 
                 break;
+            
+            case 'family_variant_code':
+                $family = $this->variants->findFamilyVariantByCode($fieldData);
+                if(null === $family) {
+                    break;
+                }
+                
+                $this->object->setFamilyVariant($family);
+
+                break;            
             default:
                 return;
         }

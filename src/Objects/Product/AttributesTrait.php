@@ -61,27 +61,19 @@ trait AttributesTrait
      */
     protected function setAttributeFields($fieldName, $fieldData)
     {
-//        switch ($fieldName) {
-//            //====================================================================//
-//            // Variant Readings
-//            case 'identifier':
-//Splash::Log()->www("data", get_class($this->setter));                
-//                
-////                $this->setGeneric($fieldName, $fieldData);
-//                $this->setter->setData($this->object, "sku", $fieldData, array(
-//                    "locale" => null,
-////                    "scope" => "ecommerce",
-//                    "scope" => null,
-//                ));
-//                break;
-//            case 'enabled':
-//                $this->setGenericBool($fieldName, $fieldData);
-//
-//                break;
-//            default:
-//                return;
-//        }
-//        
-//        unset($this->in[$fieldName]);
+        //====================================================================//
+        // Safety Check => Verify if FieldName is An Attribute Type
+        if(!$this->attr->has($fieldName)) {
+            return;
+        }
+        //====================================================================//
+        // If Variant Attribute => Skip Writting (Done via Variation Attributes)
+        if(!$this->variants->isVariantAttribute($this->object, $fieldName)) {
+            //====================================================================//
+            // Write Data from Attributes Service
+            $this->attr->set($this->object, $fieldName, $fieldData);
+        }
+        
+        unset($this->in[$fieldName]);
     }
 }
