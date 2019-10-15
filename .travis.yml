@@ -45,9 +45,9 @@ matrix:
         - php: 7.1
           env: AKENEO_VERSION="2.3"
 
-        # Akeneo V3.0 Branch       
-        - php: 7.2
-          env: AKENEO_VERSION="3.0"
+#        # Akeneo V3.0 Branch       
+#        - php: 7.2
+#          env: AKENEO_VERSION="3.0"
 
     fast_finish: true
     
