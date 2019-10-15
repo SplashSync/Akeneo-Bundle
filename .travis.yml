@@ -45,10 +45,14 @@ matrix:
         - php: 7.1
           env: AKENEO_VERSION="2.3"
 
+        # Akeneo V3.0 Branch       
+        - php: 7.2
+          env: AKENEO_VERSION="3.0"
+
     fast_finish: true
     
-#    allow_failures:
-#        - env: AKENEO_VERSION="2.2"
+    allow_failures:
+        - env: AKENEO_VERSION="3.0"
 
     
 before_install:
@@ -87,8 +91,8 @@ install:
     - cp    vendor/akeneo/pim-community-dev/var/SymfonyRequirements.php var/SymfonyRequirements.php
     - cat   travis/routing_splash.yml   >> app/config/routing.yml
     - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
-    - mkdir var/bundles
-    - chmod 775 var/bundles
+    - mkdir web/bundles
+    - chmod 775 web/bundles
     
     - echo "Install Akeneo"
     - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
@@ -101,8 +105,16 @@ install:
 
 # Run script
 script:
-  - phpunit
-#  - phpunit
+    
+    # Run Grump Main Test Sequence
+    - php vendor/bin/grumphp run --testsuite=travis
+    # With PHP >= 7.1 => Execute Phpstan 
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=csfixer; fi 
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=phpstan; fi 
+    
+    # Execute Phpunit 
+    - php vendor/bin/phpunit --version
+    - php vendor/bin/phpunit
 
 # After a build, send email notification with the build results
 notifications:
