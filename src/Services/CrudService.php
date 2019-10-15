@@ -139,7 +139,7 @@ class CrudService
                 }                
             }
             
-            Splash::Log()->Msg("Akeneo Product Created - " . $product->getId() );
+            Splash::Log()->Msg("Akeneo Product Created");
             
         } catch ( Exception $e) {
             Splash::Log()->Err($e->getMessage());
@@ -211,7 +211,8 @@ class CrudService
         } catch ( Exception $e) {
             Splash::Log()->Err("Akeneo Product Delete Failed");
             return Splash::Log()->Err($e->getMessage());    
-        }        
+        }      
+        Splash::Log()->Msg("Akeneo Product Deleted");
         return True;
     } 
     

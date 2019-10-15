@@ -64,6 +64,14 @@ services:
             -   "@pim_catalog.saver.product_model"
             -   "@pim_catalog.remover.product_model"
             -   "@splash.akeneo.product.variants"
+
+    ########################################################################
+    # Akeneo Products Models Manager
+    splash.akeneo.product.events:
+        class:      Splash\Akeneo\EventSubscriber\ProductSubscriber
+        autowire:   true
+        tags:
+            - { name: 'doctrine.event_subscriber', connection: 'default' }
             
     ########################################################################
     # Akeneo Connector Locales Manager

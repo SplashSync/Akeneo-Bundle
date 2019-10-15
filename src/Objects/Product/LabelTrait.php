@@ -46,6 +46,7 @@ trait LabelTrait
                 ->MicroData("http://schema.org/Product", "alternateName")
                 ->setMultilang($isoLang)
                 ->isListed($this->locales->isDefault($isoLang))
+                ->isNotTested()
             ;
 
             //====================================================================//
