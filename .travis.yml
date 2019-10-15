@@ -16,7 +16,7 @@ services:
 cache:
     yarn: true
     directories:
-        - $HOME/.composer/cache/files
+        - $HOME/.composer
         - $HOME/.cache/pip
     
 addons:
@@ -76,7 +76,7 @@ install:
     - cp travis/parameters.yml.dist app/config/parameters.yml
 
     - echo "Install Akeneo & Splash Bundles"
-    - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest  
+    - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest --no-scripts
 
     - echo "Configuring Akeneo"
     - cp    vendor/akeneo/pim-community-dev/app/config/routing.yml app/config/routing.yml
