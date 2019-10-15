@@ -74,6 +74,7 @@ before_install:
 install:   
     - echo "Configuring Akeneo"
     - cp travis/parameters.yml.dist app/config/parameters.yml
+    - cp travis/parameters.yml.dist app/config/parameters_test.yml
 
     - echo "Install Akeneo & Splash Bundles"
     - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest --no-scripts
