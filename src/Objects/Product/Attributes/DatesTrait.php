@@ -17,7 +17,7 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 
 use DateTime;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
+use Pim\Component\Catalog\Model\ProductInterface as Product;
 
 /**
  * Manage Date Types Attributes

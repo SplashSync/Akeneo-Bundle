@@ -16,6 +16,7 @@
 namespace Splash\Akeneo\Services;
 
 use Oro\Bundle\UserBundle\Security\UserProvider;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -70,7 +71,10 @@ class SecurityService
             return null;
         }
 
-        return $token->getUser()->getUsername();
+        /** @var UserInterface $user */
+        $user = $token->getUser();
+
+        return $user->getUsername();
     }
 
     /**

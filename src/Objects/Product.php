@@ -71,6 +71,18 @@ class Product extends AbstractStandaloneObject
     protected static $ICO = 'fa fa-product-hunt';
 
     /**
+     * Get Operations Output Buffer
+     *
+     * @var array
+     */
+    protected $out;
+
+    /**
+     * @var Repository
+     */
+    protected $repository;
+
+    /**
      * @var Crud
      */
     protected $crud;

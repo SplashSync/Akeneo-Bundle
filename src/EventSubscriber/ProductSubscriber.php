@@ -35,14 +35,14 @@ class ProductSubscriber extends AbstractEventSubscriber
     /**
      * Username used for Commits
      *
-     * @var array
+     * @var string
      */
     protected static $username = "Akeneo";
 
     /**
      * Username used for Commits
      *
-     * @var array
+     * @var string
      */
     protected static $commentPrefix = "Akeneo PIM";
 }

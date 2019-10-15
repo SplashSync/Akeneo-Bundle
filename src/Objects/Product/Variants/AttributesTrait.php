@@ -16,8 +16,6 @@
 namespace Splash\Akeneo\Objects\Product\Variants;
 
 use ArrayObject;
-use Attribute;
-use Product;
 use Splash\Core\SplashCore      as Splash;
 
 /**

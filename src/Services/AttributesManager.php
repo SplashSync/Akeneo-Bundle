@@ -18,11 +18,11 @@ namespace   Splash\Akeneo\Services;
 use Exception;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
+use Pim\Component\Catalog\Model\AbstractAttribute as Attribute;
+use Pim\Component\Catalog\Model\AbstractAttribute as Group;
 use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Pim\Component\Catalog\Updater\PropertySetter;
 use Splash\Akeneo\Models\TypesConverter;
-use Splash\Bundle\Annotation\Field;
 use Splash\Components\FieldsFactory;
 use Splash\Core\SplashCore as Splash;
 
@@ -157,7 +157,7 @@ class AttributesManager
     {
         //====================================================================//
         // Walk on All Available Attributes
-        /** @var AttributeInterface $attribute */
+        /** @var Attribute $attribute */
         foreach ($this->getAll() as $attribute) {
             //====================================================================//
             // Remove Prices VAT Fields
@@ -229,11 +229,11 @@ class AttributesManager
      * @param Attribute $attr
      * @param string    $iso
      *
-     * @return null|array
+     * @return null|array|bool|float|int|string
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function getData(Product $product, Attribute $attr, string $iso): ?array
+    public function getData(Product $product, Attribute $attr, string $iso)
     {
         $attrType = $attr->getType();
         //====================================================================//
@@ -398,7 +398,7 @@ class AttributesManager
      * @param Product   $product
      * @param Attribute $attr
      * @param string    $iso
-     * @param type      $data
+     * @param mixed     $data
      *
      * @return bool
      *
@@ -457,15 +457,17 @@ class AttributesManager
         if (!TypesConverter::isKnown($attrType) || TypesConverter::isCore($attrType)) {
             return;
         }
+        /** @var Group $group */
+        $group = $attribute->getGroup();
         //====================================================================//
         // Collect Names
         $attrName = $attribute->getTranslation($isoLang)->getLabel();
-        $attrGroup = $attribute->getGroup()->getTranslation($isoLang)->getLabel();
-        $baseGroup = $attribute->getGroup()->getTranslation($this->locales->getDefault())->getLabel();
+        $attrGroup = $group->getTranslation($isoLang)->getLabel();
+        $baseGroup = $group->getTranslation($this->locales->getDefault())->getLabel();
         //====================================================================//
         // Add Field Core Infos
         $factory
-            ->create(TypesConverter::toSplash($attribute))
+            ->create((string) TypesConverter::toSplash($attribute))
             ->identifier($attribute->getCode())
             ->name($attrName)
             ->description("[".$attrGroup."] ".$attrName)

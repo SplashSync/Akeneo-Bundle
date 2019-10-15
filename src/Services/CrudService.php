@@ -18,12 +18,13 @@ namespace   Splash\Akeneo\Services;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface as Saver;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
+use ArrayObject;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository as Repository;
 use Pim\Component\Catalog\Builder\ProductBuilder as Builder;
 use Pim\Component\Catalog\Model\FamilyVariantInterface as Familly;
-use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Pim\Component\Catalog\Model\ProductModel as Model;
 use Splash\Akeneo\Services\ModelsManager as Models;
 use Splash\Akeneo\Services\VariantsManager as Variants;
@@ -55,7 +56,7 @@ class CrudService
     private $updater;
 
     /**
-     * @var RecursiveValidator
+     * @var Validator
      */
     private $validator;
 
@@ -125,10 +126,16 @@ class CrudService
                 return null;
             }
             //====================================================================//
+            // Detect Family
+            $family = null;
+            if ($familyVariant) {
+                $family = $familyVariant->getFamily();
+            }
+            //====================================================================//
             // Create a New PIM Product
             $product = $this->builder->createProduct(
                 null,
-                $familyVariant ? $familyVariant->getFamily()->getCode() : null
+                $family ? $family->getCode() : null
             );
             //====================================================================//
             // Setup Product Family Variant
@@ -216,7 +223,7 @@ class CrudService
      *
      * @param array|ArrayObject $inputs
      *
-     * @return null|Product
+     * @return null|Familly
      */
     private function getProductFamily(iterable $inputs): ?Familly
     {

@@ -17,8 +17,8 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 
 use Exception;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 use Pim\Component\Catalog\Model\Metric;
+use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Splash\Core\SplashCore as Splash;
 
 /**
@@ -53,7 +53,7 @@ trait MetricTrait
         //====================================================================//
         // Extract Generic Converted Value
         if ($value instanceof Metric) {
-            return (float) $value->getBaseData();
+            return $value->getBaseData();
         }
 
         return (float) $value;

@@ -105,7 +105,7 @@ class LocalesManager
     {
         //====================================================================//
         // Load From Cache
-        if (isset($this->locales)) {
+        if (!isset($this->locales)) {
             $this->locales = $this->repository->getActivatedLocaleCodes();
         }
 

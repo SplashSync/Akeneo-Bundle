@@ -18,6 +18,7 @@ namespace   Splash\Akeneo\Services;
 use ArrayObject;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository as Variants;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
+use Pim\Component\Catalog\Model\FamilyTranslationInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface as Familly;
 use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Pim\Component\Catalog\Model\ProductModelInterface as ProductModel;
@@ -81,7 +82,7 @@ class VariantsManager
         //====================================================================//
         // PRODUCT HAS NO PARENTS
         if ($parentModel instanceof ProductModel) {
-            return self::objects()->encode("Product", $parentModel->getId());
+            return (string) self::objects()->encode("Product", (string) $parentModel->getId());
         }
 
         return null;
@@ -92,7 +93,7 @@ class VariantsManager
      *
      * @param Product $product
      *
-     * @return string
+     * @return array
      */
     public function getVariantsList(Product $product): array
     {
@@ -114,7 +115,7 @@ class VariantsManager
      *
      * @param ProductModel $model
      *
-     * @return string
+     * @return array
      */
     public function getModelProducts(ProductModel $model): array
     {
@@ -202,7 +203,7 @@ class VariantsManager
     /**
      * Get List of Product Family Variants for Selector
      *
-     * @return null|Familly
+     * @return array
      */
     public function getFamilyChoices(): array
     {
@@ -212,7 +213,9 @@ class VariantsManager
         /** @var Familly $familyVariant */
         foreach ($this->repository->findAll() as $familyVariant) {
             $familyVariant->setLocale($this->locales->getDefault());
-            $choices[$familyVariant->getCode()] = $familyVariant->getTranslation()->getLabel();
+            /** @var FamilyTranslationInterface */
+            $familyTranslation = $familyVariant->getTranslation();
+            $choices[$familyVariant->getCode()] = $familyTranslation->getLabel();
         }
 
         return $choices;
@@ -225,7 +228,7 @@ class VariantsManager
     /**
      * Check if Attribute is a Variant Attributes
      *
-     * @return array
+     * @return bool
      */
     public function isVariantAttribute(Product $product, string $fieldName): bool
     {
@@ -274,7 +277,7 @@ class VariantsManager
      *
      * @param Product $product
      *
-     * @return string
+     * @return null|ProductModel
      */
     private function getParentModel(Product $product): ?ProductModel
     {

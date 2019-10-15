@@ -20,10 +20,12 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface as Saver;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
 use ArrayObject;
+use Doctrine\ORM\EntityNotFoundException;
+use Exception;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository as Repository;
 use Pim\Component\Catalog\Model\FamilyVariantInterface as Familly;
 use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductModel as Model;
+use Pim\Component\Catalog\Model\ProductModelInterface as Model;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Core\SplashCore as Splash;
 use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;
@@ -55,7 +57,7 @@ class ModelsManager
     private $updater;
 
     /**
-     * @var RecursiveValidator
+     * @var Validator
      */
     private $validator;
 
@@ -102,13 +104,15 @@ class ModelsManager
      */
     public function resolveParent(iterable $inputs, Familly $familyVariant, Model $model = null): ?Model
     {
+        $coreSku = isset($inputs["sku"]) ? $inputs["sku"] : uniqid();
+
         //====================================================================//
         // If No Root Product Model Given
         if (!$model) {
             $model = $this->builder->create();
             $model->setLevel(0);
             $model->setFamilyVariant($familyVariant);
-            $model->setCode($inputs["sku"]."-model");
+            $model->setCode($coreSku."-model");
             //====================================================================//
             // Validate Changes
             $this->validator->validate($model);

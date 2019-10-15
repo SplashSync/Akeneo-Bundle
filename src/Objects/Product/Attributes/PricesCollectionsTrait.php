@@ -17,7 +17,7 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
+use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Pim\Component\Catalog\Model\ProductPrice as Price;
 use Splash\Core\SplashCore as Splash;
 use Splash\Models\Objects\PricesTrait;
@@ -62,7 +62,7 @@ trait PricesCollectionsTrait
         /** @var Price $prdPrice */
         foreach ($value as $prdPrice) {
             if (strtolower($prdPrice->getCurrency()) == strtolower($this->getCurrency())) {
-                return $this->buildPrice((float) $prdPrice->getData(), $vatValue);
+                return $this->buildPrice($prdPrice->getData(), $vatValue);
             }
         }
 
@@ -143,8 +143,8 @@ trait PricesCollectionsTrait
         $currency = $this->getCurrency();
 
         return self::Prices()->Encode(
-            (float) $htPrice,
-            (float) ($vat ? $vat : 0),
+            $htPrice,
+            ($vat ? $vat : 0.0),
             null,
             $currency,
             Intl::getCurrencyBundle()->getCurrencySymbol($currency),

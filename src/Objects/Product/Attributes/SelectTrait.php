@@ -15,8 +15,10 @@
 
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
+use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
+use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Splash\Core\SplashCore as Splash;
 
 /**
@@ -40,7 +42,8 @@ trait SelectTrait
         //====================================================================//
         // Load Raw Attribute Value
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
-        if (is_object($value)) {
+
+        if ($value instanceof AttributeOption) {
             return (string) $value->getCode();
         }
 
@@ -59,11 +62,15 @@ trait SelectTrait
     {
         $choices = array();
 
-        foreach ($attribute->getOptions() as $option) {
-            $code = (string) $option->getCode();
-            $choices[$code] = $option->getOptionValues()->containsKey($isoLang)
-                ? $option->getOptionValues()->get($isoLang)->getValue()
-                : $option->getTranslation($isoLang)->getLabel();
+        /** @var Collection $options */
+        $options = $attribute->getOptions();
+        if (is_iterable($options)) {
+            foreach ($options as $option) {
+                $code = (string) $option->getCode();
+                $choices[$code] = $option->getOptionValues()->containsKey($isoLang)
+                    ? $option->getOptionValues()->get($isoLang)->getValue()
+                    : $option->getTranslation($isoLang)->getLabel();
+            }
         }
 
         return $choices;
