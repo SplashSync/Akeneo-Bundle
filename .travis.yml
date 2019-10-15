@@ -64,7 +64,6 @@ before_install:
   - phpenv config-add travis/x_memory.ini
   
 # Add PHP Extensions  
-  - if [[ "$(php -v | grep 'PHP 5')" ]]; then echo yes | pecl install apcu-4.0.8; fi
   - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install -f apcu; fi
   - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install -f imagick; fi
   - php -m
@@ -88,6 +87,8 @@ install:
     - cp    vendor/akeneo/pim-community-dev/var/SymfonyRequirements.php var/SymfonyRequirements.php
     - cat   travis/routing_splash.yml   >> app/config/routing.yml
     - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
+    - mkdir var/bundles
+    - chmod 775 var/bundles
     
     - echo "Install Akeneo"
     - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
