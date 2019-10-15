@@ -78,7 +78,7 @@ services:
     splash.akeneo.locales:
         class:      Splash\Akeneo\Services\LocalesManager
         arguments:  
-            -   "@pim_catalog.repository.locale" # ').getActivatedLocaleCodes()"  
+            -   "@pim_catalog.repository.locale"
          
     ########################################################################
     # Akeneo Connector Security Manager
