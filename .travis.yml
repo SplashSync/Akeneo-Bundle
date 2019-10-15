@@ -90,7 +90,7 @@ install:
     - mkdir var
     - cp    vendor/akeneo/pim-community-dev/var/SymfonyRequirements.php var/SymfonyRequirements.php
     - cat   travis/routing_splash.yml   >> app/config/routing.yml
-    - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
+#    - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
     - mkdir web/bundles
     - chmod 775 web/bundles
     
