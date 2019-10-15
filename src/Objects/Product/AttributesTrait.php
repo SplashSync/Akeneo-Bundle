@@ -22,7 +22,6 @@ use Splash\Core\SplashCore as Splash;
  */
 trait AttributesTrait
 {
-
     /**
      * Build Fields using FieldFactory
      */
@@ -41,13 +40,13 @@ trait AttributesTrait
     {
         //====================================================================//
         // Safety Check => Verify if FieldName is An Attribute Type
-        if(!$this->attr->has($fieldName)) {
+        if (!$this->attr->has($fieldName)) {
             return;
         }
         //====================================================================//
         // Read Data from Attributes Service
         $this->out = array_merge_recursive(
-            $this->out, 
+            $this->out,
             $this->attr->get($this->object, $fieldName)
         );
         unset($this->in[$key]);
@@ -63,17 +62,17 @@ trait AttributesTrait
     {
         //====================================================================//
         // Safety Check => Verify if FieldName is An Attribute Type
-        if(!$this->attr->has($fieldName)) {
+        if (!$this->attr->has($fieldName)) {
             return;
         }
         //====================================================================//
         // If Variant Attribute => Skip Writting (Done via Variation Attributes)
-        if(!$this->variants->isVariantAttribute($this->object, $fieldName)) {
+        if (!$this->variants->isVariantAttribute($this->object, $fieldName)) {
             //====================================================================//
             // Write Data from Attributes Service
             $this->attr->set($this->object, $fieldName, $fieldData);
         }
-        
+
         unset($this->in[$fieldName]);
     }
 }

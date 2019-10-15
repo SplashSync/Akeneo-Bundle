@@ -44,13 +44,18 @@ class LocalesManager
     private $locales;
 
     /**
+     * @var Repository
+     */
+    private $repository;
+
+    /**
      * Service Constructor
      *
      * @param Repository $repository
      */
     public function __construct(Repository $repository)
     {
-        $this->locales = $repository->getActivatedLocaleCodes();
+        $this->repository = $repository;
     }
 
     /**
@@ -101,10 +106,10 @@ class LocalesManager
         //====================================================================//
         // Load From Cache
         if (isset($this->locales)) {
-            return $this->locales;
+            $this->locales = $this->repository->getActivatedLocaleCodes();
         }
 
-        return array();
+        return $this->locales;
     }
 
     /**

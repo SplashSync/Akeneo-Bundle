@@ -17,6 +17,9 @@ namespace Splash\Akeneo\Objects\Product;
 
 use Splash\Core\SplashCore as Splash;
 
+/**
+ * Product Core Fields Access
+ */
 trait CoreTrait
 {
     //====================================================================//
@@ -44,7 +47,7 @@ trait CoreTrait
             ->Name("Enabled")
             ->MicroData("http://schema.org/Product", "offered")
             ->isListed();
-        
+
         //====================================================================//
         // Product Familly
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
@@ -53,8 +56,8 @@ trait CoreTrait
             ->Group("Metadata")
             ->addChoices($this->variants->getFamilyChoices())
             ->MicroData("http://schema.org/Product", "famillyCode")
-            ->isReadOnly();                
-        
+            ->isReadOnly();
+
         //====================================================================//
         // Product Familly Name
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
@@ -63,7 +66,7 @@ trait CoreTrait
             ->Group("Metadata")
             ->MicroData("http://schema.org/Product", "famillyName")
             ->isReadOnly();
-        
+
         //====================================================================//
         // Product Familly Variant
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
@@ -72,13 +75,13 @@ trait CoreTrait
             ->Group("Metadata")
             ->addChoices($this->variants->getFamilyChoices())
             ->MicroData("http://schema.org/Product", "famillyVariantCode")
-            ->isNotTested();  
-        
+            ->isNotTested();
+
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
         if ($this->isDebugMode()) {
             $this->fieldsFactory()->addChoice("clothing_color", "Color");
-        }           
+        }
     }
 
     /**
@@ -107,7 +110,7 @@ trait CoreTrait
                 break;
             case 'family_label':
                 $family = $this->object->getFamily();
-                $this->out[$fieldName] = $family 
+                $this->out[$fieldName] = $family
                     ? $family->getTranslation($this->locales->getDefault())->getLabel()
                     : null;
 
@@ -116,7 +119,7 @@ trait CoreTrait
                 $family = $this->object->getFamilyVariant();
                 $this->out[$fieldName] = $family ? $family->getCode() : null;
 
-                break;            
+                break;
             default:
                 return;
         }
@@ -136,20 +139,19 @@ trait CoreTrait
                 $this->setGenericBool($fieldName, $fieldData);
 
                 break;
-            
             case 'family_variant_code':
                 $family = $this->variants->findFamilyVariantByCode($fieldData);
-                if(null === $family) {
+                if (null === $family) {
                     break;
                 }
-                
+
                 $this->object->setFamilyVariant($family);
 
-                break;            
+                break;
             default:
                 return;
         }
-        
+
         unset($this->in[$fieldName]);
     }
 }

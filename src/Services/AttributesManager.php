@@ -210,11 +210,13 @@ class AttributesManager
             }
             //====================================================================//
             // Load Attribute Value
-            return array($fieldName => $this->getData(
-                $product,
-                $this->getByCode($baseFieldName),
-                $isoLang
-            ));
+            return array(
+                $fieldName => $this->getData(
+                    $product,
+                    $this->getByCode($baseFieldName),
+                    $isoLang
+                ),
+            );
         }
 
         return array();
@@ -223,14 +225,15 @@ class AttributesManager
     /**
      * Get Field Data from Local Object
      *
-     * @param Product $product
-     * @param string  $fieldName
+     * @param Product   $product
+     * @param Attribute $attr
+     * @param string    $iso
      *
-     * @return array
+     * @return null|array
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function getData(Product $product, Attribute $attr, string $iso)
+    public function getData(Product $product, Attribute $attr, string $iso): ?array
     {
         $attrType = $attr->getType();
         //====================================================================//
@@ -547,7 +550,7 @@ class AttributesManager
     private function getByCode(string $attrCode): Attribute
     {
         if (!isset(static::$attributes[$attrCode])) {
-            throw new Exception("You try to load an unknown attibute: ".$attrCode);
+            throw new Exception(sprintf("You try to load an unknown attibute: %s", $attrCode));
         }
 
         return static::$attributes[$attrCode];

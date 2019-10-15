@@ -24,6 +24,7 @@ use Splash\Models\Objects\PricesTrait;
 use Symfony\Component\Intl\Intl;
 
 /**
+ * Manage Prices Types Attributes
  * Import / Export of Product Attribute Values
  */
 trait PricesCollectionsTrait
@@ -81,10 +82,12 @@ trait PricesCollectionsTrait
      */
     protected function setPriceValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data)
     {
-        $rawData = array(array(
-            "amount" => self::Prices()->TaxExcluded($data),
-            "currency" => $this->getCurrency()
-        ));
+        $rawData = array(
+            array(
+                "amount" => self::Prices()->TaxExcluded($data),
+                "currency" => $this->getCurrency(),
+            ),
+        );
 
         //====================================================================//
         // Update Raw VAT Attribute Value (if Exists)
@@ -128,7 +131,10 @@ trait PricesCollectionsTrait
     }
 
     /**
+     * Build Splash Price Array
+     *
      * @param float $htPrice
+     * @param float $vat
      *
      * @return array
      */
@@ -137,8 +143,8 @@ trait PricesCollectionsTrait
         $currency = $this->getCurrency();
 
         return self::Prices()->Encode(
-            (double) $htPrice,
-            (double) ($vat ? $vat : 0),
+            (float) $htPrice,
+            (float) ($vat ? $vat : 0),
             null,
             $currency,
             Intl::getCurrencyBundle()->getCurrencySymbol($currency),

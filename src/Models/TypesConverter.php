@@ -29,8 +29,8 @@ class TypesConverter
      *
      * @var array
      */
-    const CORE = array("sku", "enabled");    
-    
+    const CORE = array("sku", "enabled");
+
     /**
      * List of Known Akeneo Attributes Types
      *
@@ -41,8 +41,8 @@ class TypesConverter
         AttributeTypes::DATE => SPL_T_DATE,
         AttributeTypes::NUMBER => SPL_T_INT,
         AttributeTypes::METRIC => SPL_T_INT,
-//        AttributeTypes::FILE => SPL_T_FILE,
-//        AttributeTypes::IMAGE => SPL_T_IMG,
+        //        AttributeTypes::FILE => SPL_T_FILE,
+        //        AttributeTypes::IMAGE => SPL_T_IMG,
         AttributeTypes::PRICE_COLLECTION => SPL_T_PRICE,
         AttributeTypes::IDENTIFIER => SPL_T_VARCHAR,
         AttributeTypes::OPTION_SIMPLE_SELECT => SPL_T_VARCHAR,
@@ -59,7 +59,6 @@ class TypesConverter
         AttributeTypes::FILE,
         AttributeTypes::IMAGE,
     );
-    
 
     /**
      * List of Select Akeneo Attributes Types
@@ -68,8 +67,8 @@ class TypesConverter
      */
     const SELECT = array(
         AttributeTypes::OPTION_SIMPLE_SELECT,
-    );    
-    
+    );
+
     /**
      * List of Select Akeneo Attributes Types
      *
@@ -78,8 +77,8 @@ class TypesConverter
     const NUMBER = array(
         AttributeTypes::NUMBER,
         AttributeTypes::METRIC,
-    );    
-    
+    );
+
     /**
      * Check if Attribute type Code is Known
      *
@@ -91,47 +90,47 @@ class TypesConverter
     {
         return isset(self::TYPES[$attrType]);
     }
-    
+
     /**
      * Check if Attribute type Code is a Core Type
      *
-     * @param  string $attrType       Akeneo Attribute Type
+     * @param string $attrType Akeneo Attribute Type
      *
      * @return bool
      */
     public static function isCore(string $attrType): bool
     {
         return self::isKnown($attrType) && in_array($attrType, self::CORE, true);
-    }    
-    
+    }
+
     /**
      * Check if Attribute type Code is Read Only Type
      *
-     * @param  string $attrType       Akeneo Attribute Type
+     * @param string $attrType Akeneo Attribute Type
      *
      * @return bool
      */
     public static function isReadOnly(string $attrType): bool
     {
         return self::isKnown($attrType) && in_array($attrType, self::READONLY, true);
-    }    
-    
+    }
+
     /**
      * Check if Attribute type Code is Select Type
      *
-     * @param  string $attrType       Akeneo Attribute Type
+     * @param string $attrType Akeneo Attribute Type
      *
      * @return bool
      */
     public static function isSelect(string $attrType): bool
     {
         return self::isKnown($attrType) && in_array($attrType, self::SELECT, true);
-    }    
+    }
 
     /**
      * Check if Attribute type Code is a Number Type
      *
-     * @param  string $attrType       Akeneo Attribute Type
+     * @param string $attrType Akeneo Attribute Type
      *
      * @return bool
      */
@@ -139,26 +138,26 @@ class TypesConverter
     {
         return self::isKnown($attrType) && in_array($attrType, self::NUMBER, true);
     }
-    
+
     /**
      * Check if Attribute type Code is a Metric Type
      *
-     * @param  string $attrType       Akeneo Attribute Type
+     * @param string $attrType Akeneo Attribute Type
      *
      * @return bool
      */
     public static function isMetric(string $attrType): bool
     {
-        return self::isKnown($attrType) && ($attrType == AttributeTypes::METRIC);
-    }    
-    
+        return self::isKnown($attrType) && (AttributeTypes::METRIC == $attrType);
+    }
+
     /**
      * Convert Akeneo Attribute Type to Splash Field Type
-     * 
-     * @param  Attribute $attribute       Akeneo Attribute Type
-     * 
-     * @return         string|null
-     */    
+     *
+     * @param Attribute $attribute Akeneo Attribute Type
+     *
+     * @return null|string
+     */
     public static function toSplash(Attribute $attribute): ?string
     {
         $attrType = $attribute->getType();
@@ -168,15 +167,13 @@ class TypesConverter
             return null;
         }
         $splashType = self::TYPES[$attrType];
-        
+
         //====================================================================//
         // Detect Mapping Exceptions
         if (self::isNumber($attrType) && $attribute->isDecimalsAllowed()) {
             $splashType = SPL_T_DOUBLE;
         }
-        
-        
+
         return $splashType;
-    }      
-    
+    }
 }

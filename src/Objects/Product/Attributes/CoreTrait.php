@@ -1,32 +1,44 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
-use Splash\Core\SplashCore as Splash;
-
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 //use Pim\Component\Catalog\Model\ProductInterface as Product;
 //use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 use Pim\Component\Catalog\Updater\PropertySetter;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Import / Export of Product Attribute Values
  */
-trait CoreTrait {
-
+trait CoreTrait
+{
     /**
      * @var PropertySetter
      */
     protected $setter;
-    
+
     /**
      * CORE - Read Attribute Data with Local & Scope Detection
      *
-     * @param  Product    $product         Akeneo Product Object
-     * @param  Attribute  $attribute      Akeneo Attribute Object
-     * @param string $isoLang
-     * @param string $channel
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
      *
      * @return mixed
      */
@@ -37,40 +49,40 @@ trait CoreTrait {
         $code = $attribute->getCode();
         //====================================================================//
         // Check if Attribute is Used for this Product
-        if( !in_array($code , $product->getUsedAttributeCodes() ) ) {
+        if (!in_array($code, $product->getUsedAttributeCodes(), true)) {
             //====================================================================//
             // Load Value from Parent Product
             $parent = $product->getParent();
-            if($parent instanceof Product) {
+            if ($parent instanceof Product) {
                 return $this->getCoreValue($parent, $attribute, $isoLang, $channel);
             }
-            
-            return Null;
+
+            return null;
         }
         //====================================================================//
         // Load Product Value Object
         $value = $product->getValue(
-            $code, 
-            $attribute->isLocalizable() ? $isoLang : null, 
+            $code,
+            $attribute->isLocalizable() ? $isoLang : null,
             $attribute->isScopable() ? $channel : null
         );
-        if(null == $value) {
-            return Null;
+        if (null == $value) {
+            return null;
         }
-        
+
         //====================================================================//
         // Return Raw Product Value Data
-        return $value->getData();   
+        return $value->getData();
     }
-    
+
     /**
      * CORE - Write Attribute Data with Local & Scope Detection
      *
-     * @param  Product    $product         Akeneo Product Object
-     * @param  Attribute  $attribute      Akeneo Attribute Object
-     * @param string $isoLang
-     * @param string $channel
-     * @param mixed $data
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     * @param mixed     $data
      *
      * @return mixed
      */
@@ -79,18 +91,18 @@ trait CoreTrait {
         //====================================================================//
         // Get Attribute Code
         $code = $attribute->getCode();
-        
+
         //====================================================================//
         // Prepare Setter Options
         $options = array(
-            "locale" => $attribute->isLocalizable() ? $isoLang : null, 
+            "locale" => $attribute->isLocalizable() ? $isoLang : null,
             "scope" => $attribute->isScopable() ? $channel : null
-        );        
-        
+        );
+
         //====================================================================//
-        // Update Product Using Property Setter 
+        // Update Product Using Property Setter
         $this->setter->setData($product, $code, $data, $options);
-        
+
         return true;
-    }    
+    }
 }

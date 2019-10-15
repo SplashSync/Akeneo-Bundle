@@ -19,9 +19,9 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository as Reposi
 use Splash\Akeneo\Services\AttributesManager as Attributes;
 use Splash\Akeneo\Services\CrudService as Crud;
 use Splash\Akeneo\Services\LocalesManager as Locales;
+use Splash\Akeneo\Services\SecurityService as Security;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Bundle\Models\AbstractStandaloneObject;
-use Splash\Akeneo\Services\SecurityService as Security;
 use Splash\Client\Splash;
 
 /**
@@ -126,11 +126,11 @@ class Product extends AbstractStandaloneObject
         $this->security = $security;
         //====================================================================//
         // Ensure User Login
-        if((defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) || $this->isDebugMode()) {
-            $this->security->ensureSessionUser($this->getParameter("username", "admin"));        
+        if ((defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) || $this->isDebugMode()) {
+            $this->security->ensureSessionUser($this->getParameter("username", "admin"));
         }
     }
-    
+
     /**
      * Check if System is in Debug Mode
      *
@@ -148,5 +148,5 @@ class Product extends AbstractStandaloneObject
         Splash::log()->deb("Akeneo Works in Debug Mode...");
 
         return true;
-    }    
+    }
 }

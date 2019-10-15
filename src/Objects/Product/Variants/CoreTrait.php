@@ -114,7 +114,7 @@ trait CoreTrait
         }
         //====================================================================//
         // Load Product Variants
-        $variants = $this->variants->getVariantsList($this->object);       
+        $variants = $this->variants->getVariantsList($this->object);
         foreach ($variants as $index => $attr) {
             //====================================================================//
             // SKIP Current Variant When in PhpUnit/Travis Mode
@@ -154,7 +154,7 @@ trait CoreTrait
         }
         unset($this->in[$fieldName]);
     }
-    
+
     //====================================================================//
     // PRIVATE - Tooling Functions
     //====================================================================//
@@ -172,7 +172,7 @@ trait CoreTrait
         // Not in PhpUnit/Travis Mode => Return All
         if (!$this->isDebugMode()) {
             return true;
-        }       
+        }
         //====================================================================//
         // Travis Mode => Skip Current Product Variant
         if ($attribute["rawId"] != $this->object->getId()) {
@@ -183,7 +183,7 @@ trait CoreTrait
         if (empty($attribute["id"])) {
             return true;
         }
-        
+
         return false;
     }
 }

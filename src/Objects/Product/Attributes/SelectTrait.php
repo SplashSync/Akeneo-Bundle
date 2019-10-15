@@ -19,6 +19,10 @@ use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 use Splash\Core\SplashCore as Splash;
 
+/**
+ * Manage Select Types Attributes
+ * Import / Export of Product Attribute Values
+ */
 trait SelectTrait
 {
     /**
@@ -57,7 +61,7 @@ trait SelectTrait
 
         foreach ($attribute->getOptions() as $option) {
             $code = (string) $option->getCode();
-            $choices[ $code ] = $option->getOptionValues()->containsKey($isoLang)
+            $choices[$code] = $option->getOptionValues()->containsKey($isoLang)
                 ? $option->getOptionValues()->get($isoLang)->getValue()
                 : $option->getTranslation($isoLang)->getLabel();
         }

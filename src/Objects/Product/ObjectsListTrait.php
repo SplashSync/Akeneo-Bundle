@@ -15,9 +15,8 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
-use Splash\Client\Splash;
-use Sylius\Component\Core\Model\ProductVariantInterface;
 use Pim\Component\Catalog\Model\Product;
+use Splash\Client\Splash;
 
 /**
  * Sylius Product Objects Lists
@@ -35,7 +34,6 @@ trait ObjectsListTrait
      */
     protected function getObjectListArray(Product $variant): array
     {
-
         return array(
             'id' => $variant->getId(),
             'identifier' => $variant->getIdentifier(),
@@ -44,6 +42,5 @@ trait ObjectsListTrait
             'label' => $variant->getLabel(),
             'updated' => $variant->getUpdated()->format(SPL_T_DATETIMECAST),
         );
-        
     }
 }

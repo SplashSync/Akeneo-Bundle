@@ -1,22 +1,24 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Akeneo\Objects\Product\Variants;
 
-
 use ArrayObject;
 use Attribute;
-use AttributeGroup;
-use Combination;
 use Product;
 use Splash\Core\SplashCore      as Splash;
-use Splash\Local\Services\AttributesManager as Manager;
-use Translate;
 
 /**
  * Prestashop Product Variants Attributes Data Access
@@ -63,8 +65,7 @@ trait AttributesTrait
         // PhpUnit/Travis Mode => Force Variation Types
         if ($this->isDebugMode()) {
             $this->fieldsFactory()->addChoice("color", "Color");
-        }          
-        
+        }
 
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
@@ -79,7 +80,7 @@ trait AttributesTrait
                 ->isReadOnly()
                 ->isNotTested();
         }
-        
+
         //====================================================================//
         // Product Variation Attribute Value
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
@@ -87,9 +88,8 @@ trait AttributesTrait
             ->Name("Attribute Value")
             ->Group($groupName)
             ->MicroData("http://schema.org/Product", "VariantAttributeValue")
-//            ->setMultilang($isoLang)
             ->InList("attributes")
-            ->isNotTested();        
+            ->isNotTested();
     }
 
     //====================================================================//
@@ -112,8 +112,8 @@ trait AttributesTrait
         }
         //====================================================================//
         // Walk on Available Languages
-        foreach ($this->locales->getAll() as $langId => $isoLang) {
-            $this->getVariantsAttributesField($key, $fieldId, $langId, $isoLang);
+        foreach ($this->locales->getAll() as $isoLang) {
+            $this->getVariantsAttributesField($key, $fieldId, $isoLang);
         }
     }
 
@@ -147,12 +147,12 @@ trait AttributesTrait
             }
             //====================================================================//
             // Safety Check => Verify if FieldName is An Attribute Type
-            if(!$this->attr->has($attrItem["code"])) {
+            if (!$this->attr->has($attrItem["code"])) {
                 continue;
             }
             //====================================================================//
             // If Variant Attribute => Skip Writting (Done via Variation Attributes)
-            if(!$this->variants->isVariantAttribute($this->object, $attrItem["code"])) {
+            if (!$this->variants->isVariantAttribute($this->object, $attrItem["code"])) {
                 continue;
             }
             //====================================================================//
@@ -205,25 +205,23 @@ trait AttributesTrait
      *
      * @param string $key     Input List Key
      * @param string $fieldId Field Identifier / Name
-     * @param int    $langId  Ps Language Id
      * @param string $isoLang Splash ISO Language Code
      */
-    private function getVariantsAttributesField($key, $fieldId, $langId, $isoLang)
+    private function getVariantsAttributesField(string $key, string $fieldId, string $isoLang)
     {
         //====================================================================//
         // Decode Multilang Field Name
-        $baseFieldName = $this->locales->decode($fieldId, $isoLang);          
-        if(null == $baseFieldName) {
+        $baseFieldName = $this->locales->decode($fieldId, $isoLang);
+        if (null == $baseFieldName) {
             return;
         }
         //====================================================================//
         // Walk on Product Attributes
         foreach ($this->variants->getVariantAttributes($this->object) as $index => $attrCode) {
-            
             //====================================================================//
             // Load Variation Attribute
             $attribute = $this->attr->find($attrCode);
-            
+
             //====================================================================//
             // Read Attribute Value
             switch ($baseFieldName) {
@@ -236,7 +234,7 @@ trait AttributesTrait
 
                     break;
                 case 'value':
-                    $value = $this->attr->getData($this->object, $attribute, $langId);
+                    $value = $this->attr->getData($this->object, $attribute, $isoLang);
 
                     break;
                 default:
