@@ -13,12 +13,6 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    Akeneo Bundle Data Transformer for Splash Bundle
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Akeneo\Services;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactory as Builder;
@@ -34,6 +28,11 @@ use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Core\SplashCore as Splash;
 use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;
 
+/**
+ * Akeneo Bundle Product Models Manager
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class ModelsManager
 {
     /**

@@ -13,20 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    Akeneo Bundle Data Transformer for Splash Bundle
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace   Splash\Akeneo\Services;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ProductBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Pim\Component\Catalog\Updater\PropertySetter;
@@ -34,11 +25,11 @@ use Splash\Akeneo\Models\TypesConverter;
 use Splash\Bundle\Annotation\Field;
 use Splash\Components\FieldsFactory;
 use Splash\Core\SplashCore as Splash;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
  * Akeneo Product Attribute Data Access
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class AttributesManager
 {
@@ -51,39 +42,6 @@ class AttributesManager
     use \Splash\Akeneo\Objects\Product\Attributes\DatesTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\PricesCollectionsTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\SelectTrait;
-
-//    use \Splash\Akeneo\Objects\Product\CRUDTrait;
-//    use \Splash\Akeneo\Objects\Product\CoreTrait;
-//    use \Splash\Akeneo\Objects\Product\DatesTrait;
-//    use \Splash\Akeneo\Objects\Product\OptionsTrait;
-//    use \Splash\Akeneo\Objects\Product\ImagesTrait;
-//    use \Splash\Akeneo\Objects\Product\PricesCollectionsTrait;
-//
-//    /**
-//     * @var EntityManagerInterface
-//     */
-//    private $EntityManager;
-//
-//    /**
-//     * @var RouterInterface
-//     */
-//    private $Router;
-//
-//    /**
-//     * @var ProductBuilder
-//     */
-//    private $Builder;
-//
-//    /**
-//     * @var ObjectUpdaterInterface
-//     */
-//    private $Updater;
-//
-//    /**
-//     * @var RecursiveValidator
-//     */
-//    private $Validator;
-//
 
     /**
      * @var PropertySetter
@@ -129,18 +87,6 @@ class AttributesManager
      * @var LocalesManager
      */
     private $locales;
-
-//
-//    /**
-//     * @var array
-//     */
-//    private $Config;
-//
-//    /**
-//     * @var string
-//     */
-//    private $Catalog_Storage_Dir;
-//
 
     /**
      * Service Constructor
@@ -279,6 +225,8 @@ class AttributesManager
      * @param string  $fieldName
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getData(Product $product, Attribute $attr, string $iso)
     {
@@ -448,6 +396,8 @@ class AttributesManager
      * @param type      $data
      *
      * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function setData(Product $product, Attribute $attr, string $iso, $data): bool
     {

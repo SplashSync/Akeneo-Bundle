@@ -15,6 +15,8 @@
 
 namespace   Splash\Akeneo\Services;
 
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository as Repository;
+
 /**
  * Splash Languages Manager - Akeneo Languages Management
  */
@@ -44,9 +46,9 @@ class LocalesManager
     /**
      * Service Constructor
      */
-    public function __construct(array $availableLocales)
+    public function __construct(Repository $repository)
     {
-        $this->locales = $availableLocales;
+        $this->locales = $repository->getActivatedLocaleCodes();
     }
 
     /**

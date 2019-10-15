@@ -21,8 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * User Security Features Manager.
@@ -104,13 +102,6 @@ class SecurityService
         //====================================================================//
         // Setup Token
         $this->tokenStorage->setToken($token);
-
-//        //====================================================================//
-//        // Now dispatch the login event
-//        $event = new InteractiveLoginEvent((new Request()), $token);
-//        $this->eventDispatcher->dispatch('security.interactive_login', $event);
-        
-\Splash\Client\Splash::Log()->warTrace("User is Now " . $this->getSessionUsername());
 
         return true;
     }

@@ -55,13 +55,11 @@ trait SelectTrait
     {
         $choices = array();
 
-        foreach ($attribute->getOptions() as $Option) {
-            $code = (string) $Option->getCode();
-            if ($Option->getOptionValues()->containsKey($isoLang)) {
-                $choices[ $code ] = $Option->getOptionValues()->get($isoLang)->getValue();
-            } else {
-                $choices[ $code ] = $Option->getTranslation($isoLang)->getLabel();
-            }
+        foreach ($attribute->getOptions() as $option) {
+            $code = (string) $option->getCode();
+            $choices[ $code ] = $option->getOptionValues()->containsKey($isoLang)
+                ? $option->getOptionValues()->get($isoLang)->getValue()
+                : $option->getTranslation($isoLang)->getLabel();
         }
 
         return $choices;
@@ -93,7 +91,7 @@ trait SelectTrait
         if (is_scalar($data) && empty($data)) {
             return $this->setCoreValue($product, $attribute, $isoLang, $channel, null);
         }
-        
+
         return false;
     }
 }

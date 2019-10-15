@@ -13,36 +13,37 @@
  *  file that was distributed with this source code.
  */
 
-
 namespace   Splash\Akeneo\Services;
 
-use Splash\Core\SplashCore as Splash;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductModel as Model;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository as Repository;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface as Saver;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
-use Pim\Component\Catalog\Builder\ProductBuilder as Builder;
-use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository as Repository;
+use Pim\Component\Catalog\Builder\ProductBuilder as Builder;
 use Pim\Component\Catalog\Model\FamilyVariantInterface as Familly;
-use Splash\Akeneo\Services\VariantsManager as Variants;
+use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductModel as Model;
 use Splash\Akeneo\Services\ModelsManager as Models;
+use Splash\Akeneo\Services\VariantsManager as Variants;
+use Splash\Core\SplashCore as Splash;
+use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;
 
 /**
  * Akeneo Product CRUD Service
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class CrudService
 {
     use \Splash\Models\Objects\ObjectsTrait;
-    
+
     /**
      * @var Repository
      */
-    private $repository;    
-    
+    private $repository;
+
     /**
      * @var Builder
      */
@@ -72,23 +73,23 @@ class CrudService
      * @var Variants
      */
     private $variants;
-    
+
     /**
      * @var Models
      */
     private $models;
-    
+
     /**
      * @param Repository $repository
-     * @param Builder $builder
-     * @param Updater $updater
-     * @param Validator $validator
-     * @param Saver $saver
-     * @param Remover $remover
+     * @param Builder    $builder
+     * @param Updater    $updater
+     * @param Validator  $validator
+     * @param Saver      $saver
+     * @param Remover    $remover
      */
     public function __construct(Repository $repository, Builder $builder, Updater $updater, Validator $validator, Saver $saver, Remover $remover, Variants $variants, Models $models)
     {
-        $this->repository = $repository;        
+        $this->repository = $repository;
         $this->builder = $builder;
         $this->updater = $updater;
         $this->validator = $validator;
@@ -100,13 +101,13 @@ class CrudService
 
     /**
      * Update Akeneo Product in database
-     * 
+     *
      * @param array|ArrayObject $inputs
-     * 
+     *
      * @return null|Product
      */
-    public function createProduct(iterable $inputs): ?Product 
-    {        
+    public function createProduct(iterable $inputs): ?Product
+    {
         try {
             //====================================================================//
             // Try Identify Product Family Variant
@@ -121,54 +122,46 @@ class CrudService
             }
             //====================================================================//
             // Create a New PIM Product
-            $product =   $this->builder->createProduct(
+            $product = $this->builder->createProduct(
                 null,
                 $familyVariant ? $familyVariant->getFamily()->getCode() : null
-            );  
+            );
             //====================================================================//
             // Setup Product Family Variant
-            if($familyVariant) {
+            if ($familyVariant) {
                 $product->setFamilyVariant($familyVariant);
                 //====================================================================//
                 // Resolve Product Model
-                $productModel = $this->models->resolveParent($inputs, $familyVariant, $rootProduct);   
+                $productModel = $this->models->resolveParent($inputs, $familyVariant, $rootProduct);
                 //====================================================================//
                 // Setup Product Parent Model
-                if($productModel) {
+                if ($productModel) {
                     $productModel->addProduct($product);
-                }                
+                }
             }
-            
+
             Splash::Log()->Msg("Akeneo Product Created");
-            
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             Splash::Log()->Err($e->getMessage());
             Splash::Log()->Err($e->getTraceAsString());
+
             return null;
         }
         //====================================================================//
         // Return a New Object
         return  $product;
     }
-    
+
     /**
      * Update Akeneo Product in database
-     * 
+     *
      * @param Product $product
+     *
      * @return bool
      */
     public function update(Product &$product): bool
     {
         try {
-//            //====================================================================//
-//            // If Product is New => Disable Doctrine postUpdate Event
-//            // This is done to prevent Repeated Commits (Create + Update)
-//            if (!$Object->getId()) {
-//                Splash::Local()->setListnerState("postUpdate", false);
-//            }
-//            //====================================================================//
-//            // Re-Attach Product to Entity Manager
-//            $AttachedObject = $this->Attach($Object);
             //====================================================================//
             // Validate Changes
             $this->validator->validate($product);
@@ -176,82 +169,80 @@ class CrudService
             // Save Changes
             $this->saver->save($product);
 
-            Splash::Log()->Msg("Akeneo Product Updated - " . $product->getId() );
+            Splash::Log()->Msg("Akeneo Product Updated - ".$product->getId());
         } catch (\Exception $e) {
             Splash::Log()->Err("Akeneo Product Update Failed");
 
             return Splash::Log()->Err($e->getMessage());
         }
-//        //====================================================================//
-//        // Whatever => Enable Doctrine postUpdate Event Again!
-//        Splash::Local()->setListnerState("postPersist", true);
-//        Splash::Local()->setListnerState("postUpdate", true);
         //====================================================================//
         // Return Object Id
         return  true;
     }
-    
+
     /**
      * Remove Product from Database
-     * 
+     *
      * @param Product $product
-     * 
+     *
      * @return bool
      */
-    public function delete(Product $product): bool 
+    public function delete(Product $product): bool
     {
         try {
             $productModel = $product->getParent();
-            $this->remover->remove( $product );
-            if($productModel) {
+            $this->remover->remove($product);
+            if ($productModel) {
                 $this->models->delete($productModel);
             }
-        } catch ( EntityNotFoundException $e) {
-            return True;
-        } catch ( Exception $e) {
+        } catch (EntityNotFoundException $e) {
+            return true;
+        } catch (Exception $e) {
             Splash::Log()->Err("Akeneo Product Delete Failed");
-            return Splash::Log()->Err($e->getMessage());    
-        }      
+
+            return Splash::Log()->Err($e->getMessage());
+        }
         Splash::Log()->Msg("Akeneo Product Deleted");
-        return True;
-    } 
-    
+
+        return true;
+    }
+
     /**
      * Identify New product Family
-     * 
+     *
      * @param array|ArrayObject $inputs
-     * 
+     *
      * @return null|Product
      */
-    private function getProductFamily(iterable $inputs): ?Familly 
-    {       
+    private function getProductFamily(iterable $inputs): ?Familly
+    {
         //====================================================================//
-        // If family Code is Given        
-        if(isset($inputs["family_code"]) && !empty($inputs["family_code"])) {
+        // If family Code is Given
+        if (isset($inputs["family_code"]) && !empty($inputs["family_code"])) {
             return $this->variants->findFamilyVariantByCode($inputs["family_code"]);
         }
-        
+
         //====================================================================//
-        // If Attributes are Given        
-        if(isset($inputs["attributes"]) && is_iterable($inputs["attributes"])) {
+        // If Attributes are Given
+        if (isset($inputs["attributes"]) && is_iterable($inputs["attributes"])) {
             return $this->variants->findFamilyVariantByAttributes($inputs["attributes"]);
         }
-        
+
         return null;
-    }    
-    
+    }
+
     /**
      * Identify New Product Parent Model
-     * 
+     *
      * @param array|ArrayObject $inputs
-     * 
+     *
      * @return null|Model
      */
-    private function getRootProduct(iterable $inputs): ?Model 
-    {       
+    private function getRootProduct(iterable $inputs): ?Model
+    {
         //====================================================================//
-        // If NO Variants Given        
-        if(!isset($inputs["variants"]) || !is_iterable($inputs["variants"])) {
+        // If NO Variants Given
+        if (!isset($inputs["variants"]) || !is_iterable($inputs["variants"])) {
             return null;
         }
         //====================================================================//
@@ -268,11 +259,11 @@ class CrudService
             if (false !== $variantProductId) {
                 return $this->getParentModel($variantProductId);
             }
-            
         }
+
         return null;
-    } 
-    
+    }
+
     /**
      * Recursive Reading of Product Parent Id
      *
@@ -285,9 +276,9 @@ class CrudService
         //====================================================================//
         // Load Product from Repository
         $product = $this->repository->find($productId);
-        if(!($product instanceof Product)) {
+        if (!($product instanceof Product)) {
             return null;
-        }           
+        }
 
         do {
             //====================================================================//
@@ -302,32 +293,32 @@ class CrudService
             // PRODUCT HAS PARENTS
             $product = $parent;
         } while (null !== $parent);
-    }    
-    
+    }
+
     /**
      * Verify if Ok to Create a New Product
-     * 
+     *
      * @param array|ArrayObject $inputs
-     * @param null|Familly $family
+     * @param null|Familly      $family
+     *
      * @return bool
      */
     private function isReadyToCreate(iterable $inputs, $family = null): bool
-    {       
+    {
         //====================================================================//
-        // Verify Product Sku is Given        
-        if(!isset($inputs["sku"]) || empty($inputs["sku"])) {
+        // Verify Product Sku is Given
+        if (!isset($inputs["sku"]) || empty($inputs["sku"])) {
             return Splash::log()->errTrace("No SKU Given for new Product");
         }
-        
+
         //====================================================================//
-        // If Attributes are Given        
-        if(isset($inputs["attributes"]) && !empty($inputs["attributes"])) {
-            if(!($family instanceof Familly)) {
+        // If Attributes are Given
+        if (isset($inputs["attributes"]) && !empty($inputs["attributes"])) {
+            if (!($family instanceof Familly)) {
                 return Splash::log()->errTrace("No Family Variant identified for new Product");
             }
         }
-        
+
         return true;
-    }      
-    
+    }
 }

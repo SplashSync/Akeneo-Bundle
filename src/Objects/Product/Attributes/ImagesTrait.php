@@ -14,22 +14,22 @@ trait ImagesTrait {
     
     use SplashImages;
     
-    protected function exportImage(ProductInterface $Object, AttributeInterface $Attribute )
+    protected function exportImage(ProductInterface $object, AttributeInterface $attribute )
     {
         //====================================================================//
         // Check if Attribute is Used for this Object
-        if( !in_array($Attribute->getCode() , $Object->getUsedAttributeCodes() ) ) {           
+        if( !in_array($attribute->getCode() , $object->getUsedAttributeCodes() ) ) {           
             return Null;
         }         
         
-        $Image   =   $this->getAttributeValue($Object, $Attribute);
+        $image   =   $this->getAttributeValue($object, $attribute);
         return self::Images()->Encode(
-                    $Image->getOriginalFilename(),
-                    $Image->getKey(),
+                    $image->getOriginalFilename(),
+                    $image->getKey(),
                     $this->Catalog_Storage_Dir . "/",
                     $this->Router->generate(
                             "pim_enrich_media_show", 
-                            [ "filename" => urlencode($Image->getKey()), "filter" => "preview" ],
+                            [ "filename" => urlencode($image->getKey()), "filter" => "preview" ],
                              UrlGeneratorInterface::ABSOLUTE_URL)
                 );        
     } 
