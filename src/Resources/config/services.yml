@@ -85,15 +85,4 @@ services:
     splash.akeneo.security:
         class:      Splash\Akeneo\Services\SecurityService
         autowire:   true
-         
-#    ########################################################################
-#    # Sylius Additionnal Object Event Listener
-#    # This Listner is Triggered on Any Object changes dont on ORM
-#    # It will detect impacted Splash Objects and Dispatch Commits to Splash Server
-#    Splash.Sylius.Objects.EventListener:
-#        class:      Splash\Sylius\EventListener\ObjectEventListener
-#        tags:
-##            - { name: doctrine.event_listener, event: postPersist,  method: postPersist }
-#            - { name: doctrine.event_listener, event: postUpdate,   method: postUpdate }
-##            - { name: doctrine.event_listener, event: preRemove,    method: preRemove }
             

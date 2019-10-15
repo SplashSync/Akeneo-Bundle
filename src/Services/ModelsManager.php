@@ -70,12 +70,15 @@ class ModelsManager
     private $remover;
 
     /**
+     * Service  Constructor.
+     *
      * @param Repository $repository
      * @param Builder    $builder
      * @param Updater    $updater
      * @param Validator  $validator
      * @param Saver      $saver
      * @param Remover    $remover
+     * @param Variants   $variants
      */
     public function __construct(Repository $repository, Builder $builder, Updater $updater, Validator $validator, Saver $saver, Remover $remover, Variants $variants)
     {

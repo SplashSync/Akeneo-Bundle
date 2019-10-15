@@ -15,10 +15,8 @@
 
 namespace Splash\Akeneo\Services;
 
-use Monolog\Logger;
 use Oro\Bundle\UserBundle\Security\UserProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -45,9 +43,7 @@ class SecurityService
     /**
      * Service  Constructor.
      *
-     * @param string                   $environment
-     * @param Logger                   $logger
-     * @param SessionInterface         $session
+     * @param UserProvider             $provider
      * @param TokenStorageInterface    $tokenStorage
      * @param EventDispatcherInterface $eventDispatcher
      */

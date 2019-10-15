@@ -45,6 +45,8 @@ class LocalesManager
 
     /**
      * Service Constructor
+     *
+     * @param Repository $repository
      */
     public function __construct(Repository $repository)
     {

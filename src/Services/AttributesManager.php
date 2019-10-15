@@ -91,7 +91,9 @@ class AttributesManager
     /**
      * Service Constructor
      *
-     * @param PropertySetter $setter
+     * @param PropertySetter      $setter
+     * @param AttributeRepository $attributes
+     * @param LocalesManager      $locales
      */
     public function __construct(PropertySetter $setter, AttributeRepository $attributes, LocalesManager $locales)
     {
