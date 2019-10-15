@@ -57,8 +57,6 @@ services:
         volumes:
             # Specify Local Configuration File
             - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
-            # Force Splash Php Core Package
-            - '~/WebDesign/GitHub/SplashSync-Php-Core:/app/vendor/splash/phpcore:ro'
         hostname:           toolkit.akeneo.local
         command:            ["php", "/app/bin/console", "server:run", "172.105.0.11:80"]
         networks:
@@ -118,15 +116,6 @@ services:
             discovery.type: 'single-node'
         networks:
           - 'akeneo'
-
-#  object-storage:
-#    image: 'minio/minio'
-#    entrypoint: '/bin/sh -c "mkdir -p /data/archive /data/catalog/ /data/jobs && minio server /data"'
-#    environment:
-#      MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
-#      MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
-#    networks:
-#      - akeneo
 
 networks:
     ################################################################################
