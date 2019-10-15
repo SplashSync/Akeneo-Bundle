@@ -12,10 +12,6 @@ services:
             -   "@splash.akeneo.product.variants"
             -   "@splash.akeneo.locales"  
             -   "@splash.akeneo.security"  
-#            -   "@router"
-
-##            -   "%splash_akeneo%"
-#            -   "%catalog_storage_dir%"
         tags:
             # Register as Standalone Connector Object           
             - { name: "splash.standalone.object", type : "Product" }  
