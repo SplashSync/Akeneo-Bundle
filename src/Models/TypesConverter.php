@@ -82,7 +82,7 @@ class TypesConverter
     /**
      * Check if Attribute type Code is Known
      *
-     *  @param  string $attrType       Akeneo Attribute Type
+     * @param string $attrType Akeneo Attribute Type
      *
      * @return bool
      */

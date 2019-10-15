@@ -29,7 +29,7 @@ class ProductSubscriber extends AbstractEventSubscriber
      * @var array
      */
     protected static $entities = array(
-        Product::class => "Product"
+        Product::class => "Product",
     );
 
     /**

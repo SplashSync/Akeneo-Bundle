@@ -19,6 +19,7 @@ use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 
 /**
+ * Manage Bool Types Attributes
  * Import / Export of Product Attribute Values
  */
 trait BoolTrait

@@ -27,6 +27,9 @@ use Splash\Core\SplashCore as Splash;
  */
 trait MetricTrait
 {
+    /**
+     * @var array
+     */
     private static $units = array(
         "Weight" => "KILOGRAM",
         "Length" => "METER",
@@ -90,7 +93,7 @@ trait MetricTrait
         //====================================================================//
         // Safety Check => Verify this Metric Type is Known
         if (!isset(static::$units[$metricFamily])) {
-            throw new Exception("Unknown metric family name: ".$metricFamily);
+            throw new Exception(sprintf("Unknown metric family name: %s", $metricFamily));
         }
 
         return static::$units[$metricFamily];

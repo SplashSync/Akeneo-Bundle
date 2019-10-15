@@ -54,3 +54,4 @@
 /app/config/parameters_test.yml
 /web/media/
 /.php_cs.cache
+/.gh-pages/

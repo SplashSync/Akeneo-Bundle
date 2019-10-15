@@ -23,6 +23,7 @@ use Pim\Component\Catalog\Updater\PropertySetter;
 use Splash\Core\SplashCore as Splash;
 
 /**
+ * Manage Raw Types Attributes I/O
  * Import / Export of Product Attribute Values
  */
 trait CoreTrait
@@ -96,7 +97,7 @@ trait CoreTrait
         // Prepare Setter Options
         $options = array(
             "locale" => $attribute->isLocalizable() ? $isoLang : null,
-            "scope" => $attribute->isScopable() ? $channel : null
+            "scope" => $attribute->isScopable() ? $channel : null,
         );
 
         //====================================================================//

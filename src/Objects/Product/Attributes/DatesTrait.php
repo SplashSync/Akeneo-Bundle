@@ -20,6 +20,7 @@ use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface as Product;
 
 /**
+ * Manage Date Types Attributes
  * Import / Export of Product Attribute Values
  */
 trait DatesTrait

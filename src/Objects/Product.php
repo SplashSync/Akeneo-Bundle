@@ -98,8 +98,12 @@ class Product extends AbstractStandaloneObject
     /**
      * Service Constructor
      *
-     * @param Repository     $repository
-     * @param LocalesManager $locales
+     * @param Repository $repository
+     * @param Crud       $crudService
+     * @param Attributes $attr
+     * @param Variants   $variants
+     * @param Locales    $locales
+     * @param Security   $security
      */
     public function __construct(Repository $repository, Crud $crudService, Attributes $attr, Variants $variants, Locales $locales, Security $security)
     {

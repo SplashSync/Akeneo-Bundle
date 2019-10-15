@@ -28,25 +28,36 @@ trait ImagesTrait
 {
     use SplashImages;
 
-    protected function exportImage(ProductInterface $object, AttributeInterface $attribute)
-    {
-        //====================================================================//
-        // Check if Attribute is Used for this Object
-        if (!in_array($attribute->getCode(), $object->getUsedAttributeCodes(), true)) {
-            return null;
-        }
-
-        $image = $this->getAttributeValue($object, $attribute);
-
-        return self::Images()->Encode(
-            $image->getOriginalFilename(),
-            $image->getKey(),
-            $this->Catalog_Storage_Dir."/",
-            $this->Router->generate(
-                "pim_enrich_media_show",
-                array( "filename" => urlencode($image->getKey()), "filter" => "preview" ),
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-        );
-    }
+//    /**
+//     * @var string
+//     */
+//    private $catalogStorageDir;
+//
+//    /**
+//     * @param ProductInterface   $object
+//     * @param AttributeInterface $attribute
+//     *
+//     * @return array
+//     */
+//    protected function exportImage(ProductInterface $object, AttributeInterface $attribute)
+//    {
+//        //====================================================================//
+//        // Check if Attribute is Used for this Object
+//        if (!in_array($attribute->getCode(), $object->getUsedAttributeCodes(), true)) {
+//            return null;
+//        }
+//
+//        $image = $this->getAttributeValue($object, $attribute);
+//
+//        return self::Images()->Encode(
+//            $image->getOriginalFilename(),
+//            $image->getKey(),
+//            $this->catalogStorageDir."/",
+//            $this->Router->generate(
+//                "pim_enrich_media_show",
+//                array( "filename" => urlencode($image->getKey()), "filter" => "preview" ),
+//                UrlGeneratorInterface::ABSOLUTE_URL
+//            )
+//        );
+//    }
 }
