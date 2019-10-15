@@ -43,7 +43,7 @@ matrix:
           
         # Akeneo V2.3 Branch       
         - php: 7.1
-          env: AKENEO_VERSION="2.3"
+          env: AKENEO_VERSION="2.3.*"
 
 #        # Akeneo V3.0 Branch       
 #        - php: 7.2
