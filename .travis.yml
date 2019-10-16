@@ -19,12 +19,12 @@ cache:
         - $HOME/.composer
         - $HOME/.cache/pip
     
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
+#addons:
+#  apt:
+#    sources:
+#      - mysql-5.7-trusty
+#    packages:
+#      - mysql-server
       
 matrix:
     include:
@@ -42,8 +42,8 @@ matrix:
 #          env: AKENEO_VERSION="2.1"
           
         # Akeneo V2.3 Branch       
-#        - php: 7.1
-        - php: 7.2
+        - php: 7.1
+#        - php: 7.2
           env: AKENEO_VERSION="2.3.65"
 
 #        # Akeneo V3.0 Branch       
