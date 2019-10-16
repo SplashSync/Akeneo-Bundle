@@ -31,6 +31,7 @@ echo "** Yarn Install "
 docker-compose run --rm node yarn install
 
 echo "** Install Akeneo "
+docker-compose exec fpm cp  /srv/pim/vendor/akeneo/pim-community-dev/app/PimRequirements.php /srv/pim/app/PimRequirements.php   
 docker-compose exec fpm php bin/console --env=prod cache:clear --no-warmup
 docker-compose exec fpm php bin/console --env=prod pim:install --force --symlink --clean
 echo "** Install Webpack "
