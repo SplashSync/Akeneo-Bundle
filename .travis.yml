@@ -120,7 +120,7 @@ script:
     
     # Execute Phpunit 
     - php vendor/bin/phpunit --version
-#    - php vendor/bin/phpunit
+    - php vendor/bin/phpunit
 
 
 ################################################################################
