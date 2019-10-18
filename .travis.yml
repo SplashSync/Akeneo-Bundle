@@ -72,8 +72,8 @@ install:
     
     - cat   ../travis/routing_splash.yml   >> app/config/routing.yml
     - cat   ../travis/config_splash.yml    >> app/config/config.yml
-    - sed -i "s/new Acme\Bundle\AppBundle\AcmeAppBundle(),/new \Splash\Bundle\SplashBundle(), new \Splash\Akeneo\SplashAkeneoBundle(),/" app/AppKrernel.php
-    - cat app/AppKrernel.php
+    - sed -i "s/new Acme\Bundle\AppBundle\AcmeAppBundle(),/new \Splash\Bundle\SplashBundle(), new \Splash\Akeneo\SplashAkeneoBundle(),/" app/AppKernel.php
+    - cat app/AppKernel.php
     
 #    - cp  ../travis/.env.dist ".env" 
 #    - php bin/console sylius:install --env=test --no-interaction --no-debug
