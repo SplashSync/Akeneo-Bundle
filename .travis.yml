@@ -72,7 +72,7 @@ install:
     
     - cat   ../travis/routing_splash.yml   >> app/config/routing.yml
     - cat   ../travis/config_splash.yml    >> app/config/config.yml
-    - sed -i "s/new Acme\Bundle\AppBundle\AcmeAppBundle(),/new \Splash\Bundle\SplashBundle(), new \Splash\Akeneo\SplashAkeneoBundle(),/" app/AppKernel.php
+    - sed -i "s|new Acme\Bundle\AppBundle\AcmeAppBundle(),|new \Splash\Bundle\SplashBundle(), new \Splash\Akeneo\SplashAkeneoBundle(),|g" app/AppKernel.php
     - cat app/AppKernel.php
     
 #    - cp  ../travis/.env.dist ".env" 
