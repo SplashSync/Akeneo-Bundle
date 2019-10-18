@@ -66,7 +66,14 @@ install:
     - cd akeneo
     - php bin/console pim:install               --env=test  --force --symlink --clean --no-interaction --no-debug
     - php bin/console pim:installer:assets      --env=test  --symlink --clean --no-interaction --no-debug    
-    - ls -l
+    
+    ################################################################################
+    # Install Splash Bundle for Akeneo
+    
+    - cat   ../travis/routing_splash.yml   >> app/config/routing.yml
+    - cat   ../travis/config_splash.yml    >> app/config/config.yml
+    - sed -i "s/new Acme\Bundle\AppBundle\AcmeAppBundle(),/new \Splash\Bundle\SplashBundle(), new \Splash\Akeneo\SplashAkeneoBundle(),/" app/AppKrernel.php
+    - cat app/AppKrernel.php
     
 #    - cp  ../travis/.env.dist ".env" 
 #    - php bin/console sylius:install --env=test --no-interaction --no-debug
@@ -87,7 +94,6 @@ install:
 #    - cp    vendor/akeneo/pim-community-dev/app/PimRequirements.php app/PimRequirements.php
 #    - mkdir var
 #    - cp    vendor/akeneo/pim-community-dev/var/SymfonyRequirements.php var/SymfonyRequirements.php
-#    - cat   travis/routing_splash.yml   >> app/config/routing.yml
 ##    - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
 #    - mkdir web/bundles
 #    - chmod 775 web/bundles
