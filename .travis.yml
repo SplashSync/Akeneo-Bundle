@@ -1,23 +1,4 @@
-# Project language
-language: php
 
-# Allows use container-based infrastructure
-sudo: false
-#sudo: required
-#dist: trusty
-
-# Start mysql service
-services:
-  - mysql
-  - elasticsearch
-  - imagick  
-
-# Cache composer packages so "composer install" is faster
-cache:
-    yarn: true
-    directories:
-        - $HOME/.composer
-        - $HOME/.cache/pip
     
 #addons:
 #  apt:
@@ -55,68 +36,107 @@ matrix:
     allow_failures:
         - env: AKENEO_VERSION="3.0"
 
-    
+################################################################################
+# Install Update Composer, Configure Env. 
 before_install:
-    
-# Update composer
-  - composer self-update
+    # Update composer
+    - composer self-update
+    # Configure PHP  
+    - phpenv config-rm xdebug.ini
+    - phpenv config-add travis/x_memory.ini
+    # Add PHP Extensions  
+    - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install -f apcu; fi
+    - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install -f imagick; fi
+    - php -m
+    # Create database, schema and fixtures
+    - mysql -e 'CREATE DATABASE IF NOT EXISTS akeneo;'
   
-# Install Yarn
-#  - yarn 
-  
-# Configure PHP  
-  - phpenv config-rm xdebug.ini
-  - phpenv config-add travis/x_memory.ini
-  
-# Add PHP Extensions  
-  - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install -f apcu; fi
-  - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install -f imagick; fi
-  - php -m
-
-# Create database, schema and fixtures
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS akeneo;'
-  
+################################################################################
 # Install composer dependencies,
+# Create database, schema and fixtures
 install:   
-    - echo "Configuring Akeneo"
-    - cp travis/parameters.yml.dist app/config/parameters.yml
-    - cp travis/parameters.yml.dist app/config/parameters_test.yml
-
-    - echo "Install Akeneo & Splash Bundles"
-    - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest --no-scripts
-
-    - echo "Configuring Akeneo"
-    - cp    vendor/akeneo/pim-community-dev/app/config/routing.yml app/config/routing.yml
-    - cp    vendor/akeneo/pim-community-dev/app/PimRequirements.php app/PimRequirements.php
-    - mkdir var
-    - cp    vendor/akeneo/pim-community-dev/var/SymfonyRequirements.php var/SymfonyRequirements.php
-    - cat   travis/routing_splash.yml   >> app/config/routing.yml
-#    - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
-    - mkdir web/bundles
-    - chmod 775 web/bundles
     
+    ################################################################################
+    # Install Akeneo Community Dev Project
     - echo "Install Akeneo"
-#    - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
-    - php bin/console pim:install               --env=test  --force --symlink --clean --no-interaction --no-debug
-    - php bin/console pim:installer:assets      --env=test  --symlink --clean --no-interaction --no-debug
-    - php bin/console debug:config splash       --env=test
-
-    - echo "Start Web Srever"
-    - php bin/console server:start --env=test
+    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-suggest
+    - echo "Configuring Akeneo"
+    - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
+    - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
+    - cd akeneo
+    - ls -l
+    
+#    - cp  ../travis/.env.dist ".env" 
+#    - php bin/console sylius:install --env=test --no-interaction --no-debug
+#    - php bin/console sylius:fixtures:load --env=test --no-interaction --no-debug
+    
+    
+    
+    
+#    - echo "Configuring Akeneo"
+#    - cp travis/parameters.yml.dist app/config/parameters.yml
+#    - cp travis/parameters.yml.dist app/config/parameters_test.yml
+#
+#    - echo "Install Akeneo & Splash Bundles"
+#    - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest --no-scripts
+#
+#    - echo "Configuring Akeneo"
+#    - cp    vendor/akeneo/pim-community-dev/app/config/routing.yml app/config/routing.yml
+#    - cp    vendor/akeneo/pim-community-dev/app/PimRequirements.php app/PimRequirements.php
+#    - mkdir var
+#    - cp    vendor/akeneo/pim-community-dev/var/SymfonyRequirements.php var/SymfonyRequirements.php
+#    - cat   travis/routing_splash.yml   >> app/config/routing.yml
+##    - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
+#    - mkdir web/bundles
+#    - chmod 775 web/bundles
+#    
+#    - echo "Install Akeneo"
+##    - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
+#    - php bin/console pim:install               --env=test  --force --symlink --clean --no-interaction --no-debug
+#    - php bin/console pim:installer:assets      --env=test  --symlink --clean --no-interaction --no-debug
+#    - php bin/console debug:config splash       --env=test
+#
+#    - echo "Start Web Srever"
+#    - php bin/console server:start --env=test
 
 # Run script
 script:
     
-    # Run Grump Main Test Sequence
-    - php vendor/bin/grumphp run --testsuite=travis
-    # With PHP >= 7.1 => Execute Phpstan 
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=csfixer; fi 
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=phpstan; fi 
+#    # Run Grump Main Test Sequence
+#    - php vendor/bin/grumphp run --testsuite=travis
+#    # With PHP >= 7.1 => Execute Phpstan 
+#    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=csfixer; fi 
+#    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=phpstan; fi 
     
     # Execute Phpunit 
     - php vendor/bin/phpunit --version
-    - php vendor/bin/phpunit
+#    - php vendor/bin/phpunit
 
+
+################################################################################
+# General Configuration
+################################################################################
+
+################################################################################
+# Project language
+language: php
+################################################################################
+# Allows use container-based infrastructure
+sudo: false
+################################################################################
+# Start mysql service
+services:
+  - mysql
+  - elasticsearch
+  - imagick  
+################################################################################
+# Cache composer packages so "composer install" is faster
+cache:
+    yarn: true
+    directories:
+        - $HOME/.composer
+        - $HOME/.cache/pip
+################################################################################
 # After a build, send email notification with the build results
 notifications:
   email:         
