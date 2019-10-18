@@ -25,7 +25,7 @@ matrix:
         # Akeneo V2.3 Branch       
         - php: 7.1
 #        - php: 7.2
-          env: AKENEO_VERSION="2.3.65"
+          env: AKENEO_VERSION="2.3"
 
 #        # Akeneo V3.0 Branch       
 #        - php: 7.2
@@ -70,8 +70,9 @@ install:
     ################################################################################
     # Install Splash Bundle for Akeneo
     - echo "Install Splash Bundle for Akeneo"
-    - cat   ../travis/routing_splash.yml   >> app/config/routing.yml
-    - cat   ../travis/config_splash.yml    >> app/config/config.yml
+    - cat   ../travis/routing_splash.yml    >> app/config/routing.yml
+    - cat   ../travis/config_splash.yml     >> app/config/config.yml
+    - cat   ../phpunit.xml.dist             >> ../phpunit.xml.dist
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
     - cat app/AppKernel.php
     - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist
