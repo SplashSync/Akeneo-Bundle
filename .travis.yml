@@ -59,7 +59,7 @@ install:
     ################################################################################
     # Install Akeneo Community Dev Project
     - echo "Install Akeneo"
-    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-suggest
+    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
     - echo "Configuring Akeneo"
     - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
     - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
