@@ -1,4 +1,4 @@
-{
+O{
     "name":                 "splash/akeneo-bundle",
     "description":          "Splash Bundle for Akeneo PIM Solution",
     "license":              "MIT",
@@ -18,8 +18,9 @@
 
     "autoload": {
         "psr-4": { 
-            "Splash\\Akeneo\\":     "src"
-        }
+             "Splash\\Akeneo\\":     "src"
+        }, 
+        "files": [ "tests/KernelTestCase.php" ]
     },
     
     "autoload-dev": {
