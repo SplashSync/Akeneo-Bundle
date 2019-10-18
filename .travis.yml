@@ -72,7 +72,7 @@ install:
     - echo "Install Splash Bundle for Akeneo"
     - cat   ../travis/routing_splash.yml    >> app/config/routing.yml
     - cat   ../travis/config_splash.yml     >> app/config/config.yml
-    - cat   ../phpunit.xml.dist             >> ../phpunit.xml.dist
+    - cp  ../phpunit.xml.dist phpunit.xml.dist
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
     - cat app/AppKernel.php
     - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist
