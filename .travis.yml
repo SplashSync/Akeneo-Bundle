@@ -64,6 +64,8 @@ install:
     - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
     - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
     - cd akeneo
+    - php bin/console pim:install               --env=test  --force --symlink --clean --no-interaction --no-debug
+    - php bin/console pim:installer:assets      --env=test  --symlink --clean --no-interaction --no-debug    
     - ls -l
     
 #    - cp  ../travis/.env.dist ".env" 
