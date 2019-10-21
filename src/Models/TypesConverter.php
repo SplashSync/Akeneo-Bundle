@@ -42,7 +42,7 @@ class TypesConverter
         AttributeTypes::NUMBER => SPL_T_INT,
         AttributeTypes::METRIC => SPL_T_INT,
         //        AttributeTypes::FILE => SPL_T_FILE,
-        //        AttributeTypes::IMAGE => SPL_T_IMG,
+        AttributeTypes::IMAGE => SPL_T_IMG,
         AttributeTypes::PRICE_COLLECTION => SPL_T_PRICE,
         AttributeTypes::IDENTIFIER => SPL_T_VARCHAR,
         AttributeTypes::OPTION_SIMPLE_SELECT => SPL_T_VARCHAR,
@@ -57,7 +57,6 @@ class TypesConverter
      */
     const READONLY = array(
         AttributeTypes::FILE,
-        AttributeTypes::IMAGE,
     );
 
     /**
