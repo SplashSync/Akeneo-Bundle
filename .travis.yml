@@ -58,7 +58,12 @@ install:
     - cp travis/parameters.yml.dist app/config/parameters.yml
     - cp travis/parameters.yml.dist app/config/parameters_test.yml
     - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
-    - php bin/console debug:config splash       --env=test    
+    - php bin/console debug:config splash       --env=test 
+    # Run Grump Main Test Sequence
+#    - cd ..
+    - php vendor/bin/grumphp run --testsuite=travis
+    - php vendor/bin/grumphp run --testsuite=csfixer 
+    - php vendor/bin/grumphp run --testsuite=phpstan     
     
     ################################################################################
     # Install Akeneo Community Dev Project
@@ -114,11 +119,11 @@ install:
 # Run script
 script:
     
-    # Run Grump Main Test Sequence
-    - cd ..
-    - php vendor/bin/grumphp run --testsuite=travis
-    - php vendor/bin/grumphp run --testsuite=csfixer 
-    - php vendor/bin/grumphp run --testsuite=phpstan 
+#    # Run Grump Main Test Sequence
+#    - cd ..
+#    - php vendor/bin/grumphp run --testsuite=travis
+#    - php vendor/bin/grumphp run --testsuite=csfixer 
+#    - php vendor/bin/grumphp run --testsuite=phpstan 
     
     # Execute Phpunit 
     - cd akeneo
