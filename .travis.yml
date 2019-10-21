@@ -16,9 +16,9 @@ matrix:
 #        # Akeneo V2.1 Branch       
 #        - php: 7.1
 #          env: AKENEO_VERSION="2.1"
-        # Akeneo V2.2 Branch       
-        - php: 7.1
-          env: AKENEO_VERSION="2.2.10"
+#        # Akeneo V2.2 Branch       
+#        - php: 7.1
+#          env: AKENEO_VERSION="2.2.10"
         # Akeneo V2.3 Branch       
         - php: 7.1
           env: AKENEO_VERSION="2.3.63"
