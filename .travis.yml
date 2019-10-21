@@ -115,11 +115,13 @@ install:
 script:
     
     # Run Grump Main Test Sequence
+    - cd ..
     - php vendor/bin/grumphp run --testsuite=travis
     - php vendor/bin/grumphp run --testsuite=csfixer 
     - php vendor/bin/grumphp run --testsuite=phpstan 
     
     # Execute Phpunit 
+    - cd akeneo
     - php vendor/bin/phpunit --version
     - php vendor/bin/phpunit
 
