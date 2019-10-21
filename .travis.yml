@@ -11,17 +11,14 @@ matrix:
     include:
         
 #        # Akeneo V2.0 Branch       
-#        - php: 5.6
-#          env: AKENEO_VERSION="2.0"
-#        - php: 7.0
-#          env: AKENEO_VERSION="2.0"
-        - php: 7.1
-          env: AKENEO_VERSION="2.0.52"
-          
+#        - php: 7.1
+#          env: AKENEO_VERSION="2.0.52"
 #        # Akeneo V2.1 Branch       
 #        - php: 7.1
 #          env: AKENEO_VERSION="2.1"
-          
+        # Akeneo V2.2 Branch       
+        - php: 7.1
+          env: AKENEO_VERSION="2.2.12"
         # Akeneo V2.3 Branch       
         - php: 7.1
           env: AKENEO_VERSION="2.3.63"
