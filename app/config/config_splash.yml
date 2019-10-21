@@ -7,7 +7,10 @@ splash:
             key:            ThisIsYourEncryptionKeyForSplash
             host:           http://toolkit.akeneo.local/ws/soap
             config:
-                local:          fr_FR
+                locale:         en_US
+                channel:        ecommerce
+                currency:       EUR
+                images:         ['image', 'picture', 'variation_image']
                 travis:         true
                 infos:
                     logo:       http://docker.akeneo.local/bundles/pimui/images/info-user.png
