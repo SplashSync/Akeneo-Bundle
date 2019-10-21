@@ -57,7 +57,7 @@ install:
     - echo "Configuring Sources"
     - cp travis/parameters.yml.dist app/config/parameters.yml
     - cp travis/parameters.yml.dist app/config/parameters_test.yml
-    - composer require akeneo/pim-community-dev akeneo $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
+    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
     - php bin/console debug:config splash       --env=test    
     
     
