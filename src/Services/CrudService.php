@@ -326,6 +326,8 @@ class CrudService
         // If Attributes are Given
         if (isset($inputs["attributes"]) && !empty($inputs["attributes"])) {
             if (!($family instanceof Familly)) {
+                Splash::log()->www("Inputs", $inputs);
+
                 return Splash::log()->errTrace("No Family Variant identified for new Product");
             }
         }
