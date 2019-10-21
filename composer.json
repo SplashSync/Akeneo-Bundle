@@ -18,8 +18,9 @@
 
     "autoload": {
         "psr-4": { 
-            "Splash\\Akeneo\\":     "src"
-        }
+             "Splash\\Akeneo\\":     "src"
+        }, 
+        "files": [ "tests/KernelTestCase.php" ]
     },
     
     "autoload-dev": {
