@@ -28,6 +28,7 @@ splash:
             host:               false
             connector:          soap
             config:  
+                Name:               Akeneo Docker ;-)
                 WsIdentifier:       ThisIsSplashWsId
                 WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash                
                 WsHost:             http://docker.akeneo.local
