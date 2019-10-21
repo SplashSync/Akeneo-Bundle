@@ -20,6 +20,7 @@
 parameters:
     # For Building Splash Manifest
     yml-enable:     false
+    csfixer_config: "src/Resources/grumphp/php_cs.dist"
     
 #############################################        
 # Import Config. from Generic Bundle
