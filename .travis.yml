@@ -60,14 +60,10 @@ install:
     - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
     - php bin/console debug:config splash       --env=test    
     
-    
-    
-    
-    
     ################################################################################
     # Install Akeneo Community Dev Project
     - echo "Install Akeneo"
-    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-suggest
+    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
     - echo "Configuring Akeneo"
     - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
     - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
@@ -83,7 +79,7 @@ install:
     - cp  ../phpunit.xml.dist phpunit.xml.dist
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
     - cat app/AppKernel.php
-    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist
+    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
     - php bin/console debug:config splash       --env=test
 
 #    - cp  ../travis/.env.dist ".env" 
@@ -118,11 +114,10 @@ install:
 # Run script
 script:
     
-#    # Run Grump Main Test Sequence
-#    - php vendor/bin/grumphp run --testsuite=travis
-#    # With PHP >= 7.1 => Execute Phpstan 
-#    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=csfixer; fi 
-#    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php vendor/bin/grumphp run --testsuite=phpstan; fi 
+    # Run Grump Main Test Sequence
+    - php vendor/bin/grumphp run --testsuite=travis
+    - php vendor/bin/grumphp run --testsuite=csfixer 
+    - php vendor/bin/grumphp run --testsuite=phpstan 
     
     # Execute Phpunit 
     - php vendor/bin/phpunit --version
