@@ -53,9 +53,21 @@ before_install:
 install:   
     
     ################################################################################
+    # Install Sources    
+    - echo "Configuring Sources"
+    - cp travis/parameters.yml.dist app/config/parameters.yml
+    - cp travis/parameters.yml.dist app/config/parameters_test.yml
+    - composer require akeneo/pim-community-dev akeneo $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
+    - php bin/console debug:config splash       --env=test    
+    
+    
+    
+    
+    
+    ################################################################################
     # Install Akeneo Community Dev Project
     - echo "Install Akeneo"
-    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
+    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-suggest
     - echo "Configuring Akeneo"
     - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
     - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
@@ -81,9 +93,6 @@ install:
     
     
     
-#    - echo "Configuring Akeneo"
-#    - cp travis/parameters.yml.dist app/config/parameters.yml
-#    - cp travis/parameters.yml.dist app/config/parameters_test.yml
 #
 #    - echo "Install Akeneo & Splash Bundles"
 #    - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest --no-scripts
