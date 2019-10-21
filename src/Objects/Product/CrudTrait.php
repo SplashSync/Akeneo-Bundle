@@ -42,6 +42,7 @@ trait CrudTrait
         if (!($product instanceof Product)) {
             return Splash::Log()->errTrace("Unable to find Akeneo Product ".$objectId);
         }
+        $this->flushImageCache();
 
         return $product;
     }

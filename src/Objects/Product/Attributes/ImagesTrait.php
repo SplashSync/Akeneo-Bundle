@@ -13,12 +13,11 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Akeneo\Objects\Product;
+namespace Splash\Akeneo\Objects\Product\Attributes;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Splash\Models\Objects\ImagesTrait as SplashImages;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Akeneo\Component\FileStorage\Model\FileInfo;
+use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
+use Pim\Component\Catalog\Model\ProductInterface as Product;
 
 /**
  * Manage Images Types Attributes
@@ -26,38 +25,24 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 trait ImagesTrait
 {
-    use SplashImages;
+    /**
+     * IMAGE - Read Attribute Data with Local & Scope Detection
+     *
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     *
+     * @return mixed
+     */
+    protected function getImageValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    {
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
 
-//    /**
-//     * @var string
-//     */
-//    private $catalogStorageDir;
-//
-//    /**
-//     * @param ProductInterface   $object
-//     * @param AttributeInterface $attribute
-//     *
-//     * @return array
-//     */
-//    protected function exportImage(ProductInterface $object, AttributeInterface $attribute)
-//    {
-//        //====================================================================//
-//        // Check if Attribute is Used for this Object
-//        if (!in_array($attribute->getCode(), $object->getUsedAttributeCodes(), true)) {
-//            return null;
-//        }
-//
-//        $image = $this->getAttributeValue($object, $attribute);
-//
-//        return self::Images()->Encode(
-//            $image->getOriginalFilename(),
-//            $image->getKey(),
-//            $this->catalogStorageDir."/",
-//            $this->Router->generate(
-//                "pim_enrich_media_show",
-//                array( "filename" => urlencode($image->getKey()), "filter" => "preview" ),
-//                UrlGeneratorInterface::ABSOLUTE_URL
-//            )
-//        );
-//    }
+        if ($value instanceof FileInfo) {
+            return $this->files->getSplashImage($value);
+        }
+
+        return null;
+    }
 }
