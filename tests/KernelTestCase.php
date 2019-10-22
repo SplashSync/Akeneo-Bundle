@@ -43,6 +43,12 @@ class TestCase extends BaseTestCase
     protected function setUp()
     {
         //====================================================================//
+        // Force Debug Mode
+        if (!defined('SPLASH_DEBUG')) {
+            define('SPLASH_DEBUG', true);
+        }
+
+        //====================================================================//
         // Boot Symfony Kernel
         /** @var ContainerInterface $container */
         $container = static::bootKernel()->getContainer();
