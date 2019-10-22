@@ -48,6 +48,8 @@ services:
         networks:
             - 'akeneo'
             - 'splashsync'
+        extra_hosts:
+         - "toolkit.akeneo.local:172.105.0.11"
 
     ################################################################################
     # Splash Toolkit Container   
@@ -56,9 +58,10 @@ services:
         container_name: akeneo-toolkit
         volumes:
             # Specify Local Configuration File
+            - './docker/toolkit/.env:/app/.env:ro'
             - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
         hostname:           toolkit.akeneo.local
-        command:            ["php", "/app/bin/console", "server:run", "172.105.0.11:80"]
+#        command:            ["php", "/app/bin/console", "server:run", "172.105.0.11:80"]
         networks:
             akeneo:         { ipv4_address: 172.105.0.11, aliases: [ toolkit.akeneo.local ] }
             splashsync:     { aliases: [ toolkit.akeneo.local ] }
@@ -78,7 +81,6 @@ services:
         networks:
             akeneo:         { ipv4_address: 172.105.0.10, aliases: [ docker.akeneo.local ] }
             splashsync:     { aliases: [ docker.akeneo.local ] }            
-            
 
     ################################################################################
     # MySql Container    

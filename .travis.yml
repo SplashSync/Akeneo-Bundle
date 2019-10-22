@@ -59,8 +59,7 @@ install:
     - cp travis/parameters.yml.dist app/config/parameters_test.yml
     - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
     - php bin/console debug:config splash       --env=test 
-    # Run Grump Main Test Sequence
-#    - cd ..
+    # Run GrumPhp Main Test Sequence
     - php vendor/bin/grumphp run --testsuite=travis
     - php vendor/bin/grumphp run --testsuite=csfixer 
     - php vendor/bin/grumphp run --testsuite=phpstan     
@@ -83,50 +82,16 @@ install:
     - cat   ../travis/config_splash.yml     >> app/config/config.yml
     - cp  ../phpunit.xml.dist phpunit.xml.dist
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
-    - cat app/AppKernel.php
+#    - cat app/AppKernel.php
     - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
     - php bin/console debug:config splash       --env=test
 
-#    - cp  ../travis/.env.dist ".env" 
-#    - php bin/console sylius:install --env=test --no-interaction --no-debug
-#    - php bin/console sylius:fixtures:load --env=test --no-interaction --no-debug
-    
-    
-    
-    
-#
-#    - echo "Install Akeneo & Splash Bundles"
-#    - composer require akeneo/pim-community-dev $AKENEO_VERSION --prefer-dist --no-suggest --no-scripts
-#
-#    - echo "Configuring Akeneo"
-#    - cp    vendor/akeneo/pim-community-dev/app/config/routing.yml app/config/routing.yml
-#    - cp    vendor/akeneo/pim-community-dev/app/PimRequirements.php app/PimRequirements.php
-#    - mkdir var
-#    - cp    vendor/akeneo/pim-community-dev/var/SymfonyRequirements.php var/SymfonyRequirements.php
-##    - echo  "" > vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/products.csv
-#    - mkdir web/bundles
-#    - chmod 775 web/bundles
-#    
-#    - echo "Install Akeneo"
-##    - php bin/console doctrine:schema:update    --env=test  --force --no-interaction
-#    - php bin/console pim:install               --env=test  --force --symlink --clean --no-interaction --no-debug
-#    - php bin/console pim:installer:assets      --env=test  --symlink --clean --no-interaction --no-debug
-#    - php bin/console debug:config splash       --env=test
-#
-#    - echo "Start Web Srever"
-#    - php bin/console server:start --env=test
 
+################################################################################
 # Run script
 script:
-    
-#    # Run Grump Main Test Sequence
-#    - cd ..
-#    - php vendor/bin/grumphp run --testsuite=travis
-#    - php vendor/bin/grumphp run --testsuite=csfixer 
-#    - php vendor/bin/grumphp run --testsuite=phpstan 
-    
+
     # Execute Phpunit 
-#    - cd akeneo
     - php vendor/bin/phpunit --version
     - php vendor/bin/phpunit
 

@@ -36,7 +36,7 @@
     },
     
     "require-dev": {
-        "akeneo/pim-community-dev": "2.3.x-dev@dev",
+        "akeneo/pim-community-dev": "2.3.63",
 
         "splash/console":           "dev-master",
         "phpunit/phpunit":          "*",

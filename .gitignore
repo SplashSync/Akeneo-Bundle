@@ -55,3 +55,5 @@
 /web/media/
 /.php_cs.cache
 /.gh-pages/
+/app/PimRequirements.php
+/reboot.sh
