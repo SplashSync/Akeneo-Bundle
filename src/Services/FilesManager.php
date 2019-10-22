@@ -146,8 +146,8 @@ class FilesManager
 
     /**
      * Verify Input is Valid
-     * 
-     * @param array|ArrayObject  $splashfile
+     *
+     * @param array|ArrayObject $splashfile
      *
      * @return bool
      */
@@ -167,17 +167,17 @@ class FilesManager
 
     /**
      * Check if Files are Similar
-     * 
-     * @param FileInfo $current
-     * @param array|ArrayObject  $splashfile
+     *
+     * @param FileInfo          $current
+     * @param array|ArrayObject $splashfile
      *
      * @return array
      */
-    public function isSimilar(FileInfo $current, iterable $new): ?bool
+    public function isSimilar(FileInfo $current, iterable $splashfile): ?bool
     {
         //====================================================================//
         // Verify New Splash File is Valid
-        if (!$this->isValid($new)) {
+        if (!$this->isValid($splashfile)) {
             return false;
         }
         //====================================================================//
@@ -187,14 +187,13 @@ class FilesManager
             return false;
         }
 
-        return (md5_file($currentFilePath) == $new["md5"]);
+        return (md5_file($currentFilePath) == $splashfile["md5"]);
     }
 
     /**
-     * @param array|ArrayObject  $splashfile
-     * @param AttributeInterface $attribute
+     * @param FileInfo $current
      *
-     * @return array
+     * @return string
      */
     private function getFullPath(FileInfo $current): string
     {
