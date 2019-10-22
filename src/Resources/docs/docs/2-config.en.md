@@ -16,7 +16,6 @@ Default language is set here:
 
 ```yaml
 # app/config/config.yml
-
 splash:
     connections:
         akeneo:    
@@ -35,7 +34,6 @@ You can change this parameter here:
 
 ```yaml
 # app/config/config.yml
-
 splash:
     connections:
         akeneo:    
