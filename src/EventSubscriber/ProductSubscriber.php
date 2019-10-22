@@ -15,6 +15,7 @@
 
 namespace Splash\Akeneo\EventSubscriber;
 
+use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
 use Pim\Component\Catalog\Model\Product;
 use Splash\Bundle\Helpers\Doctrine\AbstractEventSubscriber;
 
@@ -45,4 +46,16 @@ class ProductSubscriber extends AbstractEventSubscriber
      * @var string
      */
     protected static $commentPrefix = "Akeneo PIM";
+
+    //====================================================================//
+    //  Events Actions
+    //====================================================================//
+
+    /**
+     * Disable All Events when Running the Installer
+     */
+    public function setAllDisabled(): void
+    {
+        self::setStates(false, false, false);
+    }
 }

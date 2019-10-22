@@ -78,6 +78,8 @@ services:
         autowire:   true
         tags:
             - { name: 'doctrine.event_subscriber', connection: 'default' }
+            - { name: kernel.event_listener, event: pim_installer.pre_load_fixture, method: setAllDisabled }
+            - { name: kernel.event_listener, event: pim_installer.pre_load_fixtures, method: setAllDisabled }
             
     ########################################################################
     # Akeneo Connector Locales Manager
