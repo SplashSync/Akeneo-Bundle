@@ -77,7 +77,7 @@ trait FilesTrait
             }
             //====================================================================//
             // Delete Current File from Filesystem
-            if (!$this->files->delete($curentFile, $data)) {
+            if (!$this->files->delete($curentFile)) {
                 return false;
             }
         }

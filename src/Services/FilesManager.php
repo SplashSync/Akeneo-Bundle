@@ -102,6 +102,9 @@ class FilesManager
         if (!$this->isValid($splfile)) {
             return null;
         }
+        if (!isset($splfile["path"]) || !isset($splfile["md5"]) || !isset($splfile["filename"])) {
+            return null;
+        }
         //====================================================================//
         // Read Raw File from Splash
         $rawFile = Splash::file()->getFile($splfile["path"], $splfile["md5"]);
@@ -141,7 +144,7 @@ class FilesManager
         $fullPath = $this->getFullPath($current);
         //====================================================================//
         // Delete Raw File from Filesystem
-        return Splash::file()->deleteFile($fullPath, md5_file($fullPath));
+        return Splash::file()->deleteFile($fullPath, (string) md5_file($fullPath));
     }
 
     /**
@@ -171,13 +174,13 @@ class FilesManager
      * @param FileInfo          $current
      * @param array|ArrayObject $splashfile
      *
-     * @return array
+     * @return bool
      */
-    public function isSimilar(FileInfo $current, iterable $splashfile): ?bool
+    public function isSimilar(FileInfo $current, iterable $splashfile): bool
     {
         //====================================================================//
         // Verify New Splash File is Valid
-        if (!$this->isValid($splashfile)) {
+        if (!$this->isValid($splashfile) || !isset($splashfile["md5"])) {
             return false;
         }
         //====================================================================//
