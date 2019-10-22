@@ -72,7 +72,9 @@ class Product extends AbstractStandaloneObject
     protected static $ICO = 'fa fa-product-hunt';
 
     /**
-     *  Object Synchronization Recommended Configuration
+     * Object Synchronization Recommended Configuration
+     *
+     * @codingStandardsIgnoreStart
      */
     // Enable Creation Of New Local Objects when Not Existing
     protected static $ENABLE_PUSH_CREATED = false;
@@ -80,7 +82,8 @@ class Product extends AbstractStandaloneObject
     protected static $ENABLE_PUSH_UPDATED = false;
     // Enable Delete Of Existing Local Objects when Deleted Remotly
     protected static $ENABLE_PUSH_DELETED = false;
-    
+    /** @codingStandardsIgnoreEnd */
+
     /**
      * Get Operations Output Buffer
      *
