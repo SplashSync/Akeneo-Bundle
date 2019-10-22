@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+    <!-- Meta -->
+  	<meta charset="utf-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="/Akeneo-Bundle/assets/img/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Quick Start | Akeneo Connector</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Quick Start" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Akeneo Connector for Splash Sync" />
+<meta property="og:description" content="Akeneo Connector for Splash Sync" />
+<link rel="canonical" href="splashsync.github.io/Akeneo-Bundle/start" />
+<meta property="og:url" content="splashsync.github.io/Akeneo-Bundle/start" />
+<meta property="og:site_name" content="Akeneo Connector" />
+<script type="application/ld+json">
+{"headline":"Quick Start","@type":"WebPage","url":"splashsync.github.io/Akeneo-Bundle/start","description":"Akeneo Connector for Splash Sync","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<!-- MAIN STYLESHEETS -->
+
+<!-- Google Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+<!-- Bootstrap 5 CSS -->
+<link rel="stylesheet" href="/Akeneo-Bundle/assets/vendor/bootstrap/dist/css/bootstrap.min.css" />   
+<!-- PrismJs CSS (Syntax Highlighter) -->    
+<link rel="stylesheet" href="/Akeneo-Bundle/assets/vendor/prismjs/themes/prism-okaidia.css" />
+<!-- Plugins CSS -->    
+<link rel="stylesheet" href="/Akeneo-Bundle/assets/plugins/elegant_font/css/style.css" />  
+<!-- FontAwesome 5 Free -->
+<link rel="stylesheet" href="/Akeneo-Bundle/assets/vendor/@fortawesome/fontawesome-free/css/all.css" /> 
+<!-- Ekko LightBox -->    
+<link rel="stylesheet" href="/Akeneo-Bundle/assets/vendor/ekko-lightbox/dist/ekko-lightbox.css" />  
+<!-- Datatables -->    
+<link rel="stylesheet" href="/Akeneo-Bundle/assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css" />  
+<!-- Theme CSS -->
+<link id="theme-style" rel="stylesheet" href="/Akeneo-Bundle/assets/css/main.css" />
+
+<!-- END MAIN STYLESHEETS -->
+<link type="application/atom+xml" rel="alternate" href="splashsync.github.io/Akeneo-Bundle/feed.xml" title="Akeneo Connector" /><!-- Google Analytics --></head>
+
+
+
+<body class="body-green">
+    <div class="page-wrapper"><!-- Page Header -->
+<header id="header" class="header">
+	<div class="container">
+		<div class="branding">
+	  		<h1 class="logo">
+			    <a href="index.html">
+			    	<img src="/Akeneo-Bundle/assets/img/apple-touch-icon.png" height="30px" class="d-none d-md-inline-block">
+					<span class="text-highlight">Akeneo Connector</span>
+					<span class="text-bold">DOC</span>
+			    </a>
+			</h1>
+    	</div>
+
+
+<ol class="breadcrumb">
+	<li class="breadcrumb-item">
+		<a href="index.html">Home</a>
+	</li>
+
+	
+		&nbsp;/&nbsp;
+		
+			Start
+		
+	
+
+</ol>
+
+<div class="top-search-box">
+
+			<a class="btn btn-md btn-link text-white github-button" href="https://github.com/SplashSync/Akeneo-Bundle" 
+				data-size="large" aria-label="View on Github"
+                                target="_blank"
+				title="View on Github"
+				>
+		        <i class="fab fa-github"></i>
+		        
+			</a>
+<!-- Languages Selector -->
+
+<div class="dropdown d-inline-block">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownLangSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		
+			<span class="flag-icon flag-icon-us flag-icon-squared"></span>
+		
+
+		English
+	</button>
+
+	<div class="dropdown-menu " aria-labelledby="dropdownLangSelect">
+		
+			<a 
+				 class="dropdown-item text-primary"
+				style="font-weight: bold;" 
+				href=" /Akeneo-Bundle/start "
+				>
+				
+					<span class="flag-icon flag-icon-us flag-icon-squared"></span>
+				
+
+				English
+
+			</a>
+		
+			<a 
+				 class="dropdown-item text-primary"
+				 
+				href=" /Akeneo-Bundle/fr/start "
+				>
+				
+					<span class="flag-icon flag-icon-fr"></span>
+				
+
+				Français
+
+			</a>
+		
+	</div>
+</div>
+
+
+
+<!-- End Languages Selector -->
+</div>
+        
+	</div>
+</header>
+<!-- End Page Header -->
+        
+
+
+<!-- 
+        <header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/Akeneo-Bundle/">Akeneo Connector</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/Akeneo-Bundle/start/composer">Install</a><a class="page-link" href="/Akeneo-Bundle/docs/intro">Introduction</a><a class="page-link" href="/Akeneo-Bundle/docs/configuration">Main Configuration</a><a class="page-link" href="/Akeneo-Bundle/start/setup">Configure the Bundle</a><a class="page-link" href="/Akeneo-Bundle/start/enable">Enable the Bundle</a><a class="page-link" href="/Akeneo-Bundle/faq/splash">Questions about Splash Sync</a><a class="page-link" href="/Akeneo-Bundle/about.html">About</a><a class="page-link" href="/Akeneo-Bundle/documentation">Documentation</a><a class="page-link" href="/Akeneo-Bundle/faq">Faq</a><a class="page-link" href="/Akeneo-Bundle/manifest">Manifest</a><a class="page-link" href="/Akeneo-Bundle/objects">Objects</a><a class="page-link" href="/Akeneo-Bundle/start">Quick Start</a></div>
+      </nav></div>
+</header>
+ --><div class="doc-wrapper">
+        <div class="container">
+          <div id="doc-header" class="doc-header text-center">
+    <h1 class="doc-title"><i class="icon fa fa-paper-plane"></i>&nbsp;Quick Start</h1>
+    <div class="meta">How to install this module</div>
+</div>
+
+
+<div class="doc-body row">
+
+	<!-- Doc Content -->    
+    <div class="doc-content col-md-9 col-12 order-1">
+        <div class="content-inner">
+
+
+
+
+
+	
+
+    
+
+      	
+
+
+			<!--Doc Section-->
+			<section id="install" class="doc-section">
+
+			    <h2 class="section-title">Install</h2>
+			    
+			    <div class="section-block lightbox-content">
+			    	<h3 id="install-via-composer">Install via Composer</h3>
+
+<p>Download Akeneo-Bundle and its dependencies to the vendor directory. You can use Composer for the automated process:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>php composer.phar require splash/akeneo-bundle
+</code></pre></div></div>
+
+<p>Composer will install the bundle to <code class="highlighter-rouge">vendor/splash/akeneo-bundle</code> directory.</p>
+
+			    </div>
+
+			</section>
+			<!--End Doc Section-->
+
+		
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+
+			<!--Doc Section-->
+			<section id="configure-the-bundle" class="doc-section">
+
+			    <h2 class="section-title">Configure the Bundle</h2>
+			    
+			    <div class="section-block lightbox-content">
+			    	<h3 id="add-configuration-for-your-server">Add configuration for your Server</h3>
+
+<p>Once you have created your server on Splash account, you can setup your application to work with it.</p>
+
+<p>Here is a default configuration.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/config.yml</span>
+<span class="na">splash</span><span class="pi">:</span>
+    <span class="na">connections</span><span class="pi">:</span>
+        <span class="na">akeneo</span><span class="pi">:</span>    
+            <span class="na">name</span><span class="pi">:</span>           <span class="s">Akeneo for Splash</span>
+            <span class="na">id</span><span class="pi">:</span>             <span class="s">ThisIsSplashWsId</span>
+            <span class="na">key</span><span class="pi">:</span>            <span class="s">ThisIsYourEncryptionKeyForSplash</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">locale</span><span class="pi">:</span>         <span class="s">en_US</span>
+                <span class="na">channel</span><span class="pi">:</span>        <span class="s">ecommerce</span>
+                <span class="na">currency</span><span class="pi">:</span>       <span class="s">EUR</span>
+                <span class="na">images</span><span class="pi">:</span>         <span class="pi">[</span><span class="s1">'</span><span class="s">image'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">variation_image'</span><span class="pi">]</span>
+                <span class="na">infos</span><span class="pi">:</span>
+                    <span class="na">logo</span><span class="pi">:</span>       <span class="s">https://akeneo.exemple.com/bundles/pimui/images/info-user.png</span>
+</code></pre></div></div>
+
+<p>More details on configuration &amp; options in the main documentation.</p>
+
+<h3 id="add-splash-routing">Add Splash Routing</h3>
+
+<p>In order to access your server, we need add specific routes in Symfony configuration.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/routing.yml</span>
+<span class="na">splash_ws</span><span class="pi">:</span>
+    <span class="na">resource</span><span class="pi">:</span> <span class="s2">"</span><span class="s">@SplashBundle/Resources/config/routing.yml"</span>
+    <span class="na">prefix</span><span class="pi">:</span> <span class="s">/ws</span>
+</code></pre></div></div>
+
+<p>You can customize the path were splash routes are located, but take care of the impacts on rest of the configuration process.</p>
+
+<h3 id="enable-public-access-for-splash-routes">Enable Public Access for Splash Routes</h3>
+
+<p>By default, all access to Akeneo are done after authentification. 
+Splash requires a public access to webservices routes, so we need to create a dedicated firewall.</p>
+
+<p>To do that, create a new firewall in Symfony security.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/security.yml</span>
+<span class="na">security</span><span class="pi">:</span>
+    <span class="na">firewalls</span><span class="pi">:</span>
+<span class="err">	</span>    <span class="c1"># Public Access to Webservices Urls</span>
+<span class="err">	</span>    <span class="na">splash</span><span class="pi">:</span>
+<span class="err">	</span>        <span class="na">pattern</span><span class="pi">:</span>                        <span class="s">^/ws/splash$</span>
+<span class="err">	</span>        <span class="na">security</span><span class="pi">:</span>                       <span class="no">false</span>
+<span class="err">	</span>        <span class="na">stateless</span><span class="pi">:</span>                      <span class="no">true</span>
+
+<span class="err">	</span>    <span class="c1"># !! Make sure this firewall is set before the main firewall. !!</span>
+<span class="err">	</span>    <span class="na">main</span><span class="pi">:</span>
+<span class="err">	</span>        <span class="na">pattern</span><span class="pi">:</span>                        <span class="s">^/</span>
+<span class="err">	</span>        <span class="na">provider</span><span class="pi">:</span>                       <span class="s">chain_provider</span>
+</code></pre></div></div>
+
+			    </div>
+
+			</section>
+			<!--End Doc Section-->
+
+		
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+
+			<!--Doc Section-->
+			<section id="enable-the-bundle" class="doc-section">
+
+			    <h2 class="section-title">Enable the Bundle</h2>
+			    
+			    <div class="section-block lightbox-content">
+			    	<h3 id="activate-splash-bundle-in-your-app-kernel">Activate Splash Bundle in your App Kernel</h3>
+
+<p>Now that bundle is installed and configured, you have to activate it on Symfony Kernel.</p>
+
+<p>Two bundles needs to be activated, your Akeneo Bundle, plus our fundation bundle for Symfony.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="cd">/**
+     * Registers your custom bundles
+     *
+     * @return array
+     */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">registerProjectBundles</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="k">new</span> <span class="nx">\Splash\Bundle\SplashBundle</span><span class="p">(),</span>
+            <span class="k">new</span> <span class="nx">\Splash\Akeneo\SplashAkeneoBundle</span><span class="p">(),</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="clear-cache--restart-your-application">Clear Cache &amp; Restart your application</h3>
+
+<p>To ensure changes are done, you need to flush the cache.</p>
+
+<p>Diplomatic method…</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>php bin/console <span class="nt">--env</span><span class="o">=</span>prod cache:clear <span class="nt">--no-warmup</span>
+</code></pre></div></div>
+
+<p>Less Diplomatic method…</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">rm</span> <span class="nt">-Rf</span> var/cache/<span class="k">*</span>
+</code></pre></div></div>
+
+<h3 id="test--declare-your-server">Test &amp; Declare your server</h3>
+
+<p>At this step, your akeneo application should work normaly!</p>
+
+<p>Let’s check Splash is correctly installed &amp; declare our server configuration to Splash.</p>
+
+<p>In your browser, go to <strong>https://akeneo.exemple.com/ws/splash?node=ThisIsSplashWsId</strong></p>
+
+<p><img src="/Akeneo-Bundle/assets/img/server-test-ok.png" alt="" /></p>
+
+<blockquote>
+  <p>This must work even if you are disconnected from Akeneo.</p>
+</blockquote>
+
+<h3 id="see-more-details-">See more details ?</h3>
+
+<p>Now sign in Akeneo, and go to <strong>https://akeneo.exemple.com/ws/splash-test?node=ThisIsSplashWsId</strong></p>
+
+<p><img src="/Akeneo-Bundle/assets/img/server-details.png" alt="" /></p>
+
+<div class="warning">
+	This must work <b>only</b> if you are connected to Akeneo.
+</div>
+
+			    </div>
+
+			</section>
+			<!--End Doc Section-->
+
+		
+
+		
+
+	
+
+	
+
+    
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+	
+
+    
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+      	
+
+		
+
+	
+
+	
+
+    
+
+	
+
+    
+
+</div>
+    </div>
+	<!-- End Doc Content -->    
+
+	<!-- Doc Sidebar -->    
+    <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+        <div id="doc-nav" class="doc-nav">
+
+<!-- Documentations Menu -->
+<nav id="doc-menu" class="nav doc-menu flex-column sticky">
+
+<div class="h5 block-title mt-5 text-green">Quick Start</div>
+
+      
+      
+      
+        
+        
+
+          
+            <a class="nav-link scrollto" 
+              href="#install">
+              Install
+            </a>
+          
+
+          
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+
+          
+            <a class="nav-link scrollto" 
+              href="#configure-the-bundle">
+              Configure the Bundle
+            </a>
+          
+
+          
+        
+      
+        
+        
+
+          
+            <a class="nav-link scrollto" 
+              href="#enable-the-bundle">
+              Enable the Bundle
+            </a>
+          
+
+          
+        
+      
+        
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+
+          
+
+          
+        
+      
+        
+        
+      
+        
+        
+      
+      
+
+</nav>
+<!--End Documentations Menu -->
+
+</div>
+    </div>
+    <!-- End Doc Sidebar -->    
+
+</div>
+        </div>
+      </div>
+
+    </div>
+<!--Main Footer-->
+<footer id="footer" class="footer text-center">
+    <div class="container">
+
+        <!--/* 
+          This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. 
+          Thank you for your support. :) 
+          If you'd like to use the template without the attribution, you can buy the commercial license via our website: themes.3rdwavemedia.com 
+          */-->
+          
+        <small class="copyright">
+          © Splash Sync 2017-2019
+          |
+          Designed with <i class="fas fa-heart"></i> by <a href="https://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a>
+        </small>
+        
+    </div>
+</footer>
+<!--End Main Footer-->
+<!-- MAIN JAVASCRIPTS -->  
+
+<!-- jQuery -->
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap 5 JS -->
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- jQuery ScrollTo Plugin-->
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/jquery-scrollTo/dist/jquery-scrollTo.min.js"></script>      
+
+<!-- Ekko LightBox -->    
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/ekko-lightbox/dist/ekko-lightbox.min.js"></script>      
+
+<!-- Datatables -->    
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>      
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>      
+
+<!-- Theme JS -->
+<script type="text/javascript" src="/Akeneo-Bundle/assets/js/main.js"></script>
+
+<!-- PrismJs JS (Syntax Highlighter) -->    
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/prismjs/components/prism-core.min.js"></script>    
+<script type="text/javascript" src="/Akeneo-Bundle/assets/vendor/prismjs/plugins/autoloader/prism-autoloader.min.js"></script>    
+
+<!-- End MAIN JAVASCRIPTS --> 
+</body>
+  
+</html>

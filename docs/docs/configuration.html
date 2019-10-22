@@ -1,0 +1,64 @@
+<h3 id="change-default-locale">Change default Locale</h3>
+
+<p>You can change main locale used by Splash Module for fields definition and synchronization.</p>
+
+<p>Other available languages will remain available, but with indexed tags that may no be available for opther applications.</p>
+
+<p>Whatever, all available languages will be accessible with Splash.</p>
+
+<p>Default language is set here:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/config.yml</span>
+
+<span class="na">splash</span><span class="pi">:</span>
+    <span class="na">connections</span><span class="pi">:</span>
+        <span class="na">akeneo</span><span class="pi">:</span>    
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">locale</span><span class="pi">:</span>         <span class="s">en_US</span>
+</code></pre></div></div>
+
+<h3 id="select-the-channel-to-use">Select the channel to use</h3>
+
+<p>Each connection with Splash uses data of a single channel. Attributes values of other channels won’t be impacted by Splash.</p>
+
+<p>By default, Splash will connect to ecommerce channel, available in Akeneo demo fixtures.</p>
+
+<p>You can change this parameter here:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/config.yml</span>
+
+<span class="na">splash</span><span class="pi">:</span>
+    <span class="na">connections</span><span class="pi">:</span>
+        <span class="na">akeneo</span><span class="pi">:</span>    
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">channel</span><span class="pi">:</span>        <span class="s">ecommerce</span>
+</code></pre></div></div>
+
+<h3 id="select-your-default-currency">Select your default currency</h3>
+
+<p>By default, Splash will use Euro, feel free to change to your default currency.</p>
+
+<p>You can change this parameter here:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/config.yml</span>
+<span class="na">splash</span><span class="pi">:</span>
+    <span class="na">connections</span><span class="pi">:</span>
+        <span class="na">akeneo</span><span class="pi">:</span>    
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">currency</span><span class="pi">:</span>       <span class="s">EUR</span>
+</code></pre></div></div>
+
+<h3 id="select-attributes-used-for-product-images-gallery">Select attributes used for product images gallery</h3>
+
+<p>If you want to synchronize your Products Images with other platforms through Splash. 
+You have to tell the bundle which attribute will be used for populating the image gallery.</p>
+
+<p>You can setup the image gallery here:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/config.yml</span>
+<span class="na">splash</span><span class="pi">:</span>
+    <span class="na">connections</span><span class="pi">:</span>
+        <span class="na">akeneo</span><span class="pi">:</span>    
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">images</span><span class="pi">:</span>         <span class="pi">[</span><span class="s1">'</span><span class="s">image'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">variation_image'</span><span class="pi">]</span>
+</code></pre></div></div>

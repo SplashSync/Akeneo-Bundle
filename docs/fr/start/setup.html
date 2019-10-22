@@ -1,0 +1,57 @@
+<h3 id="ajouter-une-configuration-pour-votre-serveur">Ajouter une configuration pour votre serveur</h3>
+
+<p>Une fois que vous avez créé votre serveur sur un compte Splash, vous pouvez configurer votre application pour l’utiliser avec.</p>
+
+<p>Voici une configuration par défaut.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/config.yml</span>
+<span class="na">splash</span><span class="pi">:</span>
+    <span class="na">connections</span><span class="pi">:</span>
+        <span class="na">akeneo</span><span class="pi">:</span>    
+            <span class="na">name</span><span class="pi">:</span>           <span class="s">Akeneo for Splash</span>
+            <span class="na">id</span><span class="pi">:</span>             <span class="s">ThisIsSplashWsId</span>
+            <span class="na">key</span><span class="pi">:</span>            <span class="s">ThisIsYourEncryptionKeyForSplash</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="na">locale</span><span class="pi">:</span>         <span class="s">en_US</span>
+                <span class="na">channel</span><span class="pi">:</span>        <span class="s">ecommerce</span>
+                <span class="na">currency</span><span class="pi">:</span>       <span class="s">EUR</span>
+                <span class="na">images</span><span class="pi">:</span>         <span class="pi">[</span><span class="s1">'</span><span class="s">image'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">variation_image'</span><span class="pi">]</span>
+                <span class="na">infos</span><span class="pi">:</span>
+                    <span class="na">logo</span><span class="pi">:</span>       <span class="s">https://akeneo.exemple.com/bundles/pimui/images/info-user.png</span>
+</code></pre></div></div>
+
+<p>Plus de détails sur la configuration et les options dans la documentation principale.</p>
+
+<h3 id="ajouter-les-routes-splash">Ajouter les routes Splash</h3>
+
+<p>Pour accéder à votre serveur, nous devons ajouter des routes spécifiques dans la configuration de Symfony.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/routing.yml</span>
+<span class="na">splash_ws</span><span class="pi">:</span>
+    <span class="na">resource</span><span class="pi">:</span> <span class="s2">"</span><span class="s">@SplashBundle/Resources/config/routing.yml"</span>
+    <span class="na">prefix</span><span class="pi">:</span> <span class="s">/ws</span>
+</code></pre></div></div>
+
+<p>Vous pouvez personnaliser le chemin où se trouvent les routes de Splash, mais vous devez vous soucier des répercussions sur le reste du processus de configuration.</p>
+
+<h3 id="activer-laccès-public-pour-les-routes-splash">Activer l’accès public pour les routes Splash</h3>
+
+<p>Par défaut, tous les accès à Akeneo sont effectués après authentification.
+Splash nécessite un accès public aux routes du web-service. Nous devons donc créer un pare-feu dédié.</p>
+
+<p>Pour ce faire, créez un nouveau pare-feu dans Symfony Security.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/config/security.yml</span>
+<span class="na">security</span><span class="pi">:</span>
+    <span class="na">firewalls</span><span class="pi">:</span>
+<span class="err">	</span>    <span class="c1"># Public Access to Webservices Urls</span>
+<span class="err">	</span>    <span class="na">splash</span><span class="pi">:</span>
+<span class="err">	</span>        <span class="na">pattern</span><span class="pi">:</span>                        <span class="s">^/ws/splash$</span>
+<span class="err">	</span>        <span class="na">security</span><span class="pi">:</span>                       <span class="no">false</span>
+<span class="err">	</span>        <span class="na">stateless</span><span class="pi">:</span>                      <span class="no">true</span>
+
+<span class="err">	</span>    <span class="c1"># !! Make sure this firewall is set before the main firewall. !!</span>
+<span class="err">	</span>    <span class="na">main</span><span class="pi">:</span>
+<span class="err">	</span>        <span class="na">pattern</span><span class="pi">:</span>                        <span class="s">^/</span>
+<span class="err">	</span>        <span class="na">provider</span><span class="pi">:</span>                       <span class="s">chain_provider</span>
+</code></pre></div></div>
