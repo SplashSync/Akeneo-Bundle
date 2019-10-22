@@ -9,10 +9,10 @@ Splash Php Bundle for Akeneo PIM.
 This module implement Splash Sync connector for Akeneo. 
 It provide access to Products Objects for automated synchonisation though Splash Sync dedicated protocol.
 
-[![Build Status](https://travis-ci.org/SplashSync/Prestashop.svg?branch=master)](https://travis-ci.org/SplashSync/Akeneo-Bundle)
-[![Latest Stable Version](https://poser.pugx.org/splash/prestashop/v/stable)](https://packagist.org/packages/splash/akeneo-bundle)
-[![Latest Unstable Version](https://poser.pugx.org/splash/prestashop/v/unstable)](https://packagist.org/packages/splash/akeneo-bundle)
-[![License](https://poser.pugx.org/splash/prestashop/license)](https://packagist.org/packages/splash/akeneo-bundle)
+[![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=master)](https://travis-ci.org/SplashSync/Akeneo-Bundle)
+[![Latest Stable Version](https://poser.pugx.org/splash/akeneo-bundle/v/stable)](https://packagist.org/packages/splash/akeneo-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/splash/akeneo-bundle/v/unstable)](https://packagist.org/packages/splash/akeneo-bundle)
+[![License](https://poser.pugx.org/splash/akeneo-bundle/license)](https://packagist.org/packages/splash/akeneo-bundle)
 
 ## Installation via Composer
 
