@@ -26,6 +26,8 @@ use Splash\Client\Splash;
 
 /**
  * Splash Product Object
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Product extends AbstractStandaloneObject
 {
