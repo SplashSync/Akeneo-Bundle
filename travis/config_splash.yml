@@ -7,7 +7,7 @@ splash:
             key:            ThisIsYourEncryptionKeyForSplash
             host:           http://toolkit.akeneo.local/ws/soap
             config:
-                local:          fr_FR
+                locale:         en_US
                 travis:         true
     test:
         VAT:                0
