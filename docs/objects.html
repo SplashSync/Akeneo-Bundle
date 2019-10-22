@@ -165,6 +165,7358 @@
     <div class="doc-content col-12">
         <div class="content-inner">
 
+
+
+<ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
+
+	
+	<li class="nav-item">
+	    <a 
+	    	class="nav-link active" 
+	    	id="pills-product-tab" data-toggle="pill" href="#pills-product" role="tab" 
+	    	aria-controls="pills-home" aria-selected="true">
+	    	Product
+	    </a>
+	</li>
+	
+
+</ul>
+
+<div class="tab-content" id="pills-tabObjects">
+
+	
+
+		<div 
+			class="tab-pane fade doc-section show active" 
+			id="pills-product" 
+			role="tabpanel" aria-labelledby="pills-product-tab">
+<h2 class="section-title">Definition</h2>
+<!-- <p>Description</p> -->
+<br />
+
+<table class="table table-bordered table-compact" style="width:100%">
+
+	<tr>
+		<td width="20%"><strong>Canonical Type</strong></td>
+		<td width="30%">Product</td>
+		<td width="20%"><strong>Objects Name</strong></td>
+		<td width="30%">Product</td>
+	</tr>
+
+	<tr>
+		<td width="20%"><strong>Description</strong></td>
+		<td colspan="3">Akeneo Product Object</td>
+	</tr>
+
+	<tr>
+		<td width="25%"><strong>Capabilities</strong></td>
+		
+		
+
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Allow Push Created"
+		data-content="Splash can create this type of Objects on remote Server."
+		data-trigger="click | hover"
+		>
+
+	
+		<i class="fas fa-check-double text-success"></i>
+		
+
+	Allow Push Created
+	
+</span>
+			</td>
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Allow Push Updated"
+		data-content="Splash can update this type of Objects on remote Server."
+		data-trigger="click | hover"
+		>
+
+	
+		<i class="fas fa-check-double text-success"></i>
+		
+
+	Allow Push Updated
+	
+</span>
+			</td>
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Allow Push Deleted"
+		data-content="Splash can delete this type of Objects on remote Server."
+		data-trigger="click | hover"
+		>
+
+	
+		<i class="fas fa-check-double text-success"></i>
+		
+
+	Allow Push Deleted
+	
+</span>
+			</td>
+	    
+
+	</tr>
+
+</table>
+
+<h2 class="section-title">Default Configuration</h2>
+<p>Default Sync options when you first connect this server.</p>
+
+
+<table class="table table-bordered table-compact" style="width:100%">
+
+	<tr>
+		<td width="25%"><strong>Imports</strong></td>
+		
+		
+
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Pull Created"
+		data-content="Import all objects created on this Server. <br /> i.e. if you create a new Product on this server, shall we import it on you Splash Account."
+		data-trigger="click | hover"
+		>
+
+	
+		<i class="fas fa-check-double text-success"></i>
+		
+
+	Pull Created
+	
+</span>
+			</td>
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Pull Update"
+		data-content="Import updates done on this Server. <br /> Shall Splash import modifications done on this server."
+		data-trigger="click | hover"
+		>
+
+	
+		<i class="fas fa-check-double text-success"></i>
+		
+
+	Pull Update
+	
+</span>
+			</td>
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Pull Deleted"
+		data-content="Delete Cloud objects when deleted from this Server. <br /> When you delete an Object on remote server, shall Splash also delete existing objects on other servers."
+		data-trigger="click | hover"
+		>
+
+	
+		<i class="fas fa-check-double text-success"></i>
+		
+
+	Pull Deleted
+	
+</span>
+			</td>
+	    
+
+	</tr>
+
+	<tr>
+		<td width="25%"><strong>Exports</strong></td>
+		
+		
+
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Push Created"
+		data-content="Export objects to this Server when created on Cloud. <br /> When an object is created or updated from <b>another</b> server. If this object doesn't exist on this server, shall we create it ?"
+		data-trigger="click | hover"
+		>
+
+		
+		<i class="fas fa-times text-danger"></i>
+		
+
+	Push Created
+	
+</span>
+			</td>
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Push Updated"
+		data-content="Export updates when updated on Cloud. <br /> Shall Splash update data on this server when changes are done on other servers."
+		data-trigger="click | hover"
+		>
+
+		
+		<i class="fas fa-times text-danger"></i>
+		
+
+	Push Updated
+	
+</span>
+			</td>
+	    
+			<td width="25%">
+				
+
+<span 	data-toggle="popover" data-placement="top" data-html="true" 
+		title="Push Deleted"
+		data-content="Delete objects on this Server when deleted on Cloud. <br /> When an Object is deleted on Splash, shall we also delete it from this server."
+		data-trigger="click | hover"
+		>
+
+		
+		<i class="fas fa-times text-danger"></i>
+		
+
+	Push Deleted
+	
+</span>
+			</td>
+	    
+
+	</tr>
+
+</table>
+
+
+<h2 class="section-title">Available Fields</h2>
+<!-- <p>Detailled definition of this Object Fields</p> -->
+
+<div class="table-responsive">
+	<table id="table-product" class="table table-striped table-bordered table-sm display compact stripe datatable" style="width:100%">
+
+		<thead>
+    <tr>
+        <th>Name</th>
+        <th>Identifier</th>
+        <th>Flags</th>
+        <th>Data Format</th>
+        <th width="25%">Field Description</th>
+    </tr>
+</thead><tbody>
+
+    
+
+            <tr>
+                <td>Creation Date</td>
+                <td>created</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="datetime"
+				         		title="<h5>DateTime</h5>Date / SQL TimeStamp (Fixed format Y-m-d G:i:s)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-clock"></i>
+			                    &nbsp;DATETIME
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Creation Date</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Updated Date</td>
+                <td>updated</td>
+                <td>
+
+				    
+
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>In List</h5>This field is returned in list requests. It may also be used for automated Objects linking.">
+				            <span class="badge badge-success p-1">
+				            	<i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="datetime"
+				         		title="<h5>DateTime</h5>Date / SQL TimeStamp (Fixed format Y-m-d G:i:s)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-clock"></i>
+			                    &nbsp;DATETIME
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Updated Date</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Product SKU</td>
+                <td>identifier</td>
+                <td>
+
+				    
+
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>In List</h5>This field is returned in list requests. It may also be used for automated Objects linking.">
+				            <span class="badge badge-success p-1">
+				            	<i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Product SKU</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Enabled</td>
+                <td>enabled</td>
+                <td>
+
+				    
+
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>In List</h5>This field is returned in list requests. It may also be used for automated Objects linking.">
+				            <span class="badge badge-success p-1">
+				            	<i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Enabled</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Family Code</td>
+                <td>family_code</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Family Code</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Family Name</td>
+                <td>family_label</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Family Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Family Variant Code</td>
+                <td>family_variant_code</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Family Variant Code</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Label</td>
+                <td>label_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Label</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Product Name</td>
+                <td>label_with_options_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Product Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>DEFAULT Description</td>
+                <td>default_desc_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>DEFAULT Description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Label</td>
+                <td>label</td>
+                <td>
+
+				    
+
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>In List</h5>This field is returned in list requests. It may also be used for automated Objects linking.">
+				            <span class="badge badge-success p-1">
+				            	<i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Label</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Product Name</td>
+                <td>label_with_options</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Product Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>DEFAULT Description</td>
+                <td>default_desc</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>DEFAULT Description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Label</td>
+                <td>label_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Label</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Product Name</td>
+                <td>label_with_options_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Product Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>DEFAULT Description</td>
+                <td>default_desc_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>DEFAULT Description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Is Variant</td>
+                <td>variant</td>
+                <td>
+
+				    
+
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>In List</h5>This field is returned in list requests. It may also be used for automated Objects linking.">
+				            <span class="badge badge-success p-1">
+				            	<i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Is Variant</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Parent Model ID</td>
+                <td>parent</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Parent Model ID</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variants</td>
+                <td>id@variants</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+					    <!-- Objects Identifier Fields Format Block -->
+					  	
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="objectid::Product"
+				         		data-content="<h5>Identifier</h5> This field is used to identify links between objects on remote server. Objects links are 'translated' by Splash during synchronization.">
+				            <span class="badge badge-primary p-1">
+				                <i class="fa fa-tag"></i>
+			                    &nbsp;Product
+				            </span>
+				        </span>
+				    	<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Variants</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variant SKU</td>
+                <td>sku@variants</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Variant SKU</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variation Code</td>
+                <td>code@attributes</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Variation Code</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Attribute Name</td>
+                <td>label_de_DE@attributes</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Attribute Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Attribute Name</td>
+                <td>label@attributes</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Attribute Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Attribute Name</td>
+                <td>label_fr_FR@attributes</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Attribute Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Attribute Value</td>
+                <td>value@attributes</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Attribute Value</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Image</td>
+                <td>image@images</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Read-Only</h5>This field is read-only, cannot be written via webservice.">
+				            <span class="badge badge-info p-1">
+				            	<i class="fa fa-key"></i>
+				            </span>
+				        </span>
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="image"
+				         		title="<h5>Image</h5> Image description structure. Share all information for image synchronisation. Image is not attached, but address, dimensions & checksum infomations are used for versionning.">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-picture-o"></i>
+			                    &nbsp;IMG
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Image</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Position</td>
+                <td>position@images</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Position</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Cover</td>
+                <td>cover@images</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Cover</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Visible</td>
+                <td>visible@images</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+						
+						
+
+						<!-- Objects Identifier Fields Format Block -->
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true"  data-type="list"
+				        		title="<h5>List</h5> Fields list. Structure a list of sub-fields set.">
+				            <span class="badge badge-success p-1">
+				                <i class="fa fa-list"></i>
+				            </span>
+				        </span>
+				        &nbsp;>&nbsp;
+						<!-- End Objects Identifier Fields Format Block -->
+
+				    
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>Visible</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>SKU</td>
+                <td>sku</td>
+                <td>
+
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Requied</h5>This field is required for creation of a new object. If empty new object won't be exported to this server."
+				        		>
+				            <span class="badge badge-danger p-1">
+				            	<i class="fa fa-exclamation-triangle"></i>
+				            </span>
+				        </span>
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[ERP] SKU</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Name</td>
+                <td>name</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Beschreibung</td>
+                <td>description_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Beschreibung</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Description</td>
+                <td>description</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Description</td>
+                <td>description_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Response time (ms)</td>
+                <td>response_time</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Response time (ms)</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Release date</td>
+                <td>release_date</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="date"
+				         		title="<h5>Calendar Date</h5>Calendar Date / SQL TimeStamp (Fixed format Y-m-d)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-clock"></i>
+			                    &nbsp;DATE
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Release date</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Price</td>
+                <td>price</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="price"
+				         		title="<h5>Price Definition </h5> Define a product / service price. This is a structural information.">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-money"></i>
+			                    &nbsp;PRICE
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[ERP] Price</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Weight</td>
+                <td>weight</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="double"
+				         		title="<h5>Double</h5>Signed Float Number">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-signal"></i>
+			                    &nbsp;DOUBLE
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Weight</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Maximum scan size</td>
+                <td>maximum_scan_size</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Maximum scan size</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Color scanning</td>
+                <td>color_scanning</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Color scanning</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Power requirements</td>
+                <td>power_requirements</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Power requirements</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Maximum print size</td>
+                <td>maximum_print_size</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Maximum print size</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Sensor type</td>
+                <td>sensor_type</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Sensor type</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Total megapixels</td>
+                <td>total_megapixels</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Total megapixels</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Optical zoom</td>
+                <td>optical_zoom</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Optical zoom</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Image stabilizer</td>
+                <td>image_stabilizer</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Image stabilizer</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Camera type</td>
+                <td>camera_type</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Camera type</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Total Harmonic Distortion (THD)</td>
+                <td>thd</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Total Harmonic Distortion (THD)</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Signal-to-Noise Ratio (SNR)</td>
+                <td>snr</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Signal-to-Noise Ratio (SNR)</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Headphone connectivity</td>
+                <td>headphone_connectivity</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Headphone connectivity</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Maximum video resolution</td>
+                <td>maximum_video_resolution</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Maximum video resolution</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Maximum frame rate</td>
+                <td>maximum_frame_rate</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Maximum frame rate</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Display sRGB</td>
+                <td>display_srgb</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Display sRGB</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Display Color</td>
+                <td>display_color</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Display Color</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Display diagonal</td>
+                <td>display_diagonal</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Display diagonal</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Effective viewing area</td>
+                <td>viewing_area</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Effective viewing area</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Brand</td>
+                <td>camera_brand</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Brand</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Model name</td>
+                <td>camera_model_name</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Model name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Kurze Beschreibung</td>
+                <td>short_description_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technische] Kurze Beschreibung</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Short description</td>
+                <td>short_description</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Short description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Description courte</td>
+                <td>short_description_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technique] Description courte</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Maximum image resolution</td>
+                <td>max_image_resolution</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Maximum image resolution</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Still image resolution(s)</td>
+                <td>image_resolutions</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Still image resolution(s)</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Supported aspect ratios</td>
+                <td>supported_aspect_ratios</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Supported aspect ratios</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Supported image format</td>
+                <td>supported_image_format</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Supported image format</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Lens mount interface</td>
+                <td>lens_mount_interface</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Lens mount interface</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Focus</td>
+                <td>focus</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Focus</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Fokus-Apassung</td>
+                <td>focus_adjustement_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technische] Fokus-Apassung</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Focus adjustment</td>
+                <td>focus_adjustement</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Focus adjustment</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Ajustement mise au point</td>
+                <td>focus_adjustement_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technique] Ajustement mise au point</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Auto focus modes</td>
+                <td>auto_focus_modes_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technische] Auto focus modes</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Auto focus modes</td>
+                <td>auto_focus_modes</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Auto focus modes</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Auto focus modes</td>
+                <td>auto_focus_modes_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technique] Auto focus modes</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Auto focus points</td>
+                <td>auto_focus_points</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Auto focus points</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Auto focus lock</td>
+                <td>auto_focus_lock</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Auto focus lock</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Auto focus beam</td>
+                <td>auto_focus_assist_beam</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Auto focus beam</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Iso sensitivity</td>
+                <td>iso_sensitivity</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Iso sensitivity</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Light exposure modes</td>
+                <td>light_exposure_modes_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technische] Light exposure modes</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Light exposure modes</td>
+                <td>light_exposure_modes</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Light exposure modes</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Light exposure modes</td>
+                <td>light_exposure_modes_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technique] Light exposure modes</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Light exposure corrections</td>
+                <td>light_exposure_corrections</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Light exposure corrections</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Light metering</td>
+                <td>light_metering_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technische] Light metering</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Light metering</td>
+                <td>light_metering</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Light metering</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Light metering</td>
+                <td>light_metering_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technique] Light metering</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Auto exposure</td>
+                <td>auto_exposure</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="bool"
+				         		title="<h5>Boolean</h5>Boolean Number (1/0 or True/False)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-toggle-on"></i>
+			                    &nbsp;BOOL
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] Auto exposure</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>ISO sensitivity (max)</td>
+                <td>iso_sensitivity_max</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] ISO sensitivity (max)</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>ISO sensitivity (min)</td>
+                <td>iso_sensitivity_min</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="int"
+				         		title="<h5>Integer</h5>Signed Integer">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-calculator"></i>
+			                    &nbsp;INT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Technical] ISO sensitivity (min)</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Picture</td>
+                <td>picture</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="image"
+				         		title="<h5>Image</h5> Image description structure. Share all information for image synchronisation. Image is not attached, but address, dimensions & checksum infomations are used for versionning.">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-picture-o"></i>
+			                    &nbsp;IMG
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Media] Picture</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Container material</td>
+                <td>container_material</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Manufacturing] Container material</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>T-Shirt material</td>
+                <td>tshirt_materials</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Manufacturing] T-Shirt material</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Main color</td>
+                <td>main_color</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Color] Main color</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Secondary color</td>
+                <td>secondary_color</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Color] Secondary color</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Clothing size</td>
+                <td>clothing_size</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Size] Clothing size</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>ERP-Produktname</td>
+                <td>erp_name_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[ERP] ERP-Produktname</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>ERP name</td>
+                <td>erp_name</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[ERP] ERP name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Nom ERP</td>
+                <td>erp_name_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[ERP] Nom ERP</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Meta title</td>
+                <td>meta_title_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Meta title</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Meta title</td>
+                <td>meta_title</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Meta title</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Meta titre</td>
+                <td>meta_title_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Meta titre</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Meta description</td>
+                <td>meta_description_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Meta description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Meta description</td>
+                <td>meta_description</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Meta description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Meta description</td>
+                <td>meta_description_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Meta description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Keywords</td>
+                <td>keywords_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Keywords</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Keywords</td>
+                <td>keywords</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Keywords</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Mots clés</td>
+                <td>keywords_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Ecommerce] Mots clés</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Model picture</td>
+                <td>image</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="image"
+				         		title="<h5>Image</h5> Image description structure. Share all information for image synchronisation. Image is not attached, but address, dimensions & checksum infomations are used for versionning.">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-picture-o"></i>
+			                    &nbsp;IMG
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Media] Model picture</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variant Name</td>
+                <td>variation_name_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Variant Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variant Name</td>
+                <td>variation_name</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Variant Name</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Nom de la variante</td>
+                <td>variation_name_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Nom de la variante</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variant beschreibung</td>
+                <td>variation_description_de_DE</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Variant beschreibung</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variant description</td>
+                <td>variation_description</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Variant description</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Description de la variante</td>
+                <td>variation_description_fr_FR</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Description de la variante</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Variant picture</td>
+                <td>variation_image</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="image"
+				         		title="<h5>Image</h5> Image description structure. Share all information for image synchronisation. Image is not attached, but address, dimensions & checksum infomations are used for versionning.">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-picture-o"></i>
+			                    &nbsp;IMG
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Media] Variant picture</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Composition</td>
+                <td>composition</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Composition</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Wash temperature</td>
+                <td>wash_temperature</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Wash temperature</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Care instructions</td>
+                <td>care_instructions</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="text"
+				         		title="<h5>Text</h5>Long text (Above 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-file-text"></i>
+			                    &nbsp;TEXT
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Care instructions</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Color</td>
+                <td>color</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Color</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Size</td>
+                <td>size</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Size</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>EU Shoes Size</td>
+                <td>eu_shoes_size</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] EU Shoes Size</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Sole composition</td>
+                <td>sole_composition</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Sole composition</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Top composition</td>
+                <td>top_composition</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Top composition</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Brand</td>
+                <td>brand</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Marketing] Brand</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>EAN</td>
+                <td>ean</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[ERP] EAN</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Supplier</td>
+                <td>supplier</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[ERP] Supplier</td>
+            </tr>
+
+
+    
+
+            <tr>
+                <td>Material</td>
+                <td>material</td>
+                <td>
+
+				    
+
+				    
+
+				    
+				    
+				    
+				    
+				    
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" 
+				        		title="<h5>Is Tagged</h5>This field is tagged for automated linking.">
+				            <span class="badge badge-warning p-1 text-white">
+				            	<i class="fa fa-bolt"></i>
+				            </span>
+				        </span>
+				    				    
+				    
+                </td>
+                <td>
+                	
+
+
+					
+
+
+					
+
+				    	<!-- General/Simple Objects Fields Format Block -->
+				    	
+
+				        <span 	data-toggle="tooltip" data-placement="top" data-html="true" data-type="varchar"
+				         		title="<h5>Varchar</h5>Short text (Below 255 characters)">
+				            <span class="badge badge-info p-1">
+				                <i class="fa fa-font"></i>
+			                    &nbsp;VARCHAR
+				            </span>
+				        </span>
+					    <!-- End General/Simple Objects Fields Format Block -->
+
+				    
+
+
+                </td>
+                <td>[Product] Material</td>
+            </tr>
+
+
+    
+
+</tbody></table>
+</div></div>
+
+	
+
+</div>
+
+
 </div>
     </div>
 	<!-- End Doc Content -->    
