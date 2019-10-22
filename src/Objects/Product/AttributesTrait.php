@@ -70,12 +70,11 @@ trait AttributesTrait
         if (!$this->variants->isVariantAttribute($this->object, $fieldName)) {
             //====================================================================//
             // Write Data from Attributes Service
-            if(!$this->attr->set($this->object, $fieldName, $fieldData)) {
+            if (!$this->attr->set($this->object, $fieldName, $fieldData)) {
                 return;
             }
         }
 
-        
         unset($this->in[$fieldName]);
     }
 }

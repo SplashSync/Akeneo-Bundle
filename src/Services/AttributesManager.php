@@ -21,9 +21,9 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AbstractAttribute as Attribute;
 use Pim\Component\Catalog\Model\AbstractAttribute as Group;
 use Pim\Component\Catalog\Model\ProductInterface as Product;
-use Splash\Akeneo\Services\FilesManager as Files;
 use Pim\Component\Catalog\Updater\PropertySetter;
 use Splash\Akeneo\Models\TypesConverter;
+use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Components\FieldsFactory;
 use Splash\Core\SplashCore as Splash;
 
@@ -50,6 +50,11 @@ class AttributesManager
      * @var PropertySetter
      */
     protected $setter;
+
+    /**
+     * @var Files
+     */
+    protected $files;
 
     /**
      * Default Scope Code
@@ -87,11 +92,6 @@ class AttributesManager
     private static $attributesKeys;
 
     /**
-     * @var Files
-     */
-    protected $files;
-    
-    /**
      * @var LocalesManager
      */
     private $locales;
@@ -101,7 +101,7 @@ class AttributesManager
      *
      * @param PropertySetter      $setter
      * @param AttributeRepository $attributes
-     * @param Files $files
+     * @param Files               $files
      * @param LocalesManager      $locales
      */
     public function __construct(PropertySetter $setter, AttributeRepository $attributes, Files $files, LocalesManager $locales)
@@ -114,7 +114,7 @@ class AttributesManager
         $this->attrRep = $attributes;
         //====================================================================//
         // Link to Splash Akeneo Files Manager
-        $this->files = $files;        
+        $this->files = $files;
         //====================================================================//
         // Link to Splash Locales Manager
         $this->locales = $locales;
@@ -252,7 +252,7 @@ class AttributesManager
         // Read & Convert Attribute Value
         if (TypesConverter::isSelect($attrType)) {
             return $this->getSelectValue($product, $attr, $iso, $this->getChannel());
-        }               
+        }
         //====================================================================//
         // Read & Convert Attribute Value
         switch (TypesConverter::toSplash($attr)) {
@@ -274,7 +274,7 @@ class AttributesManager
                 return $this->getSelectValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_FILE:
                 return array();
-            case SPL_T_IMG:              
+            case SPL_T_IMG:
                 return $this->getImageValue($product, $attr, $iso, $this->getChannel());
         }
 

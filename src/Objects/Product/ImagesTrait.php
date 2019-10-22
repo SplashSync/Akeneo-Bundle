@@ -142,6 +142,8 @@ trait ImagesTrait
      * Check if Image is Part of Product Galley
      *
      * @param string $attrCode Attribute Code
+     *
+     * @return bool
      */
     protected function isGalleryImage(string $attrCode): bool
     {
@@ -188,8 +190,10 @@ trait ImagesTrait
 
     /**
      * Return Product Images Informations Array from Akeneo Product Object
+     *
+     * @return array
      */
-    private function getImagesCache()
+    private function getImagesCache(): array
     {
         //====================================================================//
         // Get Images Infos From Cache
