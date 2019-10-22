@@ -91,6 +91,7 @@ class AppKernel extends Kernel
     {
         return dirname(__DIR__).DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'logs';
     }
+
     /**
      * Registers your custom bundles
      *
