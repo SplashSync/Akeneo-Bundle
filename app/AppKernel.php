@@ -101,6 +101,7 @@ class AppKernel extends Kernel
     {
         return array(
             new \Splash\Bundle\SplashBundle(),
+            new \Splash\Console\ConsoleBundle(),
             new \Splash\Akeneo\SplashAkeneoBundle(),
         );
     }
