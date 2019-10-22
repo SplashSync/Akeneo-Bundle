@@ -107,7 +107,7 @@ class FilesManager
         }
         //====================================================================//
         // Read Raw File from Splash
-        $rawFile = Splash::file()->getFile($splfile["path"], $splfile["md5"]);
+        $rawFile = Splash::file()->getFile($splfile["path"], $splfile["md5"]);        
         if (!$rawFile) {
             return null;
         }
