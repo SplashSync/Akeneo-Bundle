@@ -21,6 +21,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AbstractAttribute as Attribute;
 use Pim\Component\Catalog\Model\AbstractAttribute as Group;
 use Pim\Component\Catalog\Model\ProductInterface as Product;
+use Splash\Akeneo\Services\FilesManager as Files;
 use Pim\Component\Catalog\Updater\PropertySetter;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Components\FieldsFactory;
@@ -42,6 +43,8 @@ class AttributesManager
     use \Splash\Akeneo\Objects\Product\Attributes\DatesTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\PricesCollectionsTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\SelectTrait;
+    use \Splash\Akeneo\Objects\Product\Attributes\ImagesTrait;
+    use \Splash\Akeneo\Objects\Product\Attributes\FilesTrait;
 
     /**
      * @var PropertySetter
@@ -84,6 +87,11 @@ class AttributesManager
     private static $attributesKeys;
 
     /**
+     * @var Files
+     */
+    protected $files;
+    
+    /**
      * @var LocalesManager
      */
     private $locales;
@@ -93,9 +101,10 @@ class AttributesManager
      *
      * @param PropertySetter      $setter
      * @param AttributeRepository $attributes
+     * @param Files $files
      * @param LocalesManager      $locales
      */
-    public function __construct(PropertySetter $setter, AttributeRepository $attributes, LocalesManager $locales)
+    public function __construct(PropertySetter $setter, AttributeRepository $attributes, Files $files, LocalesManager $locales)
     {
         //====================================================================//
         // Link to Akeneo Product Fields Setter
@@ -103,6 +112,9 @@ class AttributesManager
         //====================================================================//
         // Link to Akeneo Product Attributes Repository
         $this->attrRep = $attributes;
+        //====================================================================//
+        // Link to Splash Akeneo Files Manager
+        $this->files = $files;        
         //====================================================================//
         // Link to Splash Locales Manager
         $this->locales = $locales;
@@ -240,7 +252,7 @@ class AttributesManager
         // Read & Convert Attribute Value
         if (TypesConverter::isSelect($attrType)) {
             return $this->getSelectValue($product, $attr, $iso, $this->getChannel());
-        }
+        }               
         //====================================================================//
         // Read & Convert Attribute Value
         switch (TypesConverter::toSplash($attr)) {
@@ -260,10 +272,10 @@ class AttributesManager
                 return $this->getPriceValue($product, $attr, $iso, $this->getChannel());
             case AttributeTypes::OPTION_SIMPLE_SELECT:
                 return $this->getSelectValue($product, $attr, $iso, $this->getChannel());
-            case AttributeTypes::FILE:
+            case SPL_T_FILE:
                 return array();
-            case AttributeTypes::IMAGE:
-                return array();
+            case SPL_T_IMG:              
+                return $this->getImageValue($product, $attr, $iso, $this->getChannel());
         }
 
         return null;
@@ -431,10 +443,9 @@ class AttributesManager
                 return $this->setCoreValue($product, $attr, $iso, $this->getChannel(), $data);
             case SPL_T_PRICE:
                 return $this->setPriceValue($product, $attr, $iso, $this->getChannel(), $data);
-            case AttributeTypes::FILE:
-                return true;
-            case AttributeTypes::IMAGE:
-                return true;
+            case SPL_T_FILE:
+            case SPL_T_IMG:
+                return $this->setFileValue($product, $attr, $iso, $this->getChannel(), $data);
         }
 
         return false;

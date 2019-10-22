@@ -37,6 +37,7 @@ services:
         arguments:  
             -   "@pim_catalog.updater.property_setter"
             -   "@pim_catalog.repository.attribute"
+            -   "@splash.akeneo.product.files"
             -   "@splash.akeneo.locales"  
 
 
@@ -62,6 +63,15 @@ services:
             -   "@splash.akeneo.product.variants"
 
     ########################################################################
+    # Akeneo Connector Products Files Manager
+    splash.akeneo.product.files:
+        class:      Splash\Akeneo\Services\FilesManager
+        arguments:  
+            -   "@router"
+            -   "@akeneo_file_storage.file_storage.file.file_storer"
+            -   "%catalog_storage_dir%"    
+
+    ########################################################################
     # Akeneo Products Models Manager
     splash.akeneo.product.events:
         class:      Splash\Akeneo\EventSubscriber\ProductSubscriber
@@ -75,7 +85,7 @@ services:
         class:      Splash\Akeneo\Services\LocalesManager
         arguments:  
             -   "@pim_catalog.repository.locale"
-         
+
     ########################################################################
     # Akeneo Connector Security Manager
     splash.akeneo.security:
