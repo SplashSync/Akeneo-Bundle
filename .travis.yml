@@ -52,17 +52,17 @@ before_install:
 # Create database, schema and fixtures
 install:   
     
-    ################################################################################
-    # Install Sources    
-    - echo "Configuring Sources"
-    - cp travis/parameters.yml.dist app/config/parameters.yml
-    - cp travis/parameters.yml.dist app/config/parameters_test.yml
-    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
-    - php bin/console debug:config splash       --env=test 
-    # Run GrumPhp Main Test Sequence
-    - php vendor/bin/grumphp run --testsuite=travis
-    - php vendor/bin/grumphp run --testsuite=csfixer 
-    - php vendor/bin/grumphp run --testsuite=phpstan     
+#    ################################################################################
+#    # Install Sources    
+#    - echo "Configuring Sources"
+#    - cp travis/parameters.yml.dist app/config/parameters.yml
+#    - cp travis/parameters.yml.dist app/config/parameters_test.yml
+#    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
+#    - php bin/console debug:config splash       --env=test 
+#    # Run GrumPhp Main Test Sequence
+#    - php vendor/bin/grumphp run --testsuite=travis
+#    - php vendor/bin/grumphp run --testsuite=csfixer 
+#    - php vendor/bin/grumphp run --testsuite=phpstan     
     
     ################################################################################
     # Install Akeneo Community Dev Project
@@ -92,8 +92,8 @@ install:
 script:
 
     # Execute Phpunit 
-    - php phpunit --version
-    - php phpunit
+    - phpunit --version
+    - phpunit
     - php vendor/bin/phpunit --version
     - php vendor/bin/phpunit
 
