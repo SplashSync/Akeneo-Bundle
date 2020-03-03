@@ -1,8 +1,5 @@
-# Akeneo-Bundle
-Splash Bundle for Akeneo PIM Solution
+[![N|Solid](https://github.com/SplashSync/Php-Core/raw/master/img/github.jpg)](https://www.splashsync.com)
 
-
-[![N|Solid](https://github.com/SplashSync/Php-Core/blob/master/Resources/img/fake-image2.jpg)](http://www.splashsync.com)
 # Splash Sync Bundle for Akeneo
 Splash Php Bundle for Akeneo PIM.
 
@@ -13,6 +10,16 @@ It provide access to Products Objects for automated synchonisation though Splash
 [![Latest Stable Version](https://poser.pugx.org/splash/akeneo-bundle/v/stable)](https://packagist.org/packages/splash/akeneo-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/splash/akeneo-bundle/v/unstable)](https://packagist.org/packages/splash/akeneo-bundle)
 [![License](https://poser.pugx.org/splash/akeneo-bundle/license)](https://packagist.org/packages/splash/akeneo-bundle)
+
+## Branches
+
+Branch | Akeneo | PHP | Status | Travis |
+------ | ------ | --- | ------ | ------ |
+master   |  2.3 | 7.1 | Active | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=master)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
+2.1   |  2.0, 2.1 | 7.1 | Deprecated | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=2.1)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
+
+
+
 
 ## Installation via Composer
 
