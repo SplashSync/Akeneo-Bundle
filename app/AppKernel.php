@@ -50,8 +50,10 @@ class AppKernel extends Kernel
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         if (is_file($file = $this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml')) {
             $loader->load($file);
