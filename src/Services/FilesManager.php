@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -95,7 +95,7 @@ class FilesManager
      *
      * @return null|string
      */
-    public function add(iterable $splfile): ?string
+    public function add($splfile): ?string
     {
         //====================================================================//
         // Verify New Splash File is Valid
@@ -154,7 +154,7 @@ class FilesManager
      *
      * @return bool
      */
-    public function isValid(iterable $splashfile): ?bool
+    public function isValid($splashfile): ?bool
     {
         //====================================================================//
         // Verify New Splash File is Valid
@@ -176,7 +176,7 @@ class FilesManager
      *
      * @return bool
      */
-    public function isSimilar(FileInfo $current, iterable $splashfile): bool
+    public function isSimilar(FileInfo $current, $splashfile): bool
     {
         //====================================================================//
         // Verify New Splash File is Valid

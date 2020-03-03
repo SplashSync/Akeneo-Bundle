@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,6 +17,8 @@ namespace   Splash\Akeneo\Services;
 
 use Exception;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AbstractAttribute as Attribute;
 use Pim\Component\Catalog\Model\AbstractAttribute as Group;
@@ -470,19 +472,23 @@ class AttributesManager
         }
         /** @var Group $group */
         $group = $attribute->getGroup();
+
         //====================================================================//
-        // Collect Names
-        $attrName = $attribute->getTranslation($isoLang)->getLabel();
-        $attrGroup = $group->getTranslation($isoLang)->getLabel();
-        $baseGroup = $group->getTranslation($this->locales->getDefault())->getLabel();
+        // Collect Names Translations
+        /** @var AttributeTranslation $attrTrans */
+        $attrTrans = $attribute->getTranslation($isoLang);
+        /** @var GroupTranslation $groupTrans */
+        $groupTrans = $group->getTranslation($isoLang);
+        /** @var GroupTranslation $baseTrans */
+        $baseTrans = $group->getTranslation($this->locales->getDefault());
         //====================================================================//
         // Add Field Core Infos
         $factory
             ->create((string) TypesConverter::toSplash($attribute))
             ->identifier($attribute->getCode())
-            ->name($attrName)
-            ->description("[".$attrGroup."] ".$attrName)
-            ->group($baseGroup)
+            ->name($attrTrans->getLabel())
+            ->description("[".$groupTrans->getLabel()."] ".$attrTrans->getLabel())
+            ->group($baseTrans->getLabel())
         ;
         //====================================================================//
         // is Field Required ?

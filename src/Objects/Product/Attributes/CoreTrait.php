@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,6 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Model\ProductInterface as Product;
 use Pim\Component\Catalog\Updater\PropertySetter;
-use Splash\Core\SplashCore as Splash;
 
 /**
  * Manage Raw Types Attributes I/O

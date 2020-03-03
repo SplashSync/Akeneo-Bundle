@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -111,7 +111,7 @@ class CrudService
      *
      * @return null|Product
      */
-    public function createProduct(iterable $inputs): ?Product
+    public function createProduct($inputs): ?Product
     {
         try {
             //====================================================================//
@@ -225,7 +225,7 @@ class CrudService
      *
      * @return null|Familly
      */
-    private function getProductFamily(iterable $inputs): ?Familly
+    private function getProductFamily($inputs): ?Familly
     {
         //====================================================================//
         // If family Code is Given
@@ -249,7 +249,7 @@ class CrudService
      *
      * @return null|Model
      */
-    private function getRootProduct(iterable $inputs): ?Model
+    private function getRootProduct($inputs): ?Model
     {
         //====================================================================//
         // If NO Variants Given
@@ -314,7 +314,7 @@ class CrudService
      *
      * @return bool
      */
-    private function isReadyToCreate(iterable $inputs, $family = null): bool
+    private function isReadyToCreate($inputs, $family = null): bool
     {
         //====================================================================//
         // Verify Product Sku is Given

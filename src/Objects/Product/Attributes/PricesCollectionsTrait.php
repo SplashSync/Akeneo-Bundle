@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@
 
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
+use Exception;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Model\ProductInterface as Product;
@@ -142,13 +143,18 @@ trait PricesCollectionsTrait
     {
         $currency = $this->getCurrency();
 
-        return self::Prices()->Encode(
+        $price = self::Prices()->Encode(
             $htPrice,
             ($vat ? $vat : 0.0),
             null,
             $currency,
-            Intl::getCurrencyBundle()->getCurrencySymbol($currency),
-            Intl::getCurrencyBundle()->getCurrencyName($currency)
+            (string) Intl::getCurrencyBundle()->getCurrencySymbol($currency),
+            (string) Intl::getCurrencyBundle()->getCurrencyName($currency)
         );
+        if (is_string($price)) {
+            throw new Exception($price);
+        }
+
+        return $price;
     }
 }

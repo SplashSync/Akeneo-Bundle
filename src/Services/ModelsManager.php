@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -102,7 +102,7 @@ class ModelsManager
      *
      * @return null|Model
      */
-    public function resolveParent(iterable $inputs, Familly $familyVariant, Model $model = null): ?Model
+    public function resolveParent($inputs, Familly $familyVariant, Model $model = null): ?Model
     {
         $coreSku = isset($inputs["sku"]) ? $inputs["sku"] : uniqid();
 

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,6 +16,7 @@
 namespace Splash\Akeneo\Objects\Product\Variants;
 
 use ArrayObject;
+use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -39,6 +40,8 @@ trait AttributesTrait
 
     /**
      * Build Attributes Fields using FieldFactory
+     *
+     * @return void
      */
     protected function buildVariantsAttributesFields()
     {
@@ -99,6 +102,8 @@ trait AttributesTrait
      *
      * @param string $key       Input List Key
      * @param string $fieldName Field Identifier / Name
+     *
+     * @return void
      */
     protected function getVariantsAttributesFields($key, $fieldName)
     {
@@ -124,6 +129,8 @@ trait AttributesTrait
      *
      * @param string $fieldName Field Identifier / Name
      * @param mixed  $fieldData Field Data
+     *
+     * @return void
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -204,6 +211,8 @@ trait AttributesTrait
      * @param string $key     Input List Key
      * @param string $fieldId Field Identifier / Name
      * @param string $isoLang Splash ISO Language Code
+     *
+     * @return void
      */
     private function getVariantsAttributesField(string $key, string $fieldId, string $isoLang)
     {
@@ -228,7 +237,9 @@ trait AttributesTrait
 
                     break;
                 case 'label':
-                    $value = $attribute->getTranslation($isoLang)->getLabel();
+                    /** @var AttributeTranslation $translation */
+                    $translation = $attribute->getTranslation($isoLang);
+                    $value = $translation->getLabel();
 
                     break;
                 case 'value':
