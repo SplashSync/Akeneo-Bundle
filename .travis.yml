@@ -92,6 +92,8 @@ install:
 script:
 
     # Execute Phpunit 
+    - php phpunit --version
+    - php phpunit
     - php vendor/bin/phpunit --version
     - php vendor/bin/phpunit
 
