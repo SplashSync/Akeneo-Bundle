@@ -1,36 +1,30 @@
+################################################################################
+#
+# * This file is part of SplashSync Project.
+# *
+# * Copyright (C) Splash Sync <www.splashsync.com>
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * For the full copyright and license information, please view the LICENSE
+# * file that was distributed with this source code.
+# *
+# * @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
 
-    
-#addons:
-#  apt:
-#    sources:
-#      - mysql-5.7-trusty
-#    packages:
-#      - mysql-server
-      
+################################################################################
+# Test Jobs 
 matrix:
     include:
-        
-#        # Akeneo V2.0 Branch       
-#        - php: 7.1
-#          env: AKENEO_VERSION="2.0.52"
-#        # Akeneo V2.1 Branch       
-#        - php: 7.1
-#          env: AKENEO_VERSION="2.1"
-#        # Akeneo V2.2 Branch       
-#        - php: 7.1
-#          env: AKENEO_VERSION="2.2.10"
         # Akeneo V2.3 Branch       
         - php: 7.1
           env: AKENEO_VERSION="2.3.63"
-
-#        # Akeneo V3.0 Branch       
-#        - php: 7.2
-#          env: AKENEO_VERSION="3.0"
-
-    fast_finish: true
-    
-    allow_failures:
-        - env: AKENEO_VERSION="3.0"
+        # Akeneo V2.3 Branch       
+        - php: 7.1
+          env: AKENEO_VERSION="2.3.77"
 
 ################################################################################
 # Install Update Composer, Configure Env. 
@@ -55,17 +49,17 @@ before_install:
 # Create database, schema and fixtures
 install:   
     
-#    ################################################################################
-#    # Install Sources    
-#    - echo "Configuring Sources"
-#    - cp travis/parameters.yml.dist app/config/parameters.yml
-#    - cp travis/parameters.yml.dist app/config/parameters_test.yml
-#    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
-#    - php bin/console debug:config splash       --env=test 
-#    # Run GrumPhp Main Test Sequence
-#    - php vendor/bin/grumphp run --testsuite=travis
-#    - php vendor/bin/grumphp run --testsuite=csfixer 
-#    - php vendor/bin/grumphp run --testsuite=phpstan     
+    ################################################################################
+    # Install Sources    
+    - echo "Configuring Sources"
+    - cp travis/parameters.yml.dist app/config/parameters.yml
+    - cp travis/parameters.yml.dist app/config/parameters_test.yml
+    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts
+    - php bin/console debug:config splash       --env=test 
+    # Run GrumPhp Main Test Sequence
+    - php vendor/bin/grumphp run --testsuite=travis
+    - php vendor/bin/grumphp run --testsuite=csfixer 
+    - php vendor/bin/grumphp run --testsuite=phpstan     
     
     ################################################################################
     # Install Akeneo Community Dev Project
@@ -97,32 +91,27 @@ script:
     # Execute Phpunit 
     - phpunit --version
     - phpunit
-    - php vendor/bin/phpunit --version
-    - php vendor/bin/phpunit
-
 
 ################################################################################
 # General Configuration
 ################################################################################
 
 ################################################################################
-# Project language
+# Project Config
 language: php
-################################################################################
-# Allows use container-based infrastructure
-sudo: false
+os: linux
 ################################################################################
 # Start mysql service
 services:
   - mysql
   - elasticsearch
-  - imagick  
+ 
 ################################################################################
 # Cache composer packages so "composer install" is faster
 cache:
     yarn: true
     directories:
-        - $HOME/.composer
+        - $HOME/.composer/cache
         - $HOME/.cache/pip
 ################################################################################
 # After a build, send email notification with the build results
