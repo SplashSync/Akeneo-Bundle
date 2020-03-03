@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,6 +39,8 @@ class TestCase extends BaseTestCase
      * Boot Symfony & Setup First Server Connector For Testing
      *
      * @throws Exception
+     *
+     * @return void
      */
     protected function setUp()
     {
@@ -73,7 +75,7 @@ class TestCase extends BaseTestCase
             throw new Exception("No server Configured for Splash");
         }
         $serverIds = array_keys($servers);
-        $local->setServerId(array_shift($serverIds));
+        $local->setServerId((string) array_shift($serverIds));
 
         //====================================================================//
         // Reboot Splash Core Module
