@@ -36,16 +36,16 @@
     },
     
     "require-dev": {
-        "akeneo/pim-community-dev": "2.3.63",
+        "akeneo/pim-community-dev":                     "2.3.63",
 
-        "splash/console":           "dev-master",
-        "phpunit/phpunit":          "*",
+        "splash/console":                               "dev-master",
+        "phpunit/phpunit":                              "*",
         
         "composer/composer":                            "^1.5",
         "j13k/yaml-lint":                               "^1.1",
         "jakub-onderka/php-parallel-lint":              "^1.0",
-        "phpmd/phpmd":                                  "^2.6",
-        "phpro/grumphp":                                "^0.14",
+        "phpmd/phpmd":                                  "~2.7.0",
+        "phpro/grumphp":                                "^0.16",
         "sclable/xml-lint":                             "^0.2.4",
         "sebastian/phpcpd":                             ">3.0",
         "seld/jsonlint":                                "^1.7",
@@ -54,10 +54,10 @@
         "escapestudios/symfony2-coding-standard":       "^3.4",
         "friendsofphp/php-cs-fixer":                    "*",        
         
-        "phpstan/phpstan-shim":                         "^0.10",
-        "phpstan/phpstan-doctrine":                     "^0.10",
-        "phpstan/phpstan-phpunit":                      "^0.10",
-        "phpstan/phpstan-symfony":                      "^0.10"        
+        "phpstan/phpstan":                              "^0.12",
+        "phpstan/phpstan-doctrine":                     "^0.12",
+        "phpstan/phpstan-phpunit":                      "^0.12",
+        "phpstan/phpstan-symfony":                      "^0.12"        
     },
     
     "repositories": [
