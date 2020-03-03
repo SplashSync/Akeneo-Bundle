@@ -1,76 +1,48 @@
-# Project language
-language: php
+################################################################################
+#
+# * This file is part of SplashSync Project.
+# *
+# * Copyright (C) Splash Sync <www.splashsync.com>
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * For the full copyright and license information, please view the LICENSE
+# * file that was distributed with this source code.
+# *
+# * @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
 
-# Allows use container-based infrastructure
-sudo: false
-#sudo: required
-#dist: trusty
-
-# Start mysql service
-services:
-  - mysql
-  - elasticsearch
-  - imagick  
-
-# Cache composer packages so "composer install" is faster
-cache:
-    yarn: true
-    directories:
-        - $HOME/.composer/cache/files
-        - $HOME/.cache/pip
-    
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
-      
-matrix:
+################################################################################
+# Test Jobs
+jobs:
     include:
-        
-#        # Akeneo V2.0 Branch       
-#        - php: 5.6
-#          env: AKENEO_VERSION="2.0"
-#        - php: 7.0
-#          env: AKENEO_VERSION="2.0"
+        # Akeneo V2.0 Branch       
         - php: 7.1
           env: AKENEO_VERSION="2.0"
-          
         # Akeneo V2.1 Branch       
         - php: 7.1
           env: AKENEO_VERSION="2.1"
-          
-#        # Akeneo V2.2 Branch       
-#        - php: 7.1
-#          env: AKENEO_VERSION="2.2"
 
-    fast_finish: true
-    
-    allow_failures:
-        - env: AKENEO_VERSION="2.2"
-
-    
+################################################################################
+# Install Update Composer, Configure Env. 
 before_install:
-    
-# Update composer
-  - composer self-update
+    # Update composer
+    - composer self-update
+    # Install Yarn
+    - yarn 
+    # Configure PHP  
+    - phpenv config-rm xdebug.ini
+    - phpenv config-add build/x_memory.ini
+    - php -ini | grep memory_limit  
+    - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install apcu; fi
+    - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install imagick; fi
+    # Create database, schema and fixtures
+    - mysql -e 'CREATE DATABASE IF NOT EXISTS akeneo;'
   
-# Install Yarn
-  - yarn 
-  
-# Configure PHP  
-  - phpenv config-rm xdebug.ini
-  - phpenv config-add build/x_memory.ini
-#  - phpenv config-add build/x_errors.ini
-  - php -ini | grep memory_limit  
-#  - if [[ "$(php -v | grep 'PHP 5')" ]]; then echo yes | pecl install apcu-4.0.8; fi
-#  - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install apcu; fi
-  - if [[ "$(php -v | grep 'PHP 7')" ]]; then echo yes | pecl install imagick; fi
-
-# Create database, schema and fixtures
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS akeneo;'
-  
+################################################################################
 # Install composer dependencies,
 install:   
     - echo "Configuring Akeneo"
@@ -97,6 +69,25 @@ install:
 script:
   - phpunit
 #  - phpunit
+
+################################################################################
+# Project Config
+language: php
+os: linux
+services:
+  - mysql
+  - elasticsearch
+cache:
+    yarn: true
+    directories:
+        - $HOME/.composer/cache/files
+        - $HOME/.cache/pip
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
 
 # After a build, send email notification with the build results
 notifications:
