@@ -19,12 +19,12 @@
 # Test Jobs 
 matrix:
     include:
-        # Akeneo V2.3 Branch       
-        - php: 7.1
-          env: AKENEO_VERSION="2.3.63"
-        # Akeneo V2.3 Branch       
-        - php: 7.1
-          env: AKENEO_VERSION="2.3.77"
+        # Akeneo V3.0 Branch       
+        - php: 7.2
+          env: AKENEO_VERSION="3.0.68"
+#        # Akeneo V2.3 Branch       
+#        - php: 7.1
+#          env: AKENEO_VERSION="2.3.77"
 
 ################################################################################
 # Install Update Composer, Configure Env. 

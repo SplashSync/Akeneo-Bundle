@@ -15,11 +15,9 @@ It provide access to Products Objects for automated synchonisation though Splash
 
 Branch | Akeneo | PHP | Status | Travis |
 ------ | ------ | --- | ------ | ------ |
-master   |  2.3 | 7.1 | Active | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=master)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
+master   |  3.0 | 7.2 | Active | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=master)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
+2.3   |  2.3 | 7.1 | Active | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=2.3)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
 2.1   |  2.0, 2.1 | 7.1 | Deprecated | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=2.1)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
-
-
-
 
 ## Installation via Composer
 

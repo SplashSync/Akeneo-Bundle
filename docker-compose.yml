@@ -35,7 +35,7 @@ services:
     ################################################################################
     # Pḧp Fpm Server Container   
     fpm:
-        image: 'akeneo/fpm:php-7.1'
+        image: 'akeneo/fpm:php-7.2'
         user: 'docker'
         container_name: akeneo-php-fpm
         environment:
