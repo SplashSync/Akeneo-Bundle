@@ -46,7 +46,7 @@ trait SelectTrait
             return (string) $value->getCode();
         }
 
-        return  (string) substr($value, 1, strlen($value) - 2);
+        return  (string) $value;
     }
 
     /**
