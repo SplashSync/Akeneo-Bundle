@@ -15,8 +15,8 @@
 
 namespace   Splash\Akeneo\Services;
 
-use Akeneo\Component\FileStorage\File\FileStorer;
-use Akeneo\Component\FileStorage\Model\FileInfo;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use ArrayObject;
 use Exception;
 use Splash\Client\Splash as Splash;

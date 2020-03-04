@@ -18,7 +18,7 @@ namespace Splash\Akeneo;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Spolash Bundle for Access to Akeneo Products Catalog
+ * Splash Bundle for Access to Akeneo Products Catalog
  */
 class SplashAkeneoBundle extends Bundle
 {

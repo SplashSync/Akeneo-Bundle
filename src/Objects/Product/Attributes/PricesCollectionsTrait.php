@@ -15,11 +15,11 @@
 
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice as Price;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Exception;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
-use Pim\Component\Catalog\Model\ProductInterface as Product;
-use Pim\Component\Catalog\Model\ProductPrice as Price;
 use Splash\Core\SplashCore as Splash;
 use Splash\Models\Objects\PricesTrait;
 use Symfony\Component\Intl\Intl;

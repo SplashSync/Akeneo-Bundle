@@ -15,17 +15,17 @@
 
 namespace   Splash\Akeneo\Services;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactory as Builder;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface as Remover;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface as Saver;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository as Repository;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as Model;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Familly;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactory as Builder;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface as Remover;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface as Saver;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
 use ArrayObject;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository as Repository;
-use Pim\Component\Catalog\Model\FamilyVariantInterface as Familly;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductModelInterface as Model;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Core\SplashCore as Splash;
 use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;

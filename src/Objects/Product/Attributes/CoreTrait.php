@@ -15,8 +15,8 @@
 
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
-use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
-use Pim\Component\Catalog\Model\ProductInterface as Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Pim\Component\Catalog\Updater\PropertySetter;
 
 /**

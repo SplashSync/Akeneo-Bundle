@@ -15,8 +15,8 @@
 
 namespace Splash\Akeneo\Objects\Product\Variants;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use ArrayObject;
-use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Splash\Core\SplashCore      as Splash;
 
 /**

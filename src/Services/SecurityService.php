@@ -15,8 +15,8 @@
 
 namespace Splash\Akeneo\Services;
 
-use Oro\Bundle\UserBundle\Security\UserProvider;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Akeneo\UserManagement\Bundle\Security\UserProvider as UserProvider;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

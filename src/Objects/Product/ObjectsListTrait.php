@@ -15,7 +15,7 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 
 /**
  * Sylius Product Objects Lists

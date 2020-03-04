@@ -15,17 +15,17 @@
 
 namespace   Splash\Akeneo\Services;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface as Remover;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface as Saver;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder as Builder;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel as Model;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Familly;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface as Remover;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface as Saver;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
 use ArrayObject;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository as Repository;
-use Pim\Component\Catalog\Builder\ProductBuilder as Builder;
-use Pim\Component\Catalog\Model\FamilyVariantInterface as Familly;
-use Pim\Component\Catalog\Model\ProductInterface as Product;
-use Pim\Component\Catalog\Model\ProductModel as Model;
 use Splash\Akeneo\Services\ModelsManager as Models;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Core\SplashCore as Splash;

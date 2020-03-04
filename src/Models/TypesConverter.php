@@ -15,8 +15,8 @@
 
 namespace   Splash\Akeneo\Models;
 
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Splash\Core\SplashCore      as Splash;
 
 /**

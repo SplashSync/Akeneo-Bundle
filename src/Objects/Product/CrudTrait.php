@@ -15,7 +15,7 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
-use Pim\Component\Catalog\Model\ProductInterface as Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Splash\Core\SplashCore as Splash;
 
 /**

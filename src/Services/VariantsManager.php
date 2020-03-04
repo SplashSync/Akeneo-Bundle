@@ -15,13 +15,13 @@
 
 namespace   Splash\Akeneo\Services;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as ProductModel;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository as Variants;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Familly;
 use ArrayObject;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository as Variants;
-use Pim\Component\Catalog\Model\AttributeInterface as Attribute;
-use Pim\Component\Catalog\Model\FamilyTranslationInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface as Familly;
-use Pim\Component\Catalog\Model\ProductInterface as Product;
-use Pim\Component\Catalog\Model\ProductModelInterface as ProductModel;
 use Splash\Core\SplashCore as Splash;
 
 /**

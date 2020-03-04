@@ -15,7 +15,7 @@
 
 namespace   Splash\Akeneo\Services;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository as Repository;
+use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository as Repository;
 
 /**
  * Splash Languages Manager - Akeneo Languages Management

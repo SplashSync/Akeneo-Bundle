@@ -15,15 +15,15 @@
 
 namespace   Splash\Akeneo\Services;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertySetter;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Attribute;
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Group;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use Exception;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
-use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AbstractAttribute as Attribute;
-use Pim\Component\Catalog\Model\AbstractAttribute as Group;
-use Pim\Component\Catalog\Model\ProductInterface as Product;
-use Pim\Component\Catalog\Updater\PropertySetter;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Components\FieldsFactory;

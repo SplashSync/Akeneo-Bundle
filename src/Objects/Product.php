@@ -15,7 +15,7 @@
 
 namespace Splash\Akeneo\Objects;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository as Repository;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
 use Splash\Akeneo\Services\CrudService as Crud;
 use Splash\Akeneo\Services\LocalesManager as Locales;

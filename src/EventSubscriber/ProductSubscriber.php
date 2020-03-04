@@ -15,7 +15,7 @@
 
 namespace Splash\Akeneo\EventSubscriber;
 
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Splash\Bundle\Helpers\Doctrine\AbstractEventSubscriber;
 
 /**
