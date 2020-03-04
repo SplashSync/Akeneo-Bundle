@@ -21,4 +21,5 @@ swiftmailer:
 assetic:
     use_controller: false
 
-pim_reference_data: ~
+akeneo_pim_structure:
+    reference_data: ~

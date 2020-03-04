@@ -1,3 +1,13 @@
+akeneo_channel:
+    resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
+    prefix:   /
+
+akeneo_pim_structure:
+    resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
+
+akeneo_pim_enrichment:
+    resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
@@ -8,9 +18,6 @@ pim_datagrid:
 pim_dashboard:
     resource: "@PimDashboardBundle/Resources/config/routing.yml"
 
-pim_enrich:
-    resource: "@PimEnrichBundle/Resources/config/routing.yml"
-
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
 
@@ -20,35 +27,23 @@ pim_user:
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
-pim_comment:
-    resource: "@PimCommentBundle/Resources/config/routing.yml"
-
-pim_pdf_generator:
-    resource: "@PimPdfGeneratorBundle/Resources/config/routing.yml"
-
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
-
-pim_localization:
-    resource: "@PimLocalizationBundle/Resources/config/routing.yml"
-
-pim_reference_data:
-    resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
 
 pim_api:
     resource: "@PimApiBundle/Resources/config/routing.yml"
     prefix: /api
+
+pim_volume_monitoring:
+    resource: "@PimCatalogVolumeMonitoringBundle/Resources/config/routing.yml"
 
 # Oro platform
 
 oro_default:
     path:  /
     defaults:
-        template:    PimEnrichBundle::index.html.twig
+        template:    PimUIBundle::index.html.twig
         _controller: FrameworkBundle:Template:template
-
-oro_user:
-    resource: "@OroUserBundle/Resources/config/oro/routing.yml"
 
 oro_config:
     resource: "@OroConfigBundle/Resources/config/oro/routing.yml"

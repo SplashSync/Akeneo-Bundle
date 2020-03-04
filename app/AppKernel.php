@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -55,13 +55,11 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        if (is_file($file = $this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml')) {
+        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+
+        if (is_file($file = $this->getRootDir().'/config/config_'.$this->getEnvironment().'_local.yml')) {
             $loader->load($file);
-
-            return;
         }
-
-        $loader->load($this->getRootDir().'/config/config.yml');
     }
 
     /**
@@ -117,29 +115,25 @@ class AppKernel extends Kernel
     {
         return array(
             // BAP overriden bundles
-            new Pim\Bundle\FilterBundle\PimFilterBundle(),
-            new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
-            new Pim\Bundle\UserBundle\PimUserBundle(),
+            new Oro\Bundle\PimFilterBundle\PimFilterBundle(),
+            new Oro\Bundle\PimDataGridBundle\PimDataGridBundle(),
+            new Akeneo\UserManagement\Bundle\PimUserBundle(),
+
+            // Channel bundles
+            new Akeneo\Channel\Bundle\AkeneoChannelBundle(),
 
             // PIM bundles
-            new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
-            new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
-            new Pim\Bundle\ApiBundle\PimApiBundle(),
-            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
-            new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
-            new Pim\Bundle\CommentBundle\PimCommentBundle(),
-            new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
-            new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
-            new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
-            new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
-            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
-            new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
-            new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
-            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
-            new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
-            new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
+            new Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle(),
+            new Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle(),
+
+            // Platform bundles
+            new Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle(),
+            new Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
+            new Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle(),
+            new Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle(),
+            new Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle(),
+            new Akeneo\Platform\Bundle\UIBundle\PimUIBundle(),
+            new Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
         );
     }
 
@@ -151,15 +145,20 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return array(
-            new Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
-            new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
-            new Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
-            new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
-            new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
-            new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
-            new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
+            new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
+            new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
+            new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
+            new Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
+            new Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle(),
+            new Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
+            new Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle(),
+            new Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
+            new Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle(),
+            new Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            // PimApiBundle must be registered after FOSOAuthServerBundle
+            new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
         );
     }
@@ -193,7 +192,6 @@ class AppKernel extends Kernel
     {
         return array(
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
@@ -216,7 +214,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
-            new Oro\Bundle\UserBundle\OroUserBundle(),
         );
     }
 }
