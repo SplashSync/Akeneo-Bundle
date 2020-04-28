@@ -215,7 +215,15 @@ class VariantsManager
             $familyVariant->setLocale($this->locales->getDefault());
             /** @var FamilyTranslationInterface */
             $familyTranslation = $familyVariant->getTranslation();
-            $choices[$familyVariant->getCode()] = $familyTranslation->getLabel();
+
+            try {
+                $choices[$familyVariant->getCode()] = $familyTranslation->getLabel();
+            } catch (\TypeError $e) {
+                $code = $familyVariant->getCode();
+                $locale = $this->locales->getDefault();
+                $choices[$code] = $code;
+                Splash::log()->war("Familly ".$code." has no Translation in ".$locale);
+            }
         }
 
         return $choices;
