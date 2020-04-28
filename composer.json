@@ -19,8 +19,7 @@
     "autoload": {
         "psr-4": { 
              "Splash\\Akeneo\\":     "src"
-        }, 
-        "files": [ "tests/KernelTestCase.php" ]
+        }
     },
     
     "autoload-dev": {
@@ -31,8 +30,8 @@
     
     
     "require": {
-        "php":                      "^7.2",
-        "splash/php-bundle":        "dev-master"
+        "php":                                          "^7.2",
+        "splash/php-bundle":                            "dev-master"
     },
     
     "require-dev": {
@@ -76,7 +75,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
             "php bin/console --ansi fos:js-routing:dump --target=web/js/routes.js",
-            "php bin/console --ansi pim:installer:assets"
+            "php bin/console --ansi pim:installer:assets",
+            "php vendor/bin/grumphp git:deinit" 
         ],
         "post-install-cmd": [
             "@symfony-scripts"

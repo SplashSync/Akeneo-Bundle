@@ -42,3 +42,11 @@ docker-compose exec fpm php bin/console --env=prod pim:installer:assets --symlin
 echo -e "\e[45m ** Webpack Install                   \e[49m"
 docker-compose run --rm node yarn run webpack
 
+echo -e "\e[45m ** Install PhpUnit 7.5 ...       \e[49m"
+docker-compose exec fpm sudo curl -sSfL -o vendor/bin/phpunit https://phar.phpunit.de/phpunit-7.5.2.phar;
+
+echo -e "\e[45m ** Install Php Extensions ...       \e[49m"
+docker-compose exec fpm apt update
+docker-compose exec fpm apt install php7.2-soap
+docker-compose restart fpm
+
