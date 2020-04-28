@@ -52,7 +52,7 @@ trait MetricTrait
         //====================================================================//
         // Extract Generic Converted Value
         if ($value instanceof Metric) {
-            return $value->getBaseData();
+            return (float) $value->getBaseData();
         }
 
         return (float) $value;

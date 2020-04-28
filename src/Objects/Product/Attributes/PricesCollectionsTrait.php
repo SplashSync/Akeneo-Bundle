@@ -63,7 +63,7 @@ trait PricesCollectionsTrait
         /** @var Price $prdPrice */
         foreach ($value as $prdPrice) {
             if (strtolower($prdPrice->getCurrency()) == strtolower($this->getCurrency())) {
-                return $this->buildPrice($prdPrice->getData(), $vatValue);
+                return $this->buildPrice((float) $prdPrice->getData(), $vatValue);
             }
         }
 
