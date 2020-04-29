@@ -32,11 +32,31 @@ trait BoolTrait
      * @param string    $isoLang
      * @param string    $channel
      *
-     * @return mixed
+     * @return bool
      */
-    protected function getBoolValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    protected function isBoolValue(Product $product, Attribute $attribute, string $isoLang, string $channel): bool
     {
         return (bool) $this->getCoreValue($product, $attribute, $isoLang, $channel);
+    }
+
+    /**
+     * BOOL - Read Attribute Data with Local & Scope Detection
+     *
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     *
+     * @return null|string
+     */
+    protected function getBoolAsStringValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    {
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        if (is_null($value)) {
+            return null;
+        }
+
+        return $this->locales->trans($value ? 'Yes' : 'No', array(), "messages", $isoLang);
     }
 
     /**

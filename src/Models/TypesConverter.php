@@ -32,6 +32,13 @@ class TypesConverter
     const CORE = array("sku", "enabled");
 
     /**
+     * Bool as String Prefix
+     *
+     * @var array
+     */
+    const BOOL2STRING = "b2s_";
+
+    /**
      * List of Known Akeneo Attributes Types
      *
      * @var array
@@ -151,6 +158,18 @@ class TypesConverter
     }
 
     /**
+     * Check if Attribute type Code is a Boolean Type
+     *
+     * @param string $attrType Akeneo Attribute Type
+     *
+     * @return bool
+     */
+    public static function isBool(string $attrType): bool
+    {
+        return self::isKnown($attrType) && (AttributeTypes::BOOLEAN == $attrType);
+    }
+
+    /**
      * Convert Akeneo Attribute Type to Splash Field Type
      *
      * @param Attribute $attribute Akeneo Attribute Type
@@ -174,5 +193,50 @@ class TypesConverter
         }
 
         return $splashType;
+    }
+
+    //====================================================================//
+    // Virtual Fields Names Detection
+    //====================================================================//
+
+    /**
+     * Detect & Decode Virtual FieldName
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Base Field Name or Null
+     */
+    public static function isVirtual($fieldName): ?string
+    {
+        //====================================================================//
+        // Bool to String
+        $boolToString = self::isBoolToString($fieldName);
+        if ($boolToString) {
+            return $boolToString;
+        }
+
+        return null;
+    }
+
+    //====================================================================//
+    // Bool to String Detection
+    //====================================================================//
+
+    /**
+     * Detect & Decode Bool to String FieldName
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Base Field Name or Null
+     */
+    public static function isBoolToString($fieldName): ?string
+    {
+        //====================================================================//
+        // Check if Prefix is in FieldName
+        if (0 !== strpos($fieldName, self::BOOL2STRING)) {
+            return null;
+        }
+
+        return substr($fieldName, strlen(self::BOOL2STRING));
     }
 }

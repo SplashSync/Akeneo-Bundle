@@ -223,6 +223,20 @@ class AttributesManager
                 continue;
             }
             //====================================================================//
+            // Detect Virtual Field Name (Bool2String)
+            $virtualFieldName = TypesConverter::isVirtual($baseFieldName);
+            if (null !== $virtualFieldName) {
+                //====================================================================//
+                // Load Attribute Virtual Value
+                return array(
+                    $fieldName => $this->getVirtualData(
+                        $product,
+                        $this->getByCode($virtualFieldName),
+                        $isoLang
+                    ),
+                );
+            }
+            //====================================================================//
             // Load Attribute Value
             return array(
                 $fieldName => $this->getData(
@@ -259,7 +273,7 @@ class AttributesManager
         // Read & Convert Attribute Value
         switch (TypesConverter::toSplash($attr)) {
             case SPL_T_BOOL:
-                return $this->getBoolValue($product, $attr, $iso, $this->getChannel());
+                return $this->isBoolValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_INT:
             case SPL_T_DOUBLE:
                 return TypesConverter::isMetric($attrType)
@@ -272,12 +286,31 @@ class AttributesManager
                 return $this->getDateValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_PRICE:
                 return $this->getPriceValue($product, $attr, $iso, $this->getChannel());
-            case AttributeTypes::OPTION_SIMPLE_SELECT:
-                return $this->getSelectValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_FILE:
                 return array();
             case SPL_T_IMG:
                 return $this->getImageValue($product, $attr, $iso, $this->getChannel());
+        }
+
+        return null;
+    }
+
+    /**
+     * Get Field Computed Data from Local Object
+     *
+     * @param Product   $product
+     * @param Attribute $attr
+     * @param string    $iso
+     *
+     * @return null|array|bool|float|int|string
+     */
+    public function getVirtualData(Product $product, Attribute $attr, string $iso)
+    {
+        $attrType = $attr->getType();
+        //====================================================================//
+        // Read & Convert Bool as String Value
+        if (TypesConverter::isBool($attrType)) {
+            return $this->getBoolAsStringValue($product, $attr, $iso, $this->getChannel());
         }
 
         return null;
@@ -360,6 +393,12 @@ class AttributesManager
         $baseFieldName = $this->locales->decode($fieldName, $isoLang);
         if (null == $baseFieldName) {
             return false;
+        }
+        //====================================================================//
+        // Detect Virtual Field Name (Bool2String)
+        $virtualFieldName = TypesConverter::isVirtual($baseFieldName);
+        if (null !== $virtualFieldName) {
+            $baseFieldName = $virtualFieldName;
         }
         //====================================================================//
         // Check if Base Field Name Exists
@@ -472,7 +511,6 @@ class AttributesManager
         }
         /** @var Group $group */
         $group = $attribute->getGroup();
-
         //====================================================================//
         // Collect Names Translations
         /** @var AttributeTranslation $attrTrans */
@@ -491,12 +529,15 @@ class AttributesManager
             ->group($baseTrans->getLabel())
         ;
         //====================================================================//
+        // Add Field Meta Infos
+        $factory->microData("http://http//schema.org/Product", $attribute->getCode());
+        //====================================================================//
         // is Field Required ?
         if ($attribute->isRequired()) {
             $factory->isRequired();
         }
         //====================================================================//
-        // is Field read Only ?
+        // Is Field Read Only ?
         if (TypesConverter::isReadOnly($attrType)) {
             $factory->isReadOnly();
         }
@@ -510,6 +551,17 @@ class AttributesManager
         // is Field Multilang
         if ($attribute->isLocalizable()) {
             $factory->setMultilang($isoLang);
+        }
+        //====================================================================//
+        // Boolean Fields => Add Multilang Varchar Values
+        if (TypesConverter::isBool($attribute->getType())) {
+            $clonedAttr = clone $attribute;
+            $clonedAttr->setCode(TypesConverter::BOOL2STRING.$attribute->getCode());
+            $clonedAttr->setType(AttributeTypes::TEXT);
+            $clonedAttr->setLocalizable(true);
+            foreach ($this->locales->getAll() as $isoLang) {
+                $this->buildField($factory, $clonedAttr, $isoLang);
+            }
         }
     }
 

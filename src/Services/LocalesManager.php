@@ -16,6 +16,7 @@
 namespace   Splash\Akeneo\Services;
 
 use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository as Repository;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Splash Languages Manager - Akeneo Languages Management
@@ -49,13 +50,20 @@ class LocalesManager
     private $repository;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * Service Constructor
      *
-     * @param Repository $repository
+     * @param Repository          $repository
+     * @param TranslatorInterface $translator
      */
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, TranslatorInterface $translator)
     {
         $this->repository = $repository;
+        $this->translator = $translator;
     }
 
     /**
@@ -134,5 +142,20 @@ class LocalesManager
         }
 
         return substr($fieldName, 0, strlen($fieldName) - strlen($isoCode) - 1);
+    }
+
+    /**
+     * Translates the given message.
+     *
+     * @param string      $id         The message id (may also be an object that can be cast to string)
+     * @param array       $parameters An array of parameters for the message
+     * @param null|string $domain     The domain for the message or null to use the default
+     * @param null|string $locale     The locale or null to use the default
+     *
+     * @return string The translated string
+     */
+    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    {
+        return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 }

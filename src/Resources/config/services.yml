@@ -87,6 +87,7 @@ services:
         class:      Splash\Akeneo\Services\LocalesManager
         arguments:  
             -   "@pim_catalog.repository.locale"
+            -   "@translator"
 
     ########################################################################
     # Akeneo Connector Security Manager
