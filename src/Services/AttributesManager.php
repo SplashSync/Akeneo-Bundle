@@ -45,6 +45,7 @@ class AttributesManager
     use \Splash\Akeneo\Objects\Product\Attributes\DatesTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\PricesCollectionsTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\SelectTrait;
+    use \Splash\Akeneo\Objects\Product\Attributes\MultiSelectTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\ImagesTrait;
     use \Splash\Akeneo\Objects\Product\Attributes\FilesTrait;
 
@@ -265,9 +266,14 @@ class AttributesManager
     {
         $attrType = $attr->getType();
         //====================================================================//
-        // Read & Convert Attribute Value
+        // Read & Convert Select Value
         if (TypesConverter::isSelect($attrType)) {
             return $this->getSelectValue($product, $attr, $iso, $this->getChannel());
+        }
+        //====================================================================//
+        // Read & Convert Multi-Select Value
+        if (TypesConverter::isMultiSelect($attrType)) {
+            return $this->getMultiSelectValue($product, $attr, $iso, $this->getChannel());
         }
         //====================================================================//
         // Read & Convert Attribute Value
@@ -462,7 +468,7 @@ class AttributesManager
         $attrType = $attr->getType();
 
         //====================================================================//
-        // Read & Convert Attribute Value
+        // Write Select Value
         if (TypesConverter::isSelect($attrType)) {
             return $this->setSelectValue($product, $attr, $iso, $this->getChannel(), $data);
         }

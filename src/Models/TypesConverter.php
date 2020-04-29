@@ -48,13 +48,14 @@ class TypesConverter
         AttributeTypes::DATE => SPL_T_DATE,
         AttributeTypes::NUMBER => SPL_T_INT,
         AttributeTypes::METRIC => SPL_T_INT,
-        //        AttributeTypes::FILE => SPL_T_FILE,
         AttributeTypes::IMAGE => SPL_T_IMG,
         AttributeTypes::PRICE_COLLECTION => SPL_T_PRICE,
         AttributeTypes::IDENTIFIER => SPL_T_VARCHAR,
         AttributeTypes::OPTION_SIMPLE_SELECT => SPL_T_VARCHAR,
         AttributeTypes::TEXT => SPL_T_VARCHAR,
         AttributeTypes::TEXTAREA => SPL_T_TEXT,
+        AttributeTypes::OPTION_MULTI_SELECT => SPL_T_VARCHAR,
+        // AttributeTypes::FILE => SPL_T_FILE,
     );
 
     /**
@@ -63,6 +64,7 @@ class TypesConverter
      * @var array
      */
     const READONLY = array(
+        AttributeTypes::OPTION_MULTI_SELECT,
         AttributeTypes::FILE,
     );
 
@@ -131,6 +133,18 @@ class TypesConverter
     public static function isSelect(string $attrType): bool
     {
         return self::isKnown($attrType) && in_array($attrType, self::SELECT, true);
+    }
+
+    /**
+     * Check if Attribute type Code is Select Type
+     *
+     * @param string $attrType Akeneo Attribute Type
+     *
+     * @return bool
+     */
+    public static function isMultiSelect(string $attrType): bool
+    {
+        return self::isKnown($attrType) && (AttributeTypes::OPTION_MULTI_SELECT == $attrType);
     }
 
     /**
