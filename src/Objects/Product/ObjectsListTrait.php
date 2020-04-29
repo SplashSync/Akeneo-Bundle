@@ -16,13 +16,32 @@
 namespace Splash\Akeneo\Objects\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Doctrine\ORM\QueryBuilder;
 
 /**
- * Sylius Product Objects Lists
+ * Akeneo Product Objects Lists
  */
 trait ObjectsListTrait
 {
     use \Splash\Bundle\Helpers\Doctrine\ObjectsListHelperTrait;
+
+    /**
+     * Setup Filters for List Query Builder
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param string       $filter
+     *
+     * @return self
+     */
+    protected function setObjectListFilter(QueryBuilder $queryBuilder, string $filter): self
+    {
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->like('c.identifier', ":filter")
+        );
+        $queryBuilder->setParameter('filter', $filter);
+
+        return $this;
+    }
 
     /**
      * Transform Product To List Array Data
