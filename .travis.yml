@@ -79,13 +79,16 @@ install:
     - cat   ../travis/config_splash.yml     >> app/config/config.yml
     - cp    ../phpunit.xml.dist phpunit.xml.dist
     
-    - mkdir  -p ./src/Splash/Tests/Tools
-    - cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
-    - cp    ../tests/KernelTestCase.php ./vendor/splash/phpcore/Tests/Tools/TestCase.php
+
     
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
 #    - cat app/AppKernel.php
     - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
+    
+    - mkdir  -p ./src/Splash/Tests/Tools
+    - cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
+    - cp    ../tests/KernelTestCase.php ./vendor/splash/phpcore/Tests/Tools/TestCase.php
+    
     - php bin/console debug:config splash       --env=test
 
 
