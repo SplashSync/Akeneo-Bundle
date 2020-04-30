@@ -79,7 +79,7 @@ install:
     - cat   ../travis/config_splash.yml     >> app/config/config.yml
     - cp    ../phpunit.xml.dist phpunit.xml.dist
     
-    - mkdir ./src/Splash/Tests/Tools
+    - mkdir  -p ./src/Splash/Tests/Tools
     - cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/KernelTestCase.php
     
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
