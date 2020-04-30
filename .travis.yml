@@ -80,7 +80,8 @@ install:
     - cp    ../phpunit.xml.dist phpunit.xml.dist
     
     - mkdir  -p ./src/Splash/Tests/Tools
-    - cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/KernelTestCase.php
+    - cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
+    - cp    ../tests/KernelTestCase.php ./vendor/splash/phpcore/Tests/Tools/TestCase.php
     
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
 #    - cat app/AppKernel.php
