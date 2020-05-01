@@ -567,6 +567,7 @@ class AttributesManager
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
                 $this->buildField($factory, $clonedAttr, $isoLang);
+                $factory->isReadOnly();
             }
         }
     }
