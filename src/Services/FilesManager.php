@@ -73,11 +73,15 @@ class FilesManager
         if (empty($file->getKey())) {
             return null;
         }
-
+        //====================================================================//
+        // Build Image Full Path
+        $fullPath = $this->storageDir."/".$file->getKey();
+        //====================================================================//
+        // Encode Splash Image
         $image = self::Images()->encode(
             $file->getOriginalFilename(),
-            $file->getKey(),
-            $this->storageDir."/",
+            basename($fullPath),
+            dirname($fullPath)."/",
             $this->router->generate(
                 "pim_enrich_media_show",
                 array( "filename" => urlencode($file->getKey()), "filter" => "preview" ),
