@@ -40,7 +40,6 @@ services:
             -   "@splash.akeneo.product.files"
             -   "@splash.akeneo.locales"  
 
-
     ########################################################################
     # Akeneo Products Variant Manager
     splash.akeneo.product.variants:

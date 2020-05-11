@@ -318,6 +318,11 @@ class AttributesManager
         if (TypesConverter::isBool($attrType)) {
             return $this->getBoolAsStringValue($product, $attr, $iso, $this->getChannel());
         }
+        //====================================================================//
+        // Read & Convert Metrics as String Value
+        if (TypesConverter::isMetric($attrType)) {
+            return $this->getMetricAsStringValue($product, $attr, $iso, $this->getChannel());
+        }
 
         return null;
     }
@@ -536,7 +541,7 @@ class AttributesManager
         ;
         //====================================================================//
         // Add Field Meta Infos
-        $factory->microData("http://http//schema.org/Product", $attribute->getCode());
+        $factory->microData("http://schema.org/Product", $attrTrans->getLabel());
         //====================================================================//
         // is Field Required ?
         if ($attribute->isRequired()) {
@@ -559,6 +564,20 @@ class AttributesManager
             $factory->setMultilang($isoLang);
         }
         //====================================================================//
+        // ADD Virtual Fields to Factory
+        $this->buildVirtualField($factory, $attribute, $isoLang);
+    }
+
+    /**
+     * Generate Virtual Fields Definition
+     *
+     * @param FieldsFactory $factory
+     * @param Attribute     $attribute
+     * @param string        $isoLang
+     */
+    private function buildVirtualField(FieldsFactory $factory, Attribute $attribute, string $isoLang): void
+    {
+        //====================================================================//
         // Boolean Fields => Add Multilang Varchar Values
         if (TypesConverter::isBool($attribute->getType())) {
             $clonedAttr = clone $attribute;
@@ -569,6 +588,16 @@ class AttributesManager
                 $this->buildField($factory, $clonedAttr, $isoLang);
                 $factory->isReadOnly();
             }
+        }
+        //====================================================================//
+        // Metrics Fields => Add Varchar Values
+        if (TypesConverter::isMetric($attribute->getType())) {
+            $clonedAttr = clone $attribute;
+            $clonedAttr->setCode(TypesConverter::METRIC2STRING.$attribute->getCode());
+            $clonedAttr->setType(AttributeTypes::TEXT);
+            $clonedAttr->setLocalizable(false);
+            $this->buildField($factory, $clonedAttr, $isoLang);
+            $factory->isReadOnly();
         }
     }
 

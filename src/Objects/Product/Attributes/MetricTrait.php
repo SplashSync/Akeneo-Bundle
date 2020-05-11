@@ -15,7 +15,7 @@
 
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric as Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Exception;
@@ -56,6 +56,30 @@ trait MetricTrait
         }
 
         return (float) $value;
+    }
+
+    /**
+     * DOUBLE - Read Attribute Data with Local & Scope Detection
+     *
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     *
+     * @return string
+     */
+    protected function getMetricAsStringValue(Product $product, Attribute $attribute, string $isoLang, string $channel): string
+    {
+        //====================================================================//
+        // Load Raw Attribute Value
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        //====================================================================//
+        // Extract Generic Converted Value
+        if ($value instanceof Metric) {
+            return (string) $value->getData()." ".$value->getUnit();
+        }
+
+        return (string) $value;
     }
 
     /**

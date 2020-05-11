@@ -15,8 +15,12 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\ORM\QueryBuilder;
+use Splash\Client\Splash;
 
 /**
  * Akeneo Product Objects Lists
@@ -24,6 +28,51 @@ use Doctrine\ORM\QueryBuilder;
 trait ObjectsListTrait
 {
     use \Splash\Bundle\Helpers\Doctrine\ObjectsListHelperTrait;
+
+    /**
+     * Configure Query Builder beforer List Queries
+     *
+     * @param QueryBuilder $queryBuilder
+     *
+     * @return self
+     */
+    protected function configureObjectListQueryBuilder(QueryBuilder $queryBuilder): self
+    {
+        //====================================================================//
+        // Get List of Categories for this Connection
+        $categoryCodes = $this->getParameter("categories", array());
+        if (!is_array($categoryCodes) || empty($categoryCodes)) {
+            return $this;
+        }
+        //====================================================================//
+        // Connect to Category Repository
+        /** @var CategoryRepository $repository */
+        $repository = $queryBuilder->getEntityManager()->getRepository(Category::class);
+        //====================================================================//
+        // Load Parent Categories
+        $categories = $repository->getCategoriesByCodes($categoryCodes);
+        //====================================================================//
+        // Collect List of Sub-Categories Ids
+        $childCategoryIds = array();
+        /** @var CategoryInterface $categorie */
+        foreach ($categories as $categorie) {
+            $childCategoryIds = array_merge(
+                $childCategoryIds,
+                array($categorie->getid()),
+                $repository->getAllChildrenIds($categorie)
+            );
+        }
+        //====================================================================//
+        // Setup QueryBuilder
+        Splash::log()->war('List Filtered on '.count($childCategoryIds)." Categories");
+        $queryBuilder
+            ->innerJoin('c.categories', 'cat')
+            ->andWhere($queryBuilder->expr()->in('cat.id', ":categories"))
+            ->setParameter('categories', $childCategoryIds)
+        ;
+
+        return $this;
+    }
 
     /**
      * Setup Filters for List Query Builder
@@ -52,6 +101,12 @@ trait ObjectsListTrait
      */
     protected function getObjectListArray(Product $variant): array
     {
+//        $firstCat = $variant->getCategories()->first();
+//        if ($firstCat) {
+//            Splash::log()->www('First Categorie', $firstCat->getCode());
+//            Splash::log()->www('Child Categories', count($firstCat->getChildren()));
+//        }
+
         return array(
             'id' => $variant->getId(),
             'identifier' => $variant->getIdentifier(),

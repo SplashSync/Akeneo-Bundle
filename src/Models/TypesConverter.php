@@ -39,6 +39,13 @@ class TypesConverter
     const BOOL2STRING = "b2s_";
 
     /**
+     * Metrics as String Prefix
+     *
+     * @var array
+     */
+    const METRIC2STRING = "m2s_";
+
+    /**
      * List of Known Akeneo Attributes Types
      *
      * @var array
@@ -229,6 +236,13 @@ class TypesConverter
             return $boolToString;
         }
 
+        //====================================================================//
+        // Metric to String
+        $metricToString = self::isMetricToString($fieldName);
+        if ($metricToString) {
+            return $metricToString;
+        }
+
         return null;
     }
 
@@ -252,5 +266,27 @@ class TypesConverter
         }
 
         return substr($fieldName, strlen(self::BOOL2STRING));
+    }
+
+    //====================================================================//
+    // Metric to String Detection
+    //====================================================================//
+
+    /**
+     * Detect & Decode Metrics to String FieldName
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Base Field Name or Null
+     */
+    public static function isMetricToString($fieldName): ?string
+    {
+        //====================================================================//
+        // Check if Prefix is in FieldName
+        if (0 !== strpos($fieldName, self::METRIC2STRING)) {
+            return null;
+        }
+
+        return substr($fieldName, strlen(self::METRIC2STRING));
     }
 }
