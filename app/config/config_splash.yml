@@ -11,6 +11,7 @@ splash:
                 channel:        ecommerce
                 currency:       EUR
                 images:         ['image', 'picture', 'variation_image']
+                categories:     ["digital_cameras", "scanners"]
                 travis:         true
                 infos:
                     logo:       http://docker.akeneo.local/bundles/pimui/images/info-user.png
