@@ -64,7 +64,7 @@ trait ObjectsListTrait
         }
         //====================================================================//
         // Setup QueryBuilder
-        Splash::log()->war('List Filtered on '.count($childCategoryIds)." Categories");
+        Splash::log()->deb('List Filtered on '.count($childCategoryIds)." Categories");
         $queryBuilder
             ->innerJoin('c.categories', 'cat')
             ->andWhere($queryBuilder->expr()->in('cat.id', ":categories"))

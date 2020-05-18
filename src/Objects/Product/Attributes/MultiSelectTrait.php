@@ -17,6 +17,7 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
+use Splash\Models\Helpers\InlineHelper;
 
 /**
  * Manage Multi-Select Types Attributes
@@ -39,11 +40,8 @@ trait MultiSelectTrait
         //====================================================================//
         // Load Raw Attribute Value
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
-        if (is_array($value) && !empty($value)) {
-            return (string) json_encode(array_values($value), JSON_UNESCAPED_UNICODE);
-        }
 
-        return null;
+        return InlineHelper::fromArray($value);
     }
 
     /**
@@ -71,6 +69,6 @@ trait MultiSelectTrait
             $translated[$index] = (string) $this->getOptionTranslation($attribute, $valueCode, $isoLang);
         }
 
-        return (string) json_encode(array_values($translated), JSON_UNESCAPED_UNICODE);
+        return InlineHelper::fromArray($translated);
     }
 }
