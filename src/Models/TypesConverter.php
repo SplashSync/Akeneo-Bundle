@@ -51,14 +51,14 @@ class TypesConverter
      * @var string
      */
     const SELECT2TRANS = "s2t_";
-    
+
     /**
      * Multi-Select Translations Prefix
      *
      * @var string
      */
     const MULTI2TRANS = "m2t_";
-    
+
     /**
      * List of Known Akeneo Attributes Types
      *
@@ -317,7 +317,7 @@ class TypesConverter
 
         return substr($fieldName, strlen(self::METRIC2STRING));
     }
-    
+
     //====================================================================//
     // Select to Translation Detection
     //====================================================================//
@@ -339,7 +339,7 @@ class TypesConverter
 
         return substr($fieldName, strlen(self::SELECT2TRANS));
     }
-    
+
     /**
      * Detect & Decode Multi-Select to Translation FieldName
      *

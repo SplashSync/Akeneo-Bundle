@@ -190,7 +190,7 @@ class Product extends AbstractStandaloneObject
         //====================================================================//
         // Default Language
         $this->locales->setDefault($this->getParameter("locale", "en_US"));
-        
+
         return $this;
     }
 

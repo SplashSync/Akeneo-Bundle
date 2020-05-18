@@ -16,7 +16,10 @@
 namespace Splash\Akeneo\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Splash\Bundle\Helpers\Doctrine\AbstractEventSubscriber;
+use Splash\Bundle\Models\AbstractConnector;
 
 /**
  * Akeneo Product Doctrine Events Subscriber
@@ -56,5 +59,58 @@ class ProductSubscriber extends AbstractEventSubscriber
     public function setAllDisabled(): void
     {
         self::setStates(false, false, false);
+    }
+
+    /**
+     * Override Identifier Parser to Filter on Categories (if Feature Enabled)
+     *
+     * {@inheritdoc}
+     */
+    protected function getObjectIdentifiers(LifecycleEventArgs $eventArgs, AbstractConnector $connector): array
+    {
+        //====================================================================//
+        // Get Impacted Object
+        $product = $eventArgs->getEntity();
+        //====================================================================//
+        // Get List of Categories for this Connection
+        if (!($product instanceof Product)) {
+            return parent::getObjectIdentifiers($eventArgs, $connector);
+        }
+        //====================================================================//
+        // Get List of Categories for this Connection
+        $categoryCodes = $connector->getParameter("categories", array());
+        if (!is_array($categoryCodes) || empty($categoryCodes)) {
+            return parent::getObjectIdentifiers($eventArgs, $connector);
+        }
+        //====================================================================//
+        // Walk on Product Categories
+        foreach ($product->getCategories() as $category) {
+            if ($this->isInFilteredCategories($categoryCodes, $category)) {
+                return parent::getObjectIdentifiers($eventArgs, $connector);
+            }
+        }
+
+        return array();
+    }
+
+    /**
+     * Check if categorie is in Filtered Categories Tree
+     *
+     * @param array             $categoryCodes
+     * @param CategoryInterface $category
+     *
+     * @return bool
+     */
+    private function isInFilteredCategories(array $categoryCodes, CategoryInterface $category): bool
+    {
+        if (in_array($category->getCode(), $categoryCodes, true)) {
+            return true;
+        }
+        $parent = $category->getParent();
+        if (null !== $parent) {
+            return $this->isInFilteredCategories($categoryCodes, $parent);
+        }
+
+        return false;
     }
 }
