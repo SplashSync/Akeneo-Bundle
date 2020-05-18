@@ -50,6 +50,33 @@ trait SelectTrait
     }
 
     /**
+     * SELECT - Read Attribute Translation with Local & Scope Detection
+     *
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     *
+     * @return mixed
+     */
+    protected function getSelectValueTranslation(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    {
+        //====================================================================//
+        // Load Raw Attribute Value
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        //====================================================================//
+        // Translate Attribute Value
+        if ($value instanceof AttributeOption) {
+            return (string) $this->getOptionTranslation($attribute, $value->getCode(), $isoLang);
+        }
+        if (is_string($value) && !empty($value)) {
+            return (string) $this->getOptionTranslation($attribute, $value, $isoLang);
+        }
+
+        return  (string) $value;
+    }
+
+    /**
      * SELECT - Read Attribute Possibles Choices
      *
      * @param Attribute $attribute
@@ -73,6 +100,37 @@ trait SelectTrait
         }
 
         return $choices;
+    }
+
+    /**
+     * SELECT - Translate Attribute Option Data with Local
+     *
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $valueCode
+     * @param string    $isoLang
+     *
+     * @return null|string
+     */
+    protected function getOptionTranslation(Attribute $attribute, string $valueCode, string $isoLang): ?string
+    {
+        $options = $attribute->getOptions();
+        //====================================================================//
+        // Safety Check
+        if (!is_iterable($options)) {
+            return null;
+        }
+        //====================================================================//
+        // Search Attribute Option by Code
+        /** @var AttributeOption $option */
+        foreach ($options as $option) {
+            if ($option->getCode() != $valueCode) {
+                continue;
+            }
+
+            return $option->setLocale($isoLang)->getTranslation()->getValue();
+        }
+
+        return null;
     }
 
     /**

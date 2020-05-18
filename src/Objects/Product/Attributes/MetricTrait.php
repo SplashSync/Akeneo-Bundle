@@ -76,7 +76,9 @@ trait MetricTrait
         //====================================================================//
         // Extract Generic Converted Value
         if ($value instanceof Metric) {
-            return (string) $value->getData()." ".$value->getUnit();
+            $transUnit = $this->locales->trans("pim_measure.units.".$value->getUnit(), array(), "messages", $isoLang);
+                        
+            return (string) sprintf('%.2F', $value->getData())." ".$transUnit;
         }
 
         return (string) $value;

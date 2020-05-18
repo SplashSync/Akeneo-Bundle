@@ -37,6 +37,9 @@ trait CrudTrait
     public function load($objectId)
     {
         //====================================================================//
+        // Ensure Service Configuration
+        $this->ensureSetup();
+        //====================================================================//
         // Load Product from Repository
         $product = $this->repository->find($objectId);
         if (!($product instanceof Product)) {
@@ -56,6 +59,9 @@ trait CrudTrait
      */
     public function create()
     {
+        //====================================================================//
+        // Ensure Service Configuration
+        $this->ensureSetup();
         //====================================================================//
         // Create a New PIM Product
         $product = $this->crud->createProduct($this->in);

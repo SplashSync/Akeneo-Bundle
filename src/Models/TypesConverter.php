@@ -34,17 +34,31 @@ class TypesConverter
     /**
      * Bool as String Prefix
      *
-     * @var array
+     * @var string
      */
     const BOOL2STRING = "b2s_";
 
     /**
      * Metrics as String Prefix
      *
-     * @var array
+     * @var string
      */
     const METRIC2STRING = "m2s_";
 
+    /**
+     * Select Translations Prefix
+     *
+     * @var string
+     */
+    const SELECT2TRANS = "s2t_";
+    
+    /**
+     * Multi-Select Translations Prefix
+     *
+     * @var string
+     */
+    const MULTI2TRANS = "m2t_";
+    
     /**
      * List of Known Akeneo Attributes Types
      *
@@ -243,6 +257,20 @@ class TypesConverter
             return $metricToString;
         }
 
+        //====================================================================//
+        // Select to Translation
+        $selectToTrans = self::isSelectToTrans($fieldName);
+        if ($selectToTrans) {
+            return $selectToTrans;
+        }
+
+        //====================================================================//
+        // Multi-Select to Translation
+        $multiToTrans = self::isMultiToTrans($fieldName);
+        if ($multiToTrans) {
+            return $multiToTrans;
+        }
+
         return null;
     }
 
@@ -288,5 +316,45 @@ class TypesConverter
         }
 
         return substr($fieldName, strlen(self::METRIC2STRING));
+    }
+    
+    //====================================================================//
+    // Select to Translation Detection
+    //====================================================================//
+
+    /**
+     * Detect & Decode Select to Translation FieldName
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Base Field Name or Null
+     */
+    public static function isSelectToTrans($fieldName): ?string
+    {
+        //====================================================================//
+        // Check if Prefix is in FieldName
+        if (0 !== strpos($fieldName, self::SELECT2TRANS)) {
+            return null;
+        }
+
+        return substr($fieldName, strlen(self::SELECT2TRANS));
+    }
+    
+    /**
+     * Detect & Decode Multi-Select to Translation FieldName
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Base Field Name or Null
+     */
+    public static function isMultiToTrans($fieldName): ?string
+    {
+        //====================================================================//
+        // Check if Prefix is in FieldName
+        if (0 !== strpos($fieldName, self::MULTI2TRANS)) {
+            return null;
+        }
+
+        return substr($fieldName, strlen(self::MULTI2TRANS));
     }
 }

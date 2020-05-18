@@ -39,11 +39,38 @@ trait MultiSelectTrait
         //====================================================================//
         // Load Raw Attribute Value
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
-
         if (is_array($value) && !empty($value)) {
-            return (string) json_encode((object) $value);
+            return (string) json_encode(array_values($value), JSON_UNESCAPED_UNICODE);
         }
 
         return null;
+    }
+
+    /**
+     * MULTI-SELECT - Read Attribute Data with Local & Scope Detection
+     *
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     *
+     * @return null|string
+     */
+    protected function getMultiSelectTranslated(Product $product, Attribute $attribute, string $isoLang, string $channel): ?string
+    {
+        //====================================================================//
+        // Load Raw Attribute Value
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        if (!is_array($value) || empty($value)) {
+            return null;
+        }
+        //====================================================================//
+        // Translate Attribute Options Value
+        $translated = array();
+        foreach ($value as $index => $valueCode) {
+            $translated[$index] = (string) $this->getOptionTranslation($attribute, $valueCode, $isoLang);
+        }
+
+        return (string) json_encode(array_values($translated), JSON_UNESCAPED_UNICODE);
     }
 }

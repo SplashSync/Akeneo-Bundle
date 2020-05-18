@@ -175,6 +175,26 @@ class Product extends AbstractStandaloneObject
     }
 
     /**
+     * Ensure Service Configuration
+     *
+     * @return self
+     */
+    protected function ensureSetup(): self
+    {
+        //====================================================================//
+        // Setup Splash Akeneo Products Attributes Manager
+        $this->attr->setup(
+            $this->getParameter("channel", "ecommerce"),
+            $this->getParameter("currency", "EUR")
+        );
+        //====================================================================//
+        // Default Language
+        $this->locales->setDefault($this->getParameter("locale", "en_US"));
+        
+        return $this;
+    }
+
+    /**
      * Check if System is in Debug Mode
      *
      * @return bool

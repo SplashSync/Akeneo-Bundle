@@ -323,6 +323,16 @@ class AttributesManager
         if (TypesConverter::isMetric($attrType)) {
             return $this->getMetricAsStringValue($product, $attr, $iso, $this->getChannel());
         }
+        //====================================================================//
+        // Read & Convert Select as Translated
+        if (TypesConverter::isSelect($attrType)) {
+            return $this->getSelectValueTranslation($product, $attr, $iso, $this->getChannel());
+        }
+        //====================================================================//
+        // Read & Convert Multi-Select as Translated
+        if (TypesConverter::isMultiSelect($attrType)) {
+            return $this->getMultiSelectTranslated($product, $attr, $iso, $this->getChannel());
+        }
 
         return null;
     }
@@ -524,6 +534,8 @@ class AttributesManager
         $group = $attribute->getGroup();
         //====================================================================//
         // Collect Names Translations
+        /** @var AttributeTranslation $baseAttrTrans */
+        $baseAttrTrans = $attribute->getTranslation($this->locales->getDefault());
         /** @var AttributeTranslation $attrTrans */
         $attrTrans = $attribute->getTranslation($isoLang);
         /** @var GroupTranslation $groupTrans */
@@ -541,7 +553,7 @@ class AttributesManager
         ;
         //====================================================================//
         // Add Field Meta Infos
-        $factory->microData("http://schema.org/Product", $attrTrans->getLabel());
+        $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel());
         //====================================================================//
         // is Field Required ?
         if ($attribute->isRequired()) {
@@ -595,9 +607,35 @@ class AttributesManager
             $clonedAttr = clone $attribute;
             $clonedAttr->setCode(TypesConverter::METRIC2STRING.$attribute->getCode());
             $clonedAttr->setType(AttributeTypes::TEXT);
-            $clonedAttr->setLocalizable(false);
-            $this->buildField($factory, $clonedAttr, $isoLang);
-            $factory->isReadOnly();
+            $clonedAttr->setLocalizable(true);
+            foreach ($this->locales->getAll() as $isoLang) {
+                $this->buildField($factory, $clonedAttr, $isoLang);
+                $factory->isReadOnly();
+            }
+        }
+        //====================================================================//
+        // Select Fields => Add Varchar Values
+        if (TypesConverter::isSelect($attribute->getType())) {
+            $clonedAttr = clone $attribute;
+            $clonedAttr->setCode(TypesConverter::SELECT2TRANS.$attribute->getCode());
+            $clonedAttr->setType(AttributeTypes::TEXT);
+            $clonedAttr->setLocalizable(true);
+            foreach ($this->locales->getAll() as $isoLang) {
+                $this->buildField($factory, $clonedAttr, $isoLang);
+                $factory->isReadOnly();
+            }
+        }
+        //====================================================================//
+        // Multi-Select Fields => Add Varchar Values
+        if (TypesConverter::isMultiSelect($attribute->getType())) {
+            $clonedAttr = clone $attribute;
+            $clonedAttr->setCode(TypesConverter::MULTI2TRANS.$attribute->getCode());
+            $clonedAttr->setType(AttributeTypes::TEXT);
+            $clonedAttr->setLocalizable(true);
+            foreach ($this->locales->getAll() as $isoLang) {
+                $this->buildField($factory, $clonedAttr, $isoLang);
+                $factory->isReadOnly();
+            }
         }
     }
 
