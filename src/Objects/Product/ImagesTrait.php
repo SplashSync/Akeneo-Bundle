@@ -124,7 +124,7 @@ trait ImagesTrait
 
                     break;
                 case "visible":
-                    $value = true;
+                    $value = $this->isVisibleImage($attrCode);
 
                     break;
                 case "cover":
@@ -193,6 +193,18 @@ trait ImagesTrait
     }
 
     /**
+     * Check if Image is Visible
+     *
+     * @param string $attrCode
+     *
+     * @return bool
+     */
+    private function isVisibleImage(string $attrCode): bool
+    {
+        return in_array($attrCode, $this->object->getUsedAttributeCodes(), true);
+    }
+
+    /**
      * Return Product Images Informations Array from Akeneo Product Object
      *
      * @return array
@@ -226,28 +238,4 @@ trait ImagesTrait
 
         return $this->imagesCache;
     }
-
-//    /**
-//     * Write Given Fields
-//     *
-//     * @param string $fieldName Field Identifier / Name
-//     * @param mixed  $fieldData Field Data
-//     */
-//    private function setImagesFields($fieldName, $fieldData)
-//    {
-//        //====================================================================//
-//        // WRITE Field
-//        switch ($fieldName) {
-//            //====================================================================//
-//            // PRODUCT IMAGES
-//            //====================================================================//
-//            case 'images':
-//                $this->setImgArray($fieldData);
-//
-//                break;
-//            default:
-//                return;
-//        }
-//        unset($this->in[$fieldName]);
-//    }
 }

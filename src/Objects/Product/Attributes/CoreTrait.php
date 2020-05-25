@@ -16,6 +16,7 @@
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertySetter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 
@@ -33,14 +34,14 @@ trait CoreTrait
     /**
      * CORE - Read Attribute Data with Local & Scope Detection
      *
-     * @param Product   $product   Akeneo Product Object
-     * @param Attribute $attribute Akeneo Attribute Object
-     * @param string    $isoLang
-     * @param string    $channel
+     * @param Product|ProductModel $product   Akeneo Product Object
+     * @param Attribute            $attribute Akeneo Attribute Object
+     * @param string               $isoLang
+     * @param string               $channel
      *
      * @return mixed
      */
-    protected function getCoreValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    protected function getCoreValue($product, Attribute $attribute, string $isoLang, string $channel)
     {
         //====================================================================//
         // Get Attribute Code
@@ -51,7 +52,7 @@ trait CoreTrait
             //====================================================================//
             // Load Value from Parent Product
             $parent = $product->getParent();
-            if ($parent instanceof Product) {
+            if ($parent) {
                 return $this->getCoreValue($parent, $attribute, $isoLang, $channel);
             }
 
