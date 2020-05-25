@@ -519,8 +519,9 @@ class AttributesManager
      * @param FieldsFactory $factory
      * @param Attribute     $attribute
      * @param string        $isoLang
+     * @param string        $suffix
      */
-    private function buildField(FieldsFactory $factory, Attribute $attribute, string $isoLang): void
+    private function buildField(FieldsFactory $factory, Attribute $attribute, string $isoLang, string $suffix = ""): void
     {
         //====================================================================//
         // Get Attribute Type
@@ -553,7 +554,7 @@ class AttributesManager
         ;
         //====================================================================//
         // Add Field Meta Infos
-        $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel());
+        $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel().$suffix);
         //====================================================================//
         // is Field Required ?
         if ($attribute->isRequired()) {
@@ -621,7 +622,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang);
+                $this->buildField($factory, $clonedAttr, $isoLang, "Name");
                 $factory->isReadOnly();
             }
         }
@@ -633,7 +634,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang);
+                $this->buildField($factory, $clonedAttr, $isoLang, "Names");
                 $factory->isReadOnly();
             }
         }
