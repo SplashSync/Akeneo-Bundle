@@ -116,7 +116,7 @@ trait ImagesTrait
             // Prepare
             switch ($fieldId) {
                 case "image":
-                    $value = $image;
+                    $value = $image['image'];
 
                     break;
                 case "position":
@@ -124,7 +124,7 @@ trait ImagesTrait
 
                     break;
                 case "visible":
-                    $value = $this->isVisibleImage($attrCode);
+                    $value = $image['visible'];
 
                     break;
                 case "cover":
@@ -193,18 +193,6 @@ trait ImagesTrait
     }
 
     /**
-     * Check if Image is Visible
-     *
-     * @param string $attrCode
-     *
-     * @return bool
-     */
-    private function isVisibleImage(string $attrCode): bool
-    {
-        return in_array($attrCode, $this->object->getUsedAttributeCodes(), true);
-    }
-
-    /**
      * Return Product Images Informations Array from Akeneo Product Object
      *
      * @return array
@@ -220,22 +208,64 @@ trait ImagesTrait
         //====================================================================//
         // Load Complete Product Images List
         foreach ($this->getParameter("images", array()) as $attrCode) {
+            $this->getImageCache($attrCode);
+        }
+
+        return is_array($this->imagesCache) ? $this->imagesCache : array();
+    }
+
+    /**
+     * Fetch Product Images Informations for an Attribute Code, with Variants Detection
+     *
+     * @param string $attrCode
+     *
+     * @return void
+     */
+    private function getImageCache(string $attrCode): void
+    {
+        //====================================================================//
+        // Safety Check => Verify if FieldName is An Attribute Type
+        if (!$this->attr->has($attrCode)) {
+            return;
+        }
+
+        //====================================================================//
+        // Read Current Product Attribute Data
+        $rawValue = $this->attr->get($this->object, $attrCode);
+        if (isset($rawValue[$attrCode]) && !empty($rawValue[$attrCode])) {
             //====================================================================//
-            // Safety Check => Verify if FieldName is An Attribute Type
-            if (!$this->attr->has($attrCode)) {
+            // Add Image to Cache
+            $this->imagesCache[$attrCode] = array(
+                "image" => $rawValue[$attrCode],
+                "visible" => true,
+            );
+        }
+
+        //====================================================================//
+        // Complete Cache with Other Variants Images
+        foreach ($this->variants->getVariantsList($this->object, true) as $variant) {
+            //====================================================================//
+            // Skip Current Product
+            if ($variant->getId() == $this->object->getId()) {
                 continue;
             }
             //====================================================================//
             // Read Attribute Data
-            $rawValue = $this->attr->get($this->object, $attrCode);
-            if (!isset($rawValue[$attrCode]) || empty($rawValue[$attrCode])) {
+            $rawVariantValue = $this->attr->get($variant, $attrCode);
+            if (!isset($rawVariantValue[$attrCode]) || empty($rawVariantValue[$attrCode])) {
+                continue;
+            }
+            //====================================================================//
+            // Skip Similar Images
+            if ($rawVariantValue[$attrCode]['md5'] == $rawValue[$attrCode]['md5']) {
                 continue;
             }
             //====================================================================//
             // Add Image to Cache
-            $this->imagesCache[$attrCode] = $rawValue[$attrCode];
+            $this->imagesCache[$attrCode.'_'.$variant->getId()] = array(
+                "image" => $rawVariantValue[$attrCode],
+                "visible" => false,
+            );
         }
-
-        return $this->imagesCache;
     }
 }

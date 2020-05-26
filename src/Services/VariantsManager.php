@@ -91,11 +91,12 @@ class VariantsManager
     /**
      * Recursive Reading of Product Parent Id
      *
-     * @param Product $product
+     * @param Product $product  Current Product Entity
+     * @param bool    $entities Get Entities or Info Array
      *
      * @return array
      */
-    public function getVariantsList(Product $product): array
+    public function getVariantsList(Product $product, $entities = false): array
     {
         //====================================================================//
         // LOAD PRODUCT MAIN PARENT MODEL
@@ -107,17 +108,18 @@ class VariantsManager
         }
         //====================================================================//
         // PRODUCT PARENT MODEL
-        return $this->getModelProducts($parentModel);
+        return $this->getModelProducts($parentModel, $entities);
     }
 
     /**
      * Recursive Reading of Product Model Child Products
      *
-     * @param ProductModel $model
+     * @param ProductModel $model    Current Product Model Entity
+     * @param bool         $entities Get Entities or Info Array
      *
      * @return array
      */
-    public function getModelProducts(ProductModel $model): array
+    public function getModelProducts(ProductModel $model, $entities = false): array
     {
         $response = array();
         //====================================================================//
@@ -141,13 +143,17 @@ class VariantsManager
         //====================================================================//
         // WALK ON MODEL CHILD PRODUCTS
         foreach ($products as $product) {
-            if ($product->getId()) {
-                $response[$product->getId()] = array(
+            if (!$product->getId()) {
+                continue;
+            }
+            $response[$product->getId()] = $entities
+                ? $product
+                : array(
                     "id" => self::objects()->encode("Product", $product->getId()),
                     "rawId" => $product->getId(),
                     "sku" => $product->getIdentifier(),
-                );
-            }
+                )
+            ;
         }
 
         return $response;
