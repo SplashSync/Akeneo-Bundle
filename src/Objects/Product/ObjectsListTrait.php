@@ -101,12 +101,6 @@ trait ObjectsListTrait
      */
     protected function getObjectListArray(Product $variant): array
     {
-//        $firstCat = $variant->getCategories()->first();
-//        if ($firstCat) {
-//            Splash::log()->www('First Categorie', $firstCat->getCode());
-//            Splash::log()->www('Child Categories', count($firstCat->getChildren()));
-//        }
-
         return array(
             'id' => $variant->getId(),
             'identifier' => $variant->getIdentifier(),
