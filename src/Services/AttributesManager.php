@@ -548,7 +548,7 @@ class AttributesManager
         $factory
             ->create((string) TypesConverter::toSplash($attribute))
             ->identifier($attribute->getCode())
-            ->name($attrTrans->getLabel())
+            ->name(empty($attrTrans->getLabel()) ? $attribute->getCode() : $attrTrans->getLabel())
             ->description("[".$groupTrans->getLabel()."] ".$attrTrans->getLabel())
             ->group($baseTrans->getLabel())
         ;

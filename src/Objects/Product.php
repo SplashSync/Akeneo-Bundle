@@ -46,9 +46,9 @@ class Product extends AbstractStandaloneObject
     use Product\LabelTrait;
     use Product\VariantsTrait;
     use Product\ImagesTrait;
+    use Product\CategoriesTrait;
     use Product\AttributesTrait;
     use Product\ObjectsListTrait;
-    use Product\CategoriesTrait;
 
     //====================================================================//
     // Object Definition Parameters

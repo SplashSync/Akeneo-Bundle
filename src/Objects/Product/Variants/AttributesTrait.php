@@ -73,7 +73,7 @@ trait AttributesTrait
             // Product Variation Attribute Name
             $this->fieldsFactory()->create(SPL_T_VARCHAR)
                 ->Identifier("label")
-                ->Name("Attribute Name")
+                ->Name("Attr. Name")
                 ->Group($groupName)
                 ->MicroData("http://schema.org/Product", "VariantAttributeName")
                 ->setMultilang($isoLang)
@@ -83,14 +83,35 @@ trait AttributesTrait
         }
 
         //====================================================================//
-        // Product Variation Attribute Value
+        // Product Variation Attribute Code
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
             ->Identifier("value")
-            ->Name("Attribute Value")
+            ->Name("Attr. Value Code")
             ->Group($groupName)
-            ->MicroData("http://schema.org/Product", "VariantAttributeValue")
+            ->MicroData(
+                "http://schema.org/Product",
+                $this->isDebugMode() ? "VariantAttributeValue" :  "VariantAttributeValueCode"
+            )
             ->InList("attributes")
             ->isNotTested();
+
+        //====================================================================//
+        // Product Variation Attribute Value
+        foreach ($this->locales->getAll() as $isoLang) {
+            //====================================================================//
+            // Product Variation Attribute Name
+            $this->fieldsFactory()->create(SPL_T_VARCHAR)
+                ->Identifier("value_label")
+                ->Name("Attr. Value")
+                ->Group($groupName)
+                ->MicroData(
+                    "http://schema.org/Product",
+                    $this->isDebugMode() ? "VariantAttributeValueLabel" :  "VariantAttributeValue"
+                )
+                ->setMultilang($isoLang)
+                ->InList("attributes")
+                ->isReadOnly();
+        }
     }
 
     //====================================================================//
@@ -244,6 +265,10 @@ trait AttributesTrait
                     break;
                 case 'value':
                     $value = $this->attr->getData($this->object, $attribute, $isoLang);
+
+                    break;
+                case 'value_label':
+                    $value = $this->attr->getVirtualData($this->object, $attribute, $isoLang);
 
                     break;
                 default:
