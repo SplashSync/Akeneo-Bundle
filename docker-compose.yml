@@ -44,7 +44,6 @@ services:
             COMPOSER_HOME: '/home/docker/.composer' 
         volumes:
             - ./:/srv/pim
-            - ~/.composer:/home/docker/.composer
         working_dir: '/srv/pim'
         networks:
             - 'akeneo'

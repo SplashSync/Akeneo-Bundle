@@ -13,10 +13,14 @@
  *  file that was distributed with this source code.
  */
 
+use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__.'/../vendor/autoload.php';
-$kernel = new AppKernel('prod', true);
+
+Debug::enable();
+
+$kernel = new AppKernel('dev', true);
 
 // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
 $request = Request::createFromGlobals();
