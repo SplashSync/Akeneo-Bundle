@@ -25,6 +25,7 @@
 # 
 # 172.105.0.10        docker.akeneo.local
 # 172.105.0.11        toolkit.akeneo.local
+# 172.105.0.12        phpmyadmin.akeneo.local
 #
 ################################################################################
 
@@ -37,12 +38,12 @@ services:
     fpm:
         image: 'akeneo/fpm:php-7.2'
         user: 'docker'
-        container_name: akeneo-php-fpm
+        container_name: akeneo_fpm
         environment:
             COMPOSER_MEMORY_LIMIT: -1
             COMPOSER_HOME: '/home/docker/.composer' 
         volumes:
-            - './:/srv/pim'
+            - ./:/srv/pim
             - ~/.composer:/home/docker/.composer
         working_dir: '/srv/pim'
         networks:
@@ -55,7 +56,8 @@ services:
     # Splash Toolkit Container   
     toolkit:
         image: 'splashsync/toolkit'
-        container_name: akeneo-toolkit
+        container_name: akeneo_toolkit
+        logging: { driver: "none" }
         volumes:
             # Specify Local Configuration File
             - './docker/toolkit/.env:/app/.env:ro'
@@ -70,13 +72,13 @@ services:
     # Apache Server Container   
     httpd:
         image: 'httpd:2.4'
-        container_name: akeneo-apache
+        container_name: akeneo_apache
         depends_on:
             - 'fpm'
         volumes:
-            - './:/srv/pim:ro'
-            - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
-            - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
+            - ./:/srv/pim:ro
+            - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+            - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro
         hostname:           docker.akeneo.local
         networks:
             akeneo:         { ipv4_address: 172.105.0.10, aliases: [ docker.akeneo.local ] }
@@ -86,7 +88,8 @@ services:
     # MySql Container    
     mysql:
         image: 'mysql:5.7'
-        container_name: akeneo-mysql
+        container_name: akeneo_mysql
+        logging: { driver: "none" }
         environment:
             MYSQL_ROOT_PASSWORD: 'root'
             MYSQL_USER: 'akeneo_pim'
@@ -100,7 +103,8 @@ services:
     node:
         image: 'node:8-slim'
         user: 'node'
-        container_name: akeneo-nodeJs
+        container_name: akeneo_nodeJs
+        logging: { driver: "none" }
         volumes:
             - './:/srv/pim'
             - ~/.cache/yarn:/home/node/.yarn-cache
@@ -112,12 +116,29 @@ services:
     # ElasticSearch Container    
     elasticsearch:
         image: 'docker.elastic.co/elasticsearch/elasticsearch:5.5.3'
-        container_name: akeneo-elastic
+        container_name: akeneo_elastic
+        logging: { driver: "none" }
         environment:
             ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
             discovery.type: 'single-node'
         networks:
           - 'akeneo'
+
+    ################################################################################
+    # PhpMyAdmin Container
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:5
+        container_name: akeneo_phpmyadmin
+        logging: { driver: "none" }
+        depends_on:
+            - mysql
+        environment:
+            - PMA_HOST=mysql
+            - MYSQL_USER=admin
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_PASSWORD=root
+        networks:
+            akeneo:      { ipv4_address: 172.105.0.12, aliases: [ phpmyadmin.akeneo.local ] }
 
 networks:
     ################################################################################

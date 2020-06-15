@@ -24,6 +24,7 @@ splash:
                 currency:       EUR
                 images:         ['image', 'variation_image']
                 infos:
+                    ico:        '%kernel.root_dir%/../vendor/splash/akeneo-bundle/src/Resources/img/logo.png'
                     logo:       https://akeneo.exemple.com/bundles/pimui/images/info-user.png
 ```
 

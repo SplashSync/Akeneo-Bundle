@@ -207,11 +207,12 @@ class TypesConverter
     /**
      * Convert Akeneo Attribute Type to Splash Field Type
      *
-     * @param Attribute $attribute Akeneo Attribute Type
+     * @param Attribute $attribute   Akeneo Attribute Type
+     * @param bool      $catalogMode Akeneo Catalog Mode
      *
      * @return null|string
      */
-    public static function toSplash(Attribute $attribute): ?string
+    public static function toSplash(Attribute $attribute, bool $catalogMode): ?string
     {
         $attrType = $attribute->getType();
         //====================================================================//
@@ -220,11 +221,15 @@ class TypesConverter
             return null;
         }
         $splashType = self::TYPES[$attrType];
-
         //====================================================================//
-        // Detect Mapping Exceptions
+        // Detect Mapping Exceptions (INT >> DOUBLE)
         if (self::isNumber($attrType) && $attribute->isDecimalsAllowed()) {
             $splashType = SPL_T_DOUBLE;
+        }
+        //====================================================================//
+        // Detect Mapping Exceptions (CATALOG MODE)
+        if (self::isNumber($attrType) && $catalogMode) {
+            $splashType = SPL_T_VARCHAR;
         }
 
         return $splashType;

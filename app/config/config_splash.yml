@@ -11,9 +11,11 @@ splash:
                 channel:        ecommerce
                 currency:       EUR
                 images:         ['image', 'picture', 'variation_image']
-                categories:     ["digital_cameras", "scanners"]
+                categories:     ["master_women_shirts"]
                 travis:         true
+                catalog_mode:   true
                 infos:
+                    ico:        '%kernel.root_dir%/../vendor/splash/akeneo-bundle/src/Resources/img/logo.png'
                     logo:       http://docker.akeneo.local/bundles/pimui/images/info-user.png
     test:
         VAT:                0

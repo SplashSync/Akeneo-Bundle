@@ -157,7 +157,8 @@ class Product extends AbstractStandaloneObject
         // Link to Splash Akeneo Products Attributes Manager
         $this->attr = $attr->setup(
             $this->getParameter("channel", "ecommerce"),
-            $this->getParameter("currency", "EUR")
+            $this->getParameter("currency", "EUR"),
+            $this->getParameter("catalog_mode", false)
         );
         //====================================================================//
         // Link to Splash Akeneo Products Variants Manager

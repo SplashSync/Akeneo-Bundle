@@ -74,6 +74,13 @@ class AttributesManager
     private $currency;
 
     /**
+     * Work in Catalog Mode
+     *
+     * @var bool
+     */
+    private $catalogMode = false;
+
+    /**
      * Attributes Repository
      *
      * @var AttributeRepository
@@ -128,13 +135,15 @@ class AttributesManager
      *
      * @param string $scope
      * @param string $currency
+     * @param bool   $catalogMode
      *
      * @return self
      */
-    public function setup(string $scope, string $currency): self
+    public function setup(string $scope, string $currency, bool $catalogMode = null): self
     {
         $this->scope = $scope;
         $this->currency = $currency;
+        $this->catalogMode = (bool) $catalogMode;
 
         return $this;
     }
@@ -277,7 +286,7 @@ class AttributesManager
         }
         //====================================================================//
         // Read & Convert Attribute Value
-        switch (TypesConverter::toSplash($attr)) {
+        switch (TypesConverter::toSplash($attr, $this->catalogMode)) {
             case SPL_T_BOOL:
                 return $this->isBoolValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_INT:
@@ -490,7 +499,7 @@ class AttributesManager
 
         //====================================================================//
         // Write Attribute Value
-        switch (TypesConverter::toSplash($attr)) {
+        switch (TypesConverter::toSplash($attr, $this->catalogMode)) {
             case SPL_T_BOOL:
                 return $this->setBoolValue($product, $attr, $iso, $this->getChannel(), $data);
             case SPL_T_INT:
@@ -546,7 +555,7 @@ class AttributesManager
         //====================================================================//
         // Add Field Core Infos
         $factory
-            ->create((string) TypesConverter::toSplash($attribute))
+            ->create((string) TypesConverter::toSplash($attribute, $this->catalogMode))
             ->identifier($attribute->getCode())
             ->name(empty($attrTrans->getLabel()) ? $attribute->getCode() : $attrTrans->getLabel())
             ->description("[".$groupTrans->getLabel()."] ".$attrTrans->getLabel())
@@ -568,6 +577,10 @@ class AttributesManager
         //====================================================================//
         // Does the Field Have Choices Values ?
         if (TypesConverter::isSelect($attrType)) {
+            // In Catalog Mode, Main Metadata is for Translations
+            if ($this->catalogMode) {
+                $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel()."Code");
+            }
             $factory->addChoices($this->getSelectChoices($attribute, $isoLang));
             $factory->isNotTested();
         }
@@ -587,6 +600,8 @@ class AttributesManager
      * @param FieldsFactory $factory
      * @param Attribute     $attribute
      * @param string        $isoLang
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function buildVirtualField(FieldsFactory $factory, Attribute $attribute, string $isoLang): void
     {
@@ -622,7 +637,8 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang, "Name");
+                // In Catalog Mode, Virtual Translations is Main Metadata
+                $this->buildField($factory, $clonedAttr, $isoLang, $this->catalogMode ? "" : "Name");
                 $factory->isReadOnly();
             }
         }
