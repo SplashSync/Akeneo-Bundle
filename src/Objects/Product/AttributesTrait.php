@@ -27,6 +27,10 @@ trait AttributesTrait
      */
     public function buildAttributeFields()
     {
+        //====================================================================//
+        // Ensure Service Configuration
+        $this->ensureSetup();
+
         $this->attr->build($this->fieldsFactory());
     }
 
