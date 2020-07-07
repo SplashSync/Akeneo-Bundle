@@ -576,7 +576,7 @@ class AttributesManager
         }
         //====================================================================//
         // Does the Field Have Choices Values ?
-        if (TypesConverter::isSelect($attrType)) {
+        if (TypesConverter::isMetric($attrType) || TypesConverter::isSelect($attrType) || TypesConverter::isMultiSelect($attrType)) {
             // In Catalog Mode, Main Metadata is for Translations
             if ($this->catalogMode) {
                 $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel()."Code");
@@ -625,7 +625,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang);
+                $this->buildField($factory, $clonedAttr, $isoLang, $this->catalogMode ? "" : "Name");
                 $factory->isReadOnly();
             }
         }
@@ -650,7 +650,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang, "Names");
+                $this->buildField($factory, $clonedAttr, $isoLang, $this->catalogMode ? "" : "Name");
                 $factory->isReadOnly();
             }
         }
