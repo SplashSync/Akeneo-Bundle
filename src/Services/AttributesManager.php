@@ -617,7 +617,6 @@ class AttributesManager
         }
     }
 
-
     /**
      * Generate Virtual Fields Definition
      *
