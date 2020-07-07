@@ -565,6 +565,28 @@ class AttributesManager
         // Add Field Meta Infos
         $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel().$suffix);
         //====================================================================//
+        // ADD Field Metadata
+        $this->addFieldMetadata($factory, $attribute, $isoLang);
+        //====================================================================//
+        // ADD Virtual Fields to Factory
+        $this->buildVirtualField($factory, $attribute, $isoLang);
+    }
+
+    /**
+     * Complete Fields Definition
+     *
+     * @param FieldsFactory $factory
+     * @param Attribute     $attribute
+     * @param string        $isoLang
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    private function addFieldMetadata(FieldsFactory $factory, Attribute $attribute, string $isoLang): void
+    {
+        //====================================================================//
+        // Get Attribute Type
+        $attrType = $attribute->getType();
+        //====================================================================//
         // is Field Required ?
         if ($attribute->isRequired()) {
             $factory->isRequired();
@@ -574,6 +596,10 @@ class AttributesManager
         if (TypesConverter::isReadOnly($attrType)) {
             $factory->isReadOnly();
         }
+        //====================================================================//
+        // Collect Names Translations
+        /** @var AttributeTranslation $baseAttrTrans */
+        $baseAttrTrans = $attribute->getTranslation($this->locales->getDefault());
         //====================================================================//
         // Does the Field Have Choices Values ?
         if (TypesConverter::isMetric($attrType) || TypesConverter::isSelect($attrType) || TypesConverter::isMultiSelect($attrType)) {
@@ -589,10 +615,8 @@ class AttributesManager
         if ($attribute->isLocalizable()) {
             $factory->setMultilang($isoLang);
         }
-        //====================================================================//
-        // ADD Virtual Fields to Factory
-        $this->buildVirtualField($factory, $attribute, $isoLang);
     }
+
 
     /**
      * Generate Virtual Fields Definition
