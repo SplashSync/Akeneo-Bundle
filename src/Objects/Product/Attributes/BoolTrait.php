@@ -56,7 +56,7 @@ trait BoolTrait
             return null;
         }
 
-        return $this->locales->trans($value ? 'Yes' : 'No', array(), "messages", $isoLang);
+        return $value ? $this->locales->trans('Yes', array(), "messages", $isoLang) : null;
     }
 
     /**
