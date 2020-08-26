@@ -16,6 +16,7 @@
 namespace Splash\Akeneo\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Splash\Bundle\Helpers\Doctrine\AbstractEventSubscriber;
@@ -33,6 +34,7 @@ class ProductSubscriber extends AbstractEventSubscriber
      */
     protected static $entities = array(
         Product::class => "Product",
+        ProductModel::class => "Product",
     );
 
     /**
@@ -73,24 +75,62 @@ class ProductSubscriber extends AbstractEventSubscriber
         $product = $eventArgs->getEntity();
         //====================================================================//
         // Get List of Categories for this Connection
-        if (!($product instanceof Product)) {
+        if (!($product instanceof Product) && !($product instanceof ProductModel)) {
             return parent::getObjectIdentifiers($eventArgs, $connector);
         }
         //====================================================================//
         // Get List of Categories for this Connection
         $categoryCodes = $connector->getParameter("categories", array());
         if (!is_array($categoryCodes) || empty($categoryCodes)) {
-            return parent::getObjectIdentifiers($eventArgs, $connector);
+            return ($product instanceof ProductModel)
+                ? self::getProductModelIdentifiers($product)
+                : parent::getObjectIdentifiers($eventArgs, $connector);
         }
         //====================================================================//
         // Walk on Product Categories
         foreach ($product->getCategories() as $category) {
             if ($this->isInFilteredCategories($categoryCodes, $category)) {
-                return parent::getObjectIdentifiers($eventArgs, $connector);
+                return ($product instanceof ProductModel)
+                    ? self::getProductModelIdentifiers($product)
+                    : parent::getObjectIdentifiers($eventArgs, $connector);
             }
         }
 
         return array();
+    }
+
+    /**
+     * Retrieve Ids of All Model
+     *
+     * @param ProductModel $productModel
+     *
+     * @return array
+     */
+    protected static function getProductModelIdentifiers(ProductModel $productModel): array
+    {
+        $productIds = array();
+        //====================================================================//
+        // Safety Check
+        if (!empty(SPLASH_SERVER_MODE)) {
+            return $productIds;
+        }
+        //====================================================================//
+        // Walk on All Direct Child Products
+        /** @var Product $product */
+        foreach ($productModel->getProducts() as $product) {
+            $productIds[$product->getId()] = $product->getId();
+        }
+        //====================================================================//
+        // Walk on All Child ProductModels
+        /** @var ProductModel $model */
+        foreach ($productModel->getProductModels() as $model) {
+            $productIds = array_replace_recursive(
+                $productIds,
+                self::getProductModelIdentifiers($model)
+            );
+        }
+
+        return $productIds;
     }
 
     /**

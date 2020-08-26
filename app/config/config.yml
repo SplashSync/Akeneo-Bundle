@@ -21,7 +21,7 @@ framework:
     default_locale:  "%locale%"
     session:
         name:                 BAPID
-        handler_id:           session.handler.pdo
+        handler_id:           null
         gc_maxlifetime:       3600
     fragments:
         enabled:              true
