@@ -268,7 +268,7 @@ trait AttributesTrait
 
                     break;
                 case 'value_label':
-                    $value = $this->attr->getVirtualData($this->object, $attribute, $isoLang);
+                    $value = $this->attr->getVirtualData($this->object, $attribute, $isoLang, true);
 
                     break;
                 default:

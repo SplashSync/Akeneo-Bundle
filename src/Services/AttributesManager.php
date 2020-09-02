@@ -242,7 +242,8 @@ class AttributesManager
                     $fieldName => $this->getVirtualData(
                         $product,
                         $this->getByCode($virtualFieldName),
-                        $isoLang
+                        $isoLang,
+                        false
                     ),
                 );
             }
@@ -316,16 +317,17 @@ class AttributesManager
      * @param Product   $product
      * @param Attribute $attr
      * @param string    $iso
+     * @param bool      $attributeMode
      *
      * @return null|array|bool|float|int|string
      */
-    public function getVirtualData(Product $product, Attribute $attr, string $iso)
+    public function getVirtualData(Product $product, Attribute $attr, string $iso, bool $attributeMode)
     {
         $attrType = $attr->getType();
         //====================================================================//
         // Read & Convert Bool as String Value
         if (TypesConverter::isBool($attrType)) {
-            return $this->getBoolAsStringValue($product, $attr, $iso, $this->getChannel());
+            return $this->getBoolAsStringValue($product, $attr, $iso, $this->getChannel(), $attributeMode);
         }
         //====================================================================//
         // Read & Convert Metrics as String Value

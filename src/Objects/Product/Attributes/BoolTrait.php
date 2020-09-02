@@ -42,21 +42,25 @@ trait BoolTrait
     /**
      * BOOL - Read Attribute Data with Local & Scope Detection
      *
-     * @param Product   $product   Akeneo Product Object
-     * @param Attribute $attribute Akeneo Attribute Object
+     * @param Product   $product       Akeneo Product Object
+     * @param Attribute $attribute     Akeneo Attribute Object
      * @param string    $isoLang
      * @param string    $channel
+     * @param bool      $attributeMode
      *
      * @return null|string
      */
-    protected function getBoolAsStringValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    protected function getBoolAsStringValue(Product $product, Attribute $attribute, string $isoLang, string $channel, bool $attributeMode)
     {
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
         if (is_null($value)) {
             return null;
         }
+        if ($value) {
+            return $this->locales->trans('Yes', array(), "messages", $isoLang);
+        }
 
-        return $value ? $this->locales->trans('Yes', array(), "messages", $isoLang) : null;
+        return $attributeMode ? $this->locales->trans('No', array(), "messages", $isoLang) : null;
     }
 
     /**
