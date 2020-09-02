@@ -58,8 +58,7 @@ class DoctrineEventsSubscriber extends AbstractEventSubscriber
     public function __construct(ConnectorsManager $manager)
     {
         parent::__construct($manager);
-        // Use Kernel Events for Update & Remove, better Compatibility
+        // Use Kernel Events for Update, better Compatibility
         static::setState(Events::postUpdate, false);
-        static::setState(Events::preRemove, false);
     }
 }
