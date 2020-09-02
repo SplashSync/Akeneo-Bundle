@@ -43,7 +43,7 @@ class StorageEventsSubscriber extends AbstractEventSubscriber implements EventSu
      */
     protected static $subscribedEvents = array(
         StorageEvents::POST_SAVE => array('onSave', 1000),
-        StorageEvents::POST_REMOVE => array('onRemove', 1000),
+        StorageEvents::PRE_REMOVE => array('onRemove', 1000),
     );
 
     /**
