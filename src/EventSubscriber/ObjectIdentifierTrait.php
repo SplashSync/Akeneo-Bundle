@@ -19,64 +19,28 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Splash\Bundle\Helpers\Doctrine\AbstractEventSubscriber;
 use Splash\Bundle\Models\AbstractConnector;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Akeneo Product Doctrine Events Subscriber
+ * Tooling for Collecting Products Ids to Commit
  */
-class ProductSubscriber extends AbstractEventSubscriber
+trait ObjectIdentifierTrait
 {
     /**
-     * List of Entities Managed by Splash
+     * @param GenericEvent|LifecycleEventArgs $event
+     * @param AbstractConnector               $connector
      *
-     * @var array
+     * @return array
      */
-    protected static $entities = array(
-        Product::class => "Product",
-        ProductModel::class => "Product",
-    );
-
-    /**
-     * Username used for Commits
-     *
-     * @var string
-     */
-    protected static $username = "Akeneo";
-
-    /**
-     * Username used for Commits
-     *
-     * @var string
-     */
-    protected static $commentPrefix = "Akeneo PIM";
-
-    //====================================================================//
-    //  Events Actions
-    //====================================================================//
-
-    /**
-     * Disable All Events when Running the Installer
-     */
-    public function setAllDisabled(): void
-    {
-        self::setStates(false, false, false);
-    }
-
-    /**
-     * Override Identifier Parser to Filter on Categories (if Feature Enabled)
-     *
-     * {@inheritdoc}
-     */
-    protected function getObjectIdentifiers(LifecycleEventArgs $eventArgs, AbstractConnector $connector): array
+    protected function getObjectIdentifiers($event, AbstractConnector $connector): array
     {
         //====================================================================//
         // Get Impacted Object
-        $product = $eventArgs->getEntity();
-        //====================================================================//
-        // Get List of Categories for this Connection
-        if (!($product instanceof Product) && !($product instanceof ProductModel)) {
-            return parent::getObjectIdentifiers($eventArgs, $connector);
+        $product = self::getProduct($event);
+        if (is_null($product)) {
+            return array();
         }
         //====================================================================//
         // Get List of Categories for this Connection
@@ -84,7 +48,7 @@ class ProductSubscriber extends AbstractEventSubscriber
         if (!is_array($categoryCodes) || empty($categoryCodes)) {
             return ($product instanceof ProductModel)
                 ? self::getProductModelIdentifiers($product)
-                : parent::getObjectIdentifiers($eventArgs, $connector);
+                : parent::getObjectIdentifiers(new GenericEvent($product), $connector);
         }
         //====================================================================//
         // Walk on Product Categories
@@ -92,7 +56,7 @@ class ProductSubscriber extends AbstractEventSubscriber
             if ($this->isInFilteredCategories($categoryCodes, $category)) {
                 return ($product instanceof ProductModel)
                     ? self::getProductModelIdentifiers($product)
-                    : parent::getObjectIdentifiers($eventArgs, $connector);
+                    : parent::getObjectIdentifiers(new GenericEvent($product), $connector);
             }
         }
 
@@ -134,7 +98,32 @@ class ProductSubscriber extends AbstractEventSubscriber
     }
 
     /**
-     * Check if categorie is in Filtered Categories Tree
+     * @param Event|GenericEvent|LifecycleEventArgs $event
+     *
+     * @return null|Product|ProductModel
+     */
+    private static function getProduct($event): ?object
+    {
+        //====================================================================//
+        // Get Impacted Object
+        $product = null;
+        if ($event instanceof LifecycleEventArgs) {
+            $product = $event->getObject();
+        }
+        if ($event instanceof GenericEvent) {
+            $product = $event->getSubject();
+        }
+        //====================================================================//
+        // Get List of Categories for this Connection
+        if (!($product instanceof Product) && !($product instanceof ProductModel)) {
+            return null;
+        }
+
+        return $product;
+    }
+
+    /**
+     * Check if category is in Filtered Categories Tree
      *
      * @param array             $categoryCodes
      * @param CategoryInterface $category

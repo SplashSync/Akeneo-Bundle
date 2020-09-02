@@ -71,15 +71,23 @@ services:
             -   "%catalog_storage_dir%"    
 
     ########################################################################
-    # Akeneo Products Models Manager
+    # Akeneo Products Event EventSubscriber
     splash.akeneo.product.events:
-        class:      Splash\Akeneo\EventSubscriber\ProductSubscriber
+        class:      Splash\Akeneo\EventSubscriber\DoctrineEventsSubscriber
         autowire:   true
         tags:
             - { name: 'doctrine.event_subscriber', connection: 'default' }
-            - { name: kernel.event_listener, event: pim_installer.pre_load_fixture, method: setAllDisabled }
-            - { name: kernel.event_listener, event: pim_installer.pre_load_fixtures, method: setAllDisabled }
-            
+            - { name: kernel.event_listener, event: pim_installer.pre_load_fixture, method: setAllStatesDisabled }
+            - { name: kernel.event_listener, event: pim_installer.pre_load_fixtures, method: setAllStatesDisabled }
+
+    ########################################################################
+    # Akeneo Products Batch EventSubscriber
+    splash.akeneo.product.batch.events:
+        class:      Splash\Akeneo\EventSubscriber\StorageEventsSubscriber
+        autowire:   true
+        tags:
+            - { name: kernel.event_subscriber }
+
     ########################################################################
     # Akeneo Connector Locales Manager
     splash.akeneo.locales:
