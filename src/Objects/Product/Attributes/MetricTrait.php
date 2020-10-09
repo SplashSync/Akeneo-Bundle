@@ -18,7 +18,9 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric as Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
+use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Exception;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Manage Metrics Types Attributes
@@ -26,6 +28,13 @@ use Exception;
  */
 trait MetricTrait
 {
+    /**
+     * Akeneo Measures Manager
+     *
+     * @var MeasureManager
+     */
+    protected $measure;
+
     /**
      * @var array
      */
@@ -76,9 +85,7 @@ trait MetricTrait
         //====================================================================//
         // Extract Generic Converted Value
         if ($value instanceof Metric) {
-            $transUnit = $this->locales->trans("pim_measure.units.".$value->getUnit(), array(), "messages", $isoLang);
-
-            return (string) sprintf('%.2F', $value->getData())." ".$transUnit;
+            return (string) sprintf('%.2F', $value->getData())." ".$this->getMetricSymbol($value, $isoLang);
         }
 
         return (string) $value;
@@ -103,6 +110,31 @@ trait MetricTrait
         );
 
         return $this->setCoreValue($product, $attribute, $isoLang, $channel, $rawData);
+    }
+
+    /**
+     * DOUBLE - Try to Ftech metric Symbol from Measure Manager or Translations
+     *
+     * @param Metric $value   Akeneo Measure
+     * @param string $isoLang Current Language ISO Code
+     *
+     * @return string
+     */
+    protected function getMetricSymbol(Metric $value, string $isoLang): string
+    {
+        //====================================================================//
+        // Load Unit Symbol from Manager
+        try {
+            $familySymbols = $this->measure->getUnitSymbolsForFamily($value->getFamily());
+            if (isset($familySymbols[$value->getUnit()])) {
+                return (string) $familySymbols[$value->getUnit()];
+            }
+        } catch (\InvalidArgumentException $ex) {
+            Splash::log()->war($ex->getMessage());
+        }
+        //====================================================================//
+        // Try to Get Translated Unit Name
+        return $this->locales->trans("pim_measure.units.".$value->getUnit(), array(), "messages", $isoLang);
     }
 
     /**

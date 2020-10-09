@@ -37,6 +37,7 @@ services:
         arguments:  
             -   "@pim_catalog.updater.property_setter"
             -   "@pim_catalog.repository.attribute"
+            -   "@akeneo_measure.manager"
             -   "@splash.akeneo.product.files"
             -   "@splash.akeneo.locales"  
 

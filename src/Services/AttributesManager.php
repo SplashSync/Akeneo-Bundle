@@ -23,6 +23,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Attribute;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Group;
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
+use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Exception;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Akeneo\Services\FilesManager as Files;
@@ -111,10 +112,11 @@ class AttributesManager
      *
      * @param PropertySetter      $setter
      * @param AttributeRepository $attributes
+     * @param MeasureManager      $measure
      * @param Files               $files
      * @param LocalesManager      $locales
      */
-    public function __construct(PropertySetter $setter, AttributeRepository $attributes, Files $files, LocalesManager $locales)
+    public function __construct(PropertySetter $setter, AttributeRepository $attributes, MeasureManager $measure, Files $files, LocalesManager $locales)
     {
         //====================================================================//
         // Link to Akeneo Product Fields Setter
@@ -122,6 +124,9 @@ class AttributesManager
         //====================================================================//
         // Link to Akeneo Product Attributes Repository
         $this->attrRep = $attributes;
+        //====================================================================//
+        // Link to Akeneo Measures Manager
+        $this->measure = $measure;
         //====================================================================//
         // Link to Splash Akeneo Files Manager
         $this->files = $files;
