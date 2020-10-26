@@ -29,9 +29,9 @@ jobs:
 ################################################################################
 # Install Update Composer, Configure Env. 
 before_install:
-    # Update composer
-    - composer self-update
-    # Configure PHP  
+    # With PHP < 7.3 => Rollback to Composer 1
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} < "7.3" ]]; then composer self-update --rollback; fi
+    # Configure PHP
     - phpenv config-rm xdebug.ini
     - phpenv config-add travis/x_memory.ini
     # Add PHP Extensions  
