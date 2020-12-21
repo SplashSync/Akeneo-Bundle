@@ -105,7 +105,6 @@ class TypesConverter
      */
     const NUMBER = array(
         AttributeTypes::NUMBER,
-        AttributeTypes::METRIC,
     );
 
     /**
