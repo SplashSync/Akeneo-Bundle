@@ -79,8 +79,8 @@ quality:php-7.2:
   tags:
     - Dedicated
   services:
-    - mysql:5.7
-    - elasticsearch
+    - mysql:          5.7
+    - elasticsearch:  5.6-alpine
   ################################################################################
   # Install & Configure Environnement
   before_script:
