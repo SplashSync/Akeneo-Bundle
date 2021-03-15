@@ -25,10 +25,29 @@ parameters:
     #############################################
     # Disable Php Console Tasks
     extensions: []
+    #############################################
+    #   Test Suites Configs
     testsuites:
-        splash:
+        travis:
             tasks:
+                - composer
                 - phplint
+                - phpcs
+                - git_blacklist
+                - jsonlint
+                - phpmd
+                - phpcpd
+                - xmllint
+                - yamllint
+
+        csfixer:
+            tasks:
+                - phpcsfixer
+                - phpcsfixer2
+
+        phpstan:
+            tasks:
+                - phpstan
 
 #############################################        
 # Import Config. from Generic Bundle
