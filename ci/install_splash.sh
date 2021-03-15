@@ -16,9 +16,11 @@ echo "----------------------------------------------------"
 echo "--> AKENEO - Install Splash Bundle"
 echo "----------------------------------------------------"
 
+pwd
+
 echo "Push Configs for Akeneo"
-cat   ../travis/routing_splash.yml    >> app/config/routing.yml
-cat   ../travis/config_splash.yml     >> app/config/config.yml
+cat   ../ci/routing_splash.yml    >> app/config/routing.yml
+cat   ../ci/config_splash.yml     >> app/config/config.yml
 cp    ../phpunit.xml.dist phpunit.xml.dist
 
 echo "Register Symfony Bundles"

@@ -21,8 +21,8 @@ composer self-update --1
 composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-plugins
 
 echo "Configuring Akeneo"
-cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
-cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
+cp ci/parameters.yml.dist akeneo/app/config/parameters.yml
+cp ci/parameters.yml.dist akeneo/app/config/parameters_test.yml
 
 echo "Run Akeneo Installer"
 cd akeneo
