@@ -17,4 +17,5 @@ echo "--> AKENEO - Install PhpUnit 7.x"
 echo "----------------------------------------------------"
 
 curl -sSfL -o /usr/bin/phpunit https://phar.phpunit.de/phpunit-7.5.2.phar;
-chmod -x 7777 /usr/bin/phpunit
+chmod -x /usr/bin/phpunit
+chmod 777 /usr/bin/phpunit
