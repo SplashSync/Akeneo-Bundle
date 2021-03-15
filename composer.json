@@ -34,32 +34,13 @@
     
     "require": {
         "php":                                          "^7.2",
-        "splash/php-bundle":                            "1.0.0"
+        "splash/php-bundle":                            "dev-master"
     },
     
     "require-dev": {
-        "akeneo/pim-community-dev":                     "~3.0.0",
-
-        "splash/console":                               "1.0.0",
-        "phpunit/phpunit":                              "*",
-        
-        "composer/composer":                            "^1.5",
-        "j13k/yaml-lint":                               "^1.1",
-        "jakub-onderka/php-parallel-lint":              "^1.0",
-        "phpmd/phpmd":                                  "~2.7.0",
-        "phpro/grumphp":                                "^0.16",
-        "sclable/xml-lint":                             "^0.2.4",
-        "sebastian/phpcpd":                             ">3.0",
-        "seld/jsonlint":                                "^1.7",
-        "sensiolabs/security-checker":                  "*",
-        "squizlabs/php_codesniffer":                    "^3.2",
-        "escapestudios/symfony2-coding-standard":       "^3.4",
-        "friendsofphp/php-cs-fixer":                    "*",        
-        
-        "phpstan/phpstan":                              "^0.12",
-        "phpstan/phpstan-doctrine":                     "^0.12",
-        "phpstan/phpstan-phpunit":                      "^0.12",
-        "phpstan/phpstan-symfony":                      "^0.12"        
+        "akeneo/pim-community-dev":                     "^4.0",
+        "splash/console":                               "dev-master",
+        "badpixxel/php-sdk":                            "dev-main"
     },
     
     "scripts": {
@@ -72,8 +53,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
             "php bin/console --ansi fos:js-routing:dump --target=web/js/routes.js",
-            "php bin/console --ansi pim:installer:assets",
-            "php vendor/bin/grumphp git:deinit" 
+            "php bin/console --ansi pim:installer:assets"
         ],
         "post-install-cmd": [
             "@symfony-scripts"

@@ -4,20 +4,20 @@
 Splash Php Bundle for Akeneo PIM.
 
 This module implement Splash Sync connector for Akeneo. 
-It provide access to Products Objects for automated synchonisation though Splash Sync dedicated protocol.
+It provides access to Products Objects for automated synchronisation though Splash Sync dedicated protocol.
 
-[![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=master)](https://travis-ci.org/SplashSync/Akeneo-Bundle)
 [![Latest Stable Version](https://poser.pugx.org/splash/akeneo-bundle/v/stable)](https://packagist.org/packages/splash/akeneo-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/splash/akeneo-bundle/v/unstable)](https://packagist.org/packages/splash/akeneo-bundle)
 [![License](https://poser.pugx.org/splash/akeneo-bundle/license)](https://packagist.org/packages/splash/akeneo-bundle)
 
 ## Branches
 
-Branch | Akeneo | PHP | Status | Travis |
+Branch | Akeneo | PHP | Status | Install |
 ------ | ------ | --- | ------ | ------ |
-master   |  3.0 | 7.2 | Active | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=master)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
-2.3   |  2.3 | 7.1 | Active | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=2.3)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
-2.1   |  2.0, 2.1 | 7.1 | Deprecated | [![Build Status](https://travis-ci.org/SplashSync/Akeneo-Bundle.svg?branch=2.1)](https://travis-ci.org/SplashSync/Akeneo-Bundle) |
+master   |  4.0 | 7.2 | Active | composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master |
+3.0   |  3.0 | 7.2 | Active | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:3.0.x-dev |
+2.3   |  2.3 | 7.1 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:2.3.x-dev |
+2.1   |  2.0, 2.1 | 7.1 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:2.1.x-dev |
 
 ## Installation via Composer
 
@@ -63,8 +63,8 @@ splash:
 
 ## Requirements
 
-* PHP 7.1+
-* Akeneo 2.0+
+* PHP 7.2+
+* Akeneo 3.0+
 * An active Splash Sync User Account
 
 ## Documentation
