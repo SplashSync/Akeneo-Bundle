@@ -51,7 +51,8 @@ stages:
     - cp travis/parameters.yml.dist app/config/parameters_test.yml
     ################################################################################
     # Run Composer
-    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
+    - composer self-update --1
+    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-scripts --no-plugins
   ################################################################################
   # Run Test Script
   script:
