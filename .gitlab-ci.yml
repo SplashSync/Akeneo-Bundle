@@ -36,6 +36,7 @@ stages:
 ################################################################
 
 .quality:    &quality
+  when:       manual
   stage:      quality
   tags:
       - Dedicated
@@ -85,7 +86,8 @@ quality:php-7.2:
     ################################################################################
     # Install Akeneo Community Dev Project
     - echo "Install Akeneo"
-    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
+    - composer self-update --1
+    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-plugins
     - echo "Configuring Akeneo"
     - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
     - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
