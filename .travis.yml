@@ -40,7 +40,7 @@ before_install:
     - php -m
     # Create database, schema and fixtures
     - mysql -e 'CREATE DATABASE IF NOT EXISTS akeneo;'
-    # Instal PhpUnit 7.x
+    # Install PhpUnit 7.x
     - echo using PHPUnit 7.5.2
     - curl -sSfL -o ~/.phpenv/versions/$TRAVIS_PHP_VERSION/bin/phpunit https://phar.phpunit.de/phpunit-7.5.2.phar;    
   

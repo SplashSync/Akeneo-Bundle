@@ -17,7 +17,6 @@ echo "--> AKENEO - Install Splash Bundle"
 echo "----------------------------------------------------"
 
 cd akeneo
-pwd
 
 echo "Push Configs for Akeneo"
 cat   ../ci/routing_splash.yml    >> app/config/routing.yml
