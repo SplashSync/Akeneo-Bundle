@@ -48,8 +48,8 @@ stages:
       ################################################################################
       # Setup Akeneo Parameters
       - echo "Configuring Sources"
-      - cp travis/parameters.yml.dist app/config/parameters.yml
-      - cp travis/parameters.yml.dist app/config/parameters_test.yml
+      - cp ci/parameters.yml.dist app/config/parameters.yml
+      - cp ci/parameters.yml.dist app/config/parameters_test.yml
       ################################################################################
       # Run Composer
       - composer self-update --1
