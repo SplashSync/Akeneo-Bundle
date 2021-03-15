@@ -24,7 +24,10 @@
     
     "autoload-dev": {
         "psr-4": { "Splash\\Tests\\": "Tests/" },
-        "files": [ "tests/KernelTestCase.php" ],
+        "files": [
+            "vendor/splash/phpcore/inc/Splash.Inc.php",
+            "tests/KernelTestCase.php"
+        ],
         "classmap": [ "app/AppKernel.php" ]        
     },    
     

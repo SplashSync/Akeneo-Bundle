@@ -21,7 +21,15 @@ parameters:
     # For Building Splash Manifest
     yml-enable:     false
     csfixer_config: "src/Resources/grumphp/php_cs.dist"
-    
+
+    #############################################
+    # Disable Php Console Tasks
+    extensions: []
+    testsuites:
+        splash:
+            tasks:
+                - phplint
+
 #############################################        
 # Import Config. from Generic Bundle
 imports:
