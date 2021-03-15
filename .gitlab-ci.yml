@@ -90,6 +90,7 @@ quality:php-7.2:
     - composer self-update --1
     - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-plugins
     - echo "Configuring Akeneo"
+    - chmod -x bin/console
     - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
     - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
     - cd akeneo
