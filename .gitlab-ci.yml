@@ -1,0 +1,133 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+#  @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+################################################################
+# Set any variables we need
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
+  MYSQL_DATABASE:         akeneo
+  MYSQL_ROOT_PASSWORD:    akeneo_pim
+  COMPOSER_MEMORY_LIMIT:  -1
+  SYMFONY_DEPRECATIONS_HELPER:  disabled
+
+################################################################
+# Defined Pipeline Stages
+stages:
+  - quality
+#  - tests
+#  - deploy
+
+################################################################
+# Code Quality Tests
+################################################################
+
+.quality:    &quality
+  stage:      quality
+  tags:
+    - Dedicated
+  services:
+    - mysql:5.7
+  ################################################################################
+  # Install & Configure Environnement
+  before_script:
+    ################################################################################
+    # Setup Akeneo Parameters
+    - echo "Configuring Sources"
+    - cp travis/parameters.yml.dist app/config/parameters.yml
+    - cp travis/parameters.yml.dist app/config/parameters_test.yml
+    ################################################################################
+    # Run Composer
+    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
+
+quality:php-7.2:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
+    variables:
+        AKENEO_VERSION:   3.0.68
+    <<: *quality
+
+################################################################
+# Functional Tests
+################################################################
+
+#.core_tests:    &core_tests
+#  stage:      tests
+#  tags:
+#    - Dedicated
+#  services:
+#    - mysql:5.7
+#  ################################################################################
+#  # Install & Configure Environnement
+#  before_script:
+#    # Setup Travis
+#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
+#    # Deploy Symfony Files
+#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
+#    # Setup Symfony Version & Create Database
+#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
+#    # Install Symfony
+#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
+#
+#  ################################################################################
+#  # Run Test Script
+#  script:
+#    # Execute Grumphp Testsuite
+#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+#    # Execute PhpUnit Tests
+#    - vendor/bin/phpunit
+#
+#  ################################################################################
+#  # Run After Script
+#  after_script:
+#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
+#
+#tests:php-7.4:
+#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+#  <<: *core_tests
+#
+#tests:php-7.3:
+#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
+#  <<: *core_tests
+#
+#tests:php-7.2:
+#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
+#  <<: *core_tests
+
+#tests:php-8.0:
+#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+#  allow_failure: true
+#  <<: *core_tests
+
+#################################################################
+## Build Documentation
+#################################################################
+#pages:
+#  image:    registry.gitlab.com/splashsync/php-console:pages
+#  stage:    deploy
+#  tags:
+#    - Dedicated
+#  services:
+#    - docker:dind
+#  ################################################################################
+#  # Run Test Script
+#  script:
+#    # Run Composer to Build deps
+#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
+#    # Build Documentation
+#    - php vendor/bin/grumphp run --tasks=build-docs
+#  artifacts:
+#    paths:
+#      - public

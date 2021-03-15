@@ -31,13 +31,13 @@
     
     "require": {
         "php":                                          "^7.2",
-        "splash/php-bundle":                            "dev-master"
+        "splash/php-bundle":                            "1.0.0"
     },
     
     "require-dev": {
         "akeneo/pim-community-dev":                     "~3.0.0",
 
-        "splash/console":                               "dev-master",
+        "splash/console":                               "1.0.0",
         "phpunit/phpunit":                              "*",
         
         "composer/composer":                            "^1.5",
@@ -59,12 +59,6 @@
         "phpstan/phpstan-symfony":                      "^0.12"        
     },
     
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/akeneo/pim-community-dev.git"
-        }
-    ],
     "scripts": {
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
