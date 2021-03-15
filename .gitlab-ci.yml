@@ -28,7 +28,7 @@ variables:
 # Defined Pipeline Stages
 stages:
   - quality
-#  - tests
+  - tests
 #  - deploy
 
 ################################################################
@@ -38,26 +38,30 @@ stages:
 .quality:    &quality
   stage:      quality
   tags:
-    - Dedicated
+      - Dedicated
   services:
-    - mysql:5.7
+      - mysql:5.7
   ################################################################################
   # Install & Configure Environnement
   before_script:
-    ################################################################################
-    # Setup Akeneo Parameters
-    - echo "Configuring Sources"
-    - cp travis/parameters.yml.dist app/config/parameters.yml
-    - cp travis/parameters.yml.dist app/config/parameters_test.yml
-    ################################################################################
-    # Run Composer
-    - composer self-update --1
-    - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-scripts --no-plugins
+      ################################################################################
+      # Setup Akeneo Parameters
+      - echo "Configuring Sources"
+      - cp travis/parameters.yml.dist app/config/parameters.yml
+      - cp travis/parameters.yml.dist app/config/parameters_test.yml
+      ################################################################################
+      # Run Composer
+      - composer self-update --1
+      - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
   ################################################################################
   # Run Test Script
   script:
       # Execute Grumphp Testsuite
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+  ################################################################################
+  # Run After Script
+  after_script:
+    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
 quality:php-7.2:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
@@ -69,15 +73,41 @@ quality:php-7.2:
 # Functional Tests
 ################################################################
 
-#.core_tests:    &core_tests
-#  stage:      tests
-#  tags:
-#    - Dedicated
-#  services:
-#    - mysql:5.7
-#  ################################################################################
-#  # Install & Configure Environnement
-#  before_script:
+.core_tests:    &core_tests
+  stage:      tests
+  tags:
+    - Dedicated
+  services:
+    - mysql:5.7
+  ################################################################################
+  # Install & Configure Environnement
+  before_script:
+    ################################################################################
+    # Install Akeneo Community Dev Project
+    - echo "Install Akeneo"
+    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
+    - echo "Configuring Akeneo"
+    - cp travis/parameters.yml.dist akeneo/app/config/parameters.yml
+    - cp travis/parameters.yml.dist akeneo/app/config/parameters_test.yml
+    - cd akeneo
+    - php bin/console pim:install               --env=prod  --force --symlink --clean --no-interaction --no-debug
+    - php bin/console pim:installer:assets      --env=prod  --symlink --clean --no-interaction --no-debug
+    ################################################################################
+    # Install Splash Bundle for Akeneo
+    - echo "Install Splash Bundle for Akeneo"
+    - cat   ../travis/routing_splash.yml    >> app/config/routing.yml
+    - cat   ../travis/config_splash.yml     >> app/config/config.yml
+    - cp    ../phpunit.xml.dist phpunit.xml.dist
+    - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
+    - cat app/AppKernel.php
+    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
+
+    - mkdir  -p ./src/Splash/Tests/Tools
+    - cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
+    - cp    ../tests/KernelTestCase.php ./vendor/splash/phpcore/Tests/Tools/TestCase.php
+
+    - php bin/console debug:config splash       --env=test
+
 #    # Setup Travis
 #    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
 #    # Deploy Symfony Files
@@ -87,13 +117,13 @@ quality:php-7.2:
 #    # Install Symfony
 #    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
 #
-#  ################################################################################
-#  # Run Test Script
-#  script:
+  ################################################################################
+  # Run Test Script
+  script:
 #    # Execute Grumphp Testsuite
 #    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-#    # Execute PhpUnit Tests
-#    - vendor/bin/phpunit
+    # Execute PhpUnit Tests
+    - vendor/bin/phpunit
 #
 #  ################################################################################
 #  # Run After Script
@@ -108,9 +138,11 @@ quality:php-7.2:
 #  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
 #  <<: *core_tests
 #
-#tests:php-7.2:
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
-#  <<: *core_tests
+tests:php-7.2:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
+    variables:
+        AKENEO_VERSION:   3.0.68
+    <<: *core_tests
 
 #tests:php-8.0:
 #  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
