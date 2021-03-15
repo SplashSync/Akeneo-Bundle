@@ -80,6 +80,7 @@ quality:php-7.2:
     - Dedicated
   services:
     - mysql:5.7
+    - elasticsearch
   ################################################################################
   # Install & Configure Environnement
   before_script:
