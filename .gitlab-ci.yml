@@ -86,7 +86,7 @@ quality:php-7.2:
   before_script:
     ################################################################################
     # Install Akeneo Community Dev Project
-    - bash ci/install_akeneo.sh
+    - sh ci/install_akeneo.sh
 #    - echo "Install Akeneo"
 #    - composer self-update --1
 #    - composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-plugins
@@ -103,7 +103,7 @@ quality:php-7.2:
 #    - php bin/console pim:installer:assets      --env=prod  --symlink --clean --no-interaction --no-debug
     ################################################################################
     # Install Splash Bundle for Akeneo
-    - bash ci/install_splash.sh
+    - sh ci/install_splash.sh
 #    -
 #    - echo "Install Splash Bundle for Akeneo"
 #    - cat   ../travis/routing_splash.yml    >> app/config/routing.yml
