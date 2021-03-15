@@ -52,6 +52,11 @@ stages:
     ################################################################################
     # Run Composer
     - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
+  ################################################################################
+  # Run Test Script
+  script:
+      # Execute Grumphp Testsuite
+      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
 
 quality:php-7.2:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
