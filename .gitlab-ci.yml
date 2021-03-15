@@ -98,8 +98,9 @@ quality:php-7.2:
   script:
     # Execute PhpUnit Tests
     - cd akeneo
-    - phpunit -version
+    - phpunit --version
     - phpunit
+
 #
 #tests:php-7.4:
 #  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
