@@ -6,7 +6,7 @@ parameters:
     database_port:      null
     database_name:      akeneo
     database_user:      root
-    database_password: 
+    database_password:  akeneo
 
     mailer_transport:   null
     mailer_host:        localhost

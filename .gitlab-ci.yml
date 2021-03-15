@@ -20,7 +20,7 @@
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
   MYSQL_DATABASE:         akeneo
-  MYSQL_ROOT_PASSWORD:    akeneo_pim
+  MYSQL_ROOT_PASSWORD:    akeneo
   COMPOSER_MEMORY_LIMIT:  -1
   SYMFONY_DEPRECATIONS_HELPER:  disabled
 
@@ -102,7 +102,7 @@ quality:php-7.2:
     - cp    ../phpunit.xml.dist phpunit.xml.dist
     - sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
     - cat app/AppKernel.php
-    - composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
+    - composer require splash/phpcore:dev-master splash/akeneo-bundle --no-interaction --prefer-dist --no-suggest
 
     - mkdir  -p ./src/Splash/Tests/Tools
     - cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
