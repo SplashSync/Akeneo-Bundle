@@ -43,8 +43,7 @@ stages:
   tags:
       - Dedicated
   services:
-      - name: mysql:8.0
-        command: ['--default-authentication-plugin=mysql_native_password']
+      - mysql:8.0
   ################################################################################
   # Install & Configure Environnement
   before_script:
@@ -83,7 +82,8 @@ quality:php-7.4:
     tags:
         - Dedicated
     services:
-        - mysql:8.0
+        - name: mysql:8.0
+          command: ['--default-authentication-plugin=mysql_native_password']
         - elasticsearch:7.5.1
     ################################################################################
     # Install & Configure Environnement
