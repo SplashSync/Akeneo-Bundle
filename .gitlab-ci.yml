@@ -99,7 +99,7 @@ quality:php-7.4:
     script:
       # Execute PhpUnit Tests
       - cd akeneo
-      - phpunit --version
+      - php vendor/bin/phpunit --version
 #      - phpunit
 
 #
@@ -112,7 +112,7 @@ quality:php-7.4:
 #  <<: *core_tests
 #
 tests:php-7.3:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
+    image: akeneo/pim-php-dev:4.0
     variables:
         AKENEO_VERSION:   4.0.97
     <<: *core_tests
