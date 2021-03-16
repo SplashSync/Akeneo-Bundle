@@ -20,7 +20,7 @@ echo "Create Akeneo Community Project"
 composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
 
 echo "Configuring Akeneo"
-cp .env akeneo/.env
+cp ci/.env akeneo/.env
 
 echo "Run Akeneo Installer"
 cd akeneo
