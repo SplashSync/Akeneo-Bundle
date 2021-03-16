@@ -15,7 +15,10 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,14 +34,14 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    /**
+     * @return iterable
+     */
     public function registerBundles(): iterable
     {
+        /** @var array $bundles */
         $bundles = require $this->getProjectDir().'/vendor/akeneo/pim-community-dev/config/bundles.php';
         $bundles += require $this->getProjectDir().'/config/bundles.php';
-
-//        echo '<PRE>';
-//        print_r($bundles);
-//        exit;
 
         foreach ($bundles as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
@@ -47,6 +50,9 @@ class Kernel extends BaseKernel
         }
     }
 
+    /**
+     * @return string
+     */
     public function getProjectDir(): string
     {
         return \dirname(__DIR__);
@@ -68,6 +74,12 @@ class Kernel extends BaseKernel
         return $this->getProjectDir().'/var/logs';
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param LoaderInterface  $loader
+     *
+     * @throws Exception
+     */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
@@ -83,18 +95,45 @@ class Kernel extends BaseKernel
         $this->loadContainerConfiguration($loader, $projectConfDir, $this->environment);
     }
 
+    /**
+     * @param RouteCollectionBuilder $routes
+     *
+     * @throws LoaderLoadException
+     */
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir().'/vendor/akeneo/pim-community-dev/config', $this->environment);
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir().'/config', $this->environment);
+        $this->loadRoutesConfiguration(
+            $routes,
+            $this->getProjectDir().'/vendor/akeneo/pim-community-dev/config',
+            $this->environment
+        );
+        $this->loadRoutesConfiguration(
+            $routes,
+            $this->getProjectDir().'/config',
+            $this->environment
+        );
     }
 
+    /**
+     * @param RouteCollectionBuilder $routes
+     * @param string                 $confDir
+     * @param string                 $environment
+     *
+     * @throws LoaderLoadException
+     */
     private function loadRoutesConfiguration(RouteCollectionBuilder $routes, string $confDir, string $environment): void
     {
         $routes->import($confDir.'/{routes}/'.$environment.'/**/*.yml', '/', 'glob');
         $routes->import($confDir.'/{routes}/*.yml', '/', 'glob');
     }
 
+    /**
+     * @param LoaderInterface $loader
+     * @param string          $confDir
+     * @param string          $environment
+     *
+     * @throws Exception
+     */
     private function loadPackagesConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $loader->load($confDir.'/{packages}/*.yml', 'glob');
@@ -105,19 +144,28 @@ class Kernel extends BaseKernel
      * "security.yml" is the only configuration file that can not be override
      * Thus, we don't load it from the Community Edition.
      * We copied/pasted its content into Enterprise Edition and added what was missing.
+     *
+     * @param LoaderInterface $loader
+     * @param string          $confDir
+     * @param string          $environment
+     *
+     * @throws Exception
      */
-    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir, string $environment): void
-    {
+    private function loadPackagesConfigurationExceptSecurity(
+        LoaderInterface $loader,
+        string $confDir,
+        string $environment
+    ): void {
         $files = array_merge(
-            glob($confDir.'/packages/*.yml'),
-            glob($confDir.'/packages/'.$environment.'/*.yml'),
-            glob($confDir.'/packages/'.$environment.'/**/*.yml')
+            (array) glob($confDir.'/packages/*.yml'),
+            (array) glob($confDir.'/packages/'.$environment.'/*.yml'),
+            (array) glob($confDir.'/packages/'.$environment.'/**/*.yml')
         );
 
         $files = array_filter(
             $files,
             function ($file) {
-                return 'security.yml' !== basename($file);
+                return 'security.yml' !== basename((string) $file);
             }
         );
 
@@ -126,6 +174,13 @@ class Kernel extends BaseKernel
         }
     }
 
+    /**
+     * @param LoaderInterface $loader
+     * @param string          $confDir
+     * @param string          $environment
+     *
+     * @throws Exception
+     */
     private function loadContainerConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $loader->load($confDir.'/{services}/*.yml', 'glob');
