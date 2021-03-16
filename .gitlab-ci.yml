@@ -43,7 +43,7 @@ stages:
   tags:
       - Dedicated
   services:
-      - mysql:8.0
+      - mysql:8.0.18
   ################################################################################
   # Install & Configure Environnement
   before_script:
