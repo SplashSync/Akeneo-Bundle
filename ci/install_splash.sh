@@ -19,16 +19,16 @@ echo "----------------------------------------------------"
 cd akeneo
 
 echo "Push Configs for Akeneo"
-cat   ../ci/routing_splash.yml    >> app/config/routing.yml
-cat   ../ci/config_splash.yml     >> app/config/config.yml
-cp    ../phpunit.xml.dist phpunit.xml.dist
+cp   ../ci/routing_splash.yml     config/routing/splash.yml
+cp   ../ci/config_splash.yml      config/packages/splash.yml
+cp    ../phpunit.xml.dist         phpunit.xml.dist
 
 echo "Register Symfony Bundles"
-sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
-#cat app/AppKernel.php
+cp   ../ci/bundles.test.php       config/bundles.test.php
+php bin/console config:dump-reference
 
 echo "Composer Require"
-composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
+composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
 
 mkdir  -p ./src/Splash/Tests/Tools
 cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php

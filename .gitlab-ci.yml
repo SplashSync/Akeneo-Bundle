@@ -90,7 +90,7 @@ quality:php-7.4:
         - sh ci/install_akeneo.sh
         ################################################################################
         # Install Splash Bundle for Akeneo
-#        - sh ci/install_splash.sh
+        - sh ci/install_splash.sh
         ################################################################################
         # Install Install PhpUnit 7.x
 #        - sh ci/install_phpunit.sh
