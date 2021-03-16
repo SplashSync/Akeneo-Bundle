@@ -28,8 +28,7 @@
             "vendor/splash/phpcore/inc/Splash.Inc.php",
             "tests/Kernel.php",
             "tests/KernelTestCase.php"
-        ],
-        "classmap": [ "app/AppKernel.php" ]        
+        ]
     },    
     
     
