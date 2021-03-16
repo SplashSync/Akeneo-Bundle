@@ -15,6 +15,5 @@
 
 return array(
     Splash\Bundle\SplashBundle::class => array('all' => true),
-    Splash\Console\ConsoleBundle::class => array('all' => true),
     Splash\Akeneo\SplashAkeneoBundle::class => array('all' => true),
 );
