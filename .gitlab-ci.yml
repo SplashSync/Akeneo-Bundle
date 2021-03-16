@@ -18,11 +18,13 @@
 ################################################################
 # Set any variables we need
 variables:
-  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-  MYSQL_DATABASE:         akeneo_pim
-  MYSQL_ROOT_PASSWORD:    akeneo_pim
-  COMPOSER_MEMORY_LIMIT:  -1
-  SYMFONY_DEPRECATIONS_HELPER:  disabled
+    # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
+    MYSQL_DATABASE:         akeneo_pim
+    MYSQL_ROOT_PASSWORD:    akeneo_pim
+    MYSQL_USER:             akeneo_pim
+    MYSQL_PASSWORD:         akeneo_pim
+    COMPOSER_MEMORY_LIMIT:  -1
+    SYMFONY_DEPRECATIONS_HELPER:  disabled
 
 ################################################################
 # Defined Pipeline Stages

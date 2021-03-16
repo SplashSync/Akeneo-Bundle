@@ -19,7 +19,7 @@ echo "----------------------------------------------------"
 cd akeneo
 
 echo "Push Configs for Akeneo"
-cp   ../ci/routing_splash.yml     config/routing/splash.yml
+cp   ../ci/routing_splash.yml     config/routes/splash.yml
 cp   ../ci/config_splash.yml      config/packages/splash.yml
 cp    ../phpunit.xml.dist         phpunit.xml.dist
 
