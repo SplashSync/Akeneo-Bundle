@@ -26,15 +26,16 @@ echo -e "\e[45m ** Install Akeneo ...               \e[49m"
 echo -e "\e[45m *********************************** \e[49m"
 
 echo -e "\e[45m ** Composer Update                  \e[49m"
-docker-compose exec fpm composer update
-#docker-compose exec fpm composer install
+#docker-compose exec fpm composer update
+docker-compose exec fpm composer install
 
 echo -e "\e[45m ** Yarn Install                     \e[49m"
 docker-compose run --rm node yarn install
 
 echo -e "\e[45m ** Akeneo Install                   \e[49m"
+docker-compose exec fpm chmod -x bin/console
 docker-compose exec fpm chmod 777 bin/console
-docker-compose exec fpm cp  /srv/pim/vendor/akeneo/pim-community-dev/app/PimRequirements.php /srv/pim/app/PimRequirements.php   
+docker-compose exec fpm cp  /srv/pim/vendor/akeneo/pim-community-dev/app/PimRequirements.php /srv/pim/app/PimRequirements.php
 docker-compose exec fpm php bin/console --env=prod cache:clear --no-warmup
 docker-compose exec fpm php bin/console --env=prod pim:install --force --symlink --clean
 docker-compose exec fpm php bin/console --env=prod pim:installer:assets --symlink --clean

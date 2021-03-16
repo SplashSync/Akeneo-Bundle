@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -92,10 +92,9 @@ trait PricesCollectionsTrait
 
         //====================================================================//
         // Update Raw VAT Attribute Value (if Exists)
-        $vatValue = null;
         $vatCode = $attribute->getCode()."_vat";
         if ($this->hasForLocale($vatCode, $isoLang)) {
-            $vatValue = $this->setCoreValue(
+            $this->setCoreValue(
                 $product,
                 $this->getByCode($vatCode),
                 $isoLang,
@@ -134,8 +133,10 @@ trait PricesCollectionsTrait
     /**
      * Build Splash Price Array
      *
-     * @param float $htPrice
-     * @param float $vat
+     * @param float      $htPrice
+     * @param null|float $vat
+     *
+     * @throws Exception
      *
      * @return array
      */

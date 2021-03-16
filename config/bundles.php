@@ -13,13 +13,8 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Akeneo;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-/**
- * Splash Bundle for Access to Akeneo Products Catalog
- */
-class SplashAkeneoBundle extends Bundle
-{
-}
+return array(
+    Splash\Bundle\SplashBundle::class => array('all' => true),
+    Splash\Console\ConsoleBundle::class => array('all' => true),
+    Splash\Akeneo\SplashAkeneoBundle::class => array('all' => true),
+);

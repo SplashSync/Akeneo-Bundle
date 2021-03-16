@@ -15,41 +15,31 @@
 #
 ################################################################################
 
-#############################################        
-# Override Config. for Php Core Module
+#############################################
+#   Local Config
 parameters:
+
+    mode:           "splashsync"
+
+    # For Building Splash Documentation
+    doc-enable:     true
+    doc-target:     '/public'
+    doc-contents:   ["php-composer", "php-docker", "splash-faq"]
+
     # For Building Splash Manifest
     yml-enable:     false
-    csfixer_config: "src/Resources/grumphp/php_cs.dist"
 
-    #############################################
-    # Disable Php Console Tasks
-    extensions: []
-    #############################################
-    #   Test Suites Configs
-    testsuites:
-        travis:
-            tasks:
-                - composer
-                - phplint
-                - phpcs
-                - git_blacklist
-                - jsonlint
-                - phpmd
-                - phpcpd
-                - xmllint
-                - yamllint
+    # For Building Splash Module
+    mod-enable:     false
 
-        csfixer:
-            tasks:
-                - phpcsfixer
-                - phpcsfixer2
+grumphp:
+    tasks:
+        phpcpd:
+            triggered_by:     ['']
 
-        phpstan:
-            tasks:
-                - phpstan
-
-#############################################        
+#############################################
 # Import Config. from Generic Bundle
 imports:
-    - { resource: "./vendor/splash/php-bundle/src/Resources/grumphp/grumphp.base.yml" }
+    - { resource: "./vendor/badpixxel/php-sdk/grumphp/generic.yml" }
+    - { resource: "./vendor/badpixxel/php-sdk/grumphp/extras.yml" }
+    - { resource: "./vendor/splash/console/src/Resources/grumphp/*.yml" }

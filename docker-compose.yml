@@ -18,10 +18,10 @@
 ################################################################################
 # Docker Compose File
 #
-# This Docker File intend to Create a Complete Dev Envirenement 
+# This Docker File intend to Create a Complete Dev Environment
 # for Splash Modules on Prestashop
 #
-# To us different PS Version coinfigured, you need to add hosts to /etc/hosts
+# To us different PS Version configured, you need to add hosts to /etc/hosts
 # 
 # 172.105.0.10        docker.akeneo.local
 # 172.105.0.11        toolkit.akeneo.local
@@ -36,8 +36,7 @@ services:
     ################################################################################
     # Pḧp Fpm Server Container   
     fpm:
-        image: 'akeneo/fpm:php-7.2'
-        user: 'docker'
+        image: 'akeneo/pim-php-dev:4.0'
         container_name: akeneo_fpm
         environment:
             COMPOSER_MEMORY_LIMIT: -1
@@ -45,6 +44,7 @@ services:
         volumes:
             - ./:/srv/pim
         working_dir: '/srv/pim'
+        command: 'php-fpm -F'
         networks:
             - 'akeneo'
             - 'splashsync'
@@ -86,7 +86,7 @@ services:
     ################################################################################
     # MySql Container    
     mysql:
-        image: 'mysql:5.7'
+        image: 'mysql:8.0.18'
         container_name: akeneo_mysql
         logging: { driver: "none" }
         environment:
@@ -100,7 +100,7 @@ services:
     ################################################################################
     # Node JS Container    
     node:
-        image: 'node:8-slim'
+        image: 'akeneo/node:10'
         user: 'node'
         container_name: akeneo_nodeJs
         logging: { driver: "none" }
@@ -114,7 +114,7 @@ services:
     ################################################################################
     # ElasticSearch Container    
     elasticsearch:
-        image: 'docker.elastic.co/elasticsearch/elasticsearch:5.5.3'
+        image: 'docker.elastic.co/elasticsearch/elasticsearch:7.5.1'
         container_name: akeneo_elastic
         logging: { driver: "none" }
         environment:

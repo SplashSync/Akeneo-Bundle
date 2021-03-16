@@ -58,3 +58,9 @@
 /app/PimRequirements.php
 /reboot.sh
 /.idea/
+/public/bundles/
+/public/cache/
+/public/css/
+/public/dist/
+/public/js/
+/public/media/

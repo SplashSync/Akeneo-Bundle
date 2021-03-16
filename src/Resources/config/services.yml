@@ -69,13 +69,16 @@ services:
         arguments:  
             -   "@router"
             -   "@akeneo_file_storage.file_storage.file.file_storer"
-            -   "%catalog_storage_dir%"    
+            -   "@oneup_flysystem.mount_manager"
+
 
     ########################################################################
     # Akeneo Products Event EventSubscriber
     splash.akeneo.product.events:
         class:      Splash\Akeneo\EventSubscriber\DoctrineEventsSubscriber
         autowire:   true
+        arguments:
+            -   "@splash.connectors.manager"
         tags:
             - { name: 'doctrine.event_subscriber', connection: 'default' }
             - { name: kernel.event_listener, event: pim_installer.pre_load_fixture, method: setAllStatesDisabled }
@@ -86,6 +89,8 @@ services:
     splash.akeneo.product.batch.events:
         class:      Splash\Akeneo\EventSubscriber\StorageEventsSubscriber
         autowire:   true
+        arguments:
+            -   "@splash.connectors.manager"
         tags:
             - { name: kernel.event_subscriber }
 
@@ -102,4 +107,7 @@ services:
     splash.akeneo.security:
         class:      Splash\Akeneo\Services\SecurityService
         autowire:   true
+        arguments:
+            -   "@pim_user.provider.user"
+
             

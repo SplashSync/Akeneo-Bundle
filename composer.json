@@ -26,6 +26,7 @@
         "psr-4": { "Splash\\Tests\\": "Tests/" },
         "files": [
             "vendor/splash/phpcore/inc/Splash.Inc.php",
+            "tests/Kernel.php",
             "tests/KernelTestCase.php"
         ],
         "classmap": [ "app/AppKernel.php" ]        
@@ -34,11 +35,15 @@
     
     "require": {
         "php":                                          "^7.2",
-        "splash/php-bundle":                            "dev-master"
+        "splash/php-bundle":                            "dev-master",
+        "symfony/expression-language":                  "@stable"
     },
     
     "require-dev": {
         "akeneo/pim-community-dev":                     "^4.0",
+        "symfony/debug-bundle":                         "^4.4",
+        "symfony/web-profiler-bundle":                  "^4.4",
+        "symfony/web-server-bundle":                    "^4.4",
         "splash/console":                               "dev-master",
         "badpixxel/php-sdk":                            "dev-main"
     },

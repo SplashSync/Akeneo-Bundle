@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,6 +19,8 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use ArrayObject;
 use Exception;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\MountManager;
 use Splash\Client\Splash as Splash;
 use Splash\Models\Objects\ImagesTrait as SplashImages;
 use SplFileInfo;
@@ -50,15 +52,17 @@ class FilesManager
     /**
      * Service Constructor
      *
-     * @param Router     $router
-     * @param FileStorer $storer
-     * @param string     $storageDir
+     * @param Router       $router
+     * @param FileStorer   $storer
+     * @param MountManager $mountManager
      */
-    public function __construct(Router $router, FileStorer $storer, string $storageDir)
+    public function __construct(Router $router, FileStorer $storer, MountManager $mountManager)
     {
         $this->router = $router;
         $this->storer = $storer;
-        $this->storageDir = $storageDir;
+        /** @phpstan-ignore-next-line */
+        $adapter = $mountManager->getFilesystem("catalogStorage")->getAdapter();
+        $this->storageDir = ($adapter instanceof Local) ? (string) $adapter->getPathPrefix() : "";
     }
 
     /**
@@ -70,7 +74,7 @@ class FilesManager
      */
     public function getSplashImage(FileInfo $file): ?array
     {
-        if (empty($file->getKey())) {
+        if (empty($file->getKey()) || empty($this->storageDir)) {
             return null;
         }
         //====================================================================//
@@ -117,7 +121,12 @@ class FilesManager
         }
         //====================================================================//
         // Write File to Temp Directory
-        $writeFile = Splash::file()->writeFile(sys_get_temp_dir()."/", $splfile["filename"], $splfile["md5"], $rawFile["raw"]);
+        $writeFile = Splash::file()->writeFile(
+            sys_get_temp_dir()."/",
+            $splfile["filename"],
+            $splfile["md5"],
+            $rawFile["raw"]
+        );
         if (!$writeFile) {
             return null;
         }

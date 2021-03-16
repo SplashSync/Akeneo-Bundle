@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -116,8 +116,13 @@ class AttributesManager
      * @param Files               $files
      * @param LocalesManager      $locales
      */
-    public function __construct(PropertySetter $setter, AttributeRepository $attributes, MeasureManager $measure, Files $files, LocalesManager $locales)
-    {
+    public function __construct(
+        PropertySetter $setter,
+        AttributeRepository $attributes,
+        MeasureManager $measure,
+        Files $files,
+        LocalesManager $locales
+    ) {
         //====================================================================//
         // Link to Akeneo Product Fields Setter
         $this->setter = $setter;
@@ -537,8 +542,12 @@ class AttributesManager
      * @param string        $isoLang
      * @param string        $suffix
      */
-    private function buildField(FieldsFactory $factory, Attribute $attribute, string $isoLang, string $suffix = ""): void
-    {
+    private function buildField(
+        FieldsFactory $factory,
+        Attribute $attribute,
+        string $isoLang,
+        string $suffix = ""
+    ): void {
         //====================================================================//
         // Get Attribute Type
         $attrType = $attribute->getType();
@@ -609,7 +618,9 @@ class AttributesManager
         $baseAttrTrans = $attribute->getTranslation($this->locales->getDefault());
         //====================================================================//
         // Does the Field Have Choices Values ?
-        if (TypesConverter::isMetric($attrType) || TypesConverter::isSelect($attrType) || TypesConverter::isMultiSelect($attrType)) {
+        if (TypesConverter::isMetric($attrType)
+            || TypesConverter::isSelect($attrType)
+            || TypesConverter::isMultiSelect($attrType)) {
             // In Catalog Mode, Main Metadata is for Translations
             if ($this->catalogMode) {
                 $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel()."Code");

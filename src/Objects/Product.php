@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2020 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -145,8 +145,14 @@ class Product extends AbstractStandaloneObject
      * @param Locales    $locales
      * @param Security   $security
      */
-    public function __construct(Repository $repository, Crud $crudService, Attributes $attr, Variants $variants, Locales $locales, Security $security)
-    {
+    public function __construct(
+        Repository $repository,
+        Crud $crudService,
+        Attributes $attr,
+        Variants $variants,
+        Locales $locales,
+        Security $security
+    ) {
         //====================================================================//
         // Link to Product Variants Repository
         $this->repository = $repository;
