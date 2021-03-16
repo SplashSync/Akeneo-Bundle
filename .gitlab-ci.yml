@@ -46,11 +46,6 @@ stages:
   # Install & Configure Environnement
   before_script:
       ################################################################################
-      # Setup Akeneo Parameters
-#      - echo "Configuring Sources"
-#      - cp ci/parameters.yml.dist app/config/parameters.yml
-#      - cp ci/parameters.yml.dist app/config/parameters_test.yml
-      ################################################################################
       # Run Composer
       - composer self-update --1
       - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
@@ -68,6 +63,12 @@ quality:php-7.3:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
     variables:
         AKENEO_VERSION:   4.0.97
+    <<: *quality
+
+quality:php-7.4:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    variables:
+        AKENEO_VERSION:   5.0.7
     <<: *quality
 
 ################################################################
