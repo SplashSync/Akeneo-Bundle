@@ -31,13 +31,15 @@ docker-compose exec fpm composer update
 
 echo -e "\e[45m ** Yarn Install                     \e[49m"
 docker-compose run --rm node yarn install
+docker-compose run --rm node yarn upgrade
 
 echo -e "\e[45m ** Akeneo Install                   \e[49m"
 docker-compose exec fpm chmod -x bin/console
 docker-compose exec fpm chmod 777 bin/console
-docker-compose exec fpm cp  /srv/pim/vendor/akeneo/pim-community-dev/app/PimRequirements.php /srv/pim/app/PimRequirements.php
 docker-compose exec fpm php bin/console --env=prod cache:clear --no-warmup
-docker-compose exec fpm php bin/console --env=prod pim:install:db --catalog=vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev --force
+docker-compose exec fpm php bin/console --env=prod pim:install:db \
+              --catalog=vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+#              --catalog=vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 docker-compose exec fpm php bin/console --env=prod pim:installer:assets --symlink --clean
 
 echo -e "\e[45m ** Webpack Install                   \e[49m"
@@ -45,6 +47,6 @@ docker-compose run --rm node yarn run webpack
 
 echo -e "\e[45m ** Install Php Extensions ...       \e[49m"
 docker-compose exec fpm apt update
-docker-compose exec fpm apt install php7.2-soap
+docker-compose exec fpm apt install php-soap
 docker-compose restart fpm
 

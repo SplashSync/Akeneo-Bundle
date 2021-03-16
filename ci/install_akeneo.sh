@@ -17,12 +17,10 @@ echo "--> AKENEO - Install Version $AKENEO_VERSION"
 echo "----------------------------------------------------"
 
 echo "Create Akeneo Community Project"
-composer self-update --1
-composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist --no-plugins
+composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
 
 echo "Configuring Akeneo"
-cp ci/parameters.yml.dist akeneo/app/config/parameters.yml
-cp ci/parameters.yml.dist akeneo/app/config/parameters_test.yml
+cp .env akeneo/.env
 
 echo "Run Akeneo Installer"
 cd akeneo

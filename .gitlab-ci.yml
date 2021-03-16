@@ -28,7 +28,7 @@ variables:
 # Defined Pipeline Stages
 stages:
   - quality
-#  - tests
+  - tests
 #  - deploy
 
 ################################################################
@@ -36,7 +36,7 @@ stages:
 ################################################################
 
 .quality:    &quality
-#  when:       manual
+  when:       manual
   stage:      quality
   tags:
       - Dedicated
@@ -75,32 +75,32 @@ quality:php-7.4:
 # Functional Tests
 ################################################################
 
-#.core_tests:    &core_tests
-#  stage:      tests
-#  tags:
-#    - Dedicated
-#  services:
-#    - mysql:5.7
-#    - elasticsearch:5.6-alpine
-#  ################################################################################
-#  # Install & Configure Environnement
-#  before_script:
-#    ################################################################################
-#    # Install Akeneo Community Dev Project
-#    - sh ci/install_akeneo.sh
-#    ################################################################################
-#    # Install Splash Bundle for Akeneo
-#    - sh ci/install_splash.sh
-#    ################################################################################
-#    # Install Install PhpUnit 7.x
-#    - sh ci/install_phpunit.sh
-#  ################################################################################
-#  # Run Test Script
-#  script:
-#    # Execute PhpUnit Tests
-#    - cd akeneo
-#    - phpunit --version
-#    - phpunit
+.core_tests:    &core_tests
+    stage:      tests
+    tags:
+        - Dedicated
+    services:
+        - mysql:8.0
+        - elasticsearch:7.5.1
+    ################################################################################
+    # Install & Configure Environnement
+    before_script:
+        ################################################################################
+        # Install Akeneo Community Dev Project
+        - sh ci/install_akeneo.sh
+        ################################################################################
+        # Install Splash Bundle for Akeneo
+#        - sh ci/install_splash.sh
+        ################################################################################
+        # Install Install PhpUnit 7.x
+#        - sh ci/install_phpunit.sh
+    ################################################################################
+    # Run Test Script
+    script:
+      # Execute PhpUnit Tests
+      - cd akeneo
+      - phpunit --version
+#      - phpunit
 
 #
 #tests:php-7.4:
@@ -111,11 +111,11 @@ quality:php-7.4:
 #  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
 #  <<: *core_tests
 #
-#tests:php-7.2:
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
-#    variables:
-#        AKENEO_VERSION:   3.0.68
-#    <<: *core_tests
+tests:php-7.3:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
+    variables:
+        AKENEO_VERSION:   4.0.97
+    <<: *core_tests
 
 #tests:php-8.0:
 #  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0

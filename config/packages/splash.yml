@@ -1,7 +1,7 @@
 
 splash:
     connections:
-        akeneo:    
+        akeneo:
             name:           Akeneo for Splash
             id:             ThisIsSplashWsId
             key:            ThisIsYourEncryptionKeyForSplash
