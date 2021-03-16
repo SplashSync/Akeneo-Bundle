@@ -43,7 +43,8 @@ stages:
   tags:
       - Dedicated
   services:
-      - mysql:8.0.18
+      - name: mysql:8.0
+        command: ['--default-authentication-plugin=mysql_native_password']
   ################################################################################
   # Install & Configure Environnement
   before_script:
