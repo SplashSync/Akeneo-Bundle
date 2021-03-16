@@ -36,7 +36,7 @@ stages:
 ################################################################
 
 .quality:    &quality
-  when:       manual
+#  when:       manual
   stage:      quality
   tags:
       - Dedicated
@@ -75,6 +75,7 @@ quality:php-7.2:
 ################################################################
 
 .core_tests:    &core_tests
+  #  when:       manual
   stage:      tests
   tags:
     - Dedicated
