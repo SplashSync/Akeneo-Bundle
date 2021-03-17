@@ -85,8 +85,8 @@ quality:php-7.4:
         - name: mysql:8.0
           command: ['--default-authentication-plugin=mysql_native_password']
         - name: elasticsearch:7.5.1
-#          entrypoint: ["/bin/bash"]
-          command: ["-e", "discovery.type='single-node' ES_JAVA_OPTS='--Xms512m -Xmx512m'"]
+          entrypoint: ["/bin/bash"]
+          command: ["-c", "discovery.type='single-node' ES_JAVA_OPTS='--Xms512m -Xmx512m' eswrapper"]
     ################################################################################
     # Install & Configure Environnement
     before_script:
