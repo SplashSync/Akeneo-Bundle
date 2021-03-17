@@ -84,7 +84,8 @@ quality:php-7.4:
     services:
         - name: mysql:8.0
           command: ['--default-authentication-plugin=mysql_native_password']
-        - elasticsearch:7.5.1
+        - name: elasticsearch:7.5.1
+          command: ['-e "discovery.type=single-node"']
     ################################################################################
     # Install & Configure Environnement
     before_script:
