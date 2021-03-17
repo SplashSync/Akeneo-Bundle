@@ -87,11 +87,7 @@ quality:php-7.4:
         - name: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
           alias: elasticsearch
           entrypoint: ["/bin/bash"]
-          command: ["-c", "env discovery.type=single-node ES_JAVA_OPTS='-Xms64m -Xmx64m' xpack.security.enabled=false es-docker"]
-
-
-#        - name: elasticsearch:7.5.1
-#          command: ['-e "discovery.type=single-node"']
+          command: ["-c", "env discovery.type=single-node ES_JAVA_OPTS='-Xms64m -Xmx64m' xpack.security.enabled=false"]
     ################################################################################
     # Install & Configure Environnement
     before_script:
