@@ -30,5 +30,9 @@ echo "Run Akeneo Installer"
 cd akeneo
 chmod -x bin/console
 chmod 7777 bin/console
+
+php bin/console debug:config oneup_flysystem
+php bin/console debug:config oneup_flysystem       --env=prod
+
 php bin/console pim:install               --env=prod  --force --symlink --clean --no-interaction --no-debug
 php bin/console pim:installer:assets      --env=prod  --symlink --clean --no-interaction --no-debug
