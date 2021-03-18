@@ -32,6 +32,7 @@ chmod -x bin/console
 chmod 7777 bin/console
 
 php bin/console debug:config oneup_flysystem
+
 php bin/console debug:config oneup_flysystem       --env=prod
 
 php bin/console pim:install               --env=prod  --force --symlink --clean --no-interaction --no-debug
