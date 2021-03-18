@@ -25,7 +25,6 @@ composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer
 
 #echo "Configuring Akeneo"
 #cp ci/.env akeneo/.env
-mkdir akeneo/config/packages
 cp ci/oneup_flysystem.yml akeneo/config/packages/oneup_flysystem.yml
 #mkdir akeneo/config/prod
 #cp ci/oneup_flysystem.yml akeneo/config/prod/oneup_flysystem.yml
