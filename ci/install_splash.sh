@@ -38,5 +38,6 @@ cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
 cp    ../tests/KernelTestCase.php ./vendor/splash/phpcore/Tests/Tools/TestCase.php
 
 echo "Splash Bundle Configuration"
+rm -Rf var/cache/*
 php bin/console config:dump-reference
 php bin/console debug:config splash       --env=test
