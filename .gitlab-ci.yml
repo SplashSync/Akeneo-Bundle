@@ -106,7 +106,7 @@ quality:php-7.4:
       # Execute PhpUnit Tests
       - cd akeneo
       - php vendor/bin/phpunit --version
-#      - phpunit
+      - php vendor/bin/phpunit
 
 #
 #tests:php-7.4:
