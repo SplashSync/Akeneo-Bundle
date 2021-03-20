@@ -29,7 +29,6 @@ cp    ../phpunit.xml.dist         phpunit.xml.dist
 
 echo "Register Symfony Bundles"
 cp   ../ci/bundles.test.php       config/bundles.test.php
-php bin/console config:dump-reference
 
 echo "Composer Require"
 composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
@@ -39,4 +38,5 @@ cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
 cp    ../tests/KernelTestCase.php ./vendor/splash/phpcore/Tests/Tools/TestCase.php
 
 echo "Splash Bundle Configuration"
+php bin/console config:dump-reference
 php bin/console debug:config splash       --env=test
