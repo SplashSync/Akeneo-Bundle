@@ -23,7 +23,7 @@ echo "----------------------------------------------------"
 echo "Create Akeneo Community Project"
 composer create-project akeneo/pim-community-dev akeneo $AKENEO_VERSION --prefer-dist
 
-#echo "Configuring Akeneo"
+echo "Configuring Akeneo"
 #cp ci/.env akeneo/.env
 cp ci/oneup_flysystem.yml akeneo/config/packages/oneup_flysystem.yml
 #mkdir akeneo/config/prod
@@ -35,7 +35,7 @@ echo "Run Akeneo Installer"
 cd akeneo
 chmod -x bin/console
 chmod 7777 bin/console
-
+rm -Rf var/cache/*
 
 php bin/console pim:install               --env=prod  --force --symlink --clean --no-interaction --no-debug
 php bin/console pim:installer:assets      --env=prod  --symlink --clean --no-interaction --no-debug
