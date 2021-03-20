@@ -37,6 +37,8 @@ chmod -x bin/console
 chmod 7777 bin/console
 
 rm -Rf var/cache/*
+php bin/console
+php bin/console --env=prod
 php bin/console --env=prod cache:clear --no-warmup
 
 php bin/console pim:install               --env=prod  --force --symlink --clean --no-interaction --no-debug
