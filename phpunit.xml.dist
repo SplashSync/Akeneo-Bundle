@@ -10,7 +10,7 @@
     convertWarningsToExceptions = "false"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    bootstrap                   = "app/autoload.php" 
+    bootstrap                   = "config/bootstrap.php" 
     verbose                     = "false"
     timeoutForLargeTests        = "120"  
 >
