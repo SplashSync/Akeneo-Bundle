@@ -33,7 +33,7 @@
     </filter>
 
     <php>
-        <server name="KERNEL_DIR" value="app" />
+        <server name="KERNEL_CLASS" value="Kernel" force="true" />
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
         <const  name="SPLASH_DEBUG" value="true" />
         <server name="SPLASH_TRAVIS" value="true" />    
