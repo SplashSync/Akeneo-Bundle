@@ -32,6 +32,7 @@ cp   ../ci/bundles.test.php       config/bundles.test.php
 
 echo "Composer Require"
 composer require splash/phpcore:dev-master splash/php-bundle:dev-master splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
+cp   -Rf ../src/       vendor/splash/akeneo/src
 
 mkdir  -p ./src/Splash/Tests/Tools
 cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
