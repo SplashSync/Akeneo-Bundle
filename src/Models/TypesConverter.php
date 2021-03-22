@@ -86,6 +86,7 @@ class TypesConverter
      */
     const READONLY = array(
         AttributeTypes::OPTION_MULTI_SELECT,
+        AttributeTypes::IMAGE,
         AttributeTypes::FILE,
     );
 

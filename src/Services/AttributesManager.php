@@ -222,9 +222,10 @@ class AttributesManager
      * Get Field Data from Local Object
      *
      * @param Product $product
-     * @param string  $fieldName
+     * @param string $fieldName
      *
      * @return array
+     * @throws Exception
      */
     public function get(Product $product, string $fieldName): array
     {
@@ -237,7 +238,7 @@ class AttributesManager
                 continue;
             }
             //====================================================================//
-            // Decode Multilang Field Name
+            // Decode Multi-lang Field Name
             $baseFieldName = $this->locales->decode($fieldName, $isoLang);
             if (null == $baseFieldName) {
                 continue;
