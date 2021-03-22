@@ -117,7 +117,7 @@ tests:php-7.3:
 tests:php-7.4:
     image: akeneo/pim-php-dev:5.0
     variables:
-        AKENEO_VERSION:   5.0.9
+        AKENEO_VERSION:   5.0.7
     <<: *core_tests
 
 #tests:php-8.0:
