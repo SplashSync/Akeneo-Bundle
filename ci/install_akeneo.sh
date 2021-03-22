@@ -33,12 +33,8 @@ cd akeneo
 chmod -x bin/console
 chmod 7777 bin/console
 
-#rm -Rf var/cache/*
-#php bin/console --env=dev cache:clear --no-warmup
-#php bin/console --env=prod cache:clear --no-warmup
-#php bin/console --env=test cache:clear --no-warmup
+rm -Rf var/cache/*
 
 #php bin/console pim:install               --env=prod  --force --symlink --clean --no-interaction --no-debug
-php bin/console pim:install:db --env=prod --no-interaction --no-debug --catalog=vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-
+php bin/console pim:install:db --env=prod --no-interaction --no-debug --catalog=src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 php bin/console pim:installer:assets      --env=prod  --symlink --clean --no-interaction --no-debug
