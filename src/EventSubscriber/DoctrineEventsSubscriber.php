@@ -17,6 +17,7 @@ namespace Splash\Akeneo\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\ORM\Events;
 use Splash\Bundle\Helpers\Doctrine\AbstractEventSubscriber;
 use Splash\Bundle\Services\ConnectorsManager;
@@ -27,6 +28,15 @@ use Splash\Bundle\Services\ConnectorsManager;
 class DoctrineEventsSubscriber extends AbstractEventSubscriber
 {
     use ObjectIdentifierTrait;
+
+    /**
+     * @inheritdoc
+     */
+    protected static $subscribedEvents = array(
+        Events::postPersist => "postPersist",
+        Events::preRemove => "preRemove",
+        InstallerEvents::PRE_LOAD_FIXTURES => "preLoadFixtures",
+    );
 
     /**
      * {@inheritdoc}
@@ -59,6 +69,15 @@ class DoctrineEventsSubscriber extends AbstractEventSubscriber
     {
         parent::__construct($manager);
         // Use Kernel Events for Update, better Compatibility
+        static::setState(Events::postUpdate, false);
+    }
+
+    /**
+     * On Akeneo Pre Load Fixtures
+     */
+    public function preLoadFixtures(): void
+    {
+        static::setState(Events::postPersist, false);
         static::setState(Events::postUpdate, false);
     }
 }

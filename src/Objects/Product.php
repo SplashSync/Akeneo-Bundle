@@ -177,9 +177,9 @@ class Product extends AbstractStandaloneObject
         $this->security = $security;
         //====================================================================//
         // Ensure User Login
-        if ((defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) || $this->isDebugMode()) {
-            $this->security->ensureSessionUser($this->getParameter("username", "admin"));
-        }
+//        if ((defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) || $this->isDebugMode()) {
+//            $this->security->ensureSessionUser($this->getParameter("username", "admin"));
+//        }
     }
 
     /**
