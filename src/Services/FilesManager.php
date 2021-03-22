@@ -15,13 +15,15 @@
 
 namespace   Splash\Akeneo\Services;
 
+use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use ArrayObject;
 use Exception;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\MountManager;
 use Splash\Client\Splash as Splash;
+use Splash\Models\FileProviderInterface;
 use Splash\Models\Objects\ImagesTrait as SplashImages;
 use SplFileInfo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,7 +32,7 @@ use Symfony\Component\Routing\RouterInterface as Router;
 /**
  * Splash Akeneo Files Management
  */
-class FilesManager
+class FilesManager implements FileProviderInterface
 {
     use SplashImages;
 
@@ -45,9 +47,19 @@ class FilesManager
     private $storer;
 
     /**
-     * @var string
+     * @var FileInfoRepository
      */
-    private $storageDir;
+    private $repository;
+
+    /**
+     * @var RemoverInterface
+     */
+    private $remover;
+
+    /**
+     * @var MountManager
+     */
+    private $mount;
 
     /**
      * Service Constructor
@@ -56,13 +68,18 @@ class FilesManager
      * @param FileStorer   $storer
      * @param MountManager $mountManager
      */
-    public function __construct(Router $router, FileStorer $storer, MountManager $mountManager)
-    {
+    public function __construct(
+        Router $router,
+        FileStorer $storer,
+        RemoverInterface $remover,
+        FileInfoRepository $repository,
+        MountManager $mountManager
+    ) {
         $this->router = $router;
         $this->storer = $storer;
-        /** @phpstan-ignore-next-line */
-        $adapter = $mountManager->getFilesystem("catalogStorage")->getAdapter();
-        $this->storageDir = ($adapter instanceof Local) ? (string) $adapter->getPathPrefix() : "";
+        $this->repository = $repository;
+        $this->remover = $remover;
+        $this->mount = $mountManager;
     }
 
     /**
@@ -74,26 +91,39 @@ class FilesManager
      */
     public function getSplashImage(FileInfo $file): ?array
     {
-        if (empty($file->getKey()) || empty($this->storageDir)) {
+        try {
+            $fileSystem = $this->mount->getFilesystem($file->getStorage());
+            //====================================================================//
+            // Ensure Image Exists in File System
+            if (empty($file->getKey()) || !$fileSystem->has($file->getKey())) {
+                return null;
+            }
+            //====================================================================//
+            // Read Raw File from File System
+            $rawFile = $fileSystem->read($file->getKey());
+            if (empty($rawFile)) {
+                return null;
+            }
+
+            return array(
+                "name" => $file->getOriginalFilename(),
+                "filename" => $file->getOriginalFilename(),
+                "path" => $file->getKey(),
+                "url" => $this->router->generate(
+                    "pim_enrich_media_show",
+                    array( "filename" => urlencode($file->getKey()), "filter" => "preview" ),
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+                "width" => "0",
+                "height" => "0",
+                "md5" => md5($rawFile),
+                "size" => strlen($rawFile),
+            );
+        } catch (Exception $exception) {
+            Splash::log()->report($exception);
+
             return null;
         }
-        //====================================================================//
-        // Build Image Full Path
-        $fullPath = $this->storageDir."/".$file->getKey();
-        //====================================================================//
-        // Encode Splash Image
-        $image = self::Images()->encode(
-            $file->getOriginalFilename(),
-            basename($fullPath),
-            dirname($fullPath)."/",
-            $this->router->generate(
-                "pim_enrich_media_show",
-                array( "filename" => urlencode($file->getKey()), "filter" => "preview" ),
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-        );
-
-        return $image ? $image : null;
     }
 
     /**
@@ -135,29 +165,44 @@ class FilesManager
         try {
             $fullPath = sys_get_temp_dir()."/".$splfile["filename"];
             $newFile = $this->storer->store(new SplFileInfo($fullPath), "catalogStorage", true);
-        } catch (Exception $e) {
-            Splash::Log()->Err($e->getMessage());
-            Splash::Log()->Err($e->getTraceAsString());
+        } catch (Exception $exception) {
+            Splash::log()->report($exception);
 
             return null;
         }
 
-        return ($newFile instanceof FileInfo) ? ($this->storageDir."/".$newFile->getKey()) : null;
+        return ($newFile instanceof FileInfo) ? $newFile->getKey() : null;
     }
 
     /**
      * Update Contents of a File
      *
-     * @param FileInfo $current
+     * @param FileInfo $file
      *
      * @return bool
      */
-    public function delete(FileInfo $current): ?bool
+    public function delete(FileInfo $file): bool
     {
-        $fullPath = $this->getFullPath($current);
-        //====================================================================//
-        // Delete Raw File from Filesystem
-        return Splash::file()->deleteFile($fullPath, (string) md5_file($fullPath));
+        try {
+            //====================================================================//
+            // Remove from Database
+            $fileInfos = $this->repository->findOneByIdentifier($file->getKey());
+            if ($fileInfos) {
+                $this->remover->remove($fileInfos);
+            }
+            //====================================================================//
+            // Remove from File System
+            $fileSystem = $this->mount->getFilesystem("catalogStorage");
+            if (!empty($file->getKey()) && $fileSystem->has($file->getKey())) {
+                $fileSystem->delete($file->getKey());
+            }
+        } catch (Exception $exception) {
+            Splash::log()->report($exception);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -196,23 +241,89 @@ class FilesManager
         if (!$this->isValid($splashfile) || !isset($splashfile["md5"])) {
             return false;
         }
-        //====================================================================//
-        // Verify CheckSum of Current File
-        $currentFilePath = $this->getFullPath($current);
-        if (!is_file($currentFilePath)) {
+
+        try {
+            $fileSystem = $this->mount->getFilesystem("catalogStorage");
+            //====================================================================//
+            // Ensure File Exists in File System
+            if (!$fileSystem->has($current->getKey())) {
+                return false;
+            }
+            //====================================================================//
+            // Ensure Md5 are Similar
+            $rawFile = $fileSystem->read($current->getKey());
+            if (empty($rawFile) || (md5($rawFile) != $splashfile["md5"])) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            Splash::log()->report($exception);
+
             return false;
         }
-
-        return (md5_file($currentFilePath) == $splashfile["md5"]);
     }
 
     /**
-     * @param FileInfo $current
-     *
-     * @return string
+     * {@inheritDoc}
      */
-    private function getFullPath(FileInfo $current): string
+    public function hasFile($file = null, $md5 = null)
     {
-        return $this->storageDir."/".$current->getKey();
+        try {
+            $fileSystem = $this->mount->getFilesystem("catalogStorage");
+            //====================================================================//
+            // Ensure File Exists in File System
+            if (empty($file) || !$fileSystem->has($file)) {
+                return false;
+            }
+            //====================================================================//
+            // Ensure Md5 are Similar
+            $rawFile = $fileSystem->read($file);
+            if (empty($rawFile) || (md5($rawFile) != $md5)) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            Splash::log()->report($exception);
+
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function readFile($file = null, $md5 = null)
+    {
+        try {
+            $fileSystem = $this->mount->getFilesystem("catalogStorage");
+            //====================================================================//
+            // Ensure Image Exists in File System
+            if (empty($file) || !$fileSystem->has($file)) {
+                return false;
+            }
+            //====================================================================//
+            // Read Raw File from File System
+            $rawFile = $fileSystem->read($file);
+            if (empty($rawFile)) {
+                return false;
+            }
+
+            return array(
+                "name" => basename($file),
+                "filename" => basename($file),
+                "path" => $file,
+                "width" => "0",
+                "height" => "0",
+                "md5" => md5($rawFile),
+                "raw" => base64_encode($rawFile),
+                "size" => $fileSystem->getSize($file),
+            );
+        } catch (Exception $exception) {
+            Splash::log()->report($exception);
+
+            return false;
+        }
     }
 }

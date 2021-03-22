@@ -222,10 +222,11 @@ class AttributesManager
      * Get Field Data from Local Object
      *
      * @param Product $product
-     * @param string $fieldName
+     * @param string  $fieldName
+     *
+     * @throws Exception
      *
      * @return array
-     * @throws Exception
      */
     public function get(Product $product, string $fieldName): array
     {

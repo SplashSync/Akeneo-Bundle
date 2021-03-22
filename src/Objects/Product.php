@@ -18,18 +18,20 @@ namespace Splash\Akeneo\Objects;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
 use Splash\Akeneo\Services\CrudService as Crud;
+use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Akeneo\Services\LocalesManager as Locales;
 use Splash\Akeneo\Services\SecurityService as Security;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Client\Splash;
+use Splash\Models\FileProviderInterface;
 
 /**
  * Splash Product Object
  *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
-class Product extends AbstractStandaloneObject
+class Product extends AbstractStandaloneObject implements FileProviderInterface
 {
     // Splash Php Core Traits
     use \Splash\Models\Objects\IntelParserTrait;
@@ -49,6 +51,7 @@ class Product extends AbstractStandaloneObject
     use Product\CategoriesTrait;
     use Product\AttributesTrait;
     use Product\ObjectsListTrait;
+    use Product\FilesTrait;
 
     //====================================================================//
     // Object Definition Parameters
@@ -136,12 +139,18 @@ class Product extends AbstractStandaloneObject
     protected $security;
 
     /**
+     * @var Files
+     */
+    protected $files;
+
+    /**
      * Service Constructor
      *
      * @param Repository $repository
      * @param Crud       $crudService
      * @param Attributes $attr
      * @param Variants   $variants
+     * @param Files      $files
      * @param Locales    $locales
      * @param Security   $security
      */
@@ -150,6 +159,7 @@ class Product extends AbstractStandaloneObject
         Crud $crudService,
         Attributes $attr,
         Variants $variants,
+        Files $files,
         Locales $locales,
         Security $security
     ) {
@@ -170,7 +180,10 @@ class Product extends AbstractStandaloneObject
         // Link to Splash Akeneo Products Variants Manager
         $this->variants = $variants;
         //====================================================================//
-        // Store Availables Languages
+        // Link to Splash Akeneo Products Files Manager
+        $this->files = $files;
+        //====================================================================//
+        // Store Available Languages
         $this->locales = $locales->setDefault($this->getParameter("locale", "en_US"));
         //====================================================================//
         // Link to Splash Akeneo Security Service

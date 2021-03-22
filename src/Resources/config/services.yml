@@ -10,8 +10,9 @@ services:
             -   "@splash.akeneo.product.crud"  
             -   "@splash.akeneo.product.attributes"
             -   "@splash.akeneo.product.variants"
-            -   "@splash.akeneo.locales"  
-            -   "@splash.akeneo.security"  
+            -   "@splash.akeneo.product.files"
+            -   "@splash.akeneo.locales"
+            -   "@splash.akeneo.security"
         tags:
             # Register as Standalone Connector Object           
             - { name: "splash.standalone.object", type : "Product" }  
@@ -69,6 +70,8 @@ services:
         arguments:  
             -   "@router"
             -   "@akeneo_file_storage.file_storage.file.file_storer"
+            -   "@akeneo_file_storage.remover.file"
+            -   "@akeneo_file_storage.repository.file_info"
             -   "@oneup_flysystem.mount_manager"
 
 
