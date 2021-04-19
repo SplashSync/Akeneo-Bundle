@@ -34,11 +34,12 @@
     
     "require": {
         "php":                                          "^7.2",
-        "splash/php-bundle":                            "1.0.0"
+        "splash/php-bundle":                            "@stable",
+        "akeneo/pim-community-dev":                     "^3.0"
     },
     
     "require-dev": {
-        "akeneo/pim-community-dev":                     "~3.0.0",
+
 
         "splash/console":                               "1.0.0",
         "phpunit/phpunit":                              "*",
