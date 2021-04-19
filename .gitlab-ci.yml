@@ -66,6 +66,13 @@ quality:php-7.3:
         AKENEO_VERSION:   4.0.97
     <<: *quality
 
+quality:php-7.4:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    variables:
+        AKENEO_VERSION:   5.0.7
+    <<: *quality
+
+
 ################################################################
 # Functional Tests
 ################################################################
