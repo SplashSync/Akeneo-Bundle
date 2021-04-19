@@ -67,12 +67,6 @@ quality:php-7.3:
         AKENEO_VERSION:   4.0.97
     <<: *quality
 
-quality:php-7.4:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    variables:
-        AKENEO_VERSION:   5.0.7
-    <<: *quality
-
 ################################################################
 # Functional Tests
 ################################################################
@@ -111,34 +105,23 @@ tests:php-7.3:
         AKENEO_VERSION:   4.0.97
     <<: *core_tests
 
-tests:php-7.4:
-    image: akeneo/pim-php-dev:5.0
-    variables:
-        AKENEO_VERSION:   5.0.7
-    <<: *core_tests
-
-#tests:php-8.0:
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-#  allow_failure: true
-#  <<: *core_tests
-
 #################################################################
 ## Build Documentation
 #################################################################
-#pages:
-#  image:    registry.gitlab.com/splashsync/php-console:pages
-#  stage:    deploy
-#  tags:
-#    - Dedicated
-#  services:
-#    - docker:dind
-#  ################################################################################
-#  # Run Test Script
-#  script:
-#    # Run Composer to Build deps
-#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-#    # Build Documentation
-#    - php vendor/bin/grumphp run --tasks=build-docs
-#  artifacts:
-#    paths:
-#      - public
+pages:
+    image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
+    stage:    deploy
+    tags:
+        - Dedicated
+    services:
+        - docker:dind
+    ################################################################################
+    # Run Test Script
+    script:
+        # Run Composer to Build deps
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
+        # Build Documentation
+        - php vendor/bin/grumphp run --tasks=build-docs
+    artifacts:
+        paths:
+            - public
