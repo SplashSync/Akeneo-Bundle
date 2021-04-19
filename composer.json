@@ -34,8 +34,7 @@
     
     "require": {
         "php":                                          "^7.2",
-        "splash/php-bundle":                            "@stable",
-        "akeneo/pim-community-dev":                     "^3.0"
+        "splash/php-bundle":                            "@stable"
     },
     
     "require-dev": {
