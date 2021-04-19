@@ -69,7 +69,7 @@ quality:v4-php-7.3:
 quality:v5-php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
     variables:
-        AKENEO_VERSION:   5.0.7
+        AKENEO_VERSION:   5.0.18
     <<: *quality
 
 
@@ -114,7 +114,7 @@ tests:v4-php-7.3:
 tests:v5-php-7.4:
   image: akeneo/pim-php-dev:5.0
   variables:
-    AKENEO_VERSION:   5.0.7
+    AKENEO_VERSION:   5.0.18
   <<: *core_tests
 
 #################################################################
