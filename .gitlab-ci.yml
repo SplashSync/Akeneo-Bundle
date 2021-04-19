@@ -60,13 +60,13 @@ stages:
   after_script:
     - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
-quality:php-7.3:
+quality:v4-php-7.3:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
     variables:
         AKENEO_VERSION:   4.0.97
     <<: *quality
 
-quality:php-7.4:
+quality:v5-php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
     variables:
         AKENEO_VERSION:   5.0.7
@@ -105,11 +105,17 @@ quality:php-7.4:
       - php vendor/bin/phpunit --version
       - php vendor/bin/phpunit
 
-tests:php-7.3:
+tests:v4-php-7.3:
     image: akeneo/pim-php-dev:4.0
     variables:
         AKENEO_VERSION:   4.0.97
     <<: *core_tests
+
+tests:v5-php-7.4:
+  image: akeneo/pim-php-dev:5.0
+  variables:
+    AKENEO_VERSION:   5.0.7
+  <<: *core_tests
 
 #################################################################
 ## Build Documentation
