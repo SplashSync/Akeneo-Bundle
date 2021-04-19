@@ -38,7 +38,6 @@ stages:
 ################################################################
 
 .quality:    &quality
-  when:       manual
   stage:      quality
   tags:
       - Dedicated
