@@ -16,9 +16,8 @@
 namespace   Splash\Akeneo\Services;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository as Repository;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as Model;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Familly;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Family;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactory as Builder;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface as Saver;
@@ -104,12 +103,12 @@ class ModelsManager
      * Identify New Product Parent
      *
      * @param array|ArrayObject $inputs
-     * @param Familly           $familyVariant
+     * @param Family           $familyVariant
      * @param null|Model        $model
      *
      * @return null|Model
      */
-    public function resolveParent($inputs, Familly $familyVariant, Model $model = null): ?Model
+    public function resolveParent($inputs, Family $familyVariant, Model $model = null): ?Model
     {
         $coreSku = isset($inputs["sku"]) ? $inputs["sku"] : uniqid();
 
