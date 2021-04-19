@@ -25,7 +25,6 @@ cp    ../phpunit.xml.dist phpunit.xml.dist
 
 echo "Register Symfony Bundles"
 sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\SplashBundle(), new Splash\\Akeneo\\SplashAkeneoBundle(),|g' app/AppKernel.php
-#cat app/AppKernel.php
 
 echo "Composer Require"
 composer require splash/akeneo-bundle:3.0.x-dev --no-interaction --prefer-dist --no-suggest
