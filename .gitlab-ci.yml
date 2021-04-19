@@ -36,7 +36,6 @@ stages:
 ################################################################
 
 .quality:    &quality
-#  when:       manual
   stage:      quality
   tags:
       - Dedicated
@@ -102,43 +101,8 @@ quality:php-7.2:
     - phpunit --version
     - phpunit
 
-#
-#tests:php-7.4:
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-#  <<: *core_tests
-#
-#tests:php-7.3:
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
-#  <<: *core_tests
-#
 tests:php-7.2:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.2
     variables:
         AKENEO_VERSION:   3.0.68
     <<: *core_tests
-
-#tests:php-8.0:
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-#  allow_failure: true
-#  <<: *core_tests
-
-#################################################################
-## Build Documentation
-#################################################################
-#pages:
-#  image:    registry.gitlab.com/splashsync/php-console:pages
-#  stage:    deploy
-#  tags:
-#    - Dedicated
-#  services:
-#    - docker:dind
-#  ################################################################################
-#  # Run Test Script
-#  script:
-#    # Run Composer to Build deps
-#    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-#    # Build Documentation
-#    - php vendor/bin/grumphp run --tasks=build-docs
-#  artifacts:
-#    paths:
-#      - public
