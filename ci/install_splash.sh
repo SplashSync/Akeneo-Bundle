@@ -29,8 +29,6 @@ sed -i 's|// your app bundles should be registered here|new \\Splash\\Bundle\\Sp
 
 echo "Composer Require"
 composer require splash/akeneo-bundle:3.0.x-dev --no-interaction --prefer-dist --no-suggest
-cp  -Rf ../src/       vendor/splash/akeneo-bundle/src/
-ls  -l vendor/splash/akeneo-bundle/src/
 
 mkdir  -p ./src/Splash/Tests/Tools
 cp    ../tests/KernelTestCase.php ./src/Splash/Tests/Tools/TestCase.php
