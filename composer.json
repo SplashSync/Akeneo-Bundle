@@ -34,7 +34,7 @@
     
     "require": {
         "php":                                          "^7.2",
-        "splash/php-bundle":                            "@stable"
+        "splash/php-bundle":                            "1.0.0"
     },
     
     "require-dev": {
