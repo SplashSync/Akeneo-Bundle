@@ -39,6 +39,7 @@
     },
     
     "require-dev": {
+        "akeneo/pim-community-dev":                     "^4.0",
         "symfony/debug-bundle":                         "^4.4",
         "symfony/web-profiler-bundle":                  "^4.4",
         "symfony/web-server-bundle":                    "^4.4",
