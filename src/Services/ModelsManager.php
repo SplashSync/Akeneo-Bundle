@@ -103,7 +103,7 @@ class ModelsManager
      * Identify New Product Parent
      *
      * @param array|ArrayObject $inputs
-     * @param Family           $familyVariant
+     * @param Family            $familyVariant
      * @param null|Model        $model
      *
      * @return null|Model
