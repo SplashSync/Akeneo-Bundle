@@ -20,7 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as Produ
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository as Variants;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Familly;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Family;
 use ArrayObject;
 use Splash\Core\SplashCore as Splash;
 
@@ -168,9 +168,9 @@ class VariantsManager
      *
      * @param string $familyCode
      *
-     * @return null|Familly
+     * @return null|Family
      */
-    public function findFamilyVariantByCode(string $familyCode): ?Familly
+    public function findFamilyVariantByCode(string $familyCode): ?Family
     {
         return $this->repository->findOneByIdentifier($familyCode);
     }
@@ -180,9 +180,9 @@ class VariantsManager
      *
      * @param array|ArrayObject $attributes
      *
-     * @return null|Familly
+     * @return null|Family
      */
-    public function findFamilyVariantByAttributes(iterable $attributes): ?Familly
+    public function findFamilyVariantByAttributes(iterable $attributes): ?Family
     {
         //====================================================================//
         // Walk on Each Product Attribute to Collect Codes
@@ -193,7 +193,7 @@ class VariantsManager
 
         //====================================================================//
         // Walk on Each Available Family Variants
-        /** @var Familly $familyVariant */
+        /** @var Family $familyVariant */
         foreach ($this->repository->findAll() as $familyVariant) {
             $familyAxes = $this->getFamilyVariationAttributes($familyVariant);
             //====================================================================//
@@ -216,7 +216,7 @@ class VariantsManager
         $choices = array();
         //====================================================================//
         // Walk on Each Available Family Variants
-        /** @var Familly $familyVariant */
+        /** @var Family $familyVariant */
         foreach ($this->repository->findAll() as $familyVariant) {
             $familyVariant->setLocale($this->locales->getDefault());
             /** @var FamilyTranslationInterface */
@@ -228,7 +228,7 @@ class VariantsManager
                 $code = $familyVariant->getCode();
                 $locale = $this->locales->getDefault();
                 $choices[$code] = $code;
-                Splash::log()->war("Familly ".$code." has no Translation in ".$locale);
+                Splash::log()->war("Family ".$code." has no Translation in ".$locale);
             }
         }
 
@@ -252,7 +252,7 @@ class VariantsManager
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
-            // Decode Multilang Field Name
+            // Decode Multi-lang Field Name
             $baseFieldName = $this->locales->decode($fieldName, $isoLang);
             if (null == $baseFieldName) {
                 continue;
@@ -275,15 +275,15 @@ class VariantsManager
     public function getVariantAttributes(Product $product): array
     {
         //====================================================================//
-        // Load Product Familly Variant
-        $familly = $product->getFamilyVariant();
-        if (!$familly) {
+        // Load Product Family Variant
+        $family = $product->getFamilyVariant();
+        if (!$family) {
             return array();
         }
 
         //====================================================================//
         // Fetch Familly Variants Attributes
-        return $this->getFamilyVariationAttributes($familly);
+        return $this->getFamilyVariationAttributes($family);
     }
 
     /**
@@ -313,27 +313,29 @@ class VariantsManager
     /**
      * Get List of All Attributes with Simple Caching
      *
+     * @param Family $family
+     *
      * @return array
      */
-    private function getFamilyVariationAttributes(Familly $familly): array
+    private function getFamilyVariationAttributes(Family $family): array
     {
-        $famillyId = $familly->getId();
+        $familyId = $family->getId();
 
-        if (!isset(static::$varAttrs[$famillyId])) {
+        if (!isset(static::$varAttrs[$familyId])) {
             //====================================================================//
             // Init Result
             $attrSet = array();
             //====================================================================//
             // Walk on All Variation Attributes Sets
             /** @var Attribute $attribute */
-            foreach ($familly->getAxes() as $attribute) {
+            foreach ($family->getAxes() as $attribute) {
                 $attrSet[$attribute->getId()] = $attribute->getCode();
             }
             //====================================================================//
-            // Init Familly Variants Attributes Cache
-            static::$varAttrs[$famillyId] = $attrSet;
+            // Init Family Variants Attributes Cache
+            static::$varAttrs[$familyId] = $attrSet;
         }
 
-        return static::$varAttrs[$famillyId];
+        return static::$varAttrs[$familyId];
     }
 }

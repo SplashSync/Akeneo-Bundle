@@ -115,8 +115,8 @@ class ModelsManager
         //====================================================================//
         // If No Root Product Model Given
         if (!$model) {
+            /** @var Model $model */
             $model = $this->builder->create();
-            $model->setLevel(0);
             $model->setFamilyVariant($familyVariant);
             $model->setCode($coreSku."-model");
             //====================================================================//
