@@ -32,6 +32,9 @@ trait LabelTrait
     public function buildMultilangFields()
     {
         //====================================================================//
+        // Ensure Service Configuration
+        $this->ensureSetup();
+        //====================================================================//
         // Setup Field Factory
         $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
 

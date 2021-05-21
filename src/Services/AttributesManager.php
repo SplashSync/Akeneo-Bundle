@@ -190,6 +190,9 @@ class AttributesManager
     public function build(FieldsFactory $factory): void
     {
         //====================================================================//
+        // Setup Field Factory
+        $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
+        //====================================================================//
         // Walk on All Available Attributes
         /** @var Attribute $attribute */
         foreach ($this->getAll() as $attribute) {
@@ -644,10 +647,16 @@ class AttributesManager
      * @param Attribute     $attribute
      * @param string        $isoLang
      *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function buildVirtualField(FieldsFactory $factory, Attribute $attribute, string $isoLang): void
     {
+        //====================================================================//
+        // Virtual Fields => Only for Default Language
+        if ($isoLang != $this->locales->getDefault()) {
+            return;
+        }
         //====================================================================//
         // Boolean Fields => Add Multilang Varchar Values
         if (TypesConverter::isBool($attribute->getType())) {
