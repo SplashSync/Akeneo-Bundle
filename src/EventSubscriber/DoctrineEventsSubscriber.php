@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\ORM\Events;
+use Exception;
 use Splash\Bundle\Helpers\Doctrine\AbstractEventSubscriber;
 use Splash\Bundle\Services\ConnectorsManager;
 
@@ -64,6 +65,8 @@ class DoctrineEventsSubscriber extends AbstractEventSubscriber
      * Service Constructor
      *
      * @param ConnectorsManager $manager
+     *
+     * @throws Exception
      */
     public function __construct(ConnectorsManager $manager)
     {
