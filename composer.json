@@ -85,5 +85,11 @@
                 "index_hosts": "PIM_INDEX_HOSTS"
             }
         }        
+    },
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp": true,
+            "symfony/flex": true
+        }
     }
 }

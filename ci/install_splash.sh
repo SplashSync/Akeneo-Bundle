@@ -31,7 +31,7 @@ echo "Register Symfony Bundles"
 cp   ../ci/bundles.test.php       config/bundles.test.php
 
 echo "Composer Require"
-composer require splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest
+composer require splash/akeneo-bundle:dev-master --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
 cp  -Rf ../src/       vendor/splash/akeneo-bundle/src/
 ls  -l vendor/splash/akeneo-bundle/src/
 

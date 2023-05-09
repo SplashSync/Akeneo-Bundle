@@ -48,7 +48,6 @@ stages:
   before_script:
       ################################################################################
       # Run Composer
-      - composer self-update --1
       - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
   ################################################################################
   # Run Test Script
