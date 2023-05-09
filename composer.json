@@ -34,7 +34,7 @@
     
     "require": {
         "php":                                          "^7.2",
-        "splash/php-bundle":                            "@stable",
+        "splash/php-bundle":                            "^1.4.0",
         "symfony/expression-language":                  "@stable"
     },
     
