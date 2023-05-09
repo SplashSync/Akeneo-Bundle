@@ -31,15 +31,14 @@
         ]
     },    
     
-    
     "require": {
         "php":                                          "^7.2",
+        "akeneo/pim-community-dev":                     "^4.0|^5.0",
         "splash/php-bundle":                            "^1.4.0",
         "symfony/expression-language":                  "@stable"
     },
     
     "require-dev": {
-        "akeneo/pim-community-dev":                     "^4.0|^5.0",
         "symfony/debug-bundle":                         "^4.4",
         "symfony/web-profiler-bundle":                  "^4.4",
         "symfony/web-server-bundle":                    "^4.4",
