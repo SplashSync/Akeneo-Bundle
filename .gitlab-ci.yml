@@ -110,15 +110,15 @@ quality:v5-php-7.4:
       - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/main-report.xml
 
 tests:v4-php-7.3:
-    image: akeneo/pim-php-dev:4.0
+    image:  akeneo/pim-php-dev:4.0
     variables:
         AKENEO_VERSION:   4.0.97
     <<: *core_tests
 
 tests:v5-php-7.4:
-  image: akeneo/pim-php-dev:5.0
+  image:    akeneo/pim-php-dev:5.0
   variables:
-    AKENEO_VERSION:   5.0.18
+        AKENEO_VERSION:   5.0.18
   <<: *core_tests
 
 #################################################################

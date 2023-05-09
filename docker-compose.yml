@@ -34,7 +34,7 @@ version: '3.4'
 
 services:
     ################################################################################
-    # Pḧp Fpm Server Container   
+    # Php Fpm Server Container
     fpm:
         image: 'akeneo/pim-php-dev:4.0'
         container_name: akeneo_fpm
