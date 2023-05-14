@@ -25,7 +25,7 @@ parameters:
     stan-config:    "ci/phpstan.neon"
 
     # For Building Splash Documentation
-    doc-enable:     false
+    doc-enable:     true
     doc-target:     '/public'
     doc-contents:   ["php-composer", "php-docker", "splash-faq"]
 

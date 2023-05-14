@@ -144,6 +144,18 @@ class TypesConverter
     }
 
     /**
+     * Check if Attribute type Code is Primary Key Type
+     *
+     * @param string $attrType Akeneo Attribute Type
+     *
+     * @return bool
+     */
+    public static function isPrimary(string $attrType): bool
+    {
+        return self::isKnown($attrType) && (AttributeTypes::IDENTIFIER == $attrType);
+    }
+
+    /**
      * Check if Attribute type Code is Select Type
      *
      * @param string $attrType Akeneo Attribute Type

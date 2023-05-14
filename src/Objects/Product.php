@@ -25,13 +25,14 @@ use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Client\Splash;
 use Splash\Models\FileProviderInterface;
+use Splash\Models\Objects\PrimaryKeysAwareInterface;
 
 /**
  * Splash Product Object
  *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
-class Product extends AbstractStandaloneObject implements FileProviderInterface
+class Product extends AbstractStandaloneObject implements FileProviderInterface, PrimaryKeysAwareInterface
 {
     // Splash Php Core Traits
     use \Splash\Models\Objects\IntelParserTrait;
@@ -45,6 +46,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
     // Akeneo Products Traits
     use Product\CrudTrait;
     use Product\CoreTrait;
+    use Product\PrimaryTrait;
     use Product\LabelTrait;
     use Product\VariantsTrait;
     use Product\ImagesTrait;

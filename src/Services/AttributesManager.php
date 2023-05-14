@@ -28,6 +28,7 @@ use Exception;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Akeneo\Objects\Product\Attributes as SplashAttributes;
 use Splash\Akeneo\Services\FilesManager as Files;
+use Splash\Client\Splash;
 use Splash\Components\FieldsFactory;
 use Splash\Models\Objects\FieldsFactoryTrait;
 
@@ -602,6 +603,11 @@ class AttributesManager
             $factory->isRequired();
         }
         //====================================================================//
+        // is Field Primary ?
+        if (TypesConverter::isPrimary($attrType)) {
+            $factory->isPrimary();
+        }
+        //====================================================================//
         // Is Field Read Only ?
         if (TypesConverter::isReadOnly($attrType)) {
             $factory->isReadOnly();
@@ -623,7 +629,7 @@ class AttributesManager
             $factory->isNotTested();
         }
         //====================================================================//
-        // is Field Multilang
+        // is Field Multi-Lang
         if ($attribute->isLocalizable()) {
             $factory->setMultilang($isoLang);
         }
