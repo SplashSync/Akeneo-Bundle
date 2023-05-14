@@ -129,13 +129,13 @@ quality:v7-php-8.1:
       - cd /var/www/html
       ################################################################################
       # Check if Akeneo Core is Installed
-      - bash docker/scripts/install-akeneo-core.sh
+      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-core.sh
       ################################################################################
       # Check if Akeneo Fixtures are Installed
-      - bash docker/scripts/install-akeneo-fixtures.sh
+      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-fixtures.sh
       ################################################################################
       # Install DEV Module
-      - bash docker/scripts/install-dev-module.sh
+      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-dev-module.sh
     ################################################################################
     # Run Test Script
     script:
