@@ -29,15 +29,16 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - quality
   - docker
-#  - tests
+  - quality
+  - functional
 #  - deploy
 
 ################################################################
 # Build Docker Images for Testing
 ################################################################
 docker:
+    when:         manual
     stage:        docker
     image:        docker:stable
     tags:         [ Dedicated-Docker ]
@@ -65,8 +66,8 @@ docker:
 ################################################################
 
 .quality:    &quality
+    when:       manual
     stage:      quality
-#    when: manual
     tags:
         - Dedicated
     services:
@@ -107,44 +108,46 @@ quality:v7-php-8.1:
 # Functional Tests
 ################################################################
 
-#.core_tests:    &core_tests
-#    stage:      tests
-#    tags:
-#        - Dedicated
-#    services:
-#        - name: mysql:8.0
-#          command: ['--default-authentication-plugin=mysql_native_password']
-#        - name: elasticsearch:7.5.1
-#          alias: elasticsearch
-#          command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
-#    artifacts:
-#        when: always
-#        reports:
-#            junit: "$CI_PROJECT_DIR/*-report.xml"
-#
-#    ################################################################################
-#    # Install & Configure Environnement
-#    before_script:
-#        ################################################################################
-#        # Install Akeneo Community Dev Project
-#        - sh ci/install_akeneo.sh
-#        ################################################################################
-#        # Install Splash Bundle for Akeneo
-#        - sh ci/install_splash.sh
-#    ################################################################################
-#    # Run Test Script
-#    script:
-#      # Execute PhpUnit Tests
-#      - cd akeneo
-#      - php vendor/bin/phpunit --version
-#      - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/main-report.xml
-#
-#tests:v4-php-7.3:
-#    image:  akeneo/pim-php-dev:4.0
-#    variables:
-#        AKENEO_VERSION:   4.0.97
-#    <<: *core_tests
-#
+.functional:    &functional
+#    when:       manual
+    stage:      functional
+    tags:
+        - Dedicated
+    services:
+        - name: mysql:8.0
+          command: ['--default-authentication-plugin=mysql_native_password']
+        - name: elasticsearch:7.5.1
+          alias: elasticsearch
+          command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
+    artifacts:
+        when: always
+        reports:
+            junit: "$CI_PROJECT_DIR/*-report.xml"
+    ################################################################################
+    # Install & Configure Environnement
+    before_script:
+      ################################################################################
+      # Check if Akeneo Core is Installed
+      - bash docker/scripts/install-akeneo-core.sh
+      ################################################################################
+      # Check if Akeneo Fixtures are Installed
+      - bash docker/scripts/install-akeneo-fixtures.sh
+      ################################################################################
+      # Install DEV Module
+      - bash docker/scripts/install-dev-module.sh
+    ################################################################################
+    # Run Test Script
+    script:
+      # Execute PhpUnit Tests
+      - php vendor/bin/phpunit --version
+      - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/main-report.xml
+
+tests:v7-php-8.1:
+    image:        registry.gitlab.com/splashsync/akeneo-bundle:7.0
+    variables:
+        AKENEO_VERSION:   ^7.0
+    <<: *functional
+
 #tests:v5-php-7.4:
 #  image:    akeneo/pim-php-dev:5.0
 #  variables:
