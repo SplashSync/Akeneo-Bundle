@@ -75,6 +75,9 @@ docker:
     # Install & Configure Environnement
     before_script:
         ################################################################################
+        # Install Libs
+        - bash docker/scripts/install-imagick.sh
+        ################################################################################
         # Run Composer
         - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-scripts --no-plugins
     ################################################################################
