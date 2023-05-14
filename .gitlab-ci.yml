@@ -37,7 +37,7 @@ stages:
 ################################################################
 # Build Docker Images for Testing
 ################################################################
-.docker:        &docker
+docker:
     stage:        docker
     image:        docker:stable
     tags:         [ Dedicated-Docker ]
