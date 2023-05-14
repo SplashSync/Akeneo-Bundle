@@ -29,8 +29,8 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - docker
   - quality
+  - docker
 #  - tests
 #  - deploy
 
@@ -65,27 +65,27 @@ docker:
 ################################################################
 
 .quality:    &quality
-  stage:      quality
-  when: manual
-  tags:
-      - Dedicated
-  services:
-      - mysql:8.0
-  ################################################################################
-  # Install & Configure Environnement
-  before_script:
-      ################################################################################
-      # Run Composer
-      - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-scripts --no-plugins
-  ################################################################################
-  # Run Test Script
-  script:
-      # Execute Grumphp Testsuite
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-  ################################################################################
-  # Run After Script
-  after_script:
-    - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
+    stage:      quality
+#    when: manual
+    tags:
+        - Dedicated
+    services:
+        - mysql:8.0
+    ################################################################################
+    # Install & Configure Environnement
+    before_script:
+        ################################################################################
+        # Run Composer
+        - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-scripts --no-plugins
+    ################################################################################
+    # Run Test Script
+    script:
+        # Execute Grumphp Testsuite
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+    ################################################################################
+    # Run After Script
+    after_script:
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
 quality:v7-php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
