@@ -28,11 +28,11 @@
     "require": {
         "php":                                          "^7.4|^8.0",
         "splash/php-bundle":                            "^2.0.0",
+        "akeneo/pim-community-dev":                     "^6.0|^7.0",
         "symfony/expression-language":                  "@stable"
     },
     "require-dev": {
         "splash/console":                               "dev-master",
-        "akeneo/pim-community-dev":                     "^6.0|^7.0",
         "badpixxel/php-sdk":                            "^2.0"
     },
     "extra": {

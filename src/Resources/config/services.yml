@@ -102,13 +102,4 @@ services:
         arguments:  
             -   "@pim_catalog.repository.locale"
             -   "@translator"
-
-    ########################################################################
-    # Akeneo Connector Security Manager
-    splash.akeneo.security:
-        class:      Splash\Akeneo\Services\SecurityService
-        autowire:   true
-        arguments:
-            -   "@pim_user.provider.user"
-
             
