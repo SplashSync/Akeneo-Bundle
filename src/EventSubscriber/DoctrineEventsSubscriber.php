@@ -33,7 +33,7 @@ class DoctrineEventsSubscriber extends AbstractEventSubscriber
     /**
      * @inheritdoc
      */
-    protected static $subscribedEvents = array(
+    protected static array $subscribedEvents = array(
         Events::postPersist => "postPersist",
         Events::preRemove => "preRemove",
         InstallerEvents::PRE_LOAD_FIXTURES => "preLoadFixtures",
@@ -42,7 +42,7 @@ class DoctrineEventsSubscriber extends AbstractEventSubscriber
     /**
      * {@inheritdoc}
      */
-    protected static $classMap = array(
+    protected static array $classMap = array(
         Product::class => "Product",
         ProductModel::class => "Product",
     );
@@ -50,12 +50,12 @@ class DoctrineEventsSubscriber extends AbstractEventSubscriber
     /**
      * {@inheritdoc}
      */
-    protected static $username = "Akeneo";
+    protected static string $username = "Akeneo";
 
     /**
      * {@inheritdoc}
      */
-    protected static $commentPrefix = "Akeneo PIM";
+    protected static string $commentPrefix = "Akeneo PIM";
 
     //====================================================================//
     //  CONSTRUCTOR

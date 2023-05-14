@@ -17,10 +17,12 @@ namespace Splash\Akeneo\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Exception;
 use Splash\Bundle\Models\AbstractConnector;
-use Symfony\Component\EventDispatcher\Event;
+use Splash\Client\Splash;
+use Splash\Components\CommitsManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -30,14 +32,17 @@ trait ObjectIdentifierTrait
 {
     /**
      * @param GenericEvent|LifecycleEventArgs $event
-     * @param AbstractConnector               $connector
+     * @param AbstractConnector $connector
      *
      * @return array
+     *
+     * @throws Exception
      */
     protected function getObjectIdentifiers($event, AbstractConnector $connector): array
     {
         //====================================================================//
         // Get Impacted Object
+        /** @var null|Product|ProductModel $product */
         $product = self::getProduct($event);
         if (is_null($product)) {
             return array();
@@ -48,15 +53,18 @@ trait ObjectIdentifierTrait
         if (!is_array($categoryCodes) || empty($categoryCodes)) {
             return ($product instanceof ProductModel)
                 ? self::getProductModelIdentifiers($product)
-                : parent::getObjectIdentifiers(new GenericEvent($product), $connector);
+                : array($product->getUuid()->toString())
+            ;
         }
         //====================================================================//
         // Walk on Product Categories
+        /** @var CategoryInterface $category */
         foreach ($product->getCategories() as $category) {
             if ($this->isInFilteredCategories($categoryCodes, $category)) {
                 return ($product instanceof ProductModel)
                     ? self::getProductModelIdentifiers($product)
-                    : parent::getObjectIdentifiers(new GenericEvent($product), $connector);
+                    : array($product->getUuid()->toString())
+                ;
             }
         }
 
@@ -74,15 +82,15 @@ trait ObjectIdentifierTrait
     {
         $productIds = array();
         //====================================================================//
-        // Safety Check
-        if (defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) {
+        // Safety Check => No Commits in Server Mode
+        if (Splash::isServerMode()) {
             return $productIds;
         }
         //====================================================================//
         // Walk on All Direct Child Products
         /** @var Product $product */
         foreach ($productModel->getProducts() as $product) {
-            $productIds[$product->getId()] = $product->getId();
+            $productIds[$product->getUuid()->toString()] = $product->getUuid()->toString();
         }
         //====================================================================//
         // Walk on All Child ProductModels
@@ -98,7 +106,7 @@ trait ObjectIdentifierTrait
     }
 
     /**
-     * @param Event|GenericEvent|LifecycleEventArgs $event
+     * @param GenericEvent|LifecycleEventArgs $event
      *
      * @return null|Product|ProductModel
      */

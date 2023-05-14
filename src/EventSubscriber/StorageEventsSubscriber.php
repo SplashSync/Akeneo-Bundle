@@ -33,7 +33,7 @@ class StorageEventsSubscriber extends AbstractEventSubscriber implements EventSu
     /**
      * @inheritdoc
      */
-    protected static $classMap = array(
+    protected static array $classMap = array(
         Product::class => "Product",
         ProductModel::class => "Product",
     );
@@ -41,7 +41,7 @@ class StorageEventsSubscriber extends AbstractEventSubscriber implements EventSu
     /**
      * @inheritdoc
      */
-    protected static $subscribedEvents = array(
+    protected static array $subscribedEvents = array(
         StorageEvents::POST_SAVE => array('onSave', 1000),
         StorageEvents::PRE_REMOVE => array('onRemove', 1000),
     );
@@ -51,14 +51,14 @@ class StorageEventsSubscriber extends AbstractEventSubscriber implements EventSu
      *
      * @var string
      */
-    protected static $username = "Akeneo";
+    protected static string $username = "Akeneo";
 
     /**
      * Username used for Commits
      *
      * @var string
      */
-    protected static $commentPrefix = "Akeneo PIM";
+    protected static string $commentPrefix = "Akeneo PIM";
 
     //====================================================================//
     //  Subscriber
