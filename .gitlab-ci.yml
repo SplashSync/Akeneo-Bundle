@@ -53,7 +53,8 @@ docker:
       - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
       ################################################################
       # Build & Upload Splash Docker Image
-      - docker/update.sh
+      - docker build -t registry.gitlab.com/splashsync/akeneo-bundle:7.0 docker -f docker/akeneo-v7-php-8.1.Dockerfile
+      - docker push registry.gitlab.com/splashsync/akeneo-bundle:7.0
     only:
       changes:
         - docker/**/*
