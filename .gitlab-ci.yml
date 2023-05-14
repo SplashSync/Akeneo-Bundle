@@ -76,7 +76,7 @@ docker:
   before_script:
       ################################################################################
       # Run Composer
-      - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
+      - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-scripts --no-plugins
   ################################################################################
   # Run Test Script
   script:
@@ -87,17 +87,17 @@ docker:
   after_script:
     - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
-quality:v4-php-7.3:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
+quality:v7-php-8.1:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     variables:
-        AKENEO_VERSION:   4.0.97
+        AKENEO_VERSION:   ^7.0
     <<: *quality
 
-quality:v5-php-7.4:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    variables:
-        AKENEO_VERSION:   5.0.18
-    <<: *quality
+#quality:v5-php-7.4:
+#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+#    variables:
+#        AKENEO_VERSION:   5.0.18
+#    <<: *quality
 
 
 ################################################################
