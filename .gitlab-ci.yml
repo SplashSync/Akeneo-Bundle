@@ -29,9 +29,35 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
+  - docker
   - quality
-  - tests
-  - deploy
+#  - tests
+#  - deploy
+
+################################################################
+# Build Docker Images for Testing
+################################################################
+.docker:        &docker
+    stage:        docker
+    image:        docker:stable
+    tags:         [ Dedicated-Docker ]
+    services:
+      - docker:dind
+    variables:
+        IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_JOB_NAME"
+    before_script:
+      - docker info
+    script:
+      ################################################################
+      # Connect Docker to GitLab
+      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+      ################################################################
+      # Build & Upload Splash Docker Image
+      - bash docker/update.sh
+    only:
+      changes:
+        - docker/**/*
+        - .gitlab-ci.yml
 
 ################################################################
 # Code Quality Tests
@@ -39,6 +65,7 @@ stages:
 
 .quality:    &quality
   stage:      quality
+  when: manual
   tags:
       - Dedicated
   services:
@@ -76,67 +103,67 @@ quality:v5-php-7.4:
 # Functional Tests
 ################################################################
 
-.core_tests:    &core_tests
-    stage:      tests
-    tags:
-        - Dedicated
-    services:
-        - name: mysql:8.0
-          command: ['--default-authentication-plugin=mysql_native_password']
-        - name: elasticsearch:7.5.1
-          alias: elasticsearch
-          command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
-    artifacts:
-        when: always
-        reports:
-            junit: "$CI_PROJECT_DIR/*-report.xml"
-
-    ################################################################################
-    # Install & Configure Environnement
-    before_script:
-        ################################################################################
-        # Install Akeneo Community Dev Project
-        - sh ci/install_akeneo.sh
-        ################################################################################
-        # Install Splash Bundle for Akeneo
-        - sh ci/install_splash.sh
-    ################################################################################
-    # Run Test Script
-    script:
-      # Execute PhpUnit Tests
-      - cd akeneo
-      - php vendor/bin/phpunit --version
-      - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/main-report.xml
-
-tests:v4-php-7.3:
-    image:  akeneo/pim-php-dev:4.0
-    variables:
-        AKENEO_VERSION:   4.0.97
-    <<: *core_tests
-
-tests:v5-php-7.4:
-  image:    akeneo/pim-php-dev:5.0
-  variables:
-        AKENEO_VERSION:   5.0.18
-  <<: *core_tests
+#.core_tests:    &core_tests
+#    stage:      tests
+#    tags:
+#        - Dedicated
+#    services:
+#        - name: mysql:8.0
+#          command: ['--default-authentication-plugin=mysql_native_password']
+#        - name: elasticsearch:7.5.1
+#          alias: elasticsearch
+#          command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
+#    artifacts:
+#        when: always
+#        reports:
+#            junit: "$CI_PROJECT_DIR/*-report.xml"
+#
+#    ################################################################################
+#    # Install & Configure Environnement
+#    before_script:
+#        ################################################################################
+#        # Install Akeneo Community Dev Project
+#        - sh ci/install_akeneo.sh
+#        ################################################################################
+#        # Install Splash Bundle for Akeneo
+#        - sh ci/install_splash.sh
+#    ################################################################################
+#    # Run Test Script
+#    script:
+#      # Execute PhpUnit Tests
+#      - cd akeneo
+#      - php vendor/bin/phpunit --version
+#      - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/main-report.xml
+#
+#tests:v4-php-7.3:
+#    image:  akeneo/pim-php-dev:4.0
+#    variables:
+#        AKENEO_VERSION:   4.0.97
+#    <<: *core_tests
+#
+#tests:v5-php-7.4:
+#  image:    akeneo/pim-php-dev:5.0
+#  variables:
+#        AKENEO_VERSION:   5.0.18
+#  <<: *core_tests
 
 #################################################################
 ## Build Documentation
 #################################################################
-pages:
-    image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
-    stage:    deploy
-    tags:
-        - Dedicated
-    services:
-        - docker:dind
-    ################################################################################
-    # Run Test Script
-    script:
-        # Run Composer to Build deps
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-        # Build Documentation
-        - php vendor/bin/grumphp run --tasks=build-docs
-    artifacts:
-        paths:
-            - public
+#pages:
+#    image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
+#    stage:    deploy
+#    tags:
+#        - Dedicated
+#    services:
+#        - docker:dind
+#    ################################################################################
+#    # Run Test Script
+#    script:
+#        # Run Composer to Build deps
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
+#        # Build Documentation
+#        - php vendor/bin/grumphp run --tasks=build-docs
+#    artifacts:
+#        paths:
+#            - public

@@ -20,7 +20,6 @@ echo -e "\e[45m *********************************** \e[49m"
 echo -e "\e[45m ** Build Akeneo V7 Docker Image     \e[49m"
 echo -e "\e[45m *********************************** \e[49m"
 
-echo "[PHP 7.2] Build & Upload Docker Image"
+echo "Build & Upload Docker Image"
 docker build -t registry.gitlab.com/splashsync/akeneo-bundle:7.0 docker -f docker/akeneo-v7-php-8.1.Dockerfile
 docker push registry.gitlab.com/splashsync/akeneo-bundle:7.0
-
