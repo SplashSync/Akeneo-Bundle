@@ -53,7 +53,7 @@ docker:
       - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
       ################################################################
       # Build & Upload Splash Docker Image
-      - bash docker/update.sh
+      - docker/update.sh
     only:
       changes:
         - docker/**/*
