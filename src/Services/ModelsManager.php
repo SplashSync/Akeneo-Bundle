@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,15 +15,12 @@
 
 namespace   Splash\Akeneo\Services;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository as Repository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as Model;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Family;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactory as Builder;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface as Saver;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
 use ArrayObject;
-use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Core\SplashCore as Splash;
@@ -64,11 +61,11 @@ class ModelsManager
     /**
      * Service  Constructor.
      *
-     * @param Builder    $builder
-     * @param Validator  $validator
-     * @param Saver      $saver
-     * @param Remover    $remover
-     * @param Variants   $variants
+     * @param Builder   $builder
+     * @param Validator $validator
+     * @param Saver     $saver
+     * @param Remover   $remover
+     * @param Variants  $variants
      */
     public function __construct(
         Builder $builder,

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,9 +26,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Exception;
 use Splash\Akeneo\Models\TypesConverter;
+use Splash\Akeneo\Objects\Product\Attributes as SplashAttributes;
 use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Components\FieldsFactory;
-use Splash\Akeneo\Objects\Product\Attributes as SplashAttributes;
 use Splash\Models\Objects\FieldsFactoryTrait;
 
 /**
@@ -260,14 +260,15 @@ class AttributesManager
     /**
      * Get Field Data from Local Object
      *
-     * @param Product $product
+     * @param Product   $product
      * @param Attribute $attr
-     * @param string $iso
+     * @param string    $iso
+     *
+     * @throws Exception
      *
      * @return null|array|bool|float|int|string
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @throws Exception
      */
     public function getData(Product $product, Attribute $attr, string $iso)
     {
@@ -316,7 +317,7 @@ class AttributesManager
      * @param string    $iso
      * @param bool      $attributeMode
      *
-     * @return string|null
+     * @return null|string
      */
     public function getVirtualData(Product $product, Attribute $attr, string $iso, bool $attributeMode): ?string
     {
@@ -349,11 +350,12 @@ class AttributesManager
      * Get Field Data from Local Object
      *
      * @param Product $product
-     * @param string $fieldName
-     * @param mixed $fieldData
+     * @param string  $fieldName
+     * @param mixed   $fieldData
+     *
+     * @throws Exception
      *
      * @return bool
-     * @throws Exception
      */
     public function set(Product $product, string $fieldName, $fieldData): bool
     {
@@ -444,8 +446,9 @@ class AttributesManager
      *
      * @param string $attrCode
      *
-     * @return Attribute
      * @throws Exception
+     *
+     * @return Attribute
      */
     public function find(string $attrCode): Attribute
     {
@@ -479,15 +482,16 @@ class AttributesManager
     /**
      * Update Attribute Data with Field Data
      *
-     * @param Product $product
+     * @param Product   $product
      * @param Attribute $attr
-     * @param string $iso
-     * @param mixed $data
+     * @param string    $iso
+     * @param mixed     $data
+     *
+     * @throws Exception
      *
      * @return bool
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @throws Exception
      */
     private function setData(Product $product, Attribute $attr, string $iso, $data): bool
     {

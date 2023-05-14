@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -69,7 +69,7 @@ class LocalesManager
     /**
      * Get Default Local Language ISO Code
      *
-     * @param string|null $locale
+     * @param null|string $locale
      *
      * @return self
      */
@@ -147,10 +147,10 @@ class LocalesManager
     /**
      * Translates the given message.
      *
-     * @param string $id         The message id (may also be an object that can be cast to string)
+     * @param string      $id         The message id (may also be an object that can be cast to string)
      * @param array       $parameters An array of parameters for the message
-     * @param string|null $domain     The domain for the message or null to use the default
-     * @param string|null $locale     The locale or null to use the default
+     * @param null|string $domain     The domain for the message or null to use the default
+     * @param null|string $locale     The locale or null to use the default
      *
      * @return string The translated string
      */

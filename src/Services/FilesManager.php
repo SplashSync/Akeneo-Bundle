@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,11 +16,9 @@
 namespace   Splash\Akeneo\Services;
 
 use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
-use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use ArrayObject;
 use Exception;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\MountManager;
@@ -147,7 +145,7 @@ class FilesManager implements FileProviderInterface
             return null;
         }
 
-Splash::log()->dump($rawFile["md5"]);
+        Splash::log()->dump($rawFile["md5"]);
 
         //====================================================================//
         // Write File to Temp Directory
@@ -229,8 +227,8 @@ Splash::log()->dump($rawFile["md5"]);
     /**
      * Check if Files are Similar
      *
-     * @param FileInfo          $current
-     * @param array $splashFile
+     * @param FileInfo $current
+     * @param array    $splashFile
      *
      * @return bool
      */

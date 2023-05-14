@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -54,7 +54,7 @@ class VariantsManager
      * Service Constructor
      *
      * @param LocalesManager $locales
-     * @param Variants $repository
+     * @param Variants       $repository
      */
     public function __construct(LocalesManager $locales, Variants $repository)
     {
@@ -95,7 +95,7 @@ class VariantsManager
      * Recursive Reading of Product Parent ID
      *
      * @param Product $product  Current Product Entity
-     * @param bool $entities Get Entities or Info Array
+     * @param bool    $entities Get Entities or Info Array
      *
      * @return array
      */
@@ -118,7 +118,7 @@ class VariantsManager
      * Recursive Reading of Product Model Child Products
      *
      * @param ProductModel $model    Current Product Model Entity
-     * @param bool $entities Get Entities or Info Array
+     * @param bool         $entities Get Entities or Info Array
      *
      * @return array[]|Product[]
      */
@@ -250,7 +250,7 @@ class VariantsManager
      * Check if Attribute is a Variant Attributes
      *
      * @param Product $product
-     * @param string $fieldName
+     * @param string  $fieldName
      *
      * @return bool
      */

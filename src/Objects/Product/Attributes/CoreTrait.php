@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -43,7 +43,7 @@ trait CoreTrait
      * @param string               $isoLang
      * @param string               $channel
      *
-     * @return null|scalar|array|DateTime|AttributeOption|AbstractMetric|FileInfo
+     * @return null|AbstractMetric|array|AttributeOption|DateTime|FileInfo|scalar
      */
     protected function getCoreValue($product, Attribute $attribute, string $isoLang, string $channel)
     {
@@ -107,8 +107,13 @@ trait CoreTrait
      *
      * @return bool
      */
-    protected function setCoreValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data): bool
-    {
+    protected function setCoreValue(
+        Product $product,
+        Attribute $attribute,
+        string $isoLang,
+        string $channel,
+        $data
+    ): bool {
         //====================================================================//
         // Get Attribute Code
         $code = $attribute->getCode();

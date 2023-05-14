@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -98,15 +98,15 @@ trait MetricTrait
     /**
      * DOUBLE - Write Attribute Data with Local & Scope Detection
      *
-     * @param Product $product Akeneo Product Object
+     * @param Product   $product   Akeneo Product Object
      * @param Attribute $attribute Akeneo Attribute Object
-     * @param string $isoLang
-     * @param string $channel
-     * @param mixed $data
-     *
-     * @return bool
+     * @param string    $isoLang
+     * @param string    $channel
+     * @param mixed     $data
      *
      * @throws Exception
+     *
+     * @return bool
      */
     protected function setMetricValue(
         Product $product,
@@ -160,9 +160,9 @@ trait MetricTrait
      *
      * @param Attribute $attribute Akeneo Attribute Object
      *
-     * @return string
-     *
      * @throws Exception
+     *
+     * @return string
      */
     private function getMetricUnit(Attribute $attribute): string
     {

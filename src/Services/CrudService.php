@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,10 +22,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel as Model;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Familly;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface as Saver;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
-use ArrayObject;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Splash\Akeneo\Services\ModelsManager as Models;
 use Splash\Akeneo\Services\VariantsManager as Variants;
@@ -305,8 +301,8 @@ class CrudService
     /**
      * Verify if Ok to Create a New Product
      *
-     * @param array $inputs
-     * @param Familly|null $family
+     * @param array        $inputs
+     * @param null|Familly $family
      *
      * @return bool
      */

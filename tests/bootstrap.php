@@ -25,14 +25,15 @@ ini_set("error_reporting", "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED");
 require_once 'vendor/splash/php-bundle/src/Tests/KernelTestCase.php';
 //====================================================================//
 // FIX - Disable Versioning on Delete
+$akeneoDevPath = "vendor/akeneo/pim-community-dev/";
 copy(
     'vendor/splash/akeneo-bundle/tests/fixes/AddRemoveVersionSubscriber.php',
-    'vendor/akeneo/pim-community-dev/src/Akeneo/Tool/Bundle/VersioningBundle/EventSubscriber/AddRemoveVersionSubscriber.php'
+    $akeneoDevPath.'src/Akeneo/Tool/Bundle/VersioningBundle/EventSubscriber/AddRemoveVersionSubscriber.php'
 );
 //====================================================================//
 // FIX - Disable Akeneo Test Services
-if (is_file("vendor/akeneo/pim-community-dev/config/services/test/test_services.yml")) {
-    unlink("vendor/akeneo/pim-community-dev/config/services/test/test_services.yml");
+if (is_file($akeneoDevPath."config/services/test/test_services.yml")) {
+    unlink($akeneoDevPath."config/services/test/test_services.yml");
 }
 //====================================================================//
 // Use Akeneo Bootstrap File

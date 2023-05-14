@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,14 +34,14 @@ trait PricesCollectionsTrait
     /**
      * PRICE - Read Attribute Data with Local & Scope Detection
      *
-     * @param Product $product Akeneo Product Object
+     * @param Product   $product   Akeneo Product Object
      * @param Attribute $attribute Akeneo Attribute Object
-     * @param string $isoLang
-     * @param string $channel
-     *
-     * @return null|array
+     * @param string    $isoLang
+     * @param string    $channel
      *
      * @throws Exception
+     *
+     * @return null|array
      */
     protected function getPriceValue(Product $product, Attribute $attribute, string $isoLang, string $channel): ?array
     {
@@ -74,18 +74,23 @@ trait PricesCollectionsTrait
     /**
      * PRICE - Write Attribute Data with Local & Scope Detection
      *
-     * @param Product $product Akeneo Product Object
+     * @param Product   $product   Akeneo Product Object
      * @param Attribute $attribute Akeneo Attribute Object
-     * @param string $isoLang
-     * @param string $channel
-     * @param mixed $data
-     *
-     * @return bool
+     * @param string    $isoLang
+     * @param string    $channel
+     * @param mixed     $data
      *
      * @throws Exception
+     *
+     * @return bool
      */
-    protected function setPriceValue(Product $product, Attribute $attribute, string $isoLang, string $channel, mixed $data): bool
-    {
+    protected function setPriceValue(
+        Product $product,
+        Attribute $attribute,
+        string $isoLang,
+        string $channel,
+        mixed $data
+    ): bool {
         //====================================================================//
         // Safety Check
         if (!is_array($data)) {

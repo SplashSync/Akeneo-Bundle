@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,14 +15,13 @@
 
 namespace Splash\Akeneo\EventSubscriber;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Exception;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Client\Splash;
-use Splash\Components\CommitsManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -32,11 +31,11 @@ trait ObjectIdentifierTrait
 {
     /**
      * @param GenericEvent|LifecycleEventArgs $event
-     * @param AbstractConnector $connector
-     *
-     * @return array
+     * @param AbstractConnector               $connector
      *
      * @throws Exception
+     *
+     * @return array
      */
     protected function getObjectIdentifiers($event, AbstractConnector $connector): array
     {

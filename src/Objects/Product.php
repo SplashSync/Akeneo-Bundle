@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,13 +17,10 @@ namespace Splash\Akeneo\Objects;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
-use Doctrine\ORM\EntityManagerInterface;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
 use Splash\Akeneo\Services\CrudService as Crud;
 use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Akeneo\Services\LocalesManager as Locales;
-use Splash\Akeneo\Services\SecurityService as Security;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Client\Splash;

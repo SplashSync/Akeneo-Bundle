@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -96,11 +96,12 @@ trait ImagesTrait
     /**
      * Read requested Field
      *
-     * @param string $key Input List Key
+     * @param string $key       Input List Key
      * @param string $fieldName Field Identifier / Name
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     protected function getImagesFields(string $key, string $fieldName): void
     {
@@ -199,8 +200,9 @@ trait ImagesTrait
     /**
      * Return Product Images Information Array from Akeneo Product Object
      *
-     * @return array
      * @throws Exception
+     *
+     * @return array
      */
     private function getImagesCache(): array
     {
@@ -226,8 +228,9 @@ trait ImagesTrait
      *
      * @param string $attrCode
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     private function getImageCache(string $attrCode): void
     {
