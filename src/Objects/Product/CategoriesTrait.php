@@ -15,8 +15,8 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
 use Splash\Models\Helpers\InlineHelper;
 
 /**
@@ -33,31 +33,31 @@ trait CategoriesTrait
      *
      * @return void
      */
-    public function buildCategorieFields()
+    public function buildCategoriesFields(): void
     {
         //====================================================================//
         // Setup Field Factory
         $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
-
         //====================================================================//
-        // Product Categorie Codes
+        // Product Categories Codes
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("categories")
-            ->Name("Categorie Codes")
-            ->MicroData("http://schema.org/Product", "publicCategory")
-            ->isReadOnly();
-
+            ->identifier("categories")
+            ->name("Categorie Codes")
+            ->microData("http://schema.org/Product", "publicCategory")
+            ->isReadOnly()
+        ;
         //====================================================================//
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
-            // Product Categorie Labels
+            // Product Categories Labels
             $this->fieldsFactory()->create(SPL_T_VARCHAR)
-                ->Identifier("categories_names")
-                ->Name("Categorie Label")
-                ->MicroData("http://schema.org/Product", "publicCategoryNames")
+                ->identifier("categories_names")
+                ->name("Categories Label")
+                ->microData("http://schema.org/Product", "publicCategoryNames")
                 ->setMultilang($isoLang)
-                ->isReadOnly();
+                ->isReadOnly()
+            ;
         }
     }
 
@@ -69,7 +69,7 @@ trait CategoriesTrait
      *
      * @return void
      */
-    public function getCategorieFields(string $key, string $fieldName)
+    public function getCategoriesFields(string $key, string $fieldName): void
     {
         switch ($fieldName) {
             //====================================================================//
@@ -78,9 +78,9 @@ trait CategoriesTrait
                 //====================================================================//
                 // Collect List of Categories Codes
                 $categoriesCodes = array();
-                /** @var Category $categorie */
-                foreach ($this->object->getCategories() as $categorie) {
-                    $categoriesCodes[] = $categorie->getCode();
+                /** @var Category $category */
+                foreach ($this->object->getCategories() as $category) {
+                    $categoriesCodes[] = $category->getCode();
                 }
                 $this->out[$fieldName] = InlineHelper::fromArray($categoriesCodes);
 
@@ -99,13 +99,13 @@ trait CategoriesTrait
      *
      * @return void
      */
-    public function getCategorieMultilangFields(string $key, string $fieldName)
+    public function getCategoriesMultiLangFields(string $key, string $fieldName): void
     {
         //====================================================================//
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
-            // Decode Multilang Field Name
+            // Decode Multi-Lang Field Name
             $baseFieldName = $this->locales->decode($fieldName, $isoLang);
             //====================================================================//
             // READ Fields
@@ -115,10 +115,10 @@ trait CategoriesTrait
             //====================================================================//
             // Collect List of Categories Labels
             $categoriesNames = array();
-            /** @var Category $categorie */
-            foreach ($this->object->getCategories() as $categorie) {
+            /** @var Category $category */
+            foreach ($this->object->getCategories() as $category) {
                 /** @var CategoryTranslation $translation */
-                $translation = $categorie->getTranslation($isoLang);
+                $translation = $category->getTranslation($isoLang);
                 $categoriesNames[] = $translation->getLabel();
             }
 

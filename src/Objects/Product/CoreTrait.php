@@ -15,6 +15,9 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
+use Splash\Client\Splash;
+
 /**
  * Product Core Fields Access
  */
@@ -34,49 +37,49 @@ trait CoreTrait
         //====================================================================//
         // Product SKU
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("identifier")
-            ->Name("Product SKU")
-            ->MicroData("http://schema.org/Product", "model")
+            ->identifier("identifier")
+            ->name("Product SKU")
+            ->microData("http://schema.org/Product", "model")
             ->isListed()
-            ->isReadOnly();
-
+            ->isReadOnly()
+        ;
         //====================================================================//
         // Active => Product Is Enables & Visible
         $this->fieldsFactory()->create(SPL_T_BOOL)
-            ->Identifier("enabled")
-            ->Name("Enabled")
-            ->MicroData("http://schema.org/Product", "offered")
-            ->isListed();
-
+            ->identifier("enabled")
+            ->name("Enabled")
+            ->microData("http://schema.org/Product", "offered")
+            ->isListed()
+        ;
         //====================================================================//
-        // Product Familly
+        // Product Family
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("family_code")
-            ->Name("Family Code")
-            ->Group("Metadata")
+            ->identifier("family_code")
+            ->name("Family Code")
+            ->group("Metadata")
             ->addChoices($this->variants->getFamilyChoices())
-            ->MicroData("http://schema.org/Product", "famillyCode")
-            ->isReadOnly();
-
+            ->microData("http://schema.org/Product", "famillyCode")
+            ->isReadOnly()
+        ;
         //====================================================================//
-        // Product Familly Name
+        // Product Family Name
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("family_label")
-            ->Name("Family Name")
-            ->Group("Metadata")
-            ->MicroData("http://schema.org/Product", "famillyName")
-            ->isReadOnly();
-
+            ->identifier("family_label")
+            ->name("Family Name")
+            ->group("Metadata")
+            ->microData("http://schema.org/Product", "famillyName")
+            ->isReadOnly()
+        ;
         //====================================================================//
-        // Product Familly Variant
+        // Product Family Variant
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("family_variant_code")
-            ->Name("Family Variant Code")
-            ->Group("Metadata")
+            ->identifier("family_variant_code")
+            ->name("Family Variant Code")
+            ->group("Metadata")
             ->addChoices($this->variants->getFamilyChoices())
-            ->MicroData("http://schema.org/Product", "famillyVariantCode")
-            ->isNotTested();
-
+            ->microData("http://schema.org/Product", "famillyVariantCode")
+            ->isNotTested()
+        ;
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
         if ($this->isDebugMode()) {
@@ -112,9 +115,12 @@ trait CoreTrait
                 break;
             case 'family_label':
                 $family = $this->object->getFamily();
-                $this->out[$fieldName] = $family
-                    ? $family->getTranslation($this->locales->getDefault())->getLabel()
-                    : null;
+                $this->out[$fieldName] = null;
+                if ($family) {
+                    /** @var FamilyTranslation $familyTranslation */
+                    $familyTranslation = $family->getTranslation($this->locales->getDefault());
+                    $this->out[$fieldName] = $familyTranslation->getLabel();
+                }
 
                 break;
             case 'family_variant_code':
@@ -132,18 +138,39 @@ trait CoreTrait
      * Write Given Fields
      *
      * @param string $fieldName Field Identifier / Name
-     * @param mixed  $fieldData Field Data
+     * @param bool|null $fieldData Field Data
      *
      * @return void
      */
-    protected function setCoreFields($fieldName, $fieldData)
+    protected function setCoreBoolFields(string $fieldName, ?bool $fieldData): void
     {
         switch ($fieldName) {
             case 'enabled':
                 $this->setGenericBool($fieldName, $fieldData);
 
                 break;
+            default:
+                return;
+        }
+
+        unset($this->in[$fieldName]);
+    }
+
+    /**
+     * Write Given Fields
+     *
+     * @param string $fieldName Field Identifier / Name
+     * @param null|string  $fieldData Field Data
+     *
+     * @return void
+     */
+    protected function setCoreFamilyFields(string $fieldName, ?string $fieldData): void
+    {
+        switch ($fieldName) {
             case 'family_variant_code':
+                if (!$fieldData) {
+                    break;
+                }
                 $family = $this->variants->findFamilyVariantByCode($fieldData);
                 if (null === $family) {
                     break;

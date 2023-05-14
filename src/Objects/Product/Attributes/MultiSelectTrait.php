@@ -44,6 +44,7 @@ trait MultiSelectTrait
         //====================================================================//
         // Load Raw Attribute Value
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        $value = is_array($value) ? $value : array();
 
         return InlineHelper::fromArray($value);
     }

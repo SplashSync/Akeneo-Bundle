@@ -15,6 +15,9 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
+use Exception;
+use Splash\Client\Splash;
+
 /**
  * Access to Local Product Attributes Fields
  */
@@ -25,7 +28,7 @@ trait AttributesTrait
      *
      * @return void
      */
-    public function buildAttributeFields()
+    public function buildAttributeFields(): void
     {
         //====================================================================//
         // Ensure Service Configuration
@@ -37,12 +40,14 @@ trait AttributesTrait
     /**
      * Read requested Field
      *
-     * @param string $key       Input List Key
+     * @param string $key Input List Key
      * @param string $fieldName Field Identifier / Name
      *
      * @return void
+     *
+     * @throws Exception
      */
-    public function getAttributeFields(string $key, string $fieldName)
+    public function getAttributeFields(string $key, string $fieldName): void
     {
         //====================================================================//
         // Safety Check => Verify if FieldName is An Attribute Type
@@ -62,11 +67,12 @@ trait AttributesTrait
      * Write Given Fields
      *
      * @param string $fieldName Field Identifier / Name
-     * @param mixed  $fieldData Field Data
+     * @param mixed $fieldData Field Data
      *
      * @return void
+     * @throws Exception
      */
-    protected function setAttributeFields($fieldName, $fieldData)
+    protected function setAttributeFields(string $fieldName, $fieldData): void
     {
         //====================================================================//
         // Safety Check => Verify if FieldName is An Attribute Type
@@ -74,7 +80,7 @@ trait AttributesTrait
             return;
         }
         //====================================================================//
-        // If Variant Attribute => Skip Writting (Done via Variation Attributes)
+        // If Variant Attribute => Skip Writing (Done via Variation Attributes)
         if (!$this->variants->isVariantAttribute($this->object, $fieldName)) {
             //====================================================================//
             // Write Data from Attributes Service

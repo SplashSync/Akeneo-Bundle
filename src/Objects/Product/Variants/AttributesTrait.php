@@ -16,7 +16,6 @@
 namespace Splash\Akeneo\Objects\Product\Variants;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
-use ArrayObject;
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -29,7 +28,7 @@ trait AttributesTrait
      *
      * @var array
      */
-    private static $requiredFields = array(
+    private static array $requiredFields = array(
         "code" => "Attribute Code",
         "value" => "Attribute Value",
     );
@@ -43,7 +42,7 @@ trait AttributesTrait
      *
      * @return void
      */
-    protected function buildVariantsAttributesFields()
+    protected function buildVariantsAttributesFields(): void
     {
         $groupName = "Variants";
         $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
@@ -55,13 +54,14 @@ trait AttributesTrait
         //====================================================================//
         // Product Variation Attribute Code (Default Language Only)
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("code")
-            ->Name("Variation Code")
-            ->InList("attributes")
-            ->Group($groupName)
-            ->addOption("isLowerCase", true)
-            ->MicroData("http://schema.org/Product", "VariantAttributeCode")
-            ->isNotTested();
+            ->identifier("code")
+            ->name("Variation Code")
+            ->inList("attributes")
+            ->group($groupName)
+            ->addOption("isLowerCase")
+            ->microData("http://schema.org/Product", "VariantAttributeCode")
+            ->isNotTested()
+        ;
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
         if ($this->isDebugMode()) {
@@ -72,45 +72,46 @@ trait AttributesTrait
             //====================================================================//
             // Product Variation Attribute Name
             $this->fieldsFactory()->create(SPL_T_VARCHAR)
-                ->Identifier("label")
-                ->Name("Attr. Name")
-                ->Group($groupName)
-                ->MicroData("http://schema.org/Product", "VariantAttributeName")
+                ->identifier("label")
+                ->name("Attr. Name")
+                ->group($groupName)
+                ->microData("http://schema.org/Product", "VariantAttributeName")
                 ->setMultilang($isoLang)
-                ->InList("attributes")
+                ->inList("attributes")
                 ->isReadOnly()
-                ->isNotTested();
+                ->isNotTested()
+            ;
         }
-
         //====================================================================//
         // Product Variation Attribute Code
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("value")
-            ->Name("Attr. Value Code")
-            ->Group($groupName)
-            ->MicroData(
+            ->identifier("value")
+            ->name("Attr. Value Code")
+            ->group($groupName)
+            ->microData(
                 "http://schema.org/Product",
                 $this->isDebugMode() ? "VariantAttributeValue" :  "VariantAttributeValueCode"
             )
-            ->InList("attributes")
-            ->isNotTested();
-
+            ->inList("attributes")
+            ->isNotTested()
+        ;
         //====================================================================//
         // Product Variation Attribute Value
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
             // Product Variation Attribute Name
             $this->fieldsFactory()->create(SPL_T_VARCHAR)
-                ->Identifier("value_label")
-                ->Name("Attr. Value")
-                ->Group($groupName)
-                ->MicroData(
+                ->identifier("value_label")
+                ->name("Attr. Value")
+                ->group($groupName)
+                ->microData(
                     "http://schema.org/Product",
                     $this->isDebugMode() ? "VariantAttributeValueLabel" :  "VariantAttributeValue"
                 )
                 ->setMultilang($isoLang)
-                ->InList("attributes")
-                ->isReadOnly();
+                ->inList("attributes")
+                ->isReadOnly()
+            ;
         }
     }
 
@@ -126,7 +127,7 @@ trait AttributesTrait
      *
      * @return void
      */
-    protected function getVariantsAttributesFields($key, $fieldName)
+    protected function getVariantsAttributesFields(string $key, string $fieldName): void
     {
         //====================================================================//
         // Check if List field & Init List Array
@@ -142,20 +143,20 @@ trait AttributesTrait
     }
 
     //====================================================================//
-    // Fields Writting Functions
+    // Fields Writing Functions
     //====================================================================//
 
     /**
      * Write Given Fields
      *
      * @param string $fieldName Field Identifier / Name
-     * @param mixed  $fieldData Field Data
+     * @param null|array  $fieldData Field Data
      *
      * @return void
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function setVariantsAttributesFields($fieldName, $fieldData)
+    protected function setVariantsAttributesFields(string $fieldName, ?array $fieldData): void
     {
         //====================================================================//
         // Check is Attribute Field
@@ -165,7 +166,7 @@ trait AttributesTrait
 
         //====================================================================//
         // Identify Products Attributes Ids
-        foreach ($fieldData as $attrItem) {
+        foreach ($fieldData ?? array() as $attrItem) {
             //====================================================================//
             // Check Product Attributes are Valid
             if (!$this->isValidAttributeDefinition($attrItem)) {
@@ -177,7 +178,7 @@ trait AttributesTrait
                 continue;
             }
             //====================================================================//
-            // If Variant Attribute => Skip Writting (Done via Variation Attributes)
+            // If Variant Attribute => Skip Writing (Done via Variation Attributes)
             if (!$this->variants->isVariantAttribute($this->object, $attrItem["code"])) {
                 continue;
             }
@@ -196,21 +197,20 @@ trait AttributesTrait
     /**
      * Check if Attribute Array is Valid for Writing
      *
-     * @param array|ArrayObject $fieldData Attribute Array
+     * @param array $fieldData Attribute Array
      *
      * @return bool
      */
-    protected function isValidAttributeDefinition($fieldData)
+    protected function isValidAttributeDefinition(array $fieldData): bool
     {
         //====================================================================//
         // Check Attribute is Array
-        if ((!is_array($fieldData) && !is_a($fieldData, "ArrayObject")) || empty($fieldData)) {
+        if (empty($fieldData)) {
             return false;
         }
-
         //====================================================================//
         // Check Required Attributes Data are Given
-        foreach (static::$requiredFields as $key => $name) {
+        foreach (self::$requiredFields as $key => $name) {
             if (!isset($fieldData[$key])) {
                 return Splash::log()->errTrace("Product ".$name." is Missing.");
             }
@@ -235,10 +235,10 @@ trait AttributesTrait
      *
      * @return void
      */
-    private function getVariantsAttributesField(string $key, string $fieldId, string $isoLang)
+    private function getVariantsAttributesField(string $key, string $fieldId, string $isoLang): void
     {
         //====================================================================//
-        // Decode Multilang Field Name
+        // Decode Multi-Lang Field Name
         $baseFieldName = $this->locales->decode($fieldId, $isoLang);
         if (null == $baseFieldName) {
             return;

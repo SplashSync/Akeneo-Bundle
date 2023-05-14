@@ -35,7 +35,7 @@ trait NumberTrait
      */
     protected function getNumberValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
     {
-        $data = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        $data = $this->getScalarValue($product, $attribute, $isoLang, $channel);
 
         return $attribute->isDecimalsAllowed() ? (float) $data : (int) $data;
     }

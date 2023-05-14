@@ -15,6 +15,8 @@
 
 namespace Splash\Akeneo\Objects\Product\Variants;
 
+use Splash\Client\Splash;
+
 trait CoreTrait
 {
     //====================================================================//
@@ -23,10 +25,8 @@ trait CoreTrait
 
     /**
      * Build Fields using FieldFactory
-     *
-     * @return void
      */
-    public function buildVariantCoreFields()
+    public function buildVariantCoreFields(): void
     {
         //====================================================================//
         // PRODUCTS VARIANT METADATA
@@ -35,42 +35,43 @@ trait CoreTrait
         //====================================================================//
         // Product SKU
         $this->fieldsFactory()->create(SPL_T_BOOL)
-            ->Identifier("variant")
-            ->Name("Is Variant")
+            ->identifier("variant")
+            ->name("Is Variant")
             ->group("Metadata")
             ->isListed()
-            ->isReadOnly();
-
+            ->isReadOnly()
+        ;
         //====================================================================//
         // Product Variation Parent Link
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
-            ->Identifier("parent")
-            ->Name("Parent Model ID")
-            ->Group("Metadata")
-            ->MicroData("http://schema.org/Product", "isVariationOf")
-            ->isReadOnly();
-
+            ->identifier("parent")
+            ->name("Parent Model ID")
+            ->group("Metadata")
+            ->microData("http://schema.org/Product", "isVariationOf")
+            ->isReadOnly()
+        ;
         //====================================================================//
         // CHILD PRODUCTS INFORMATIONS
         //====================================================================//
 
         //====================================================================//
         // Product Variation List - Product Link
-        $this->fieldsFactory()->Create((string) self::objects()->Encode("Product", SPL_T_ID))
-            ->Identifier("id")
-            ->Name("Variants")
-            ->InList("variants")
-            ->MicroData("http://schema.org/Product", "Variants")
-            ->isNotTested();
-
+        $this->fieldsFactory()->create((string) self::objects()->Encode("Product", SPL_T_ID))
+            ->identifier("id")
+            ->name("Variants")
+            ->inList("variants")
+            ->microData("http://schema.org/Product", "Variants")
+            ->isNotTested()
+        ;
         //====================================================================//
         // Product Variation List - Product SKU
-        $this->fieldsFactory()->Create(SPL_T_VARCHAR)
-            ->Identifier("sku")
-            ->Name("Variant SKU")
-            ->InList("variants")
-            ->MicroData("http://schema.org/Product", "VariationName")
-            ->isReadOnly();
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->identifier("sku")
+            ->name("Variant SKU")
+            ->inList("variants")
+            ->microData("http://schema.org/Product", "VariationName")
+            ->isReadOnly()
+        ;
     }
 
     /**
@@ -81,7 +82,7 @@ trait CoreTrait
      *
      * @return void
      */
-    public function getVariantCoreFields(string $key, string $fieldName)
+    public function getVariantCoreFields(string $key, string $fieldName): void
     {
         switch ($fieldName) {
             //====================================================================//
@@ -108,7 +109,7 @@ trait CoreTrait
      *
      * @return void
      */
-    protected function getVariantChildsFields($key, $fieldName)
+    protected function getVariantChildFields(string $key, string $fieldName): void
     {
         //====================================================================//
         // Check if List field & Init List Array
@@ -138,8 +139,9 @@ trait CoreTrait
     }
 
     //====================================================================//
-    // Fields Writting Functions
+    // Fields Writing Functions
     //====================================================================//
+
     /**
      * Write Given Fields
      *
@@ -148,7 +150,7 @@ trait CoreTrait
      *
      * @return void
      */
-    protected function setVariantsCoreFields($fieldName, $fieldData)
+    protected function setVariantsCoreFields(string $fieldName, $fieldData)
     {
         //====================================================================//
         // WRITE Field
@@ -172,16 +174,16 @@ trait CoreTrait
      *
      * @return bool
      */
-    private function isAllowedVariantChild($attribute)
+    private function isAllowedVariantChild(array $attribute): bool
     {
         //====================================================================//
         // Not in PhpUnit/Travis Mode => Return All
-        if (!$this->isDebugMode()) {
+        if (!Splash::isTravisMode()) {
             return true;
         }
         //====================================================================//
         // Travis Mode => Skip Current Product Variant
-        if ($attribute["rawId"] != $this->object->getId()) {
+        if ($attribute["rawId"] != $this->object->getUuid()->toString()) {
             return true;
         }
         //====================================================================//

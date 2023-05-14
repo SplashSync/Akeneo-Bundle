@@ -66,7 +66,7 @@ trait FilesTrait
     ): bool {
         //====================================================================//
         // Check If New File is Valid
-        if (!$this->files->isValid($data)) {
+        if (!is_array($data) || !$this->files->isValid($data)) {
             return $this->setCoreValue($product, $attribute, $isoLang, $channel, null);
         }
         //====================================================================//

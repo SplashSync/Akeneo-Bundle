@@ -33,9 +33,9 @@ trait ImagesTrait
      * @param string    $isoLang
      * @param string    $channel
      *
-     * @return mixed
+     * @return null|array
      */
-    protected function getImageValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    protected function getImageValue(Product $product, Attribute $attribute, string $isoLang, string $channel): ?array
     {
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
 

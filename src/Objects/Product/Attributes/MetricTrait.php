@@ -33,12 +33,12 @@ trait MetricTrait
      *
      * @var MeasureManager
      */
-    protected $measure;
+    protected MeasureManager $measure;
 
     /**
      * @var array
      */
-    private static $units = array(
+    private static array $units = array(
         "Weight" => "KILOGRAM",
         "Length" => "METER",
     );
@@ -64,7 +64,7 @@ trait MetricTrait
             return (float) $value->getBaseData();
         }
 
-        return (float) $value;
+        return is_scalar($value) ? (float) $value : 0.0;
     }
 
     /**
@@ -92,19 +92,21 @@ trait MetricTrait
             return (string) sprintf('%.2F', $value->getData())." ".$this->getMetricSymbol($value, $isoLang);
         }
 
-        return (string) $value;
+        return is_scalar($value) ? (string) $value : "0";
     }
 
     /**
      * DOUBLE - Write Attribute Data with Local & Scope Detection
      *
-     * @param Product   $product   Akeneo Product Object
+     * @param Product $product Akeneo Product Object
      * @param Attribute $attribute Akeneo Attribute Object
-     * @param string    $isoLang
-     * @param string    $channel
-     * @param mixed     $data
+     * @param string $isoLang
+     * @param string $channel
+     * @param mixed $data
      *
      * @return bool
+     *
+     * @throws Exception
      */
     protected function setMetricValue(
         Product $product,
@@ -113,6 +115,13 @@ trait MetricTrait
         string $channel,
         $data
     ): bool {
+        //====================================================================//
+        // Safety Check
+        if (!is_scalar($data)) {
+            return false;
+        }
+        //====================================================================//
+        // Prepare Attribute Data
         $rawData = array(
             "amount" => (float) $data,
             "unit" => $this->getMetricUnit($attribute),
@@ -152,16 +161,18 @@ trait MetricTrait
      * @param Attribute $attribute Akeneo Attribute Object
      *
      * @return string
+     *
+     * @throws Exception
      */
     private function getMetricUnit(Attribute $attribute): string
     {
         $metricFamily = $attribute->getMetricFamily();
         //====================================================================//
         // Safety Check => Verify this Metric Type is Known
-        if (!isset(static::$units[$metricFamily])) {
+        if (!isset(self::$units[$metricFamily])) {
             throw new Exception(sprintf("Unknown metric family name: %s", $metricFamily));
         }
 
-        return static::$units[$metricFamily];
+        return self::$units[$metricFamily];
     }
 }

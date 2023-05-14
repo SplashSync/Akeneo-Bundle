@@ -18,7 +18,7 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 
 /**
  * Manage Select Types Attributes
@@ -34,9 +34,9 @@ trait SelectTrait
      * @param string    $isoLang
      * @param string    $channel
      *
-     * @return mixed
+     * @return null|string
      */
-    protected function getSelectValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    protected function getSelectValue(Product $product, Attribute $attribute, string $isoLang, string $channel): ?string
     {
         //====================================================================//
         // Load Raw Attribute Value
@@ -46,7 +46,7 @@ trait SelectTrait
             return (string) $value->getCode();
         }
 
-        return  (string) $value;
+        return is_scalar($value) ? (string) $value : null;
     }
 
     /**
@@ -57,27 +57,27 @@ trait SelectTrait
      * @param string    $isoLang
      * @param string    $channel
      *
-     * @return mixed
+     * @return null|string
      */
     protected function getSelectValueTranslation(
         Product $product,
         Attribute $attribute,
         string $isoLang,
         string $channel
-    ) {
+    ): ?string {
         //====================================================================//
         // Load Raw Attribute Value
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
         //====================================================================//
         // Translate Attribute Value
         if ($value instanceof AttributeOption) {
-            return (string) $this->getOptionTranslation($attribute, $value->getCode(), $isoLang);
+            return (string) $this->getOptionTranslation($attribute, (string) $value->getCode(), $isoLang);
         }
         if (is_string($value) && !empty($value)) {
             return (string) $this->getOptionTranslation($attribute, $value, $isoLang);
         }
 
-        return  (string) $value;
+        return is_scalar($value) ? (string) $value : null;
     }
 
     /**
@@ -92,14 +92,19 @@ trait SelectTrait
     {
         $choices = array();
 
-        /** @var Collection $options */
+        /** @var AttributeOption[] $options */
         $options = $attribute->getOptions();
         if (is_iterable($options)) {
             foreach ($options as $option) {
                 $code = (string) $option->getCode();
-                $choices[$code] = $option->getOptionValues()->containsKey($isoLang)
-                    ? $option->getOptionValues()->get($isoLang)->getValue()
-                    : $option->getTranslation($isoLang)->getLabel();
+                /** @var null|AttributeOptionValueInterface $value */
+                $value = $option->getOptionValues()->get($isoLang);
+                if ($value) {
+                    $choices[$code] = $value->getValue();
+                } else {
+                    $translation = $option->setLocale($isoLang)->getTranslation();
+                    $choices[$code] =  $translation ? $translation->getValue() : null;
+                }
             }
         }
 
@@ -117,6 +122,7 @@ trait SelectTrait
      */
     protected function getOptionTranslation(Attribute $attribute, string $valueCode, string $isoLang): ?string
     {
+        /** @var AttributeOption[] $options */
         $options = $attribute->getOptions();
         //====================================================================//
         // Safety Check
@@ -125,13 +131,13 @@ trait SelectTrait
         }
         //====================================================================//
         // Search Attribute Option by Code
-        /** @var AttributeOption $option */
         foreach ($options as $option) {
             if ($option->getCode() != $valueCode) {
                 continue;
             }
+            $translation = $option->setLocale($isoLang)->getTranslation();
 
-            return $option->setLocale($isoLang)->getTranslation()->getValue();
+            return $translation ? $translation->getValue() : null;
         }
 
         return null;
@@ -146,9 +152,9 @@ trait SelectTrait
      * @param string    $channel
      * @param mixed     $data
      *
-     * @return mixed
+     * @return bool
      */
-    protected function setSelectValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data)
+    protected function setSelectValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data): bool
     {
         //====================================================================//
         // Load Possible Select Values
@@ -160,7 +166,7 @@ trait SelectTrait
         }
         //====================================================================//
         // Check Value is Empty
-        if (is_scalar($data) && empty($data)) {
+        if ((is_null($data) || is_scalar($data)) && empty($data)) {
             return $this->setCoreValue($product, $attribute, $isoLang, $channel, null);
         }
 

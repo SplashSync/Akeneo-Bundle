@@ -32,9 +32,9 @@ trait CrudTrait
      *
      * @param string $objectId
      *
-     * @return false|Product
+     * @return null|Product
      */
-    public function load($objectId)
+    public function load(string $objectId): ?Product
     {
         //====================================================================//
         // Ensure Service Configuration
@@ -43,7 +43,7 @@ trait CrudTrait
         // Load Product from Repository
         $product = $this->repository->find($objectId);
         if (!($product instanceof Product)) {
-            return Splash::Log()->errTrace("Unable to find Akeneo Product ".$objectId);
+            return Splash::log()->errNull("Unable to find Akeneo Product ".$objectId);
         }
         $this->flushImageCache();
 
@@ -55,9 +55,9 @@ trait CrudTrait
     //====================================================================//
 
     /**
-     * @return false|Product
+     * @return null|Product
      */
-    public function create()
+    public function create(): ?Product
     {
         //====================================================================//
         // Ensure Service Configuration
@@ -66,7 +66,7 @@ trait CrudTrait
         // Create a New PIM Product
         $product = $this->crud->createProduct($this->in);
         if (null === $product) {
-            return Splash::Log()->errTrace("Akeneo Product Create Failled");
+            return Splash::log()->errNull("Akeneo Product Create Failed");
         }
         //====================================================================//
         // Return a New Object
@@ -82,16 +82,16 @@ trait CrudTrait
      *
      * @param bool $needed
      *
-     * @return false|string
+     * @return null|string
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function update($needed)
+    public function update(bool $needed): ?string
     {
         //====================================================================//
         // Forward to Crud Service
         if (!$this->crud->update($this->object)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Return Object Id
@@ -105,31 +105,28 @@ trait CrudTrait
     /**
      * {@inheritdoc}
      */
-    public function delete($objectId = null)
+    public function delete(string $objectId): bool
     {
         //====================================================================//
         // Try Loading the Product
-        $product = $this->load((string) $objectId);
+        $product = $this->load($objectId);
         if (!$product) {
             return true;
         }
-
         //====================================================================//
         // Forward to Crud Service
-        $this->crud->delete($product);
-
-        return true;
+        return $this->crud->delete($product);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentifier()
+    public function getObjectIdentifier(): ?string
     {
         if (empty($this->object)) {
-            return false;
+            return null;
         }
 
-        return (string) $this->object->getId();
+        return $this->object->getUuid()->toString();
     }
 }

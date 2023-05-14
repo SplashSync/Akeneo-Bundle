@@ -15,10 +15,14 @@
 
 namespace Splash\Akeneo\Objects\Product\Attributes;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertySetter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use DateTime;
 
 /**
  * Manage Raw Types Attributes I/O
@@ -29,7 +33,7 @@ trait CoreTrait
     /**
      * @var PropertySetter
      */
-    protected $setter;
+    protected PropertySetter $setter;
 
     /**
      * CORE - Read Attribute Data with Local & Scope Detection
@@ -39,7 +43,7 @@ trait CoreTrait
      * @param string               $isoLang
      * @param string               $channel
      *
-     * @return mixed
+     * @return null|scalar|array|DateTime|AttributeOption|AbstractMetric|FileInfo
      */
     protected function getCoreValue($product, Attribute $attribute, string $isoLang, string $channel)
     {
@@ -71,7 +75,25 @@ trait CoreTrait
 
         //====================================================================//
         // Return Raw Product Value Data
+        /** @phpstan-ignore-next-line */
         return $value->getData();
+    }
+
+    /**
+     * CORE - Read Attribute Data with Local & Scope Detection
+     *
+     * @param Product|ProductModel $product   Akeneo Product Object
+     * @param Attribute            $attribute Akeneo Attribute Object
+     * @param string               $isoLang
+     * @param string               $channel
+     *
+     * @return null|scalar
+     */
+    protected function getScalarValue($product, Attribute $attribute, string $isoLang, string $channel)
+    {
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+
+        return is_scalar($value) ? $value : null;
     }
 
     /**
@@ -83,9 +105,9 @@ trait CoreTrait
      * @param string    $channel
      * @param mixed     $data
      *
-     * @return mixed
+     * @return bool
      */
-    protected function setCoreValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data)
+    protected function setCoreValue(Product $product, Attribute $attribute, string $isoLang, string $channel, $data): bool
     {
         //====================================================================//
         // Get Attribute Code

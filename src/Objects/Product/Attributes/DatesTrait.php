@@ -33,9 +33,9 @@ trait DatesTrait
      * @param string    $isoLang
      * @param string    $channel
      *
-     * @return mixed
+     * @return null|string
      */
-    protected function getDateValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    protected function getDateValue(Product $product, Attribute $attribute, string $isoLang, string $channel): ?string
     {
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
         if ($value instanceof DateTime) {
