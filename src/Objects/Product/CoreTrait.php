@@ -82,7 +82,7 @@ trait CoreTrait
         ;
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
-        if ($this->isDebugMode()) {
+        if (Splash::isTravisMode()) {
             $this->fieldsFactory()->addChoice("clothing_color", "Color");
         }
     }

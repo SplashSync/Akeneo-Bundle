@@ -140,11 +140,6 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
     protected Locales $locales;
 
     /**
-     * @var Security
-     */
-    protected Security $security;
-
-    /**
      * @var Files
      */
     protected Files $files;
@@ -213,24 +208,5 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
         $this->locales->setDefault($locale);
 
         return $this;
-    }
-
-    /**
-     * Check if System is in Debug Mode
-     *
-     * @return bool
-     */
-    protected function isDebugMode(): bool
-    {
-        //====================================================================//
-        // Not in PhpUnit/Travis Mode => Return All
-        $travisServer = Splash::input('SPLASH_TRAVIS');
-        $travisConfig = $this->getParameter("travis", false);
-        if (empty($travisServer) && empty($travisConfig)) {
-            return false;
-        }
-        Splash::log()->deb("Akeneo Works in Debug Mode...");
-
-        return true;
     }
 }

@@ -64,7 +64,7 @@ trait AttributesTrait
         ;
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
-        if ($this->isDebugMode()) {
+        if (Splash::isTravisMode()) {
             $this->fieldsFactory()->addChoice("color", "Color");
         }
 
@@ -90,7 +90,7 @@ trait AttributesTrait
             ->group($groupName)
             ->microData(
                 "http://schema.org/Product",
-                $this->isDebugMode() ? "VariantAttributeValue" :  "VariantAttributeValueCode"
+                Splash::isTravisMode() ? "VariantAttributeValue" :  "VariantAttributeValueCode"
             )
             ->inList("attributes")
             ->isNotTested()
@@ -106,7 +106,7 @@ trait AttributesTrait
                 ->group($groupName)
                 ->microData(
                     "http://schema.org/Product",
-                    $this->isDebugMode() ? "VariantAttributeValueLabel" :  "VariantAttributeValue"
+                    Splash::isTravisMode() ? "VariantAttributeValueLabel" :  "VariantAttributeValue"
                 )
                 ->setMultilang($isoLang)
                 ->inList("attributes")
