@@ -15,6 +15,7 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
+use Exception;
 use Splash\Models\Objects\ImagesTrait as SplashImagesTrait;
 
 /**
@@ -25,11 +26,11 @@ trait ImagesTrait
     use SplashImagesTrait;
 
     /**
-     * Images Informations Cache
+     * Images Information Cache
      *
      * @var null|array
      */
-    private $imagesCache;
+    private ?array $imagesCache = null;
 
     /**
      * Build Fields using FieldFactory
@@ -53,63 +54,65 @@ trait ImagesTrait
         //====================================================================//
         // Product Images List
         $this->fieldsFactory()->create(SPL_T_IMG)
-            ->Identifier("image")
-            ->InList("images")
-            ->Name("Image")
-            ->Group($groupName)
-            ->MicroData("http://schema.org/Product", "image")
-            ->isReadOnly();
-
+            ->identifier("image")
+            ->inList("images")
+            ->name("Image")
+            ->group($groupName)
+            ->microData("http://schema.org/Product", "image")
+            ->isReadOnly()
+        ;
         //====================================================================//
         // Product Images => Position
         $this->fieldsFactory()->create(SPL_T_INT)
-            ->Identifier("position")
-            ->InList("images")
-            ->Name("Position")
-            ->MicroData("http://schema.org/Product", "positionImage")
-            ->Group($groupName)
-            ->isNotTested();
-
+            ->identifier("position")
+            ->inList("images")
+            ->name("Position")
+            ->microData("http://schema.org/Product", "positionImage")
+            ->group($groupName)
+            ->isNotTested()
+        ;
         //====================================================================//
         // Product Images => Is Cover
         $this->fieldsFactory()->create(SPL_T_BOOL)
-            ->Identifier("cover")
-            ->InList("images")
-            ->Name("Cover")
-            ->MicroData("http://schema.org/Product", "isCover")
-            ->Group($groupName)
-            ->isNotTested();
-
+            ->identifier("cover")
+            ->inList("images")
+            ->name("Cover")
+            ->microData("http://schema.org/Product", "isCover")
+            ->group($groupName)
+            ->isNotTested()
+        ;
         //====================================================================//
         // Product Images => Is Visible Image
         $this->fieldsFactory()->create(SPL_T_BOOL)
-            ->Identifier("visible")
-            ->InList("images")
-            ->Name("Visible")
-            ->MicroData("http://schema.org/Product", "isVisibleImage")
-            ->Group($groupName)
-            ->isNotTested();
+            ->identifier("visible")
+            ->inList("images")
+            ->name("Visible")
+            ->microData("http://schema.org/Product", "isVisibleImage")
+            ->group($groupName)
+            ->isNotTested()
+        ;
     }
 
     /**
      * Read requested Field
      *
-     * @param string $key       Input List Key
+     * @param string $key Input List Key
      * @param string $fieldName Field Identifier / Name
      *
      * @return void
+     * @throws Exception
      */
-    protected function getImagesFields($key, $fieldName)
+    protected function getImagesFields(string $key, string $fieldName): void
     {
         //====================================================================//
         // Check if List field & Init List Array
-        $fieldId = self::lists()->InitOutput($this->out, "images", $fieldName);
+        $fieldId = self::lists()->initOutput($this->out, "images", $fieldName);
         if (!$fieldId) {
             return;
         }
         $imgCache = $this->getImagesCache();
         //====================================================================//
-        // For All Availables Product Images
+        // For All Available Product Images
         $index = 0;
         foreach ($imgCache as $attrCode => $image) {
             //====================================================================//
@@ -136,7 +139,7 @@ trait ImagesTrait
             }
             //====================================================================//
             // Insert Data in List
-            self::lists()->Insert($this->out, "images", $fieldName, $index, $value);
+            self::lists()->insert($this->out, "images", $fieldName, $index, $value);
             $index++;
         }
         unset($this->in[$key]);
@@ -151,11 +154,12 @@ trait ImagesTrait
      */
     protected function isGalleryImage(string $attrCode): bool
     {
-        if (empty($this->getParameter("images", array()))) {
+        $config = $this->getParameter("images", array());
+        if (!is_array($config) || empty($config)) {
             return false;
         }
 
-        return in_array($attrCode, $this->getParameter("images", array()), true);
+        return in_array($attrCode, $config, true);
     }
 
     /**
@@ -178,12 +182,12 @@ trait ImagesTrait
      */
     private function isCoverImage(string $attrCode, int $index): bool
     {
-        $familly = $this->object->getFamily();
-        if (null === $familly) {
+        $family = $this->object->getFamily();
+        if (null === $family) {
             return (0 == $index);
         }
 
-        $attributeAsImage = $familly->getAttributeAsImage();
+        $attributeAsImage = $family->getAttributeAsImage();
 
         if (null === $attributeAsImage) {
             return (0 == $index);
@@ -193,9 +197,10 @@ trait ImagesTrait
     }
 
     /**
-     * Return Product Images Informations Array from Akeneo Product Object
+     * Return Product Images Information Array from Akeneo Product Object
      *
      * @return array
+     * @throws Exception
      */
     private function getImagesCache(): array
     {
@@ -207,7 +212,9 @@ trait ImagesTrait
         $this->imagesCache = array();
         //====================================================================//
         // Load Complete Product Images List
-        foreach ($this->getParameter("images", array()) as $attrCode) {
+        $config = $this->getParameter("images", array());
+        $config = is_array($config) ? $config : array();
+        foreach ($config as $attrCode) {
             $this->getImageCache($attrCode);
         }
 
@@ -215,11 +222,12 @@ trait ImagesTrait
     }
 
     /**
-     * Fetch Product Images Informations for an Attribute Code, with Variants Detection
+     * Fetch Product Images Information for an Attribute Code, with Variants Detection
      *
      * @param string $attrCode
      *
      * @return void
+     * @throws Exception
      */
     private function getImageCache(string $attrCode): void
     {
@@ -246,13 +254,13 @@ trait ImagesTrait
         foreach ($this->variants->getVariantsList($this->object, true) as $variant) {
             //====================================================================//
             // Skip Current Product
-            if ($variant->getId() == $this->object->getId()) {
+            if ($variant->getUuid() === $this->object->getUuid()) {
                 continue;
             }
             //====================================================================//
             // Read Attribute Data
             $rawVariantValue = $this->attr->get($variant, $attrCode);
-            if (!isset($rawVariantValue[$attrCode]) || empty($rawVariantValue[$attrCode])) {
+            if (empty($rawVariantValue[$attrCode])) {
                 continue;
             }
             //====================================================================//
@@ -262,7 +270,7 @@ trait ImagesTrait
             }
             //====================================================================//
             // Add Image to Cache
-            $this->imagesCache[$attrCode.'_'.$variant->getId()] = array(
+            $this->imagesCache[$attrCode.'_'.$variant->getUuid()->toString()] = array(
                 "image" => $rawVariantValue[$attrCode],
                 "visible" => false,
             );

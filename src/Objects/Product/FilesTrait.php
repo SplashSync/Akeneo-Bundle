@@ -23,7 +23,7 @@ trait FilesTrait
     /**
      * {@inheritDoc}
      */
-    public function hasFile($file = null, $md5 = null)
+    public function hasFile(string $file, string $md5): bool
     {
         //====================================================================//
         //  Forward to Files Manager
@@ -33,7 +33,7 @@ trait FilesTrait
     /**
      * {@inheritDoc}
      */
-    public function readFile($file = null, $md5 = null)
+    public function readFile(string $file, string $md5): ?array
     {
         //====================================================================//
         //  Forward to Files Manager

@@ -15,10 +15,10 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface as CategoryRepository;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Splash\Client\Splash;
 
@@ -30,7 +30,7 @@ trait ObjectsListTrait
     use \Splash\Bundle\Helpers\Doctrine\ObjectsListHelperTrait;
 
     /**
-     * Configure Query Builder beforer List Queries
+     * Configure Query Builder before List Queries
      *
      * @param QueryBuilder $queryBuilder
      *
@@ -44,6 +44,7 @@ trait ObjectsListTrait
         if (!is_array($categoryCodes) || empty($categoryCodes)) {
             return $this;
         }
+
         //====================================================================//
         // Connect to Category Repository
         /** @var CategoryRepository $repository */
@@ -102,7 +103,7 @@ trait ObjectsListTrait
     protected function getObjectListArray(Product $variant): array
     {
         return array(
-            'id' => $variant->getId(),
+            'id' => $variant->getUuid()->toString(),
             'identifier' => $variant->getIdentifier(),
             'enabled' => $variant->isEnabled(),
             'variant' => $variant->isVariant(),

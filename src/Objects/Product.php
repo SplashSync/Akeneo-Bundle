@@ -16,6 +16,9 @@
 namespace Splash\Akeneo\Objects;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
+use Doctrine\ORM\EntityManagerInterface;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
 use Splash\Akeneo\Services\CrudService as Crud;
 use Splash\Akeneo\Services\FilesManager as Files;
@@ -62,21 +65,21 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
      *
      * @var string
      */
-    protected static $NAME = "Product";
+    protected static string $name = "Product";
 
     /**
      * Object Description (Translated by Module).
      *
      * @var string
      */
-    protected static $DESCRIPTION = 'Akeneo Product Object';
+    protected static string $description = 'Akeneo Product Object';
 
     /**
      * Object Icon (FontAwesome or Glyph ico tag).
      *
      * @var string
      */
-    protected static $ICO = 'fa fa-product-hunt';
+    protected static string $ico = 'fa fa-product-hunt';
 
     /**
      * Object Synchronization Recommended Configuration
@@ -87,61 +90,64 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
     /**
      * @var bool Enable Creation Of New Local Objects when Not Existing
      */
-    protected static $ENABLE_PUSH_CREATED = false;
+    protected static bool $enablePushCreated = false;
 
     /**
      * @var bool Enable Update Of Existing Local Objects when Modified Remotly
      */
-    protected static $ENABLE_PUSH_UPDATED = false;
+    protected static bool $enablePushUpdated = false;
 
     /**
      * @var bool Enable Delete Of Existing Local Objects when Deleted Remotly
      */
-    protected static $ENABLE_PUSH_DELETED = false;
+    protected static bool $enablePushDeleted = false;
 
-    /** @codingStandardsIgnoreEnd */
+    /**
+     * @phpstan-var AkeneoProduct
+     */
+    protected object $object;
 
     /**
      * Get Operations Output Buffer
      *
      * @var array
      */
-    protected $out;
+    protected array $out;
 
     /**
      * @var Repository
      */
-    protected $repository;
+    protected Repository $repository;
 
     /**
      * @var Crud
      */
-    protected $crud;
+    protected Crud $crud;
 
     /**
      * @var Attributes
      */
-    protected $attr;
+    protected Attributes $attr;
 
     /**
      * @var Variants
      */
-    protected $variants;
+    protected Variants $variants;
 
     /**
      * @var Locales
      */
-    protected $locales;
+    protected Locales $locales;
 
     /**
      * @var Security
      */
-    protected $security;
+    protected Security $security;
 
     /**
      * @var Files
      */
-    protected $files;
+    protected Files $files;
 
     /**
      * Service Constructor
@@ -152,7 +158,6 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
      * @param Variants   $variants
      * @param Files      $files
      * @param Locales    $locales
-     * @param Security   $security
      */
     public function __construct(
         Repository $repository,
@@ -160,8 +165,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
         Attributes $attr,
         Variants $variants,
         Files $files,
-        Locales $locales,
-        Security $security
+        Locales $locales
     ) {
         //====================================================================//
         // Link to Product Variants Repository
@@ -171,11 +175,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
         $this->crud = $crudService;
         //====================================================================//
         // Link to Splash Akeneo Products Attributes Manager
-        $this->attr = $attr->setup(
-            $this->getParameter("channel", "ecommerce"),
-            $this->getParameter("currency", "EUR"),
-            $this->getParameter("catalog_mode", false)
-        );
+        $this->attr = $attr;
         //====================================================================//
         // Link to Splash Akeneo Products Variants Manager
         $this->variants = $variants;
@@ -184,15 +184,10 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
         $this->files = $files;
         //====================================================================//
         // Store Available Languages
-        $this->locales = $locales->setDefault($this->getParameter("locale", "en_US"));
+        $this->locales = $locales;
         //====================================================================//
-        // Link to Splash Akeneo Security Service
-        $this->security = $security;
-        //====================================================================//
-        // Ensure User Login
-//        if ((defined('SPLASH_SERVER_MODE') && !empty(SPLASH_SERVER_MODE)) || $this->isDebugMode()) {
-//            $this->security->ensureSessionUser($this->getParameter("username", "admin"));
-//        }
+        // Ensure Setup
+        $this->ensureSetup();
     }
 
     /**
@@ -202,16 +197,20 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface
      */
     protected function ensureSetup(): self
     {
+        /** @var string $channel */
+        $channel = $this->getParameter("channel", "ecommerce");
+        /** @var string $currency */
+        $currency = $this->getParameter("currency", "EUR");
+        /** @var string $locale */
+        $locale = $this->getParameter("locale", "en_US");
+        /** @var bool $catalogMode */
+        $catalogMode = $this->getParameter("catalog_mode", false);
         //====================================================================//
         // Setup Splash Akeneo Products Attributes Manager
-        $this->attr->setup(
-            $this->getParameter("channel", "ecommerce"),
-            $this->getParameter("currency", "EUR"),
-            $this->getParameter("catalog_mode", false)
-        );
+        $this->attr->setup($channel, $currency, $catalogMode);
         //====================================================================//
         // Default Language
-        $this->locales->setDefault($this->getParameter("locale", "en_US"));
+        $this->locales->setDefault($locale);
 
         return $this;
     }
