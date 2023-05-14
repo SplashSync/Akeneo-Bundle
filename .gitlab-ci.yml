@@ -126,7 +126,7 @@ quality:v7-php-8.1:
     ################################################################################
     # Install & Configure Environnement
     before_script:
-      - ch /var/www/html
+      - cd /var/www/html
       ################################################################################
       # Check if Akeneo Core is Installed
       - bash docker/scripts/install-akeneo-core.sh
