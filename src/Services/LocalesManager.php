@@ -15,8 +15,8 @@
 
 namespace   Splash\Akeneo\Services;
 
-use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository as Repository;
-use Symfony\Component\Translation\TranslatorInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface as Repository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Splash Languages Manager - Akeneo Languages Management
@@ -35,24 +35,24 @@ class LocalesManager
      *
      * @var string
      */
-    private $default = self::FALLBACK_LOCALE;
+    private string $default = self::FALLBACK_LOCALE;
 
     /**
      * List of All Available Languages Codes
      *
-     * @var array
+     * @var null|array
      */
-    private $locales;
+    private ?array $locales;
 
     /**
      * @var Repository
      */
-    private $repository;
+    private Repository $repository;
 
     /**
      * @var TranslatorInterface
      */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * Service Constructor
@@ -69,7 +69,7 @@ class LocalesManager
     /**
      * Get Default Local Language ISO Code
      *
-     * @param string $locale
+     * @param string|null $locale
      *
      * @return self
      */
@@ -99,7 +99,7 @@ class LocalesManager
      *
      * @return bool
      */
-    public function isDefault($isoCode): bool
+    public function isDefault(string $isoCode): bool
     {
         return ($isoCode == $this->getDefault());
     }
@@ -128,7 +128,7 @@ class LocalesManager
      *
      * @return null|string Base Field Name or Null
      */
-    public function decode($fieldName, $isoCode): ?string
+    public function decode(string $fieldName, string $isoCode): ?string
     {
         //====================================================================//
         // Default Language => No code in FieldName
@@ -147,14 +147,14 @@ class LocalesManager
     /**
      * Translates the given message.
      *
-     * @param string      $id         The message id (may also be an object that can be cast to string)
+     * @param string $id         The message id (may also be an object that can be cast to string)
      * @param array       $parameters An array of parameters for the message
-     * @param null|string $domain     The domain for the message or null to use the default
-     * @param null|string $locale     The locale or null to use the default
+     * @param string|null $domain     The domain for the message or null to use the default
+     * @param string|null $locale     The locale or null to use the default
      *
      * @return string The translated string
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    public function trans(string $id, array $parameters = array(), string $domain = null, string $locale = null): string
     {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }

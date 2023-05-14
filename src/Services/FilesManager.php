@@ -16,11 +16,13 @@
 namespace   Splash\Akeneo\Services;
 
 use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use ArrayObject;
 use Exception;
+use League\Flysystem\FilesystemException;
 use League\Flysystem\MountManager;
 use Splash\Client\Splash as Splash;
 use Splash\Models\FileProviderInterface;
@@ -39,27 +41,27 @@ class FilesManager implements FileProviderInterface
     /**
      * @var Router
      */
-    private $router;
+    private Router $router;
 
     /**
      * @var FileStorer
      */
-    private $storer;
+    private FileStorer $storer;
 
     /**
      * @var FileInfoRepository
      */
-    private $repository;
+    private FileInfoRepository $repository;
 
     /**
      * @var RemoverInterface
      */
-    private $remover;
+    private RemoverInterface $remover;
 
     /**
      * @var MountManager
      */
-    private $mount;
+    private MountManager $mount;
 
     /**
      * Service Constructor
@@ -92,34 +94,29 @@ class FilesManager implements FileProviderInterface
     public function getSplashImage(FileInfo $file): ?array
     {
         try {
-            $fileSystem = $this->mount->getFilesystem($file->getStorage());
+            $path = $file->getStorage()."://".$file->getKey();
             //====================================================================//
             // Ensure Image Exists in File System
-            if (empty($file->getKey()) || !$fileSystem->has($file->getKey())) {
+            if (empty($file->getKey()) || !$this->mount->has($path)) {
                 return null;
             }
             //====================================================================//
-            // Read Raw File from File System
-            $rawFile = $fileSystem->read($file->getKey());
-            if (empty($rawFile)) {
-                return null;
-            }
-
+            // Build File Info Array
             return array(
                 "name" => $file->getOriginalFilename(),
                 "filename" => $file->getOriginalFilename(),
-                "path" => $file->getKey(),
+                "path" => $path,
                 "url" => $this->router->generate(
-                    "pim_enrich_media_show",
-                    array( "filename" => urlencode($file->getKey()), "filter" => "preview" ),
+                    "liip_imagine_filter",
+                    array( "path" => $file->getKey(), "filter" => "thumbnail_small" ),
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
                 "width" => "0",
                 "height" => "0",
-                "md5" => md5($rawFile),
-                "size" => strlen($rawFile),
+                "md5" => $this->mount->checksum($path),
+                "size" => $this->mount->fileSize($path),
             );
-        } catch (Exception $exception) {
+        } catch (Exception|FilesystemException $exception) {
             Splash::log()->report($exception);
 
             return null;
@@ -129,32 +126,35 @@ class FilesManager implements FileProviderInterface
     /**
      * Add a File to Storage form Splash Server
      *
-     * @param array|ArrayObject $splfile
+     * @param array $splashFile
      *
      * @return null|string
      */
-    public function add($splfile): ?string
+    public function add(array $splashFile): ?string
     {
         //====================================================================//
         // Verify New Splash File is Valid
-        if (!$this->isValid($splfile)) {
+        if (!$this->isValid($splashFile)) {
             return null;
         }
-        if (!isset($splfile["path"]) || !isset($splfile["md5"]) || !isset($splfile["filename"])) {
+        if (!isset($splashFile["path"]) || !isset($splashFile["md5"]) || !isset($splashFile["filename"])) {
             return null;
         }
         //====================================================================//
         // Read Raw File from Splash
-        $rawFile = Splash::file()->getFile($splfile["path"], $splfile["md5"]);
+        $rawFile = Splash::file()->getFile($splashFile["path"], $splashFile["md5"]);
         if (!$rawFile) {
             return null;
         }
+
+Splash::log()->dump($rawFile["md5"]);
+
         //====================================================================//
         // Write File to Temp Directory
         $writeFile = Splash::file()->writeFile(
             sys_get_temp_dir()."/",
-            $splfile["filename"],
-            $splfile["md5"],
+            $splashFile["filename"],
+            $splashFile["md5"],
             $rawFile["raw"]
         );
         if (!$writeFile) {
@@ -163,7 +163,7 @@ class FilesManager implements FileProviderInterface
         //====================================================================//
         // Add File to Akeneo Storage
         try {
-            $fullPath = sys_get_temp_dir()."/".$splfile["filename"];
+            $fullPath = sys_get_temp_dir()."/".$splashFile["filename"];
             $newFile = $this->storer->store(new SplFileInfo($fullPath), "catalogStorage", true);
         } catch (Exception $exception) {
             Splash::log()->report($exception);
@@ -184,6 +184,7 @@ class FilesManager implements FileProviderInterface
     public function delete(FileInfo $file): bool
     {
         try {
+            $path = $file->getStorage()."://".$file->getKey();
             //====================================================================//
             // Remove from Database
             $fileInfos = $this->repository->findOneByIdentifier($file->getKey());
@@ -192,11 +193,10 @@ class FilesManager implements FileProviderInterface
             }
             //====================================================================//
             // Remove from File System
-            $fileSystem = $this->mount->getFilesystem("catalogStorage");
-            if (!empty($file->getKey()) && $fileSystem->has($file->getKey())) {
-                $fileSystem->delete($file->getKey());
+            if ($this->mount->has($path)) {
+                $this->mount->delete($path);
             }
-        } catch (Exception $exception) {
+        } catch (Exception|FilesystemException $exception) {
             Splash::log()->report($exception);
 
             return false;
@@ -208,18 +208,18 @@ class FilesManager implements FileProviderInterface
     /**
      * Verify Input is Valid
      *
-     * @param array|ArrayObject $splashfile
+     * @param null|array $splashFile
      *
      * @return bool
      */
-    public function isValid($splashfile): ?bool
+    public function isValid(?array $splashFile): ?bool
     {
         //====================================================================//
         // Verify New Splash File is Valid
-        if (!isset($splashfile["path"]) || !isset($splashfile["md5"]) || !isset($splashfile["filename"])) {
+        if (!is_array($splashFile)) {
             return false;
         }
-        if (empty($splashfile["path"]) || empty($splashfile["md5"]) || empty($splashfile["filename"])) {
+        if (empty($splashFile["path"]) || empty($splashFile["md5"]) || empty($splashFile["filename"])) {
             return false;
         }
 
@@ -230,34 +230,33 @@ class FilesManager implements FileProviderInterface
      * Check if Files are Similar
      *
      * @param FileInfo          $current
-     * @param array|ArrayObject $splashfile
+     * @param array $splashFile
      *
      * @return bool
      */
-    public function isSimilar(FileInfo $current, $splashfile): bool
+    public function isSimilar(FileInfo $current, array $splashFile): bool
     {
         //====================================================================//
         // Verify New Splash File is Valid
-        if (!$this->isValid($splashfile) || !isset($splashfile["md5"])) {
+        if (!$this->isValid($splashFile) || !isset($splashFile["md5"])) {
             return false;
         }
 
         try {
-            $fileSystem = $this->mount->getFilesystem("catalogStorage");
+            $path = $current->getStorage()."://".$current->getKey();
             //====================================================================//
             // Ensure File Exists in File System
-            if (!$fileSystem->has($current->getKey())) {
+            if (!$this->mount->has($path)) {
                 return false;
             }
             //====================================================================//
             // Ensure Md5 are Similar
-            $rawFile = $fileSystem->read($current->getKey());
-            if (empty($rawFile) || (md5($rawFile) != $splashfile["md5"])) {
+            if ($this->mount->checksum($path) != $splashFile["md5"]) {
                 return false;
             }
 
             return true;
-        } catch (Exception $exception) {
+        } catch (Exception|FilesystemException $exception) {
             Splash::log()->report($exception);
 
             return false;
@@ -267,24 +266,22 @@ class FilesManager implements FileProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function hasFile($file = null, $md5 = null)
+    public function hasFile(string $file, string $md5): bool
     {
         try {
-            $fileSystem = $this->mount->getFilesystem("catalogStorage");
             //====================================================================//
             // Ensure File Exists in File System
-            if (empty($file) || !$fileSystem->has($file)) {
+            if (empty($file) || !$this->mount->has($file)) {
                 return false;
             }
             //====================================================================//
             // Ensure Md5 are Similar
-            $rawFile = $fileSystem->read($file);
-            if (empty($rawFile) || (md5($rawFile) != $md5)) {
+            if ($this->mount->checksum($file) != $md5) {
                 return false;
             }
 
             return true;
-        } catch (Exception $exception) {
+        } catch (Exception|FilesystemException $exception) {
             Splash::log()->report($exception);
 
             return false;
@@ -294,20 +291,19 @@ class FilesManager implements FileProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function readFile($file = null, $md5 = null)
+    public function readFile(string $file, string $md5): ?array
     {
         try {
-            $fileSystem = $this->mount->getFilesystem("catalogStorage");
             //====================================================================//
             // Ensure Image Exists in File System
-            if (empty($file) || !$fileSystem->has($file)) {
-                return false;
+            if (empty($file) || !$this->mount->has($file)) {
+                return null;
             }
             //====================================================================//
             // Read Raw File from File System
-            $rawFile = $fileSystem->read($file);
+            $rawFile = $this->mount->read($file);
             if (empty($rawFile)) {
-                return false;
+                return null;
             }
 
             return array(
@@ -318,12 +314,12 @@ class FilesManager implements FileProviderInterface
                 "height" => "0",
                 "md5" => md5($rawFile),
                 "raw" => base64_encode($rawFile),
-                "size" => $fileSystem->getSize($file),
+                "size" => $this->mount->fileSize($file),
             );
-        } catch (Exception $exception) {
+        } catch (Exception|FilesystemException $exception) {
             Splash::log()->report($exception);
 
-            return false;
+            return null;
         }
     }
 }

@@ -39,60 +39,45 @@ class ModelsManager
     /**
      * @var Variants
      */
-    protected $variants;
-    /**
-     * @var Repository
-     */
-    private $repository;
+    protected VariantsManager $variants;
 
     /**
      * @var Builder
      */
-    private $builder;
-
-    /**
-     * @var Updater
-     */
-    private $updater;
+    private Builder $builder;
 
     /**
      * @var Validator
      */
-    private $validator;
+    private Validator $validator;
 
     /**
      * @var Saver
      */
-    private $saver;
+    private Saver $saver;
 
     /**
      * @var Remover
      */
-    private $remover;
+    private Remover $remover;
 
     /**
      * Service  Constructor.
      *
-     * @param Repository $repository
      * @param Builder    $builder
-     * @param Updater    $updater
      * @param Validator  $validator
      * @param Saver      $saver
      * @param Remover    $remover
      * @param Variants   $variants
      */
     public function __construct(
-        Repository $repository,
         Builder $builder,
-        Updater $updater,
         Validator $validator,
         Saver $saver,
         Remover $remover,
         Variants $variants
     ) {
-        $this->repository = $repository;
         $this->builder = $builder;
-        $this->updater = $updater;
         $this->validator = $validator;
         $this->saver = $saver;
         $this->remover = $remover;
@@ -157,8 +142,6 @@ class ModelsManager
             if (0 == count($productModel->getProducts())) {
                 $this->remover->remove($productModel);
             }
-        } catch (EntityNotFoundException $e) {
-            return true;
         } catch (Exception $e) {
             Splash::Log()->Err("Akeneo Product Model Delete Failed");
 

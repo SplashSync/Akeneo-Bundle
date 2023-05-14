@@ -24,6 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface as Saver;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface as Updater;
 use ArrayObject;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Splash\Akeneo\Services\ModelsManager as Models;
@@ -43,49 +44,43 @@ class CrudService
     /**
      * @var Repository
      */
-    private $repository;
+    private Repository $repository;
 
     /**
      * @var Builder
      */
-    private $builder;
-
-    /**
-     * @var Updater
-     */
-    private $updater;
+    private Builder $builder;
 
     /**
      * @var Validator
      */
-    private $validator;
+    private Validator $validator;
 
     /**
      * @var Saver
      */
-    private $saver;
+    private Saver $saver;
 
     /**
      * @var Remover
      */
-    private $remover;
+    private Remover $remover;
 
     /**
      * @var Variants
      */
-    private $variants;
+    private VariantsManager $variants;
 
     /**
      * @var Models
      */
-    private $models;
+    private ModelsManager $models;
 
     /**
      * Service  Constructor.
      *
      * @param Repository $repository
      * @param Builder    $builder
-     * @param Updater    $updater
      * @param Validator  $validator
      * @param Saver      $saver
      * @param Remover    $remover
@@ -95,7 +90,6 @@ class CrudService
     public function __construct(
         Repository $repository,
         Builder $builder,
-        Updater $updater,
         Validator $validator,
         Saver $saver,
         Remover $remover,
@@ -104,7 +98,6 @@ class CrudService
     ) {
         $this->repository = $repository;
         $this->builder = $builder;
-        $this->updater = $updater;
         $this->validator = $validator;
         $this->saver = $saver;
         $this->remover = $remover;
@@ -115,11 +108,11 @@ class CrudService
     /**
      * Update Akeneo Product in database
      *
-     * @param array|ArrayObject $inputs
+     * @param array $inputs
      *
      * @return null|Product
      */
-    public function createProduct($inputs): ?Product
+    public function createProduct(array $inputs): ?Product
     {
         try {
             //====================================================================//
@@ -158,11 +151,9 @@ class CrudService
                     $productModel->addProduct($product);
                 }
             }
-
-            Splash::Log()->Msg("Akeneo Product Created");
+            Splash::log()->msg("Akeneo Product Created");
         } catch (Exception $e) {
-            Splash::Log()->Err($e->getMessage());
-            Splash::Log()->Err($e->getTraceAsString());
+            Splash::log()->report($e);
 
             return null;
         }
@@ -178,7 +169,7 @@ class CrudService
      *
      * @return bool
      */
-    public function update(Product &$product): bool
+    public function update(Product $product): bool
     {
         try {
             //====================================================================//
@@ -187,12 +178,10 @@ class CrudService
             //====================================================================//
             // Save Changes
             $this->saver->save($product);
+        } catch (Exception $e) {
+            Splash::log()->err("Akeneo Product Update Failed");
 
-            Splash::Log()->Msg("Akeneo Product Updated - ".$product->getId());
-        } catch (\Exception $e) {
-            Splash::Log()->Err("Akeneo Product Update Failed");
-
-            return Splash::Log()->Err($e->getMessage());
+            return Splash::log()->err($e->getMessage());
         }
         //====================================================================//
         // Return Object Id
@@ -212,16 +201,15 @@ class CrudService
             $productModel = $product->getParent();
             $this->remover->remove($product);
             if ($productModel) {
+                $productModel->removeProduct($product);
                 $this->models->delete($productModel);
             }
-        } catch (EntityNotFoundException $e) {
-            return true;
         } catch (Exception $e) {
-            Splash::Log()->Err("Akeneo Product Delete Failed");
+            Splash::log()->err("Akeneo Product Delete Failed");
 
-            return Splash::Log()->Err($e->getMessage());
+            return Splash::log()->err($e->getMessage());
         }
-        Splash::Log()->Msg("Akeneo Product Deleted");
+        Splash::log()->msg("Akeneo Product Deleted");
 
         return true;
     }
@@ -229,11 +217,11 @@ class CrudService
     /**
      * Identify New product Family
      *
-     * @param array|ArrayObject $inputs
+     * @param array $inputs
      *
      * @return null|Familly
      */
-    private function getProductFamily($inputs): ?Familly
+    private function getProductFamily(array $inputs): ?Familly
     {
         //====================================================================//
         // If family Code is Given
@@ -253,11 +241,11 @@ class CrudService
     /**
      * Identify New Product Parent Model
      *
-     * @param array|ArrayObject $inputs
+     * @param array $inputs
      *
      * @return null|Model
      */
-    private function getRootProduct($inputs): ?Model
+    private function getRootProduct(array $inputs): ?Model
     {
         //====================================================================//
         // If NO Variants Given
@@ -275,7 +263,7 @@ class CrudService
             //====================================================================//
             // Extract Variable Product Id
             $variantProductId = self::objects()->id($variant["id"]);
-            if (false !== $variantProductId) {
+            if ($variantProductId) {
                 return $this->getParentModel($variantProductId);
             }
         }
@@ -311,22 +299,22 @@ class CrudService
             //====================================================================//
             // PRODUCT HAS PARENTS
             $product = $parent;
-        } while (null !== $parent);
+        } while (true);
     }
 
     /**
      * Verify if Ok to Create a New Product
      *
-     * @param array|ArrayObject $inputs
-     * @param null|Familly      $family
+     * @param array $inputs
+     * @param Familly|null $family
      *
      * @return bool
      */
-    private function isReadyToCreate($inputs, $family = null): bool
+    private function isReadyToCreate(array $inputs, Familly $family = null): bool
     {
         //====================================================================//
         // Verify Product Sku is Given
-        if (!isset($inputs["sku"]) || empty($inputs["sku"])) {
+        if (empty($inputs["sku"])) {
             return Splash::log()->errTrace("No SKU Given for new Product");
         }
 

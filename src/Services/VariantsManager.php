@@ -23,35 +23,38 @@ use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Family;
 use ArrayObject;
 use Splash\Core\SplashCore as Splash;
+use Splash\Models\Objects\ObjectsTrait;
+use TypeError;
 
 /**
- * Akeneo Product Variants Informations Access
+ * Akeneo Product Variants Information Access
  */
 class VariantsManager
 {
-    use \Splash\Models\Objects\ObjectsTrait;
+    use ObjectsTrait;
 
     /**
      * @var LocalesManager
      */
-    private $locales;
+    private LocalesManager $locales;
 
     /**
      * @var Variants
      */
-    private $repository;
+    private Variants $repository;
 
     /**
      * Cache for Family Variants Attributes Sets
      *
      * @var array
      */
-    private static $varAttrs = array();
+    private ?array $varAttrs = array();
 
     /**
      * Service Constructor
      *
      * @param LocalesManager $locales
+     * @param Variants $repository
      */
     public function __construct(LocalesManager $locales, Variants $repository)
     {
@@ -68,7 +71,7 @@ class VariantsManager
     //====================================================================//
 
     /**
-     * Reading of Product Parent Id
+     * Reading of Product Parent ID
      *
      * @param Product $product
      *
@@ -89,14 +92,14 @@ class VariantsManager
     }
 
     /**
-     * Recursive Reading of Product Parent Id
+     * Recursive Reading of Product Parent ID
      *
      * @param Product $product  Current Product Entity
-     * @param bool    $entities Get Entities or Info Array
+     * @param bool $entities Get Entities or Info Array
      *
      * @return array
      */
-    public function getVariantsList(Product $product, $entities = false): array
+    public function getVariantsList(Product $product, bool $entities = false): array
     {
         //====================================================================//
         // LOAD PRODUCT MAIN PARENT MODEL
@@ -115,16 +118,17 @@ class VariantsManager
      * Recursive Reading of Product Model Child Products
      *
      * @param ProductModel $model    Current Product Model Entity
-     * @param bool         $entities Get Entities or Info Array
+     * @param bool $entities Get Entities or Info Array
      *
-     * @return array
+     * @return array[]|Product[]
      */
-    public function getModelProducts(ProductModel $model, $entities = false): array
+    public function getModelProducts(ProductModel $model, bool $entities = false): array
     {
         $response = array();
         //====================================================================//
         // PRODUCT MODEL HAS CHILD MODELS
         if ($model->hasProductModels()) {
+            /** @var ProductModel $productModel */
             foreach ($model->getProductModels() as $productModel) {
                 $response = array_replace_recursive(
                     $response,
@@ -136,21 +140,23 @@ class VariantsManager
         }
         //====================================================================//
         // PRODUCT MODEL HAS CHILD PRODUCTS
+        /** @var Product[] $products */
         $products = $model->getProducts();
         if (0 == count($products)) {
             return $response;
         }
         //====================================================================//
         // WALK ON MODEL CHILD PRODUCTS
-        foreach ($products as $product) {
-            if (!$product->getId()) {
+        foreach ($products as $index => $product) {
+            $productUuid = $product->getUuid()->toString();
+            if (!$productUuid) {
                 continue;
             }
-            $response[$product->getId()] = $entities
+            $response[$index] = $entities
                 ? $product
                 : array(
-                    "id" => self::objects()->encode("Product", $product->getId()),
-                    "rawId" => $product->getId(),
+                    "id" => self::objects()->encode("Product", $productUuid),
+                    "rawId" => $productUuid,
                     "sku" => $product->getIdentifier(),
                 )
             ;
@@ -172,6 +178,7 @@ class VariantsManager
      */
     public function findFamilyVariantByCode(string $familyCode): ?Family
     {
+        /** @phpstan-ignore-next-line */
         return $this->repository->findOneByIdentifier($familyCode);
     }
 
@@ -219,12 +226,12 @@ class VariantsManager
         /** @var Family $familyVariant */
         foreach ($this->repository->findAll() as $familyVariant) {
             $familyVariant->setLocale($this->locales->getDefault());
-            /** @var FamilyTranslationInterface */
+            /** @var FamilyTranslationInterface $familyTranslation */
             $familyTranslation = $familyVariant->getTranslation();
 
             try {
                 $choices[$familyVariant->getCode()] = $familyTranslation->getLabel();
-            } catch (\TypeError $e) {
+            } catch (TypeError $e) {
                 $code = $familyVariant->getCode();
                 $locale = $this->locales->getDefault();
                 $choices[$code] = $code;
@@ -241,6 +248,9 @@ class VariantsManager
 
     /**
      * Check if Attribute is a Variant Attributes
+     *
+     * @param Product $product
+     * @param string $fieldName
      *
      * @return bool
      */
@@ -270,6 +280,8 @@ class VariantsManager
     /**
      * Get Product Variant Attributes Codes
      *
+     * @param Product $product
+     *
      * @return array
      */
     public function getVariantAttributes(Product $product): array
@@ -282,12 +294,12 @@ class VariantsManager
         }
 
         //====================================================================//
-        // Fetch Familly Variants Attributes
+        // Fetch Family Variants Attributes
         return $this->getFamilyVariationAttributes($family);
     }
 
     /**
-     * Recursive Reading of Product Parent Id
+     * Recursive Reading of Product Parent ID
      *
      * @param Product $product
      *
@@ -307,7 +319,7 @@ class VariantsManager
             //====================================================================//
             // PRODUCT HAS PARENTS
             $product = $parent;
-        } while (null !== $parent);
+        } while (true);
     }
 
     /**
@@ -321,7 +333,7 @@ class VariantsManager
     {
         $familyId = $family->getId();
 
-        if (!isset(static::$varAttrs[$familyId])) {
+        if (!isset($this->varAttrs[$familyId])) {
             //====================================================================//
             // Init Result
             $attrSet = array();
@@ -333,9 +345,9 @@ class VariantsManager
             }
             //====================================================================//
             // Init Family Variants Attributes Cache
-            static::$varAttrs[$familyId] = $attrSet;
+            $this->varAttrs[$familyId] = $attrSet;
         }
 
-        return static::$varAttrs[$familyId];
+        return $this->varAttrs[$familyId];
     }
 }
