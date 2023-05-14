@@ -35,22 +35,13 @@
     <php>
         <server name="KERNEL_CLASS"     value="Kernel" force="true" />
         <env    name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
-        <env    name="APP_ENV"    value="test" force="true" />
-        <env    name="APP_DEBUG"    value="1" force="true" />
-<!--        <env    name="APP_DEBUG"    value="1" force="true" />-->
-        <env    name="LOGGING_LEVEL"    value="DEBUG" />
-<!--        <env    name="PUBSUB_AUTO_SETUP"    value="true" />-->
+        <env    name="APP_ENV"          value="test" force="true" />
+        <env    name="APP_DEBUG"        value="0" force="true" />
         <const  name="SPLASH_DEBUG"     value="true" />
         <server name="SPLASH_TRAVIS"    value="true" />
         <server name="SERVER_NAME"      value="http://docker.akeneo.local"/>
 
-<!--        <const name="SPLASH_FIELDS"      value="picture"/>-->
-
         <ini name="date.timezone"       value="Europe/Paris"/>
-<!--        <ini name="intl.default_locale" value="en"/>-->
-<!--        <ini name="intl.error_level"    value="0"/>-->
-<!--        <ini name="memory_limit"        value="-1"/>-->
-<!--        <ini name="zend.enable_gc"      value="1"/>-->
     </php>
     
 </phpunit>

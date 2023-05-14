@@ -24,6 +24,11 @@
 # To us different PS Version configured, you need to add hosts to /etc/hosts
 # 
 # 172.105.0.10        docker.akeneo.local
+
+# 172.105.0.50        v5.akeneo.local
+# 172.105.0.60        v6.akeneo.local
+# 172.105.0.70        v7.akeneo.local
+
 # 172.105.0.11        toolkit.akeneo.local
 # 172.105.0.12        phpmyadmin.akeneo.local
 #
@@ -33,74 +38,111 @@
 version: '3.4'
 
 services:
+
+    ################################################################################
+    # Akeneo V7 All-In-One Container
+    v7:
+        build:
+            context:        docker
+            dockerfile:     akeneo-v7-php-8.1.Dockerfile
+        container_name:             v7.akeneo.local
+        volumes:
+            - ./:/builds/SplashSync/Akeneo-Bundle:ro
+        hostname:           v7.akeneo.local
+        networks:
+            akeneo:         { ipv4_address: 172.105.0.70, aliases: [ v7.akeneo.local ] }
+            splashsync:     { aliases: [ v7.akeneo.local ] }
+
+    ################################################################################
+    # Akeneo V6 All-In-One Container
+#    v6:
+#        image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+##        image: 'akeneo/pim-php-dev:6.0'
+#        container_name:             v6.akeneo.local
+#        environment:
+#            COMPOSER_MEMORY_LIMIT:  -1
+#            COMPOSER_HOME:          '/home/docker/.composer'
+#            NODEJS_VERSION:         "16"
+#            YARN_VERSION:           any
+#            APACHE_DOCUMENT_ROOT:   /var/www/html/public
+#            AKENEO_VERSION:         ^6.0
+#            APP_ENV:                dev
+#            APP_DEBUG:              1
+#        volumes:
+#            - ./:/builds/SplashSync/Akeneo-Bundle:ro
+#        command: sh /builds/SplashSync/Akeneo-Bundle/docker/docker-entrypoint.sh
+#        hostname:           v6.akeneo.local
+#        networks:
+#            akeneo:         { ipv4_address: 172.105.0.60, aliases: [ v6.akeneo.local ] }
+#            splashsync:     { aliases: [ v6.akeneo.local ] }
+#        extra_hosts:
+#            - "toolkit.akeneo.local:172.105.0.11"
+
     ################################################################################
     # Php Fpm Server Container
-    fpm:
-        image: 'akeneo/pim-php-dev:4.0'
-        container_name: akeneo_fpm
-        environment:
-            COMPOSER_MEMORY_LIMIT: -1
-            COMPOSER_HOME: '/home/docker/.composer' 
-        volumes:
-            - ./:/srv/pim
-        working_dir: '/srv/pim'
-        command: 'php-fpm -F'
-        networks:
-            - 'akeneo'
-            - 'splashsync'
-        extra_hosts:
-         - "toolkit.akeneo.local:172.105.0.11"
+#    fpm:
+#        image: 'akeneo/pim-php-dev:4.0'
+#        container_name: akeneo_fpm
+#        environment:
+#            COMPOSER_MEMORY_LIMIT: -1
+#            COMPOSER_HOME: '/home/docker/.composer'
+#        volumes:
+#            - ./:/srv/pim
+#        working_dir: '/srv/pim'
+#        command: 'php-fpm -F'
+#        networks:
+#            - 'akeneo'
+#            - 'splashsync'
+#        extra_hosts:
+#         - "toolkit.akeneo.local:172.105.0.11"
 
     ################################################################################
     # Splash Toolkit Container   
     toolkit:
-        image: 'splashsync/toolkit'
-        container_name: akeneo_toolkit
-        logging: { driver: "none" }
+        image:              'splashsync/toolkit'
+        container_name:     toolkit.akeneo.local
         volumes:
             # Specify Local Configuration File
             - './docker/toolkit/.env:/app/.env:ro'
             - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
         hostname:           toolkit.akeneo.local
-#        command:            ["php", "/app/bin/console", "server:run", "172.105.0.11:80"]
         networks:
             akeneo:         { ipv4_address: 172.105.0.11, aliases: [ toolkit.akeneo.local ] }
             splashsync:     { aliases: [ toolkit.akeneo.local ] }
         
     ################################################################################
     # Apache Server Container   
-    httpd:
-        image: 'httpd:2.4'
-        container_name: akeneo_apache
-        depends_on:
-            - 'fpm'
-        volumes:
-            - ./:/srv/pim:ro
-            - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
-            - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro
-        hostname:           docker.akeneo.local
-        networks:
-            akeneo:         { ipv4_address: 172.105.0.10, aliases: [ docker.akeneo.local ] }
-            splashsync:     { aliases: [ docker.akeneo.local ] }            
+#    httpd:
+#        image: 'httpd:2.4'
+#        container_name: akeneo_apache
+#        depends_on:
+#            - 'fpm'
+#        volumes:
+#            - ./:/srv/pim:ro
+#            - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+#            - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro
+#        hostname:           docker.akeneo.local
+#        networks:
+#            akeneo:         { ipv4_address: 172.105.0.10, aliases: [ docker.akeneo.local ] }
+#            splashsync:     { aliases: [ docker.akeneo.local ] }
 
     ################################################################################
     # MySql Container    
     mysql:
-        image: 'mysql:8.0.18'
-        container_name: akeneo_mysql
-        logging: { driver: "none" }
+        image:                      'mysql:8.0.30'
+        container_name:             mysql.akeneo.local
         environment:
-            MYSQL_ROOT_PASSWORD: 'root'
-            MYSQL_USER: 'akeneo_pim'
-            MYSQL_PASSWORD: 'akeneo_pim'
-            MYSQL_DATABASE: 'akeneo_pim'
+            MYSQL_ROOT_PASSWORD:    'root'
+            MYSQL_USER:             'akeneo_pim'
+            MYSQL_PASSWORD:         'akeneo_pim'
+            MYSQL_DATABASE:         'akeneo_pim'
         networks:
           - 'akeneo'
 
     ################################################################################
     # Node JS Container    
     node:
-        image: 'akeneo/node:10'
+        image: 'akeneo/node:18'
         user: 'node'
         container_name: akeneo_nodeJs
         logging: { driver: "none" }
@@ -114,21 +156,21 @@ services:
     ################################################################################
     # ElasticSearch Container    
     elasticsearch:
-        image: 'docker.elastic.co/elasticsearch/elasticsearch:7.5.1'
-        container_name: akeneo_elastic
-        logging: { driver: "none" }
+        image:                  'docker.elastic.co/elasticsearch/elasticsearch:7.5.1'
+        container_name:         elastic.akeneo.local
+        logging:                { driver: "none" }
         environment:
-            ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
-            discovery.type: 'single-node'
+            ES_JAVA_OPTS:       '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
+            discovery.type:     'single-node'
         networks:
           - 'akeneo'
 
     ################################################################################
     # PhpMyAdmin Container
     phpmyadmin:
-        image: phpmyadmin/phpmyadmin:5
-        container_name: akeneo_phpmyadmin
-        logging: { driver: "none" }
+        image:                  phpmyadmin/phpmyadmin:5
+        container_name:         phpmyadmin.akeneo.local
+        logging:                { driver: "none" }
         depends_on:
             - mysql
         environment:

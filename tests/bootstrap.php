@@ -27,8 +27,13 @@ require_once 'vendor/splash/php-bundle/src/Tests/KernelTestCase.php';
 // FIX - Disable Versioning on Delete
 copy(
     'vendor/splash/akeneo-bundle/tests/fixes/AddRemoveVersionSubscriber.php',
-    'src/Akeneo/Tool/Bundle/VersioningBundle/EventSubscriber/AddRemoveVersionSubscriber.php'
+    'vendor/akeneo/pim-community-dev/src/Akeneo/Tool/Bundle/VersioningBundle/EventSubscriber/AddRemoveVersionSubscriber.php'
 );
+//====================================================================//
+// FIX - Disable Akeneo Test Services
+if (is_file("vendor/akeneo/pim-community-dev/config/services/test/test_services.yml")) {
+    unlink("vendor/akeneo/pim-community-dev/config/services/test/test_services.yml");
+}
 //====================================================================//
 // Use Akeneo Bootstrap File
 require 'config/bootstrap.php';
