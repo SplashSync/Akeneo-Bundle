@@ -31,5 +31,6 @@ splash:
                 Name:               Akeneo Docker ;-)
                 WsIdentifier:       ThisIsSplashWsId
                 WsEncryptionKey:    ThisIsYourEncryptionKeyForSplash                
-                WsHost:             http://docker.akeneo.local
+                WsHost:             http://v7.akeneo.local
                 WsPath:             /ws/splash
+                Extended:           true

@@ -26,7 +26,7 @@ if [ ! -f $INSTALL_DIR/composer.json ]; then
     echo -e "\e[45m *********************************** \e[49m"
     echo -e "\e[45m ** Create Akeneo $AKENEO_VERSION    \e[49m"
     echo -e "\e[45m *********************************** \e[49m"
-    composer create-project akeneo/pim-community-dev /var/www/html $AKENEO_VERSION --prefer-dist
+    composer create-project pim-community-standard /var/www/html $AKENEO_VERSION --prefer-dist
 else
     echo -e "\e[45m ** SKIP > Project Already Here      \e[49m"
 fi

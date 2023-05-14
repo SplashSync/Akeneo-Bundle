@@ -31,7 +31,7 @@ ENV NODEJS_VERSION          18
 ENV YARN_VERSION            "any"
 # Akeneor App Config
 ENV AKENEO_VERSION          ^7.0
-ENV AKENEO_FIXTURES         src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+ENV AKENEO_FIXTURES         vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 ENV APP_ENV                 dev
 ENV APP_DEBUG               1
 # Directories
