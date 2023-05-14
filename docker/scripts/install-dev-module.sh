@@ -24,6 +24,9 @@ if [ ! -f /home/module.installed.lock ]; then
     echo -e "\e[45m ** Install Splash DEV Module        \e[49m"
     echo -e "\e[45m *********************************** \e[49m"
     ################################################################################
+    echo "Install Symfony Flex & Phpunit"
+    composer require symfony/flex phpunit/phpunit:^9.0 --no-scripts --no-progress
+    ################################################################################
     echo "Configure Splash DEV Module via Composer"
     composer config extra.symfony.allow-contrib true
     composer config repositories.splash '{ "type": "path", "url": "/builds/SplashSync/Akeneo-Bundle", "options": { "symlink": true, "versions": { "splash/akeneo-bundle": "dev-local" }}}'

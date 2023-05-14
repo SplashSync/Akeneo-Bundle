@@ -34,6 +34,7 @@ ENV AKENEO_VERSION          ^7.0
 ENV AKENEO_FIXTURES         vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 ENV APP_ENV                 dev
 ENV APP_DEBUG               1
+ENV LOGGING_LEVEL           WARNING
 # Directories
 ENV INSTALL_DIR             /var/www/html
 ENV MODULE_DIR              /builds/SplashSync/Akeneo-Bundle

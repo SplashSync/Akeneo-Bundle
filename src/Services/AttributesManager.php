@@ -28,7 +28,8 @@ use Exception;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Components\FieldsFactory;
-use Splash\Core\SplashCore as Splash;
+use Splash\Akeneo\Objects\Product\Attributes as SplashAttributes;
+use Splash\Models\Objects\FieldsFactoryTrait;
 
 /**
  * Akeneo Product Attribute Data Access
@@ -37,75 +38,56 @@ use Splash\Core\SplashCore as Splash;
  */
 class AttributesManager
 {
-    use \Splash\Models\Objects\FieldsFactoryTrait;
+    use FieldsFactoryTrait;
 
-    use \Splash\Akeneo\Objects\Product\Attributes\CoreTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\BoolTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\NumberTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\MetricTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\DatesTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\PricesCollectionsTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\SelectTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\MultiSelectTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\ImagesTrait;
-    use \Splash\Akeneo\Objects\Product\Attributes\FilesTrait;
-
-    /**
-     * @var PropertySetter
-     */
-    protected $setter;
+    use SplashAttributes\CoreTrait;
+    use SplashAttributes\BoolTrait;
+    use SplashAttributes\NumberTrait;
+    use SplashAttributes\MetricTrait;
+    use SplashAttributes\DatesTrait;
+    use SplashAttributes\PricesCollectionsTrait;
+    use SplashAttributes\SelectTrait;
+    use SplashAttributes\MultiSelectTrait;
+    use SplashAttributes\ImagesTrait;
+    use SplashAttributes\FilesTrait;
 
     /**
      * @var Files
      */
-    protected $files;
+    protected FilesManager $files;
 
     /**
      * Default Scope Code
      *
      * @var string
      */
-    private $scope;
+    private string $scope;
 
     /**
      * Default Currency Code
      *
      * @var string
      */
-    private $currency;
+    private string $currency;
 
     /**
      * Work in Catalog Mode
      *
      * @var bool
      */
-    private $catalogMode = false;
+    private bool $catalogMode = false;
 
     /**
      * Attributes Repository
      *
      * @var AttributeRepository
      */
-    private $attrRep;
-
-    /**
-     * Attributes Cache
-     *
-     * @var array
-     */
-    private static $attributes;
-
-    /**
-     * Attributes Keys Cache
-     *
-     * @var array
-     */
-    private static $attributesKeys;
+    private AttributeRepository $attrRep;
 
     /**
      * @var LocalesManager
      */
-    private $locales;
+    private LocalesManager $locales;
 
     /**
      * Service Constructor
@@ -194,7 +176,6 @@ class AttributesManager
         $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
         //====================================================================//
         // Walk on All Available Attributes
-        /** @var Attribute $attribute */
         foreach ($this->getAll() as $attribute) {
             //====================================================================//
             // Remove Prices VAT Fields
@@ -203,7 +184,7 @@ class AttributesManager
             }
 
             //====================================================================//
-            // Value is Monolanguage
+            // Value is Mono-Lang
             if (!$attribute->isLocalizable()) {
                 $this->buildField($factory, $attribute, $this->locales->getDefault());
 
@@ -279,13 +260,14 @@ class AttributesManager
     /**
      * Get Field Data from Local Object
      *
-     * @param Product   $product
+     * @param Product $product
      * @param Attribute $attr
-     * @param string    $iso
+     * @param string $iso
      *
      * @return null|array|bool|float|int|string
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @throws Exception
      */
     public function getData(Product $product, Attribute $attr, string $iso)
     {
@@ -312,7 +294,7 @@ class AttributesManager
                     : $this->getNumberValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_VARCHAR:
             case SPL_T_TEXT:
-                return $this->getCoreValue($product, $attr, $iso, $this->getChannel());
+                return $this->getScalarValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_DATE:
                 return $this->getDateValue($product, $attr, $iso, $this->getChannel());
             case SPL_T_PRICE:
@@ -334,9 +316,9 @@ class AttributesManager
      * @param string    $iso
      * @param bool      $attributeMode
      *
-     * @return null|array|bool|float|int|string
+     * @return string|null
      */
-    public function getVirtualData(Product $product, Attribute $attr, string $iso, bool $attributeMode)
+    public function getVirtualData(Product $product, Attribute $attr, string $iso, bool $attributeMode): ?string
     {
         $attrType = $attr->getType();
         //====================================================================//
@@ -367,10 +349,11 @@ class AttributesManager
      * Get Field Data from Local Object
      *
      * @param Product $product
-     * @param string  $fieldName
-     * @param mixed   $fieldData
+     * @param string $fieldName
+     * @param mixed $fieldData
      *
      * @return bool
+     * @throws Exception
      */
     public function set(Product $product, string $fieldName, $fieldData): bool
     {
@@ -383,7 +366,7 @@ class AttributesManager
                 continue;
             }
             //====================================================================//
-            // Decode Multilang Field Name
+            // Decode Multi-Lang Field Name
             $baseFieldName = $this->locales->decode($fieldName, $isoLang);
             if (null == $baseFieldName) {
                 continue;
@@ -462,6 +445,7 @@ class AttributesManager
      * @param string $attrCode
      *
      * @return Attribute
+     * @throws Exception
      */
     public function find(string $attrCode): Attribute
     {
@@ -495,14 +479,15 @@ class AttributesManager
     /**
      * Update Attribute Data with Field Data
      *
-     * @param Product   $product
+     * @param Product $product
      * @param Attribute $attr
-     * @param string    $iso
-     * @param mixed     $data
+     * @param string $iso
+     * @param mixed $data
      *
      * @return bool
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @throws Exception
      */
     private function setData(Product $product, Attribute $attr, string $iso, $data): bool
     {
@@ -658,7 +643,7 @@ class AttributesManager
             return;
         }
         //====================================================================//
-        // Boolean Fields => Add Multilang Varchar Values
+        // Boolean Fields => Add Multi-Lang Varchar Values
         if (TypesConverter::isBool($attribute->getType())) {
             $clonedAttr = clone $attribute;
             $clonedAttr->setCode(TypesConverter::BOOL2STRING.$attribute->getCode());
@@ -711,45 +696,50 @@ class AttributesManager
     /**
      * Get List of All Attributes with Simple Caching
      *
-     * @return array
+     * @return array<string, Attribute>
      */
     private function getAll(): array
     {
-        if (!isset(static::$attributes)) {
+        /** @var null|array<string, Attribute> $attributes */
+        static $attributes;
+
+        if (!isset($attributes)) {
             //====================================================================//
             // Init Cache
-            static::$attributes = array();
+            $attributes = array();
             //====================================================================//
             // Walk on All Available Attributes
             /** @var Attribute $attribute */
             foreach ($this->attrRep->findAll() as $attribute) {
-                static::$attributes[$attribute->getCode()] = $attribute;
+                $attributes[$attribute->getCode()] = $attribute;
             }
         }
 
-        return static::$attributes;
+        return $attributes;
     }
 
     /**
      * Get List of All Attributes Keys with Simple Caching
      *
-     * @return array
+     * @return string[]
      */
     private function getAllKeys(): array
     {
-        if (!isset(static::$attributesKeys)) {
+        /** @var null|string[] $attributesKeys */
+        static $attributesKeys;
+
+        if (!isset($attributesKeys)) {
             //====================================================================//
             // Init Cache
-            static::$attributesKeys = array();
+            $attributesKeys = array();
             //====================================================================//
             // Walk on All Available Attributes
-            /** @var Attribute $attribute */
             foreach ($this->getAll() as $attribute) {
-                static::$attributesKeys[] = $attribute->getCode();
+                $attributesKeys[] = $attribute->getCode();
             }
         }
 
-        return static::$attributesKeys;
+        return $attributesKeys;
     }
 
     /**
@@ -763,10 +753,11 @@ class AttributesManager
      */
     private function getByCode(string $attrCode): Attribute
     {
-        if (!isset(static::$attributes[$attrCode])) {
-            throw new Exception(sprintf("You try to load an unknown attibute: %s", $attrCode));
+        $attributes = self::getAll();
+        if (!isset($attributes[$attrCode])) {
+            throw new Exception(sprintf("You try to load an unknown attribute: %s", $attrCode));
         }
 
-        return static::$attributes[$attrCode];
+        return $attributes[$attrCode];
     }
 }
