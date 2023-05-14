@@ -64,3 +64,4 @@
 /public/dist/
 /public/js/
 /public/media/
+/.php-cs-fixer.cache

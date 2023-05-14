@@ -7,25 +7,25 @@
     colors                      = "true"
     convertErrorsToExceptions   = "true"
     convertNoticesToExceptions  = "false"
-    convertWarningsToExceptions = "false"
+    convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    bootstrap                   = "config/bootstrap.php" 
-    verbose                     = "false"
+    bootstrap                   = "vendor/splash/akeneo-bundle/tests/bootstrap.php"
+    verbose                     = "true"
     timeoutForLargeTests        = "120"  
 >
 
     <testsuites>
         <testsuite name="All">
             <directory>vendor/splash/phpcore/Tests/*</directory>
-            <directory>vendor/splash/akeneo-bundle/Tests/*</directory>
+            <directory>vendor/splash/akeneo-bundle/tests/*</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
             <directory>vendor/splash/phpcore/Tests/*</directory>
-            <directory>vendor/splash/akeneo-bundle/Tests/*</directory>
+            <directory>vendor/splash/akeneo-bundle/tests/*</directory>
             <exclude>
                 <directory>vendor</directory>
             </exclude>
@@ -33,17 +33,24 @@
     </filter>
 
     <php>
-        <server name="KERNEL_CLASS" value="Kernel" force="true" />
-        <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
-        <const  name="SPLASH_DEBUG" value="true" />
-        <server name="SPLASH_TRAVIS" value="true" />    
-        <server name="SERVER_NAME" value="http://docker.akeneo.local"/>   
-        
-        <ini name="date.timezone" value="Europe/Paris"/>
-        <ini name="intl.default_locale" value="en"/>
-        <ini name="intl.error_level" value="0"/>
-        <ini name="memory_limit" value="-1"/>
-        <ini name="zend.enable_gc" value="1"/>
+        <server name="KERNEL_CLASS"     value="Kernel" force="true" />
+        <env    name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
+        <env    name="APP_ENV"    value="test" force="true" />
+        <env    name="APP_DEBUG"    value="1" force="true" />
+<!--        <env    name="APP_DEBUG"    value="1" force="true" />-->
+        <env    name="LOGGING_LEVEL"    value="DEBUG" />
+<!--        <env    name="PUBSUB_AUTO_SETUP"    value="true" />-->
+        <const  name="SPLASH_DEBUG"     value="true" />
+        <server name="SPLASH_TRAVIS"    value="true" />
+        <server name="SERVER_NAME"      value="http://docker.akeneo.local"/>
+
+<!--        <const name="SPLASH_FIELDS"      value="picture"/>-->
+
+        <ini name="date.timezone"       value="Europe/Paris"/>
+<!--        <ini name="intl.default_locale" value="en"/>-->
+<!--        <ini name="intl.error_level"    value="0"/>-->
+<!--        <ini name="memory_limit"        value="-1"/>-->
+<!--        <ini name="zend.enable_gc"      value="1"/>-->
     </php>
     
 </phpunit>

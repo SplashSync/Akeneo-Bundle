@@ -21,8 +21,11 @@ parameters:
 
     mode:           "splashsync"
 
+    # For PhpStan
+    stan-config:    "ci/phpstan.neon"
+
     # For Building Splash Documentation
-    doc-enable:     true
+    doc-enable:     false
     doc-target:     '/public'
     doc-contents:   ["php-composer", "php-docker", "splash-faq"]
 

@@ -1,0 +1,28 @@
+################################################################################
+#
+# Copyright (C) 2020 BadPixxel <www.badpixxel.com>
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+################################################################################
+
+includes:
+	- %currentWorkingDirectory%/vendor/phpstan/phpstan-phpunit/extension.neon
+	- %currentWorkingDirectory%/vendor/phpstan/phpstan-doctrine/extension.neon
+parameters:
+    bootstrapFiles:
+        - "%currentWorkingDirectory%/vendor/splash/phpcore/Resources/grumphp/phpstan.php"
+        - "%currentWorkingDirectory%/vendor/splash/phpcore/inc/Splash.Inc.php"
+        - "%currentWorkingDirectory%/vendor/splash/phpcore/inc/defines.inc.php"
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    inferPrivatePropertyTypeFromConstructor: true
+    universalObjectCratesClasses:
+        - ArrayObject
+    ignoreErrors:
+        - "#Casting to string something that's already string.#"
