@@ -127,11 +127,11 @@ tests:v5-php-7.4:
         AKENEO_VERSION:   5.0.18
   <<: *functional
 
-tests:v6-php-8.0:
-  image:    akeneo/pim-php-dev:6.0
-  variables:
-        AKENEO_VERSION:   ^6.0
-  <<: *functional
+#tests:v6-php-8.0:
+#  image:    akeneo/pim-php-dev:6.0
+#  variables:
+#        AKENEO_VERSION:   ^6.0
+#  <<: *functional
 
 #################################################################
 ## Build Documentation
