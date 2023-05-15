@@ -49,6 +49,7 @@ stages:
       ################################################################################
       # Run Composer
       - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
+      - rm tests/KernelTestCase.php
   ################################################################################
   # Run Test Script
   script:
