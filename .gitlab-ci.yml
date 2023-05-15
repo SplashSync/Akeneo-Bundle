@@ -29,10 +29,11 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
+  - deploy
   - docker
   - quality
   - functional
-  - deploy
+#  - deploy
 
 ################################################################
 # Build Docker Images for Testing
@@ -159,19 +160,35 @@ tests:v7-php-8.1:
 # Build Documentation
 ################################################################
 pages:
-    image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
-    stage:    deploy
-    tags:
-        - Dedicated
-    services:
-        - docker:dind
-    ################################################################################
-    # Run Test Script
-    script:
-        # Run Composer to Build deps
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-        # Build Documentation
-        - php vendor/bin/grumphp run --tasks=build-docs
-    artifacts:
-        paths:
-            - public
+  image:      jekyll/minimal:latest
+  stage:      deploy
+  tags:       [ Dedicated-Docker ]
+  ################################################################################
+  # Run Test Script
+  script:
+    - wget -qO - https://gitlab.com/badpixxel-robo/jekyll/-/raw/main/scripts/gitlab-pages.sh | sh
+  artifacts:
+    paths:
+      - public
+
+
+#################################################################
+## Build Documentation
+#################################################################
+#pages:
+#    image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
+#    stage:    deploy
+#    tags:
+#        - Dedicated
+#    services:
+#        - docker:dind
+#    ################################################################################
+#    # Run Test Script
+#    script:
+#        # Run Composer to Build deps
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
+#        # Build Documentation
+#        - php vendor/bin/grumphp run --tasks=build-docs
+#    artifacts:
+#        paths:
+#            - public
