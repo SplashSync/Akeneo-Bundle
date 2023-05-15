@@ -71,19 +71,12 @@ quality:v5-php-7.4:
         AKENEO_VERSION:   5.0.18
     <<: *quality
 
-#quality:v6-php-8.0:
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-#    variables:
-#        AKENEO_VERSION:   ^6.0
-#    <<: *quality
-
-
 ################################################################
 # Functional Tests
 ################################################################
 
 .functional:    &functional
-    when:       manual
+#    when:       manual
     stage:      functional
     tags:
         - Dedicated
@@ -127,17 +120,11 @@ tests:v5-php-7.4:
         AKENEO_VERSION:   5.0.18
   <<: *functional
 
-#tests:v6-php-8.0:
-#  image:    akeneo/pim-php-dev:6.0
-#  variables:
-#        AKENEO_VERSION:   ^6.0
-#  <<: *functional
-
 #################################################################
 ## Build Documentation
 #################################################################
 pages:
-    when:     manual
+#    when:     manual
     image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
     stage:    deploy
     tags:
