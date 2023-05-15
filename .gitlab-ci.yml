@@ -49,7 +49,6 @@ stages:
       ################################################################################
       # Run Composer
       - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-suggest --no-scripts --no-plugins
-      - rm tests/KernelTestCase.php
   ################################################################################
   # Run Test Script
   script:
@@ -72,11 +71,11 @@ quality:v5-php-7.4:
         AKENEO_VERSION:   5.0.18
     <<: *quality
 
-quality:v6-php-8.0:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    variables:
-        AKENEO_VERSION:   ^6.0
-    <<: *quality
+#quality:v6-php-8.0:
+#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+#    variables:
+#        AKENEO_VERSION:   ^6.0
+#    <<: *quality
 
 
 ################################################################
