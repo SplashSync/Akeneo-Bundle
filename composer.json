@@ -39,9 +39,6 @@
     },
     
     "require-dev": {
-        "symfony/debug-bundle":                         "^4.4",
-        "symfony/web-profiler-bundle":                  "^4.4",
-        "symfony/web-server-bundle":                    "^4.4",
         "splash/console":                               "dev-master",
         "badpixxel/php-sdk":                            "^1.0"
     },
