@@ -29,11 +29,10 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - deploy
   - docker
   - quality
   - functional
-#  - deploy
+  - deploy
 
 ################################################################
 # Build Docker Images for Testing
