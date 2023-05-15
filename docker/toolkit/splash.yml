@@ -24,7 +24,7 @@ splash:
         generic:
             id:                 ThisIsSplashWsId
             key:                ThisIsYourEncryptionKeyForSplash
-            name:               My Akeneo Server
+            name:               Akeneo Server
             host:               false
             connector:          soap
             config:  
