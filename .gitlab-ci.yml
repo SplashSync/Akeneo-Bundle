@@ -30,7 +30,7 @@ variables:
 # Defined Pipeline Stages
 stages:
   - quality
-  - tests
+  - functional
   - deploy
 
 ################################################################
@@ -71,13 +71,20 @@ quality:v5-php-7.4:
         AKENEO_VERSION:   5.0.18
     <<: *quality
 
+quality:v6-php-8.0:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+    variables:
+        AKENEO_VERSION:   ^6.0
+    <<: *quality
+
 
 ################################################################
 # Functional Tests
 ################################################################
 
-.core_tests:    &core_tests
-    stage:      tests
+.functional:    &functional
+    when:       manual
+    stage:      functional
     tags:
         - Dedicated
     services:
@@ -112,18 +119,25 @@ tests:v4-php-7.3:
     image:  akeneo/pim-php-dev:4.0
     variables:
         AKENEO_VERSION:   4.0.97
-    <<: *core_tests
+    <<: *functional
 
 tests:v5-php-7.4:
   image:    akeneo/pim-php-dev:5.0
   variables:
         AKENEO_VERSION:   5.0.18
-  <<: *core_tests
+  <<: *functional
+
+tests:v6-php-8.0:
+  image:    akeneo/pim-php-dev:6.0
+  variables:
+        AKENEO_VERSION:   ^6.0
+  <<: *functional
 
 #################################################################
 ## Build Documentation
 #################################################################
 pages:
+    when:     manual
     image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
     stage:    deploy
     tags:
