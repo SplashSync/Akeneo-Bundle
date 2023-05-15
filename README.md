@@ -12,12 +12,13 @@ It provides access to Products Objects for automated synchronisation though Spla
 
 ## Branches
 
-Branch | Akeneo | PHP | Status | Install |
------- | ------ | --- | ------ | ------ |
-master   |  4.0&5.0 | 7.3+ | Active | composer require splash/akeneo-bundle |
-3.0   |  3.0 | 7.2 | Active | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:3.0.x-dev |
-2.3   |  2.3 | 7.1 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:2.3.x-dev |
-2.1   |  2.0, 2.1 | 7.1 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:2.1.x-dev |
+Branch | Akeneo   | PHP | Status | Install |
+------ |----------| --- | ------ | ------ |
+master   | 7.0  | 7.3+ | Active | composer require splash/akeneo-bundle |
+5.0   | 4.0&5.0  | 7.3+ | Active | composer require splash/akeneo-bundle |
+3.0   | 3.0      | 7.2 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:3.0.x-dev |
+2.3   | 2.3      | 7.1 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:2.3.x-dev |
+2.1   | 2.0, 2.1 | 7.1 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:2.1.x-dev |
 
 ## Installation via Composer
 
@@ -63,8 +64,8 @@ splash:
 
 ## Requirements
 
-* PHP 7.2+
-* Akeneo 3.0+
+* PHP 7.4+
+* Akeneo 4.0+
 * An active Splash Sync User Account
 
 ## Documentation
