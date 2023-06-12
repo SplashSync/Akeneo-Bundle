@@ -16,7 +16,6 @@
 namespace Splash\Akeneo\Objects\Product;
 
 use Exception;
-use Splash\Client\Splash;
 use Splash\Models\Objects\ImagesTrait as SplashImagesTrait;
 
 /**
@@ -143,7 +142,7 @@ trait ImagesTrait
     /**
      * Write Given Fields
      *
-     * @param string  $fieldName Field Identifier / Name
+     * @param string       $fieldName Field Identifier / Name
      * @param null|array[] $fieldData Field Data
      *
      * @throws Exception
