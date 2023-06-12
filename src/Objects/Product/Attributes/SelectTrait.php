@@ -19,6 +19,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\DuplicateObjectException;
+use Splash\Client\Splash;
 
 /**
  * Manage Select Types Attributes
@@ -137,7 +139,7 @@ trait SelectTrait
             }
             $translation = $option->setLocale($isoLang)->getTranslation();
 
-            return $translation ? $translation->getValue() : null;
+            return $translation?->getValue();
         }
 
         return null;
@@ -174,7 +176,62 @@ trait SelectTrait
         if ((is_null($data) || is_scalar($data)) && empty($data)) {
             return $this->setCoreValue($product, $attribute, $isoLang, $channel, null);
         }
+        //====================================================================//
+        // Safety Check
+        if (!is_scalar($data) || empty($data)) {
+            return false;
+        }
+        //====================================================================//
+        // Learning Mode => try Add new Option
+        if ($this->createAttributeOption($attribute, $data)) {
+            return $this->setCoreValue($product, $attribute, $isoLang, $channel, $data);
+        }
+        //====================================================================//
+        // Value does not Exists
+        Splash::log()->war(sprintf("Value %s does not exist for attribute %s", $data, $attribute->getCode()));
 
         return false;
+    }
+
+    /**
+     * LEARNING MODE - Create Attribute Option
+     *
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param scalar    $data
+     *
+     * @return bool
+     */
+    private function createAttributeOption(
+        Attribute $attribute,
+        $data
+    ): bool {
+        //====================================================================//
+        // Learning Mode is Disabled
+        if (!$this->conf->isLearningMode()) {
+            return false;
+        }
+        //====================================================================//
+        // Safety Check
+        if (!is_scalar($data) || empty($data)) {
+            return false;
+        }
+        //====================================================================//
+        // Create new Option
+        $option = new AttributeOption();
+        $option->setAttribute($attribute);
+        $option->setCode($data);
+        //====================================================================//
+        // Save new Option
+        try {
+            $this->optionSaver->save($option);
+        } catch (DuplicateObjectException $exception) {
+            return Splash::log()->err($exception->getMessage());
+        }
+        Splash::log()->war(sprintf("Value %s created for attribute %s", $data, $attribute->getCode()));
+        //====================================================================//
+        // Add Option to Attribute
+        $attribute->addOption($option);
+
+        return true;
     }
 }

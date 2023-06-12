@@ -24,6 +24,7 @@ use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Attribute;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Group;
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
 use Exception;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Akeneo\Objects\Product\Attributes as SplashAttributes;
@@ -36,6 +37,7 @@ use Splash\Models\Objects\FieldsFactoryTrait;
  * Akeneo Product Attribute Data Access
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class AttributesManager
 {
@@ -56,12 +58,13 @@ class AttributesManager
      * Service Constructor
      */
     public function __construct(
-        protected PropertySetter $setter,
+        protected PropertySetter      $setter,
         protected AttributeRepository $attributes,
-        protected MeasureManager $measure,
-        protected Files $files,
-        protected Configuration $conf,
-        protected LocalesManager $locales
+        protected BaseSaver           $optionSaver,
+        protected MeasureManager      $measure,
+        protected Files               $files,
+        protected Configuration       $conf,
+        protected LocalesManager      $locales
     ) {
     }
 

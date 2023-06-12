@@ -32,7 +32,7 @@ trait CoreTrait
      *
      * @return void
      */
-    public function buildCoreFields()
+    public function buildCoreFields(): void
     {
         //====================================================================//
         // Product SKU

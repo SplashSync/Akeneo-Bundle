@@ -65,10 +65,6 @@ trait AttributesTrait
             ->microData("http://schema.org/Product", "VariantAttributeCode")
             ->isNotTested()
         ;
-        if ($this->configuration->isLearningMode()) {
-            $this->fieldsFactory()->setPreferWrite();
-        }
-
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
         if (Splash::isTravisMode()) {
@@ -106,9 +102,6 @@ trait AttributesTrait
             ->inList("attributes")
             ->isNotTested()
         ;
-        if ($this->configuration->isLearningMode()) {
-            $this->fieldsFactory()->setPreferWrite();
-        }
         //====================================================================//
         // Product Variation Attribute Value
         foreach ($this->locales->getAll() as $isoLang) {

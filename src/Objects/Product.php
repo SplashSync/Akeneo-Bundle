@@ -17,6 +17,8 @@ namespace Splash\Akeneo\Objects;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
+use Splash\Akeneo\Configurators\Product\CatalogModeConfigurator;
+use Splash\Akeneo\Configurators\Product\LearningModeConfigurator;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
 use Splash\Akeneo\Services\Configuration;
 use Splash\Akeneo\Services\CrudService as Crud;
@@ -131,5 +133,66 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
         //====================================================================//
         // Setup Splash Akeneo Connector
         $this->configuration->setup($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function description(): array
+    {
+        //====================================================================//
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
+        //====================================================================//
+        // Learning Mode Configuration
+        if ($this->configuration->isLearningMode()) {
+            self::$enablePushCreated = true;
+            self::$enablePushUpdated = true;
+            self::$enablePushDeleted = true;
+            self::$enablePullCreated = false;
+            self::$enablePullUpdated = false;
+            self::$enablePullDeleted = false;
+        }
+        //====================================================================//
+        // Catalog Mode Configuration
+        if ($this->configuration->isCatalogMode()) {
+            self::$allowPushCreated = false;
+            self::$allowPushUpdated = false;
+            self::$allowPushDeleted = false;
+        }
+
+        return parent::description();
+    }
+
+    /**
+     * Register Configurators
+     *
+     * @return void
+     */
+    protected function buildConfiguratorFields(): void
+    {
+        //====================================================================//
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
+        //====================================================================//
+        // Learning Mode Configurator
+        if ($this->configuration->isLearningMode()) {
+            Splash::log()->war("Learning Mode is Enabled. Configuration is modified.");
+            $this->fieldsFactory()->registerConfigurator(
+                "Product",
+                new LearningModeConfigurator()
+            );
+
+            return;
+        }
+        //====================================================================//
+        // Catalog Mode Configurator
+        if ($this->configuration->isCatalogMode()) {
+            Splash::log()->war("Catalog Mode is Enabled. Configuration is modified.");
+            $this->fieldsFactory()->registerConfigurator(
+                "Product",
+                new CatalogModeConfigurator()
+            );
+        }
     }
 }

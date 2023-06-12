@@ -54,7 +54,6 @@ trait ImagesTrait
             ->microData("http://schema.org/Product", "image")
             ->isNotTested()
         ;
-        $this->setupImageFieldMode();
         //====================================================================//
         // Product Images => Position
         $this->fieldsFactory()->create(SPL_T_INT)
@@ -65,7 +64,6 @@ trait ImagesTrait
             ->group($groupName)
             ->isNotTested()
         ;
-        $this->setupImageFieldMode();
         //====================================================================//
         // Product Images => Is Cover
         $this->fieldsFactory()->create(SPL_T_BOOL)
@@ -76,7 +74,6 @@ trait ImagesTrait
             ->group($groupName)
             ->isNotTested()
         ;
-        $this->setupImageFieldMode();
         //====================================================================//
         // Product Images => Is Visible Image
         $this->fieldsFactory()->create(SPL_T_BOOL)
@@ -87,7 +84,6 @@ trait ImagesTrait
             ->group($groupName)
             ->isNotTested()
         ;
-        $this->setupImageFieldMode();
     }
 
     /**
@@ -171,19 +167,5 @@ trait ImagesTrait
                 return;
         }
         unset($this->in[$fieldName]);
-    }
-
-    /**
-     * Setup Image Fields using FieldFactory
-     *
-     * @return void
-     */
-    protected function setupImageFieldMode(): void
-    {
-        if ($this->configuration->isLearningMode()) {
-            $this->fieldsFactory()->setPreferWrite();
-        } elseif ($this->configuration->isCatalogMode()) {
-            $this->fieldsFactory()->isReadOnly();
-        }
     }
 }
