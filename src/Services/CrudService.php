@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Re
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder as Builder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel as Model;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Familly;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface as Remover;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface as Saver;
@@ -26,6 +27,7 @@ use Exception;
 use Splash\Akeneo\Services\ModelsManager as Models;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Core\SplashCore as Splash;
+use Splash\Models\Objects\ObjectsTrait;
 use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;
 
 /**
@@ -35,70 +37,21 @@ use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;
  */
 class CrudService
 {
-    use \Splash\Models\Objects\ObjectsTrait;
-
-    /**
-     * @var Repository
-     */
-    private Repository $repository;
-
-    /**
-     * @var Builder
-     */
-    private Builder $builder;
-
-    /**
-     * @var Validator
-     */
-    private Validator $validator;
-
-    /**
-     * @var Saver
-     */
-    private Saver $saver;
-
-    /**
-     * @var Remover
-     */
-    private Remover $remover;
-
-    /**
-     * @var Variants
-     */
-    private VariantsManager $variants;
-
-    /**
-     * @var Models
-     */
-    private ModelsManager $models;
+    use ObjectsTrait;
 
     /**
      * Service  Constructor.
-     *
-     * @param Repository $repository
-     * @param Builder    $builder
-     * @param Validator  $validator
-     * @param Saver      $saver
-     * @param Remover    $remover
-     * @param Variants   $variants
-     * @param Models     $models
      */
     public function __construct(
-        Repository $repository,
-        Builder $builder,
-        Validator $validator,
-        Saver $saver,
-        Remover $remover,
-        Variants $variants,
-        Models $models
+        private readonly Repository $repository,
+        private readonly Builder    $builder,
+        private readonly Validator  $validator,
+        private readonly Saver      $saver,
+        private readonly Saver      $modelSaver,
+        private readonly Remover    $remover,
+        private readonly Variants   $variants,
+        private readonly Models $models
     ) {
-        $this->repository = $repository;
-        $this->builder = $builder;
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->remover = $remover;
-        $this->variants = $variants;
-        $this->models = $models;
     }
 
     /**
@@ -132,7 +85,7 @@ class CrudService
             // Create a New PIM Product
             $product = $this->builder->createProduct(
                 null,
-                $family ? $family->getCode() : null
+                $family?->getCode()
             );
             //====================================================================//
             // Setup Product Family Variant
@@ -172,8 +125,15 @@ class CrudService
             // Validate Changes
             $this->validator->validate($product);
             //====================================================================//
-            // Save Changes
+            // Save Product Changes
             $this->saver->save($product);
+            //====================================================================//
+            // Save All Product Parent Model Changes
+            $productModel = $product->getParent();
+            while ($productModel) {
+                $this->modelSaver->save($productModel);
+                $productModel = $productModel->getParent();
+            }
         } catch (Exception $e) {
             Splash::log()->err("Akeneo Product Update Failed");
 
@@ -182,6 +142,46 @@ class CrudService
         //====================================================================//
         // Return Object Id
         return  true;
+    }
+
+    /**
+     * Update Product Family Variant
+     *
+     * @param Product                $product
+     * @param FamilyVariantInterface $familyVariant
+     *
+     * @return void
+     */
+    public function updateFamilyVariant(Product $product, FamilyVariantInterface $familyVariant): void
+    {
+        //====================================================================//
+        // Update All Parent Models
+        foreach ($this->variants->getParentModels($product) as $parent) {
+            $parent->setFamilyVariant($familyVariant);
+        }
+        //====================================================================//
+        // Update All Other Variants
+        foreach ($this->variants->getVariantsList($product) as $infos) {
+            //====================================================================//
+            // Filter Current Variant
+            if ($infos['rawId'] == $product->getUuid()->toString()) {
+                continue;
+            }
+            //====================================================================//
+            // Load Other Variant
+            /** @var null|Product $variant */
+            $variant = $this->repository->find($infos['rawId']);
+            if (!$variant) {
+                continue;
+            }
+            $variant->setFamilyVariant($familyVariant);
+            $variant->setFamily($familyVariant->getFamily());
+            $this->update($variant);
+        }
+        //====================================================================//
+        // Update Current Variant
+        $product->setFamilyVariant($familyVariant);
+        $product->setFamily($familyVariant->getFamily());
     }
 
     /**
@@ -227,7 +227,7 @@ class CrudService
 
         //====================================================================//
         // If Attributes are Given
-        if (isset($inputs["attributes"]) && is_iterable($inputs["attributes"])) {
+        if (isset($inputs["attributes"]) && is_array($inputs["attributes"])) {
             return $this->variants->findFamilyVariantByAttributes($inputs["attributes"]);
         }
 

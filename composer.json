@@ -26,7 +26,7 @@
         }
     },
     "require": {
-        "php":                                          "^7.4|^8.0",
+        "php":                                          "^8.1",
         "splash/php-bundle":                            "^2.0.0",
         "akeneo/pim-community-dev":                     "^7.0"
     },

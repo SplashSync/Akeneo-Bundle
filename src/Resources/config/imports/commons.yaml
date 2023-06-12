@@ -1,0 +1,8 @@
+
+services:
+    ########################################################################
+    # NG VINS - Url Media Transformer
+    splash.imports.reader.file.media_url_transformer:
+        class: Splash\Akeneo\Imports\Common\Reader\MediaUrlTransformer
+        arguments:
+          - '@pim_catalog.repository.attribute'

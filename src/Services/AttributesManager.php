@@ -53,112 +53,16 @@ class AttributesManager
     use SplashAttributes\FilesTrait;
 
     /**
-     * @var Files
-     */
-    protected FilesManager $files;
-
-    /**
-     * Default Scope Code
-     *
-     * @var string
-     */
-    private string $scope;
-
-    /**
-     * Default Currency Code
-     *
-     * @var string
-     */
-    private string $currency;
-
-    /**
-     * Work in Catalog Mode
-     *
-     * @var bool
-     */
-    private bool $catalogMode = false;
-
-    /**
-     * Attributes Repository
-     *
-     * @var AttributeRepository
-     */
-    private AttributeRepository $attrRep;
-
-    /**
-     * @var LocalesManager
-     */
-    private LocalesManager $locales;
-
-    /**
      * Service Constructor
-     *
-     * @param PropertySetter      $setter
-     * @param AttributeRepository $attributes
-     * @param MeasureManager      $measure
-     * @param Files               $files
-     * @param LocalesManager      $locales
      */
     public function __construct(
-        PropertySetter $setter,
-        AttributeRepository $attributes,
-        MeasureManager $measure,
-        Files $files,
-        LocalesManager $locales
+        protected PropertySetter $setter,
+        protected AttributeRepository $attributes,
+        protected MeasureManager $measure,
+        protected Files $files,
+        protected Configuration $conf,
+        protected LocalesManager $locales
     ) {
-        //====================================================================//
-        // Link to Akeneo Product Fields Setter
-        $this->setter = $setter;
-        //====================================================================//
-        // Link to Akeneo Product Attributes Repository
-        $this->attrRep = $attributes;
-        //====================================================================//
-        // Link to Akeneo Measures Manager
-        $this->measure = $measure;
-        //====================================================================//
-        // Link to Splash Akeneo Files Manager
-        $this->files = $files;
-        //====================================================================//
-        // Link to Splash Locales Manager
-        $this->locales = $locales;
-    }
-
-    /**
-     * Configure Default Channel
-     *
-     * @param string $scope
-     * @param string $currency
-     * @param bool   $catalogMode
-     *
-     * @return self
-     */
-    public function setup(string $scope, string $currency, bool $catalogMode = null): self
-    {
-        $this->scope = $scope;
-        $this->currency = $currency;
-        $this->catalogMode = (bool) $catalogMode;
-
-        return $this;
-    }
-
-    /**
-     * Configure Default Channel
-     *
-     * @return string
-     */
-    public function getChannel(): string
-    {
-        return $this->scope;
-    }
-
-    /**
-     * Configure Default Currency
-     *
-     * @return string
-     */
-    public function getCurrency(): string
-    {
-        return $this->currency;
     }
 
     //====================================================================//
@@ -274,37 +178,38 @@ class AttributesManager
     public function getData(Product $product, Attribute $attr, string $iso)
     {
         $attrType = $attr->getType();
+        $channel = $this->conf->getChannel();
         //====================================================================//
         // Read & Convert Select Value
         if (TypesConverter::isSelect($attrType)) {
-            return $this->getSelectValue($product, $attr, $iso, $this->getChannel());
+            return $this->getSelectValue($product, $attr, $iso, $channel);
         }
         //====================================================================//
         // Read & Convert Multi-Select Value
         if (TypesConverter::isMultiSelect($attrType)) {
-            return $this->getMultiSelectValue($product, $attr, $iso, $this->getChannel());
+            return $this->getMultiSelectValue($product, $attr, $iso, $channel);
         }
         //====================================================================//
         // Read & Convert Attribute Value
-        switch (TypesConverter::toSplash($attr, $this->catalogMode)) {
+        switch (TypesConverter::toSplash($attr, $this->conf->isCatalogMode())) {
             case SPL_T_BOOL:
-                return $this->isBoolValue($product, $attr, $iso, $this->getChannel());
+                return $this->isBoolValue($product, $attr, $iso, $channel);
             case SPL_T_INT:
             case SPL_T_DOUBLE:
                 return TypesConverter::isMetric($attrType)
-                    ? $this->getMetricValue($product, $attr, $iso, $this->getChannel())
-                    : $this->getNumberValue($product, $attr, $iso, $this->getChannel());
+                    ? $this->getMetricValue($product, $attr, $iso, $channel)
+                    : $this->getNumberValue($product, $attr, $iso, $channel);
             case SPL_T_VARCHAR:
             case SPL_T_TEXT:
-                return $this->getScalarValue($product, $attr, $iso, $this->getChannel());
+                return $this->getScalarValue($product, $attr, $iso, $channel);
             case SPL_T_DATE:
-                return $this->getDateValue($product, $attr, $iso, $this->getChannel());
+                return $this->getDateValue($product, $attr, $iso, $channel);
             case SPL_T_PRICE:
-                return $this->getPriceValue($product, $attr, $iso, $this->getChannel());
+                return $this->getPriceValue($product, $attr, $iso, $channel);
             case SPL_T_FILE:
                 return array();
             case SPL_T_IMG:
-                return $this->getImageValue($product, $attr, $iso, $this->getChannel());
+                return $this->getImageValue($product, $attr, $iso, $channel);
         }
 
         return null;
@@ -323,25 +228,26 @@ class AttributesManager
     public function getVirtualData(Product $product, Attribute $attr, string $iso, bool $attributeMode): ?string
     {
         $attrType = $attr->getType();
+        $channel = $this->conf->getChannel();
         //====================================================================//
         // Read & Convert Bool as String Value
         if (TypesConverter::isBool($attrType)) {
-            return $this->getBoolAsStringValue($product, $attr, $iso, $this->getChannel(), $attributeMode);
+            return $this->getBoolAsStringValue($product, $attr, $iso, $channel, $attributeMode);
         }
         //====================================================================//
         // Read & Convert Metrics as String Value
         if (TypesConverter::isMetric($attrType)) {
-            return $this->getMetricAsStringValue($product, $attr, $iso, $this->getChannel());
+            return $this->getMetricAsStringValue($product, $attr, $iso, $channel);
         }
         //====================================================================//
         // Read & Convert Select as Translated
         if (TypesConverter::isSelect($attrType)) {
-            return $this->getSelectValueTranslation($product, $attr, $iso, $this->getChannel());
+            return $this->getSelectValueTranslation($product, $attr, $iso, $channel);
         }
         //====================================================================//
         // Read & Convert Multi-Select as Translated
         if (TypesConverter::isMultiSelect($attrType)) {
-            return $this->getMultiSelectTranslated($product, $attr, $iso, $this->getChannel());
+            return $this->getMultiSelectTranslated($product, $attr, $iso, $channel);
         }
 
         return null;
@@ -459,6 +365,45 @@ class AttributesManager
     }
 
     /**
+     * Get Product Attribute by Code or Label if Lang Code Provided
+     *
+     * @param string      $codeOrLabel
+     * @param null|string $isoCode
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    public function findByCodeOrLabel(string $codeOrLabel, ?string $isoCode): string
+    {
+        /**
+         * @var null|array<string, array<string, string>> $attributesLabels
+         */
+        static $attributesLabels;
+
+        //====================================================================//
+        // No ISO Lang Provided => Search by Code
+        if (empty($isoCode)) {
+            return $this->getByCode($codeOrLabel)->getCode();
+        }
+        //====================================================================//
+        // Ensure Init of Labels cache
+        if (!isset($attributesLabels[$isoCode])) {
+            $attributesLabels = array();
+            foreach ($this->getAll() as $code => $attribute) {
+                if ($label = $attribute->getTranslation($isoCode)?->getLabel()) {
+                    $attributesLabels[$isoCode][$code] = $label;
+                }
+            }
+        }
+        //====================================================================//
+        // ISO Lang Provided => Search by Label
+        return $this->getByCode(
+            (string) array_search($codeOrLabel, $attributesLabels[$isoCode], true)
+        )->getCode();
+    }
+
+    /**
      * Get Product Label Attribute Code
      *
      * @param Product $product
@@ -497,33 +442,33 @@ class AttributesManager
     private function setData(Product $product, Attribute $attr, string $iso, $data): bool
     {
         $attrType = $attr->getType();
-
+        $channel = $this->conf->getChannel();
         //====================================================================//
         // Write Select Value
         if (TypesConverter::isSelect($attrType)) {
-            return $this->setSelectValue($product, $attr, $iso, $this->getChannel(), $data);
+            return $this->setSelectValue($product, $attr, $iso, $channel, $data);
         }
 
         //====================================================================//
         // Write Attribute Value
-        switch (TypesConverter::toSplash($attr, $this->catalogMode)) {
+        switch (TypesConverter::toSplash($attr, $this->conf->isCatalogMode())) {
             case SPL_T_BOOL:
-                return $this->setBoolValue($product, $attr, $iso, $this->getChannel(), $data);
+                return $this->setBoolValue($product, $attr, $iso, $channel, $data);
             case SPL_T_INT:
             case SPL_T_DOUBLE:
                 return TypesConverter::isMetric($attrType)
-                    ? $this->setMetricValue($product, $attr, $iso, $this->getChannel(), $data)
-                    : $this->setNumberValue($product, $attr, $iso, $this->getChannel(), $data);
+                    ? $this->setMetricValue($product, $attr, $iso, $channel, $data)
+                    : $this->setNumberValue($product, $attr, $iso, $channel, $data);
 
             case SPL_T_VARCHAR:
             case SPL_T_DATE:
             case SPL_T_TEXT:
-                return $this->setCoreValue($product, $attr, $iso, $this->getChannel(), $data);
+                return $this->setCoreValue($product, $attr, $iso, $channel, $data);
             case SPL_T_PRICE:
-                return $this->setPriceValue($product, $attr, $iso, $this->getChannel(), $data);
+                return $this->setPriceValue($product, $attr, $iso, $channel, $data);
             case SPL_T_FILE:
             case SPL_T_IMG:
-                return $this->setFileValue($product, $attr, $iso, $this->getChannel(), $data);
+                return $this->setFileValue($product, $attr, $iso, $channel, $data);
         }
 
         return false;
@@ -566,7 +511,7 @@ class AttributesManager
         //====================================================================//
         // Add Field Core Infos
         $factory
-            ->create((string) TypesConverter::toSplash($attribute, $this->catalogMode))
+            ->create((string) TypesConverter::toSplash($attribute, $this->conf->isCatalogMode()))
             ->identifier($attribute->getCode())
             ->name(empty($attrTrans->getLabel()) ? $attribute->getCode() : $attrTrans->getLabel())
             ->description("[".$groupTrans->getLabel()."] ".$attrTrans->getLabel())
@@ -613,6 +558,11 @@ class AttributesManager
             $factory->isReadOnly();
         }
         //====================================================================//
+        // Is Field A Gallery Image ?
+        if (in_array($attribute->getCode(), $this->conf->getImagesCodes(), true)) {
+            $factory->isReadOnly();
+        }
+        //====================================================================//
         // Collect Names Translations
         /** @var AttributeTranslation $baseAttrTrans */
         $baseAttrTrans = $attribute->getTranslation($this->locales->getDefault());
@@ -622,7 +572,7 @@ class AttributesManager
             || TypesConverter::isSelect($attrType)
             || TypesConverter::isMultiSelect($attrType)) {
             // In Catalog Mode, Main Metadata is for Translations
-            if ($this->catalogMode) {
+            if ($this->conf->isCatalogMode()) {
                 $factory->microData("http://schema.org/Product", $baseAttrTrans->getLabel()."Code");
             }
             $factory->addChoices($this->getSelectChoices($attribute, $isoLang));
@@ -652,6 +602,7 @@ class AttributesManager
         if ($isoLang != $this->locales->getDefault()) {
             return;
         }
+        $catalogMode = $this->conf->isCatalogMode();
         //====================================================================//
         // Boolean Fields => Add Multi-Lang Varchar Values
         if (TypesConverter::isBool($attribute->getType())) {
@@ -672,7 +623,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang, $this->catalogMode ? "" : "Name");
+                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name");
                 $factory->isReadOnly();
             }
         }
@@ -685,7 +636,7 @@ class AttributesManager
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
                 // In Catalog Mode, Virtual Translations is Main Metadata
-                $this->buildField($factory, $clonedAttr, $isoLang, $this->catalogMode ? "" : "Name");
+                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name");
                 $factory->isReadOnly();
             }
         }
@@ -697,7 +648,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang, $this->catalogMode ? "" : "Name");
+                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name");
                 $factory->isReadOnly();
             }
         }
@@ -720,7 +671,7 @@ class AttributesManager
             //====================================================================//
             // Walk on All Available Attributes
             /** @var Attribute $attribute */
-            foreach ($this->attrRep->findAll() as $attribute) {
+            foreach ($this->attributes->findAll() as $attribute) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
         }

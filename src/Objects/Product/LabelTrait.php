@@ -15,6 +15,8 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
+use Splash\Client\Splash;
+
 /**
  * Access to Product Labels
  */
@@ -32,8 +34,8 @@ trait LabelTrait
     public function buildMultilangFields()
     {
         //====================================================================//
-        // Ensure Service Configuration
-        $this->ensureSetup();
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
         //====================================================================//
         // Setup Field Factory
         $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
@@ -82,7 +84,7 @@ trait LabelTrait
      *
      * @return void
      */
-    public function getMultilangFields(string $key, string $fieldName)
+    public function getMultilangFields(string $key, string $fieldName): void
     {
         //====================================================================//
         // Walk on Each Available Languages
@@ -114,7 +116,7 @@ trait LabelTrait
      *
      * @return void
      */
-    public function setMultilangFields($fieldName, $fieldData)
+    public function setMultilangFields(string $fieldName, $fieldData): void
     {
         //====================================================================//
         // Walk on Each Available Languages

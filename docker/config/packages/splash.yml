@@ -1,10 +1,4 @@
 
-#security:
-#    firewalls:
-#        api:
-#            custom_authenticators:
-#                - Splash\Akeneo\Security\SoapAuthenticator
-
 splash:
 
     connections:
@@ -16,5 +10,6 @@ splash:
             config:
                 locale:         en_US
                 travis:         true
+                images:         ['image', 'picture', 'variation_image']
     test:
         VAT:                0

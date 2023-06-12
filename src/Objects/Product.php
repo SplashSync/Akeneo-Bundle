@@ -18,8 +18,10 @@ namespace Splash\Akeneo\Objects;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
+use Splash\Akeneo\Services\Configuration;
 use Splash\Akeneo\Services\CrudService as Crud;
 use Splash\Akeneo\Services\FilesManager as Files;
+use Splash\Akeneo\Services\GalleryManager as Gallery;
 use Splash\Akeneo\Services\LocalesManager as Locales;
 use Splash\Akeneo\Services\VariantsManager as Variants;
 use Splash\Bundle\Models\AbstractStandaloneObject;
@@ -114,98 +116,20 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
     protected array $out;
 
     /**
-     * @var Repository
-     */
-    protected Repository $repository;
-
-    /**
-     * @var Crud
-     */
-    protected Crud $crud;
-
-    /**
-     * @var Attributes
-     */
-    protected Attributes $attr;
-
-    /**
-     * @var Variants
-     */
-    protected Variants $variants;
-
-    /**
-     * @var Locales
-     */
-    protected Locales $locales;
-
-    /**
-     * @var Files
-     */
-    protected Files $files;
-
-    /**
      * Service Constructor
-     *
-     * @param Repository $repository
-     * @param Crud       $crudService
-     * @param Attributes $attr
-     * @param Variants   $variants
-     * @param Files      $files
-     * @param Locales    $locales
      */
     public function __construct(
-        Repository $repository,
-        Crud $crudService,
-        Attributes $attr,
-        Variants $variants,
-        Files $files,
-        Locales $locales
+        protected Repository $repository,
+        protected Crud $crud,
+        protected Attributes $attr,
+        protected Variants $variants,
+        protected Files $files,
+        protected Gallery $gallery,
+        protected Configuration $configuration,
+        protected Locales $locales
     ) {
         //====================================================================//
-        // Link to Product Variants Repository
-        $this->repository = $repository;
-        //====================================================================//
-        // Link to Splash Akeneo Products Crud Manager
-        $this->crud = $crudService;
-        //====================================================================//
-        // Link to Splash Akeneo Products Attributes Manager
-        $this->attr = $attr;
-        //====================================================================//
-        // Link to Splash Akeneo Products Variants Manager
-        $this->variants = $variants;
-        //====================================================================//
-        // Link to Splash Akeneo Products Files Manager
-        $this->files = $files;
-        //====================================================================//
-        // Store Available Languages
-        $this->locales = $locales;
-        //====================================================================//
-        // Ensure Setup
-        $this->ensureSetup();
-    }
-
-    /**
-     * Ensure Service Configuration
-     *
-     * @return self
-     */
-    protected function ensureSetup(): self
-    {
-        /** @var string $channel */
-        $channel = $this->getParameter("channel", "ecommerce");
-        /** @var string $currency */
-        $currency = $this->getParameter("currency", "EUR");
-        /** @var string $locale */
-        $locale = $this->getParameter("locale", "en_US");
-        /** @var bool $catalogMode */
-        $catalogMode = $this->getParameter("catalog_mode", false);
-        //====================================================================//
-        // Setup Splash Akeneo Products Attributes Manager
-        $this->attr->setup($channel, $currency, $catalogMode);
-        //====================================================================//
-        // Default Language
-        $this->locales->setDefault($locale);
-
-        return $this;
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
     }
 }

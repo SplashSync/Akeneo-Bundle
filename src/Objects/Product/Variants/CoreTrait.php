@@ -63,6 +63,9 @@ trait CoreTrait
             ->microData("http://schema.org/Product", "Variants")
             ->isNotTested()
         ;
+        if ($this->configuration->isLearningMode()) {
+            $this->fieldsFactory()->setPreferWrite();
+        }
         //====================================================================//
         // Product Variation List - Product SKU
         $this->fieldsFactory()->create(SPL_T_VARCHAR)

@@ -68,7 +68,7 @@ class TypesConverter
         AttributeTypes::BOOLEAN => SPL_T_BOOL,
         AttributeTypes::DATE => SPL_T_DATE,
         AttributeTypes::NUMBER => SPL_T_INT,
-        AttributeTypes::METRIC => SPL_T_INT,
+        AttributeTypes::METRIC => SPL_T_DOUBLE,
         AttributeTypes::IMAGE => SPL_T_IMG,
         AttributeTypes::PRICE_COLLECTION => SPL_T_PRICE,
         AttributeTypes::IDENTIFIER => SPL_T_VARCHAR,

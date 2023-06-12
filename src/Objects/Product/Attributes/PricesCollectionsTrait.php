@@ -63,7 +63,7 @@ trait PricesCollectionsTrait
         // Search for Currency Price in Collection
         /** @var Price $prdPrice */
         foreach ($value as $prdPrice) {
-            if (strtolower($prdPrice->getCurrency()) == strtolower($this->getCurrency())) {
+            if (strtolower($prdPrice->getCurrency()) == strtolower($this->conf->getCurrency())) {
                 return $this->buildPrice((float) $prdPrice->getData(), (float)  $vatValue);
             }
         }
@@ -113,7 +113,7 @@ trait PricesCollectionsTrait
         $rawData = array(
             array(
                 "amount" => self::prices()->taxExcluded($data),
-                "currency" => $this->getCurrency(),
+                "currency" => $this->conf->getCurrency(),
             ),
         );
 
@@ -156,7 +156,7 @@ trait PricesCollectionsTrait
      */
     private function buildPrice(float $htPrice, float $vat = null): ?array
     {
-        $currency = $this->getCurrency();
+        $currency = $this->conf->getCurrency();
 
         return self::prices()->encode(
             $htPrice,

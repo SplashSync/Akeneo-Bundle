@@ -26,22 +26,15 @@ trait ImagesTrait
     use SplashImagesTrait;
 
     /**
-     * Images Information Cache
-     *
-     * @var null|array
-     */
-    private ?array $imagesCache = null;
-
-    /**
      * Build Fields using FieldFactory
      *
      * @return void
      */
-    protected function buildImagesFields()
+    protected function buildImagesFields(): void
     {
         //====================================================================//
         // Safety Check => Images List is Given
-        if (empty($this->getParameter("images", array()))) {
+        if (empty($this->configuration->getImagesCodes())) {
             return;
         }
 
@@ -59,8 +52,9 @@ trait ImagesTrait
             ->name("Image")
             ->group($groupName)
             ->microData("http://schema.org/Product", "image")
-            ->isReadOnly()
+            ->isNotTested()
         ;
+        $this->setupImageFieldMode();
         //====================================================================//
         // Product Images => Position
         $this->fieldsFactory()->create(SPL_T_INT)
@@ -71,6 +65,7 @@ trait ImagesTrait
             ->group($groupName)
             ->isNotTested()
         ;
+        $this->setupImageFieldMode();
         //====================================================================//
         // Product Images => Is Cover
         $this->fieldsFactory()->create(SPL_T_BOOL)
@@ -81,6 +76,7 @@ trait ImagesTrait
             ->group($groupName)
             ->isNotTested()
         ;
+        $this->setupImageFieldMode();
         //====================================================================//
         // Product Images => Is Visible Image
         $this->fieldsFactory()->create(SPL_T_BOOL)
@@ -91,6 +87,7 @@ trait ImagesTrait
             ->group($groupName)
             ->isNotTested()
         ;
+        $this->setupImageFieldMode();
     }
 
     /**
@@ -111,16 +108,16 @@ trait ImagesTrait
         if (!$fieldId) {
             return;
         }
-        $imgCache = $this->getImagesCache();
+        $galleryImages = $this->gallery->getGalleryImages($this->object);
         //====================================================================//
         // For All Available Product Images
         $index = 0;
-        foreach ($imgCache as $attrCode => $image) {
+        foreach ($galleryImages as $galleryImage) {
             //====================================================================//
             // Prepare
             switch ($fieldId) {
                 case "image":
-                    $value = $image['image'];
+                    $value = $galleryImage->image();
 
                     break;
                 case "position":
@@ -128,11 +125,11 @@ trait ImagesTrait
 
                     break;
                 case "visible":
-                    $value = $image['visible'];
+                    $value = $galleryImage->isVisible($this->object->getUuid()->toString());
 
                     break;
                 case "cover":
-                    $value = $this->isCoverImage($attrCode, $index);
+                    $value = $galleryImage->isCover($this->object->getUuid()->toString());
 
                     break;
                 default:
@@ -147,136 +144,46 @@ trait ImagesTrait
     }
 
     /**
-     * Check if Image is Part of Product Galley
+     * Write Given Fields
      *
-     * @param string $attrCode Attribute Code
+     * @param string  $fieldName Field Identifier / Name
+     * @param array[] $fieldData Field Data
      *
-     * @return bool
+     * @throws Exception
      */
-    protected function isGalleryImage(string $attrCode): bool
+    protected function setImagesFields(string $fieldName, array $fieldData): void
     {
-        $config = $this->getParameter("images", array());
-        if (!is_array($config) || empty($config)) {
-            return false;
-        }
+        //====================================================================//
+        // WRITE Field
+        switch ($fieldName) {
+            //====================================================================//
+            // PRODUCT IMAGES
+            //====================================================================//
+            case 'images':
+                //====================================================================//
+                // Update Gallery
+                if (!$this->gallery->setGalleryImages($this->object, $fieldData)) {
+                    return;
+                }
 
-        return in_array($attrCode, $config, true);
+                break;
+            default:
+                return;
+        }
+        unset($this->in[$fieldName]);
     }
 
     /**
-     * Flush Product Images Reading Cache
+     * Setup Image Fields using FieldFactory
      *
      * @return void
      */
-    protected function flushImageCache()
+    protected function setupImageFieldMode(): void
     {
-        $this->imagesCache = null;
-    }
-
-    /**
-     * Check if Image is Cover
-     *
-     * @param string $attrCode
-     * @param int    $index
-     *
-     * @return bool
-     */
-    private function isCoverImage(string $attrCode, int $index): bool
-    {
-        $family = $this->object->getFamily();
-        if (null === $family) {
-            return (0 == $index);
-        }
-
-        $attributeAsImage = $family->getAttributeAsImage();
-
-        if (null === $attributeAsImage) {
-            return (0 == $index);
-        }
-
-        return ($attrCode == $attributeAsImage->getCode());
-    }
-
-    /**
-     * Return Product Images Information Array from Akeneo Product Object
-     *
-     * @throws Exception
-     *
-     * @return array
-     */
-    private function getImagesCache(): array
-    {
-        //====================================================================//
-        // Get Images Infos From Cache
-        if (is_array($this->imagesCache)) {
-            return $this->imagesCache;
-        }
-        $this->imagesCache = array();
-        //====================================================================//
-        // Load Complete Product Images List
-        $config = $this->getParameter("images", array());
-        $config = is_array($config) ? $config : array();
-        foreach ($config as $attrCode) {
-            $this->getImageCache($attrCode);
-        }
-
-        return is_array($this->imagesCache) ? $this->imagesCache : array();
-    }
-
-    /**
-     * Fetch Product Images Information for an Attribute Code, with Variants Detection
-     *
-     * @param string $attrCode
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    private function getImageCache(string $attrCode): void
-    {
-        //====================================================================//
-        // Safety Check => Verify if FieldName is An Attribute Type
-        if (!$this->attr->has($attrCode)) {
-            return;
-        }
-
-        //====================================================================//
-        // Read Current Product Attribute Data
-        $rawValue = $this->attr->get($this->object, $attrCode);
-        if (isset($rawValue[$attrCode]) && !empty($rawValue[$attrCode])) {
-            //====================================================================//
-            // Add Image to Cache
-            $this->imagesCache[$attrCode] = array(
-                "image" => $rawValue[$attrCode],
-                "visible" => true,
-            );
-        }
-
-        //====================================================================//
-        // Complete Cache with Other Variants Images
-        foreach ($this->variants->getVariantsList($this->object, true) as $variant) {
-            //====================================================================//
-            // Skip Current Product
-            if ($variant->getUuid() === $this->object->getUuid()) {
-                continue;
-            }
-            //====================================================================//
-            // Read Attribute Data
-            $rawVariantValue = $this->attr->get($variant, $attrCode);
-            if (empty($rawVariantValue[$attrCode])) {
-                continue;
-            }
-            //====================================================================//
-            // Skip Similar Images
-            if ($rawVariantValue[$attrCode]['md5'] == $rawValue[$attrCode]['md5']) {
-                continue;
-            }
-            //====================================================================//
-            // Add Image to Cache
-            $this->imagesCache[$attrCode.'_'.$variant->getUuid()->toString()] = array(
-                "image" => $rawVariantValue[$attrCode],
-                "visible" => false,
-            );
+        if ($this->configuration->isLearningMode()) {
+            $this->fieldsFactory()->setPreferWrite();
+        } elseif ($this->configuration->isCatalogMode()) {
+            $this->fieldsFactory()->isReadOnly();
         }
     }
 }

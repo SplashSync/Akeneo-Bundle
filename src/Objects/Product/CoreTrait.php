@@ -168,15 +168,21 @@ trait CoreTrait
     {
         switch ($fieldName) {
             case 'family_variant_code':
-                if (!$fieldData) {
+                //====================================================================//
+                // No Update Required
+                if (!$fieldData || ($this->object->getFamilyVariant() == $fieldData)) {
                     break;
                 }
-                $family = $this->variants->findFamilyVariantByCode($fieldData);
-                if (null === $family) {
+                //====================================================================//
+                // Load Family Variant
+                $familyVariant = $this->variants->findFamilyVariantByCode($fieldData);
+                if ((null === $familyVariant)) {
                     break;
                 }
-
-                $this->object->setFamilyVariant($family);
+                //====================================================================//
+                // Update Product Family Variant
+                $this->crud->updateFamilyVariant($this->object, $familyVariant);
+                $this->needUpdate();
 
                 break;
             default:

@@ -37,15 +37,15 @@ trait CrudTrait
     public function load(string $objectId): ?Product
     {
         //====================================================================//
-        // Ensure Service Configuration
-        $this->ensureSetup();
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
         //====================================================================//
         // Load Product from Repository
         $product = $this->repository->find($objectId);
         if (!($product instanceof Product)) {
             return Splash::log()->errNull("Unable to find Akeneo Product ".$objectId);
         }
-        $this->flushImageCache();
+        $this->gallery->clear();
 
         return $product;
     }
@@ -60,8 +60,8 @@ trait CrudTrait
     public function create(): ?Product
     {
         //====================================================================//
-        // Ensure Service Configuration
-        $this->ensureSetup();
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
         //====================================================================//
         // Create a New PIM Product
         $product = $this->crud->createProduct($this->in);

@@ -48,6 +48,7 @@ services:
         container_name:             v7.akeneo.local
         volumes:
             - ./:/builds/SplashSync/Akeneo-Bundle:ro
+            - /mnt/data/Dossiers Clients/BTC Wine/Sources:/data
         hostname:           v7.akeneo.local
         networks:
             akeneo:         { ipv4_address: 172.105.0.70, aliases: [ v7.akeneo.local ] }
@@ -55,19 +56,19 @@ services:
 
     ################################################################################
     # Akeneo V6 All-In-One Container
-    v6:
-        build:
-            context:        docker
-            dockerfile:     akeneo-v6-php-8.0.Dockerfile
-        container_name:             v6.akeneo.local
-        environment:
-            APP_DATABASE_NAME:       akeneo_v7
-        volumes:
-            - ./:/builds/SplashSync/Akeneo-Bundle:ro
-        hostname:           v6.akeneo.local
-        networks:
-            akeneo:         { ipv4_address: 172.105.0.60, aliases: [ v6.akeneo.local ] }
-            splashsync:     { aliases: [ v6.akeneo.local ] }
+#    v6:
+#        build:
+#            context:        docker
+#            dockerfile:     akeneo-v6-php-8.0.Dockerfile
+#        container_name:             v6.akeneo.local
+#        environment:
+#            APP_DATABASE_NAME:       akeneo_v7
+#        volumes:
+#            - ./:/builds/SplashSync/Akeneo-Bundle:ro
+#        hostname:           v6.akeneo.local
+#        networks:
+#            akeneo:         { ipv4_address: 172.105.0.60, aliases: [ v6.akeneo.local ] }
+#            splashsync:     { aliases: [ v6.akeneo.local ] }
 
     ################################################################################
     # Splash Toolkit Container   
@@ -76,7 +77,7 @@ services:
         container_name:     toolkit.akeneo.local
         volumes:
             # Specify Local Configuration File
-            - './docker/toolkit/.env:/app/.env:ro'
+#            - './docker/toolkit/.env:/app/.env:ro'
             - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
         hostname:           toolkit.akeneo.local
         networks:

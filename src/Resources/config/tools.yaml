@@ -1,0 +1,27 @@
+
+########################################################################
+# Splash Akeneo Tooling Services
+########################################################################
+
+services:
+    _defaults:
+        autowire: true
+
+    ########################################################################
+    # Akeneo Configuration Manager
+    Splash\Akeneo\Services\Configuration: ~
+
+    ########################################################################
+    # Akeneo Files Manager
+    Splash\Akeneo\Services\FilesManager:
+        arguments:
+            -   "@akeneo_file_storage.file_storage.file.file_storer"
+            -   "@akeneo_file_storage.remover.file"
+            -   "@akeneo_file_storage.repository.file_info"
+            -   "@oneup_flysystem.mount_manager"
+
+    ########################################################################
+    # Akeneo Connector Locales Manager
+    Splash\Akeneo\Services\LocalesManager:
+        arguments:
+            -   "@pim_catalog.repository.locale"

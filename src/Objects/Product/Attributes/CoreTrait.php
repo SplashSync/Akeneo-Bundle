@@ -23,6 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use DateTime;
+use Splash\Client\Splash;
 
 /**
  * Manage Raw Types Attributes I/O
@@ -124,11 +125,39 @@ trait CoreTrait
             "locale" => $attribute->isLocalizable() ? $isoLang : null,
             "scope" => $attribute->isScopable() ? $channel : null,
         );
-
         //====================================================================//
-        // Update Product Using Property Setter
-        $this->setter->setData($product, $code, $data, $options);
+        // Get product Family Variant
+        $familyVariant = $product->getFamilyVariant();
+        if (!$familyVariant || Splash::isTravisMode()) {
+            //====================================================================//
+            // Update Product Using Property Setter
+            $this->setter->setData($product, $code, $data, $options);
 
-        return true;
+            return true;
+        }
+        //====================================================================//
+        // Get Level For Field
+        try {
+            $attrLevel = $familyVariant->getLevelForAttributeCode($code);
+        } catch (\InvalidArgumentException) {
+            //====================================================================//
+            // Field Does Not Exists for Variation
+            return true;
+        }
+
+        while ($product) {
+            //====================================================================//
+            // Check Product level
+            if ($product->getVariationLevel() == $attrLevel) {
+                $this->setter->setData($product, $code, $data, $options);
+
+                return true;
+            }
+            //====================================================================//
+            // LOAD PARENT
+            $product = $product->getParent();
+        }
+
+        return false;
     }
 }

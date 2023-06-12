@@ -34,51 +34,19 @@ use Symfony\Component\Validator\Validator\RecursiveValidator as Validator;
 class ModelsManager
 {
     /**
-     * @var Variants
-     */
-    protected VariantsManager $variants;
-
-    /**
-     * @var Builder
-     */
-    private Builder $builder;
-
-    /**
-     * @var Validator
-     */
-    private Validator $validator;
-
-    /**
-     * @var Saver
-     */
-    private Saver $saver;
-
-    /**
-     * @var Remover
-     */
-    private Remover $remover;
-
-    /**
      * Service  Constructor.
      *
      * @param Builder   $builder
      * @param Validator $validator
      * @param Saver     $saver
      * @param Remover   $remover
-     * @param Variants  $variants
      */
     public function __construct(
-        Builder $builder,
-        Validator $validator,
-        Saver $saver,
-        Remover $remover,
-        Variants $variants
+        private readonly Builder $builder,
+        private readonly Validator $validator,
+        private readonly Saver $saver,
+        private readonly Remover $remover
     ) {
-        $this->builder = $builder;
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->remover = $remover;
-        $this->variants = $variants;
     }
 
     /**

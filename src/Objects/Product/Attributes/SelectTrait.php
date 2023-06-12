@@ -100,10 +100,10 @@ trait SelectTrait
                 /** @var null|AttributeOptionValueInterface $value */
                 $value = $option->getOptionValues()->get($isoLang);
                 if ($value) {
-                    $choices[$code] = $value->getValue();
+                    $choices[$code] = $value->getValue() ?: $code;
                 } else {
                     $translation = $option->setLocale($isoLang)->getTranslation();
-                    $choices[$code] = $translation ? $translation->getValue() : null;
+                    $choices[$code] = $translation?->getValue() ?? $code;
                 }
             }
         }
@@ -166,7 +166,7 @@ trait SelectTrait
         $choices = array_keys($this->getSelectChoices($attribute, $isoLang));
         //====================================================================//
         // Check Value is Part of Possible Values
-        if (is_scalar($data) && in_array($data, $choices, true)) {
+        if (is_scalar($data) && in_array($data, $choices, false)) {
             return $this->setCoreValue($product, $attribute, $isoLang, $channel, $data);
         }
         //====================================================================//

@@ -16,6 +16,8 @@
 namespace Splash\Akeneo\Objects\Product\Variants;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
+use Exception;
+use Splash\Akeneo\Objects\Product;
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -29,6 +31,7 @@ trait AttributesTrait
      * @var array
      */
     private static array $requiredFields = array(
+        "label" => "Attribute Code Translation",
         "code" => "Attribute Code",
         "value" => "Attribute Value",
     );
@@ -62,6 +65,10 @@ trait AttributesTrait
             ->microData("http://schema.org/Product", "VariantAttributeCode")
             ->isNotTested()
         ;
+        if ($this->configuration->isLearningMode()) {
+            $this->fieldsFactory()->setPreferWrite();
+        }
+
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
         if (Splash::isTravisMode()) {
@@ -78,9 +85,13 @@ trait AttributesTrait
                 ->microData("http://schema.org/Product", "VariantAttributeName")
                 ->setMultilang($isoLang)
                 ->inList("attributes")
-                ->isReadOnly()
                 ->isNotTested()
             ;
+            if ($this->configuration->isLearningMode()) {
+                $this->fieldsFactory()->setPreferWrite();
+            } else {
+                $this->fieldsFactory()->isReadOnly();
+            }
         }
         //====================================================================//
         // Product Variation Attribute Code
@@ -95,6 +106,9 @@ trait AttributesTrait
             ->inList("attributes")
             ->isNotTested()
         ;
+        if ($this->configuration->isLearningMode()) {
+            $this->fieldsFactory()->setPreferWrite();
+        }
         //====================================================================//
         // Product Variation Attribute Value
         foreach ($this->locales->getAll() as $isoLang) {
@@ -112,6 +126,9 @@ trait AttributesTrait
                 ->inList("attributes")
                 ->isReadOnly()
             ;
+            if ($this->configuration->isLearningMode()) {
+                $this->fieldsFactory()->setPreferNone();
+            }
         }
     }
 
@@ -149,8 +166,10 @@ trait AttributesTrait
     /**
      * Write Given Fields
      *
-     * @param string     $fieldName Field Identifier / Name
-     * @param null|array $fieldData Field Data
+     * @param string       $fieldName Field Identifier / Name
+     * @param null|array[] $fieldData Field Data
+     *
+     * @throws Exception
      *
      * @return void
      *
@@ -163,31 +182,55 @@ trait AttributesTrait
         if ("attributes" != $fieldName) {
             return;
         }
-
         //====================================================================//
-        // Identify Products Attributes Ids
-        foreach ($fieldData ?? array() as $attrItem) {
+        // Walk on Available Languages
+        foreach ($this->variants->getWriteIsoLangs() as $isoLang) {
             //====================================================================//
-            // Check Product Attributes are Valid
-            if (!$this->isValidAttributeDefinition($attrItem)) {
-                continue;
+            // Walk on Received Attributes
+            foreach ($fieldData ?? array() as $attrItem) {
+                //====================================================================//
+                // Write Data from Attributes Service
+                $this->setVariantsAttributesField($attrItem, $isoLang);
             }
-            //====================================================================//
-            // Safety Check => Verify if FieldName is An Attribute Type
-            if (!$this->attr->has($attrItem["code"])) {
-                continue;
-            }
-            //====================================================================//
-            // If Variant Attribute => Skip Writing (Done via Variation Attributes)
-            if (!$this->variants->isVariantAttribute($this->object, $attrItem["code"])) {
-                continue;
-            }
-            //====================================================================//
-            // Read Data from Attributes Service
-            $this->attr->set($this->object, $attrItem["code"], $attrItem["value"]);
         }
-
         unset($this->in[$fieldName]);
+    }
+
+    /**
+     * Write Given Attribute
+     *
+     * @param array<string, string> $attrItem Attribute Data
+     * @param null|string           $isoLang  Iso Lang for Attribute Code
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    protected function setVariantsAttributesField(array $attrItem, ?string $isoLang): void
+    {
+        //====================================================================//
+        // Encode Attribute Key
+        $attrCodeKey = $this->variants->getWriteAttributeKey($isoLang);
+        //====================================================================//
+        // Check Product Attributes are Valid
+        if (!$this->isValidAttributeDefinition($attrItem, $attrCodeKey)) {
+            return;
+        }
+        //====================================================================//
+        // Touch Product Attribute
+        try {
+            $attrCode = $this->attr->findByCodeOrLabel($attrItem[$attrCodeKey], $isoLang);
+        } catch (Exception $e) {
+            return;
+        }
+        //====================================================================//
+        // If Variant Attribute => Skip Writing (Done via Variation Attributes)
+        if (!$this->variants->isVariantAttribute($this->object, $attrCode)) {
+            return;
+        }
+        //====================================================================//
+        // Read Data from Attributes Service
+        $this->attr->set($this->object, $attrCode, $attrItem["value"]);
     }
 
     //====================================================================//
@@ -197,11 +240,12 @@ trait AttributesTrait
     /**
      * Check if Attribute Array is Valid for Writing
      *
-     * @param array $fieldData Attribute Array
+     * @param array  $fieldData   Attribute Array
+     * @param string $attrCodeKey Attribute Code Key
      *
      * @return bool
      */
-    protected function isValidAttributeDefinition(array $fieldData): bool
+    protected function isValidAttributeDefinition(array $fieldData, string $attrCodeKey): bool
     {
         //====================================================================//
         // Check Attribute is Array
@@ -209,14 +253,14 @@ trait AttributesTrait
             return false;
         }
         //====================================================================//
-        // Check Required Attributes Data are Given
-        foreach (self::$requiredFields as $key => $name) {
-            if (!isset($fieldData[$key])) {
-                return Splash::log()->errTrace("Product ".$name." is Missing.");
-            }
-            if (empty($fieldData[$key]) || !is_scalar($fieldData[$key])) {
-                return Splash::log()->errTrace("Product ".$name." is Missing.");
-            }
+        // Check Attributes Value is Given
+        if (empty($fieldData["value"]) || !is_scalar($fieldData["value"])) {
+            return false;
+        }
+        //====================================================================//
+        // Check Attributes Code is Given
+        if (empty($fieldData[$attrCodeKey]) || !is_scalar($fieldData[$attrCodeKey])) {
+            return false;
         }
 
         return true;

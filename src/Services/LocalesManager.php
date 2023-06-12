@@ -45,25 +45,12 @@ class LocalesManager
     private ?array $locales;
 
     /**
-     * @var Repository
-     */
-    private Repository $repository;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private TranslatorInterface $translator;
-
-    /**
      * Service Constructor
-     *
-     * @param Repository          $repository
-     * @param TranslatorInterface $translator
      */
-    public function __construct(Repository $repository, TranslatorInterface $translator)
-    {
-        $this->repository = $repository;
-        $this->translator = $translator;
+    public function __construct(
+        private readonly Repository          $repository,
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     /**

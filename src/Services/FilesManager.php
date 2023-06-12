@@ -37,57 +37,23 @@ class FilesManager implements FileProviderInterface
     use SplashImages;
 
     /**
-     * @var Router
-     */
-    private Router $router;
-
-    /**
-     * @var FileStorer
-     */
-    private FileStorer $storer;
-
-    /**
-     * @var FileInfoRepository
-     */
-    private FileInfoRepository $repository;
-
-    /**
-     * @var RemoverInterface
-     */
-    private RemoverInterface $remover;
-
-    /**
-     * @var MountManager
-     */
-    private MountManager $mount;
-
-    /**
      * Service Constructor
-     *
-     * @param Router       $router
-     * @param FileStorer   $storer
-     * @param MountManager $mountManager
      */
     public function __construct(
-        Router $router,
-        FileStorer $storer,
-        RemoverInterface $remover,
-        FileInfoRepository $repository,
-        MountManager $mountManager
+        private readonly FileStorer         $storer,
+        private readonly RemoverInterface   $remover,
+        private readonly FileInfoRepository $repository,
+        private readonly MountManager $mount,
+        private readonly Router             $router,
     ) {
-        $this->router = $router;
-        $this->storer = $storer;
-        $this->repository = $repository;
-        $this->remover = $remover;
-        $this->mount = $mountManager;
     }
 
     /**
-     * Convert a Akeneo File Info to Splash Image Array
+     * Convert an Akeneo File Info to Splash Image Array
      *
      * @param FileInfo $file
      *
-     * @return array
+     * @return null|array
      */
     public function getSplashImage(FileInfo $file): ?array
     {
@@ -140,13 +106,10 @@ class FilesManager implements FileProviderInterface
         }
         //====================================================================//
         // Read Raw File from Splash
-        $rawFile = Splash::file()->getFile($splashFile["path"], $splashFile["md5"]);
+        $rawFile = Splash::file()->getFile($splashFile["file"] ?? $splashFile["path"], $splashFile["md5"]);
         if (!$rawFile) {
             return null;
         }
-
-        Splash::log()->dump($rawFile["md5"]);
-
         //====================================================================//
         // Write File to Temp Directory
         $writeFile = Splash::file()->writeFile(

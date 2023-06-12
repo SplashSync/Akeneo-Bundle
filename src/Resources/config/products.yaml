@@ -1,3 +1,8 @@
+
+########################################################################
+# Splash Akeneo Products Management Services
+########################################################################
+
 services:
     _defaults:
         autowire: true
@@ -9,69 +14,48 @@ services:
         class:      Splash\Akeneo\Objects\Product
         arguments:  
             -   "@pim_catalog.repository.product"
-            -   "@splash.akeneo.product.crud"  
-            -   "@splash.akeneo.product.attributes"
-            -   "@splash.akeneo.product.variants"
-            -   "@splash.akeneo.product.files"
-            -   "@splash.akeneo.locales"
         tags:
             # Register as Standalone Connector Object           
             - { name: "splash.standalone.object", type : "Product" }  
             
     ########################################################################
     # Akeneo Products Crud Manager
-    splash.akeneo.product.crud:
-        class:      Splash\Akeneo\Services\CrudService
-        arguments:  
+    Splash\Akeneo\Services\CrudService:
+        arguments:
             -   "@pim_catalog.repository.product"
             -   "@pim_catalog.builder.product"
             -   "@pim_catalog.validator.product"
             -   "@pim_catalog.saver.product"
+            -   "@pim_catalog.saver.product_model"
             -   "@pim_catalog.remover.product"
-            -   "@splash.akeneo.product.variants"
-            -   "@splash.akeneo.product.models"
 
     ########################################################################
     # Akeneo Products Crud Manager
-    splash.akeneo.product.attributes:
-        class:      Splash\Akeneo\Services\AttributesManager
-        arguments:  
+    Splash\Akeneo\Services\AttributesManager:
+        arguments:
             -   "@pim_catalog.updater.property_setter"
             -   "@pim_catalog.repository.attribute"
             -   "@akeneo_measure.manager"
-            -   "@splash.akeneo.product.files"
-            -   "@splash.akeneo.locales"  
 
     ########################################################################
     # Akeneo Products Variant Manager
-    splash.akeneo.product.variants:
+    Splash\Akeneo\Services\VariantsManager:
         class:      Splash\Akeneo\Services\VariantsManager
-        arguments:  
-            -   "@splash.akeneo.locales"
+        arguments:
             -   "@pim_catalog.repository.family_variant"
             
     ########################################################################
     # Akeneo Products Models Manager
-    splash.akeneo.product.models:
-        class:      Splash\Akeneo\Services\ModelsManager
-        arguments:  
+    Splash\Akeneo\Services\ModelsManager:
+        arguments:
             -   "@pim_catalog.factory.product_model"
             -   "@pim_catalog.validator.product_model"
             -   "@pim_catalog.saver.product_model"
             -   "@pim_catalog.remover.product_model"
-            -   "@splash.akeneo.product.variants"
 
     ########################################################################
-    # Akeneo Connector Products Files Manager
-    splash.akeneo.product.files:
-        class:      Splash\Akeneo\Services\FilesManager
-        arguments:  
-            -   "@router"
-            -   "@akeneo_file_storage.file_storage.file.file_storer"
-            -   "@akeneo_file_storage.remover.file"
-            -   "@akeneo_file_storage.repository.file_info"
-            -   "@oneup_flysystem.mount_manager"
-
+    # Akeneo Products Images Gallery Manager
+    Splash\Akeneo\Services\GalleryManager: ~
 
     ########################################################################
     # Akeneo Products Event EventSubscriber
@@ -94,12 +78,4 @@ services:
             -   "@splash.connectors.manager"
         tags:
             - { name: kernel.event_subscriber }
-
-    ########################################################################
-    # Akeneo Connector Locales Manager
-    splash.akeneo.locales:
-        class:      Splash\Akeneo\Services\LocalesManager
-        arguments:  
-            -   "@pim_catalog.repository.locale"
-            -   "@translator"
             

@@ -30,8 +30,8 @@ trait AttributesTrait
     public function buildAttributeFields(): void
     {
         //====================================================================//
-        // Ensure Service Configuration
-        $this->ensureSetup();
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
 
         $this->attr->build($this->fieldsFactory());
     }

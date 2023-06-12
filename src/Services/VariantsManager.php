@@ -21,7 +21,6 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Family;
-use ArrayObject;
 use Splash\Core\SplashCore as Splash;
 use Splash\Models\Objects\ObjectsTrait;
 use TypeError;
@@ -34,36 +33,20 @@ class VariantsManager
     use ObjectsTrait;
 
     /**
-     * @var LocalesManager
-     */
-    private LocalesManager $locales;
-
-    /**
-     * @var Variants
-     */
-    private Variants $repository;
-
-    /**
      * Cache for Family Variants Attributes Sets
      *
-     * @var array
+     * @var null|array
      */
     private ?array $varAttrs = array();
 
     /**
      * Service Constructor
-     *
-     * @param LocalesManager $locales
-     * @param Variants       $repository
      */
-    public function __construct(LocalesManager $locales, Variants $repository)
-    {
-        //====================================================================//
-        // Link to Splash Locales Manager
-        $this->locales = $locales;
-        //====================================================================//
-        // Link to Akeneo Family Variants Repository
-        $this->repository = $repository;
+    public function __construct(
+        private readonly Variants $repository,
+        private readonly Configuration $conf,
+        private readonly LocalesManager $locales,
+    ) {
     }
 
     //====================================================================//
@@ -130,9 +113,9 @@ class VariantsManager
         if ($model->hasProductModels()) {
             /** @var ProductModel $productModel */
             foreach ($model->getProductModels() as $productModel) {
-                $response = array_replace_recursive(
+                $response = array_merge_recursive(
                     $response,
-                    $this->getModelProducts($productModel)
+                    $this->getModelProducts($productModel, $entities)
                 );
             }
 
@@ -185,28 +168,30 @@ class VariantsManager
     /**
      * Find Product Family Variant by Code
      *
-     * @param array|ArrayObject $attributes
+     * @param array $attributes
      *
      * @return null|Family
      */
-    public function findFamilyVariantByAttributes(iterable $attributes): ?Family
+    public function findFamilyVariantByAttributes(array $attributes): ?Family
     {
         //====================================================================//
-        // Walk on Each Product Attribute to Collect Codes
-        $axes = array();
-        foreach ($attributes as $attribute) {
-            $axes[] = $attribute["code"];
-        }
-
-        //====================================================================//
-        // Walk on Each Available Family Variants
-        /** @var Family $familyVariant */
-        foreach ($this->repository->findAll() as $familyVariant) {
-            $familyAxes = $this->getFamilyVariationAttributes($familyVariant);
+        // Walk on Locales
+        foreach ($this->getWriteIsoLangs() as $isoLang) {
             //====================================================================//
-            // Family Variants has Same Attributes
-            if (array_values($familyAxes) == $axes) {
-                return $familyVariant;
+            // Encode Attribute Axes
+            if (!$axes = $this->getAttributesAxes($attributes, $isoLang)) {
+                continue;
+            }
+            //====================================================================//
+            // Walk on Each Available Family Variants
+            /** @var Family $familyVariant */
+            foreach ($this->repository->findAll() as $familyVariant) {
+                $familyAxes = $this->getFamilyVariationAttributes($familyVariant, $isoLang);
+                //====================================================================//
+                // Family Variants has Same Attributes
+                if (array_values($familyAxes) == $axes) {
+                    return $familyVariant;
+                }
             }
         }
 
@@ -305,7 +290,7 @@ class VariantsManager
      *
      * @return null|ProductModel
      */
-    private function getParentModel(Product $product): ?ProductModel
+    public function getParentModel(Product $product): ?ProductModel
     {
         do {
             //====================================================================//
@@ -323,15 +308,118 @@ class VariantsManager
     }
 
     /**
+     * Recursive Reading of All Product Parents
+     *
+     * @param Product $product
+     *
+     * @return ProductModel[]
+     */
+    public function getParentModels(Product $product): array
+    {
+        $parents = array();
+        do {
+            //====================================================================//
+            // LOAD PARENT
+            $parent = $product->getParent();
+            //====================================================================//
+            // PRODUCT HAS NO PARENTS
+            if (null === $parent) {
+                return $parents;
+            }
+            //====================================================================//
+            // PRODUCT HAS PARENTS
+            $parents[] = $parent;
+            $product = $parent;
+        } while (true);
+    }
+
+    /**
+     * Recursive Reading of All Product Parents
+     *
+     * @param Product $product
+     *
+     * @return array<int|string, array|string>
+     */
+    public function getVariantsSummary(Product $product): array
+    {
+        //====================================================================//
+        // Get Parent Model
+        $model = $this->getParentModel($product);
+        if (!$model) {
+            return array($product->getUuid()->toString());
+        }
+        //====================================================================//
+        // Get Children Uuids
+        return array($model->getId() => self::getChildrenUuids($model));
+    }
+
+    /**
+     * Get Available Iso Lang Codes
+     *
+     * @return array<null|string>
+     */
+    public function getWriteIsoLangs(): array
+    {
+        if ($this->conf->isLearningMode()) {
+            return array_merge(array(null), $this->locales->getAll());
+        }
+
+        return array(null);
+    }
+
+    /**
+     * Get Attribute Array Key for Iso Lang
+     *
+     * @param null|string $isoLang Iso Lang for Attribute Code
+     *
+     * @return string
+     */
+    public function getWriteAttributeKey(?string $isoLang): string
+    {
+        if ($isoLang) {
+            return $this->locales->isDefault($isoLang)
+                ? "label"
+                : sprintf("label_%s", $isoLang)
+            ;
+        }
+
+        return 'code';
+    }
+
+    /**
+     * Get Attributes Axes Summary
+     *
+     * @param array       $attributes Splash Products Attributes List
+     * @param null|string $isoLang    Iso Lang for Attribute Code
+     *
+     * @return null|string[]
+     */
+    private function getAttributesAxes(array $attributes, ?string $isoLang): ?array
+    {
+        //====================================================================//
+        // Encode Attribute Key
+        $key = $this->getWriteAttributeKey($isoLang);
+        //====================================================================//
+        // Walk on Each Product Attribute to Collect Codes
+        $axes = array();
+        foreach ($attributes as $attribute) {
+            $axes[] = $attribute[$key];
+        }
+
+        return empty(array_filter($axes)) ? null : $axes;
+    }
+
+    /**
      * Get List of All Attributes with Simple Caching
      *
-     * @param Family $family
+     * @param Family      $family
+     * @param null|string $isoLang
      *
      * @return array
      */
-    private function getFamilyVariationAttributes(Family $family): array
+    private function getFamilyVariationAttributes(Family $family, ?string $isoLang = null): array
     {
-        $familyId = $family->getId();
+        $familyId = sprintf("%s-%s", $family->getId(), $isoLang ?? 'default');
 
         if (!isset($this->varAttrs[$familyId])) {
             //====================================================================//
@@ -341,7 +429,11 @@ class VariantsManager
             // Walk on All Variation Attributes Sets
             /** @var Attribute $attribute */
             foreach ($family->getAxes() as $attribute) {
-                $attrSet[$attribute->getId()] = $attribute->getCode();
+                $attrSet[$attribute->getId()] = $isoLang
+                    /** @phpstan-ignore-next-line  */
+                    ? $attribute->getTranslation($isoLang)->getLabel()
+                    : $attribute->getCode()
+                ;
             }
             //====================================================================//
             // Init Family Variants Attributes Cache
@@ -349,5 +441,28 @@ class VariantsManager
         }
 
         return $this->varAttrs[$familyId];
+    }
+
+    private static function getChildrenUuids(ProductModel $model): array
+    {
+        $uuids = array();
+        //====================================================================//
+        // Not Lowest Model => Recursive Scan
+        $models = $model->getProductModels();
+        if (!$models->isEmpty()) {
+            /** @var ProductModel $childModel */
+            foreach ($models as $childModel) {
+                $uuids[$childModel->getId()] = self::getChildrenUuids($childModel);
+            }
+        } else {
+            /** @var Product $product */
+            foreach ($model->getProducts() as $product) {
+                //====================================================================//
+                // Last Level => Product
+                $uuids[] = $product->getUuid()->toString();
+            }
+        }
+
+        return $uuids;
     }
 }
