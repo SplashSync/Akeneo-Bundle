@@ -30,6 +30,7 @@ bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-core.sh
 bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-assets.sh
 ################################################################################
 # Check if Akeneo Fixtures are Installed
+bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/override-akeneo-fixtures.sh
 bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-fixtures.sh
 ################################################################################
 # Check if Module is Installed

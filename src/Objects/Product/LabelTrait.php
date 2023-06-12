@@ -51,6 +51,7 @@ trait LabelTrait
                 ->MicroData("http://schema.org/Product", "alternateName")
                 ->setMultilang($isoLang)
                 ->isListed($this->locales->isDefault($isoLang))
+//                ->isReadOnly()
                 ->isNotTested()
             ;
 
@@ -65,7 +66,7 @@ trait LabelTrait
             ;
 
             //====================================================================//
-            // Default Short Decsription
+            // Default Short Description
             $this->fieldsFactory()->create(SPL_T_VARCHAR)
                 ->Identifier("default_desc")
                 ->Name("DEFAULT Description")
@@ -84,7 +85,7 @@ trait LabelTrait
      *
      * @return void
      */
-    public function getMultilangFields(string $key, string $fieldName): void
+    public function getMultiLangFields(string $key, string $fieldName): void
     {
         //====================================================================//
         // Walk on Each Available Languages
@@ -96,8 +97,20 @@ trait LabelTrait
             // READ Fields
             switch ($baseFieldName) {
                 //====================================================================//
-                // Multilang Readings
+                // Multi-lang Readings
                 case 'label':
+                    //====================================================================//
+                    // Travis Mode => Force using Variant Name as Label
+                    if (Splash::isTravisMode() && empty($this->attr->getLabelAttributeCode($this->object))) {
+                        $this->out[$fieldName] = $this->object->getValue("variation_name", $isoLang)?->getData();
+                        unset($this->in[$key]);
+
+                        break;
+                    }
+                    $this->out[$fieldName] = $this->object->getLabel($isoLang);
+                    unset($this->in[$key]);
+
+                    break;
                 case 'label_with_options':
                 case 'default_desc':
                     $this->out[$fieldName] = $this->object->getLabel($isoLang);
@@ -116,13 +129,13 @@ trait LabelTrait
      *
      * @return void
      */
-    public function setMultilangFields(string $fieldName, $fieldData): void
+    public function setMultiLangFields(string $fieldName, $fieldData): void
     {
         //====================================================================//
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
-            // Decode Multilang Field Name
+            // Decode MultiLang Field Name
             $baseFieldName = $this->locales->decode($fieldName, $isoLang);
             //====================================================================//
             // WRITE Fields
@@ -130,6 +143,11 @@ trait LabelTrait
                 continue;
             }
             $labelCode = $this->attr->getLabelAttributeCode($this->object);
+            //====================================================================//
+            // Travis Mode => Force using Variant Name as Label
+            if (Splash::isTravisMode() && empty($labelCode)) {
+                $labelCode = "variation_name";
+            }
             //====================================================================//
             // Write Data from Attributes Service
             if ($labelCode) {

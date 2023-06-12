@@ -68,7 +68,7 @@ trait AttributesTrait
         //====================================================================//
         // PhpUnit/Travis Mode => Force Variation Types
         if (Splash::isTravisMode()) {
-            $this->fieldsFactory()->addChoice("color", "Color");
+            $this->fieldsFactory()->addChoice("main_color", "Main Color");
         }
 
         foreach ($this->locales->getAll() as $isoLang) {

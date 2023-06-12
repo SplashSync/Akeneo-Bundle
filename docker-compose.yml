@@ -48,7 +48,6 @@ services:
         container_name:             v7.akeneo.local
         volumes:
             - ./:/builds/SplashSync/Akeneo-Bundle:ro
-            - /mnt/data/Dossiers Clients/BTC Wine/Sources:/data
         hostname:           v7.akeneo.local
         networks:
             akeneo:         { ipv4_address: 172.105.0.70, aliases: [ v7.akeneo.local ] }

@@ -132,6 +132,7 @@ quality:v7-php-8.1:
       - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-core.sh
       ################################################################################
       # Check if Akeneo Fixtures are Installed
+      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/override-akeneo-fixtures.sh
       - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-fixtures.sh
       ################################################################################
       # Install DEV Module
