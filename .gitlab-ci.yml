@@ -62,13 +62,13 @@ stages:
 quality:v4-php-7.3:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.3
     variables:
-        AKENEO_VERSION:   4.0.97
+        AKENEO_VERSION:   ^4.0.97
     <<: *quality
 
 quality:v5-php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
     variables:
-        AKENEO_VERSION:   5.0.18
+        AKENEO_VERSION:   ^5.0.18
     <<: *quality
 
 ################################################################
