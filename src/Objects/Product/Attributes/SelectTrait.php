@@ -155,6 +155,8 @@ trait SelectTrait
      * @param mixed     $data
      *
      * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function setSelectValue(
         Product $product,
@@ -163,6 +165,9 @@ trait SelectTrait
         string $channel,
         $data
     ): bool {
+        //====================================================================//
+        // Format new Option
+        $data = is_scalar($data) ? str_replace(array(" ",".",","), "_", (string) $data) : $data;
         //====================================================================//
         // Load Possible Select Values
         $choices = array_keys($this->getSelectChoices($attribute, $isoLang));

@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice as Price;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
 use Exception;
+use Splash\Akeneo\Models\TypesConverter;
 use Splash\Models\Objects\PricesTrait;
 use Symfony\Component\Intl\Currencies;
 
@@ -56,7 +57,14 @@ trait PricesCollectionsTrait
         $vatValue = null;
         $vatCode = $attribute->getCode()."_vat";
         if ($this->hasForLocale($vatCode, $isoLang)) {
-            $vatValue = $this->getScalarValue($product, $this->getByCode($vatCode), $isoLang, $channel);
+            $vatAttr = $this->getByCode($vatCode);
+            //====================================================================//
+            // If VAT is a Select Attribute
+            if (TypesConverter::isSelect($vatAttr->getType())) {
+                $vatValue = $this->getSelectValueTranslation($product, $vatAttr, $isoLang, $channel);
+            } else {
+                $vatValue = $this->getScalarValue($product, $vatAttr, $isoLang, $channel);
+            }
         }
 
         //====================================================================//
@@ -100,13 +108,20 @@ trait PricesCollectionsTrait
         // Update Raw VAT Attribute Value (if Exists)
         $vatCode = $attribute->getCode()."_vat";
         if ($this->hasForLocale($vatCode, $isoLang)) {
-            $this->setCoreValue(
-                $product,
-                $this->getByCode($vatCode),
-                $isoLang,
-                $channel,
-                self::prices()->taxPercent($data)
-            );
+            $vatRate = self::prices()->taxPercent($data);
+            $vatAttr = $this->getByCode($vatCode);
+            //====================================================================//
+            // If VAT is a Select Attribute
+            if (TypesConverter::isSelect($vatAttr->getType())) {
+                //====================================================================//
+                // Detect Attribute Option
+                $vatOptionCode = array_search((string) $vatRate, $this->getSelectChoices($vatAttr, $isoLang), true);
+                if ($vatOptionCode) {
+                    $this->setSelectValue($product, $vatAttr, $isoLang, $channel, $vatOptionCode);
+                }
+            } else {
+                $this->setCoreValue($product, $vatAttr, $isoLang, $channel, $vatRate);
+            }
         }
         //====================================================================//
         // Prepare Price Attribute Data
