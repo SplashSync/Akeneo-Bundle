@@ -51,6 +51,17 @@ trait CoreTrait
             ->isReadOnly()
         ;
         //====================================================================//
+        // Product Variation Parent Reference
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->identifier("parent_ref")
+            ->name("Parent SKU")
+            ->group("Metadata")
+            ->microData("http://schema.org/Product", "isVariationOfName")
+            ->isIndexed()
+            ->isNotTested()
+        ;
+
+        //====================================================================//
         // CHILD PRODUCTS INFORMATIONS
         //====================================================================//
 
@@ -93,6 +104,10 @@ trait CoreTrait
                 break;
             case 'parent':
                 $this->out[$fieldName] = $this->variants->getParentModelId($this->object);
+
+                break;
+            case 'parent_ref':
+                $this->out[$fieldName] = $this->variants->getParentModel($this->object)?->getCode();
 
                 break;
             default:
@@ -150,11 +165,21 @@ trait CoreTrait
      *
      * @return void
      */
-    protected function setVariantsCoreFields(string $fieldName, $fieldData)
+    protected function setVariantsCoreFields(string $fieldName, $fieldData): void
     {
         //====================================================================//
         // WRITE Field
         switch ($fieldName) {
+            case 'parent_ref':
+                if (empty($fieldData) || !is_scalar($fieldData)) {
+                    break;
+                }
+                $parent = $this->variants->getParentModel($this->object);
+                if ($parent && ($parent->getIdentifier() != $fieldData)) {
+                    $parent->setCode((string) $fieldData);
+                }
+
+                break;
             case 'variants':
                 break;
             default:

@@ -305,11 +305,6 @@ class GalleryUpdater
         // Walk on Received Images
         foreach ($receivedImages as $key => $receivedImage) {
             //====================================================================//
-            // Is Visible
-            if (!($receivedImage[self::KEY_VISIBLE] ?? false)) {
-                continue;
-            }
-            //====================================================================//
             // Is Cover
             if ($receivedImage[self::KEY_COVER] ?? false) {
                 unset($receivedImages[$key]);
