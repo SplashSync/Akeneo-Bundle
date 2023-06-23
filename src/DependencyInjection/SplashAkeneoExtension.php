@@ -40,6 +40,7 @@ class SplashAkeneoExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('products.yaml');
+        $loader->load('categories.yaml');
         $loader->load('tools.yaml');
         $loader->load('imports/commons.yaml');
     }

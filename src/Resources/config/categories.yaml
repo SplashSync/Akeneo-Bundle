@@ -1,0 +1,21 @@
+
+########################################################################
+# Splash Akeneo Categories Management Services
+########################################################################
+
+services:
+    _defaults:
+        autowire: true
+
+    ########################################################################
+    # Akeneo Category Data Transformer
+    # Convert In/Out Doctrine Objects Fields to Splash Standard Format
+    Splash\Akeneo\Objects\Category:
+        arguments:
+            - "@pim_catalog.repository.category"
+            - "@pim_catalog.factory.category"
+            - "@pim_catalog.saver.category"
+            - "@pim_catalog.remover.category"
+        tags:
+            # Register as Standalone Connector Object           
+            - { name: "splash.standalone.object", type : "Category" }

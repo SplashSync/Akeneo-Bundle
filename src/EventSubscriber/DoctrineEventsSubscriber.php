@@ -15,6 +15,7 @@
 
 namespace Splash\Akeneo\EventSubscriber;
 
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
@@ -45,6 +46,7 @@ class DoctrineEventsSubscriber extends AbstractEventSubscriber
     protected static array $classMap = array(
         Product::class => "Product",
         ProductModel::class => "Product",
+        Category::class => "Category",
     );
 
     /**

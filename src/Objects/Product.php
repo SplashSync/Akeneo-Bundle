@@ -38,15 +38,19 @@ use Splash\Models\Objects\PrimaryKeysAwareInterface;
  */
 class Product extends AbstractStandaloneObject implements FileProviderInterface, PrimaryKeysAwareInterface
 {
+    //====================================================================//
     // Splash Php Core Traits
     use \Splash\Models\Objects\IntelParserTrait;
     use \Splash\Models\Objects\SimpleFieldsTrait;
     use \Splash\Models\Objects\ListsTrait;
     use \Splash\Models\Objects\GenericFieldsTrait;
 
+    //====================================================================//
     // Akeneo Generic Traits
     use Core\ObjectMetadataTrait;
+    use Core\ObjectDescriptionTrait;
 
+    //====================================================================//
     // Akeneo Products Traits
     use Product\CrudTrait;
     use Product\CoreTrait;
@@ -133,35 +137,6 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
         //====================================================================//
         // Setup Splash Akeneo Connector
         $this->configuration->setup($this);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function description(): array
-    {
-        //====================================================================//
-        // Setup Splash Akeneo Connector
-        $this->configuration->setup($this);
-        //====================================================================//
-        // Learning Mode Configuration
-        if ($this->configuration->isLearningMode()) {
-            self::$enablePushCreated = true;
-            self::$enablePushUpdated = true;
-            self::$enablePushDeleted = true;
-            self::$enablePullCreated = false;
-            self::$enablePullUpdated = false;
-            self::$enablePullDeleted = false;
-        }
-        //====================================================================//
-        // Catalog Mode Configuration
-        if ($this->configuration->isCatalogMode()) {
-            self::$allowPushCreated = false;
-            self::$allowPushUpdated = false;
-            self::$allowPushDeleted = false;
-        }
-
-        return parent::description();
     }
 
     /**

@@ -15,10 +15,10 @@
 
 namespace Splash\Akeneo\EventSubscriber;
 
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\ORM\Events;
 use Splash\Bundle\Models\AbstractEventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -36,6 +36,7 @@ class StorageEventsSubscriber extends AbstractEventSubscriber implements EventSu
     protected static array $classMap = array(
         Product::class => "Product",
         ProductModel::class => "Product",
+        Category::class => "Category",
     );
 
     /**
