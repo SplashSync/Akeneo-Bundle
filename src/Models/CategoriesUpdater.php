@@ -24,7 +24,7 @@ class CategoriesUpdater
     /**
      * @var string[]
      */
-    private array $currentCodes;
+    private array $currentCodes = array();
 
     /**
      * @var string[]
