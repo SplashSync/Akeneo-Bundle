@@ -15,8 +15,9 @@
 
 namespace Splash\Akeneo\Objects;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository as Repository;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface as CategoryRepo;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface as Repository;
 use Splash\Akeneo\Configurators\Product\CatalogModeConfigurator;
 use Splash\Akeneo\Configurators\Product\LearningModeConfigurator;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
@@ -34,7 +35,7 @@ use Splash\Models\Objects\PrimaryKeysAwareInterface;
 /**
  * Splash Product Object
  *
- * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Product extends AbstractStandaloneObject implements FileProviderInterface, PrimaryKeysAwareInterface
 {
@@ -59,6 +60,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
     use Product\VariantsTrait;
     use Product\ImagesTrait;
     use Product\CategoriesTrait;
+    use Product\CategoriesLinksTrait;
     use Product\AttributesTrait;
     use Product\ObjectsListTrait;
     use Product\FilesTrait;
@@ -123,14 +125,15 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
      * Service Constructor
      */
     public function __construct(
-        protected Repository $repository,
-        protected Crud $crud,
-        protected Attributes $attr,
-        protected Variants $variants,
-        protected Files $files,
-        protected Gallery $gallery,
+        protected Repository    $repository,
+        protected CategoryRepo  $categoryRepository,
+        protected Crud          $crud,
+        protected Attributes    $attr,
+        protected Variants      $variants,
+        protected Files         $files,
+        protected Gallery       $gallery,
         protected Configuration $configuration,
-        protected Locales $locales
+        protected Locales       $locales
     ) {
         //====================================================================//
         // Setup Splash Akeneo Connector

@@ -9,7 +9,9 @@ services:
 
     ########################################################################
     # Akeneo Configuration Manager
-    Splash\Akeneo\Services\Configuration: ~
+    Splash\Akeneo\Services\Configuration:
+        arguments:
+            - "@pim_catalog.repository.channel"
 
     ########################################################################
     # Akeneo Files Manager

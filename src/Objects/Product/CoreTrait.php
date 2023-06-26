@@ -95,7 +95,7 @@ trait CoreTrait
      *
      * @return void
      */
-    public function getCoreFields(string $key, string $fieldName)
+    public function getCoreFields(string $key, string $fieldName): void
     {
         switch ($fieldName) {
             //====================================================================//
@@ -110,7 +110,7 @@ trait CoreTrait
                 break;
             case 'family_code':
                 $family = $this->object->getFamily();
-                $this->out[$fieldName] = $family ? $family->getCode() : null;
+                $this->out[$fieldName] = $family?->getCode();
 
                 break;
             case 'family_label':
@@ -125,7 +125,7 @@ trait CoreTrait
                 break;
             case 'family_variant_code':
                 $family = $this->object->getFamilyVariant();
-                $this->out[$fieldName] = $family ? $family->getCode() : null;
+                $this->out[$fieldName] = $family?->getCode();
 
                 break;
             default:

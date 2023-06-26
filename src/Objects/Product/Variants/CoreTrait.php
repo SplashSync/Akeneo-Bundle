@@ -67,7 +67,7 @@ trait CoreTrait
 
         //====================================================================//
         // Product Variation List - Product Link
-        $this->fieldsFactory()->create((string) self::objects()->Encode("Product", SPL_T_ID))
+        $this->fieldsFactory()->create((string) self::objects()->encode("Product", SPL_T_ID))
             ->identifier("id")
             ->name("Variants")
             ->inList("variants")

@@ -75,7 +75,7 @@ trait CrudTrait
         //====================================================================//
         // Forward to Saver Service
         try {
-            $this->saver->save($this->object);
+            $this->saver->save($category);
         } catch (Exception $e) {
             Splash::log()->errNull($e->getMessage());
 

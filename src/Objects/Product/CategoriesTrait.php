@@ -16,7 +16,11 @@
 namespace Splash\Akeneo\Objects\Product;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
+use Splash\Akeneo\Models\CategoriesUpdater;
+use Splash\Client\Splash;
 use Splash\Models\Helpers\InlineHelper;
 
 /**
@@ -40,18 +44,22 @@ trait CategoriesTrait
         $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
         //====================================================================//
         // Product Categories Codes
-        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+        $this->fieldsFactory()->create(SPL_T_INLINE)
             ->identifier("categories")
-            ->name("Categorie Codes")
+            ->name("Categories Codes")
             ->microData("http://schema.org/Product", "publicCategory")
-            ->isReadOnly()
+            ->addChoices($this->getCategoriesChoices())
+//            ->isReadOnly()
         ;
+
+        Splash::log()->dump($this->getCategoriesChoices());
+
         //====================================================================//
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
             // Product Categories Labels
-            $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            $this->fieldsFactory()->create(SPL_T_INLINE)
                 ->identifier("categories_names")
                 ->name("Categories Label")
                 ->microData("http://schema.org/Product", "publicCategoryNames")
@@ -125,5 +133,96 @@ trait CategoriesTrait
             $this->out[$fieldName] = InlineHelper::fromArray($categoriesNames);
             unset($this->in[$key]);
         }
+    }
+
+    /**
+     * Write Given Fields
+     *
+     * @param string      $fieldName Field Identifier / Name
+     * @param null|string $fieldData Field Data
+     *
+     * @return void
+     */
+    protected function setCategoriesFields(string $fieldName, ?string $fieldData): void
+    {
+        //====================================================================//
+        // WRITE Field
+        switch ($fieldName) {
+            case 'categories':
+                //====================================================================//
+                // Create Categories Updater
+                $updater = new CategoriesUpdater($this->object, $fieldData);
+                //====================================================================//
+                // Add Categories
+                foreach ($updater->getAddedCodes() as $identifier) {
+                    $category = $this->categoryRepository->findOneByIdentifier($identifier);
+                    if ($category instanceof CategoryInterface) {
+                        $this->object->addCategory($category);
+                    }
+                }
+                //====================================================================//
+                // Remove Categories
+                foreach ($updater->getRemovedCodes() as $identifier) {
+                    $category = $this->categoryRepository->findOneByIdentifier($identifier);
+                    if ($category instanceof CategoryInterface) {
+                        $this->object->removeCategory($category);
+                    }
+                }
+
+                break;
+            default:
+                return;
+        }
+
+        unset($this->in[$fieldName]);
+    }
+
+    /**
+     * get Choices for Categories Codes
+     *
+     * @return array
+     */
+    private function getCategoriesChoices(): array
+    {
+        $choices = array();
+        //====================================================================//
+        // Filter Categories on Default Channel
+        $rootCategoryId = $this->configuration->getRootCategoryId();
+        if (empty($rootCategoryId)) {
+            return $choices;
+        }
+        //====================================================================//
+        // Get All Categories
+        /** @var CategoryInterface[] $categories */
+        $categories = $this->categoryRepository->findBy(array(
+            'root' => (string) $rootCategoryId
+        ));
+        foreach ($categories as $category) {
+            $choices[$category->getCode()] = sprintf(
+                "[%s] %s",
+                $category->getCode(),
+                self::getCategoryFullName($category, $this->locales->getDefault())
+            );
+        }
+
+        return $choices;
+    }
+
+    /**
+     * Get Category Full Name String
+     */
+    private static function getCategoryFullName(CategoryInterface $category, string $isoCode): string
+    {
+        $parent = $category->getParent();
+        $fullName = ($parent instanceof CategoryInterface)
+            ? self::getCategoryFullName($parent, $isoCode)
+            : ""
+        ;
+        /** @var CategoryTranslationInterface $translation */
+        $translation = $category->getTranslation($isoCode);
+
+        $fullName .= $category->isRoot() ? "" :  (" > ".$translation->getLabel());
+
+        return $fullName;
     }
 }

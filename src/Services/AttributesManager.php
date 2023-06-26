@@ -18,11 +18,11 @@ namespace   Splash\Akeneo\Services;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertySetter;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Attribute;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Group;
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as Repository;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
 use Exception;
@@ -59,7 +59,7 @@ class AttributesManager
      */
     public function __construct(
         protected PropertySetter      $setter,
-        protected AttributeRepository $attributes,
+        protected Repository        $attributes,
         protected BaseSaver           $optionSaver,
         protected MeasureManager      $measure,
         protected Files               $files,

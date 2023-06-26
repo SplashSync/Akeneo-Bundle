@@ -15,6 +15,8 @@
 
 namespace Splash\Akeneo\Services;
 
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface as ChannelRepository;
 use Splash\Akeneo\Services\LocalesManager as Locales;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 
@@ -29,6 +31,13 @@ class Configuration
      * @var string
      */
     private string $channel;
+
+    /**
+     * Default Channel
+     *
+     * @var null|ChannelInterface
+     */
+    private ?ChannelInterface $channelObject;
 
     /**
      * Default Currency Code
@@ -62,6 +71,7 @@ class Configuration
      * Service Constructor
      */
     public function __construct(
+        private readonly ChannelRepository $channelRepository,
         private readonly Locales $locales
     ) {
     }
@@ -99,6 +109,12 @@ class Configuration
         $this->imagesCodes = $imagesCodes;
 
         //====================================================================//
+        // Reset Channel if Needed
+        if (isset($this->channelObject) && ($channel != $this->channelObject->getCode())) {
+            $this->channelObject = null;
+        }
+
+        //====================================================================//
         // Default Language
         $this->locales->setDefault($locale);
 
@@ -113,6 +129,26 @@ class Configuration
     public function getChannel(): string
     {
         return $this->channel;
+    }
+
+    /**
+     * Get Connector Default Channel ID
+     *
+     * @return null|int
+     */
+    public function getChannelId(): ?int
+    {
+        return $this->getChannelObject()?->getId();
+    }
+
+    /**
+     * Get Connector Default Category ID
+     *
+     * @return null|int
+     */
+    public function getRootCategoryId(): ?int
+    {
+        return $this->getChannelObject()?->getCategory()->getId();
     }
 
     /**
@@ -153,5 +189,32 @@ class Configuration
     public function getImagesCodes(): array
     {
         return $this->imagesCodes;
+    }
+
+    /**
+     * Get Connector Default Channel Object
+     *
+     * @return null|ChannelInterface
+     */
+    private function getChannelObject(): ?ChannelInterface
+    {
+        //====================================================================//
+        // Channel Already Loaded
+        if (isset($this->channelObject)) {
+            return $this->channelObject;
+        }
+
+        //====================================================================//
+        // Filter Categories on Default Channel
+        $channelCode = $this->getChannel();
+        if (empty($channelCode)) {
+            return null;
+        }
+        //====================================================================//
+        // Connect to Channels Repository
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        $this->channelObject = ($channel instanceof ChannelInterface) ? $channel : null;
+
+        return $this->channelObject;
     }
 }

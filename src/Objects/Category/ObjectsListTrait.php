@@ -18,7 +18,6 @@ namespace Splash\Akeneo\Objects\Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
-use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Splash\Bundle\Helpers\Doctrine\ObjectsListHelperTrait;
 
@@ -40,21 +39,12 @@ trait ObjectsListTrait
     {
         //====================================================================//
         // Filter Categories on Default Channel
-        $channelCode = $this->configuration->getChannel();
-        if (empty($channelCode)) {
-            return $this;
-        }
-        //====================================================================//
-        // Connect to Channels Repository
-        /** @var ChannelRepositoryInterface $repository */
-        $repository = $queryBuilder->getEntityManager()->getRepository(Channel::class);
-        /** @var null|Channel $channel */
-        $channel = $repository->findOneByIdentifier($channelCode);
-        if ($channel) {
+        $rootCategoryId = $this->configuration->getRootCategoryId();
+        if ($rootCategoryId) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->like('c.root', ":channel")
             );
-            $queryBuilder->setParameter('channel', (string) $channel->getCategory()->getId());
+            $queryBuilder->setParameter('channel', (string) $rootCategoryId);
         }
 
         return $this;
