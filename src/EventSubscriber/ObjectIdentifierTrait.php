@@ -40,6 +40,12 @@ trait ObjectIdentifierTrait
     protected function getObjectIdentifiers($event, AbstractConnector $connector): array
     {
         //====================================================================//
+        // Get Impacted Category
+        $category = self::getCategory($event);
+        if ($category) {
+            return array((string) $category->getId());
+        }
+        //====================================================================//
         // Get Impacted Object
         /** @var null|Product|ProductModel $product */
         $product = self::getProduct($event);
@@ -127,6 +133,31 @@ trait ObjectIdentifierTrait
         }
 
         return $product;
+    }
+
+    /**
+     * @param GenericEvent|LifecycleEventArgs $event
+     *
+     * @return null|CategoryInterface
+     */
+    private static function getCategory($event): ?object
+    {
+        //====================================================================//
+        // Get Impacted Object
+        $object = null;
+        if ($event instanceof LifecycleEventArgs) {
+            $object = $event->getObject();
+        }
+        if ($event instanceof GenericEvent) {
+            $object = $event->getSubject();
+        }
+        //====================================================================//
+        // Get List of Categories for this Connection
+        if (!($object instanceof CategoryInterface)) {
+            return null;
+        }
+
+        return $object;
     }
 
     /**

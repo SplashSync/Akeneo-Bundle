@@ -16,6 +16,7 @@
 namespace Splash\Akeneo\Objects\Category;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Category Core Fields Access
@@ -39,7 +40,6 @@ trait CoreTrait
             ->identifier("code")
             ->name('Code')
             ->isRequired()
-            ->isReadOnly()
             ->isListed()
             ->isNotTested()
         ;
@@ -163,7 +163,11 @@ trait CoreTrait
     {
         switch ($fieldName) {
             case 'code':
-                $this->setGeneric($fieldName, $fieldData);
+                if ($fieldData != $this->object->getCode()) {
+                    Splash::log()->errNull(
+                        "You can't update Category Code, please delete and recreate the category."
+                    );
+                }
 
                 break;
             default:

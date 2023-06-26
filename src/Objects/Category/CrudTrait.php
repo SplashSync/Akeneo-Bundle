@@ -62,6 +62,9 @@ trait CrudTrait
         //====================================================================//
         // Setup Splash Akeneo Connector
         $this->configuration->setup($this);
+
+        Splash::log()->dump($this->in);
+
         //====================================================================//
         // Check Customer Name is given
         if (empty($this->in["code"]) || !is_string($this->in["code"])) {
@@ -100,8 +103,8 @@ trait CrudTrait
         //====================================================================//
         // Forward to Saver Service
         try {
-            if ($needed && !$this->saver->save($this->object)) {
-                return null;
+            if ($needed) {
+                $this->saver->save($this->object);
             }
         } catch (Exception $e) {
             return Splash::log()->errNull($e->getMessage());
@@ -127,8 +130,14 @@ trait CrudTrait
             return true;
         }
         //====================================================================//
-        // Forward to Crud Service
-        return $this->remover->remove($category);
+        // Forward to Remover Service
+        try {
+            $this->remover->remove($category);
+        } catch (Exception $e) {
+            return Splash::log()->err($e->getMessage());
+        }
+
+        return true;
     }
 
     /**
