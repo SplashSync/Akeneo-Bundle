@@ -88,11 +88,9 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
      */
     protected static string $ico = 'fa fa-product-hunt';
 
-    /**
-     * Object Synchronization Recommended Configuration
-     *
-     * @codingStandardsIgnoreStart
-     */
+    //====================================================================//
+    // Object Synchronization Recommended Configuration
+    //====================================================================//
 
     /**
      * @var bool Enable Creation Of New Local Objects when Not Existing
@@ -100,12 +98,12 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
     protected static bool $enablePushCreated = false;
 
     /**
-     * @var bool Enable Update Of Existing Local Objects when Modified Remotly
+     * @var bool Enable Update Of Existing Local Objects when Modified Remotely
      */
     protected static bool $enablePushUpdated = false;
 
     /**
-     * @var bool Enable Delete Of Existing Local Objects when Deleted Remotly
+     * @var bool Enable Delete Of Existing Local Objects when Deleted Remotely
      */
     protected static bool $enablePushDeleted = false;
 

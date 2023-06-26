@@ -74,31 +74,6 @@ class Category extends AbstractStandaloneObject
     protected static string $ico = "fa fa-file-text fas fa-hand-holding-usd";
 
     //====================================================================//
-    // Object Synchronization Limitations
-    //====================================================================//
-
-    /**
-     * Allow Creation Of New Local Objects
-     *
-     * @var bool
-     */
-    protected static bool $allowPushCreated = false;
-
-    /**
-     * Allow Update Of Existing Local Objects
-     *
-     * @var bool
-     */
-    protected static bool $allowPushUpdated = false;
-
-    /**
-     * Allow Deletion Of Existing Local Objects
-     *
-     * @var bool
-     */
-    protected static bool $allowPushDeleted = false;
-
-    //====================================================================//
     // Object Synchronization Recommended Configuration
     //====================================================================//
 
