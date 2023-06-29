@@ -20,7 +20,6 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 use Splash\Akeneo\Models\CategoriesUpdater;
-use Splash\Client\Splash;
 use Splash\Models\Helpers\InlineHelper;
 
 /**
@@ -49,10 +48,7 @@ trait CategoriesTrait
             ->name("Categories Codes")
             ->microData("http://schema.org/Product", "publicCategory")
             ->addChoices($this->getCategoriesChoices())
-//            ->isReadOnly()
         ;
-
-        Splash::log()->dump($this->getCategoriesChoices());
 
         //====================================================================//
         // Walk on Each Available Languages

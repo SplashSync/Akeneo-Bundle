@@ -92,16 +92,17 @@ docker:
         - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
 quality:v7-php-8.1:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    image:                registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     variables:
         AKENEO_VERSION:   ^7.0
     <<: *quality
 
-#quality:v5-php-7.4:
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-#    variables:
-#        AKENEO_VERSION:   5.0.18
-#    <<: *quality
+quality:v6-php-7.4:
+    image:                registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    allow_failure:        true
+    variables:
+        AKENEO_VERSION:   ^6.0
+    <<: *quality
 
 
 ################################################################
@@ -170,25 +171,3 @@ pages:
   artifacts:
     paths:
       - public
-
-
-#################################################################
-## Build Documentation
-#################################################################
-#pages:
-#    image:    registry.gitlab.com/badpixxel-projects/php-sdk:jekyll
-#    stage:    deploy
-#    tags:
-#        - Dedicated
-#    services:
-#        - docker:dind
-#    ################################################################################
-#    # Run Test Script
-#    script:
-#        # Run Composer to Build deps
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-#        # Build Documentation
-#        - php vendor/bin/grumphp run --tasks=build-docs
-#    artifacts:
-#        paths:
-#            - public
