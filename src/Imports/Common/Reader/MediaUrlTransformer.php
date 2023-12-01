@@ -85,10 +85,11 @@ class MediaUrlTransformer extends BaseMediaPathTransformer
             $content = file_get_contents($url);
 
             if (!is_dir($dir)) {
-                mkdir($dir, 0777, true);
+                mkdir($dir, 0755, true);
             }
 
             file_put_contents($path, $content);
+            chmod($path, 0755);
         } catch (\Exception $e) {
             return null;
         }
