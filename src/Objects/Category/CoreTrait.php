@@ -35,6 +35,9 @@ trait CoreTrait
     public function buildCoreFields(): void
     {
         //====================================================================//
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
+        //====================================================================//
         // Category Code
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
             ->identifier("code")
