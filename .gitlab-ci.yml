@@ -16,6 +16,11 @@
 ################################################################################
 
 ################################################################
+# Include Pipeline Templates
+include:
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
+
+################################################################
 # Set any variables we need
 variables:
     # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
@@ -29,17 +34,17 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - docker
-  - quality
-  - functional
-  - deploy
+  - Docker
+  - Quality
+  - Functional
+  - Builds
 
 ################################################################
 # Build Docker Images for Testing
 ################################################################
 docker:
 #    when:         manual
-    stage:        docker
+    stage:        Docker
     image:        docker:stable
     tags:         [ Dedicated-Docker ]
     services:
@@ -67,7 +72,7 @@ docker:
 
 .quality:    &quality
 #    when:       manual
-    stage:      quality
+    stage:      Quality
     tags:
         - Dedicated
     services:
@@ -111,7 +116,7 @@ quality:v7-php-8.1:
 
 .functional:    &functional
 #    when:       manual
-    stage:      functional
+    stage:      Functional
     tags:
         - Dedicated
     services:
@@ -156,18 +161,3 @@ tests:v7-php-8.1:
 #  variables:
 #        AKENEO_VERSION:   5.0.18
 #  <<: *core_tests
-
-################################################################
-# Build Documentation
-################################################################
-pages:
-  image:      jekyll/minimal:latest
-  stage:      deploy
-  tags:       [ Dedicated-Docker ]
-  ################################################################################
-  # Run Test Script
-  script:
-    - wget -qO - https://gitlab.com/badpixxel-robo/jekyll/-/raw/main/scripts/gitlab-pages.sh | sh
-  artifacts:
-    paths:
-      - public
