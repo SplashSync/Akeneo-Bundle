@@ -45,6 +45,7 @@ trait CategoriesLinksTrait
             ->identifier("id")
             ->name("ID")
             ->inList(self::$catListName)
+            ->microData("http://schema.org/Product", "categories")
             ->isReadOnly()
         ;
         //====================================================================//
