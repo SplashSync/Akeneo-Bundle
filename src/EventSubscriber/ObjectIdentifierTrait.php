@@ -95,7 +95,7 @@ trait ObjectIdentifierTrait
         // Walk on All Direct Child Products
         /** @var Product $product */
         foreach ($productModel->getProducts() as $product) {
-            $productIds[$product->getUuid()->toString()] = $product->getUuid()->toString();
+            $productIds[] = $product->getUuid()->toString();
         }
         //====================================================================//
         // Walk on All Child ProductModels
@@ -107,7 +107,7 @@ trait ObjectIdentifierTrait
             );
         }
 
-        return $productIds;
+        return array_unique($productIds);
     }
 
     /**

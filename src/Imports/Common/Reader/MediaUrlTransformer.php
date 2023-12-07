@@ -79,6 +79,7 @@ class MediaUrlTransformer extends BaseMediaPathTransformer
         $dir = sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $parsedUrl['host']);
         $filename = sprintf('%s.%s', sha1($url), pathinfo($parsedUrl['path'], PATHINFO_EXTENSION));
         $path = sprintf('%s%s%s', $dir, DIRECTORY_SEPARATOR, $filename);
+
         //====================================================================//
         // Download File
         try {
