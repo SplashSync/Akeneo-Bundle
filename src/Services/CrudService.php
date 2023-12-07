@@ -106,6 +106,7 @@ class CrudService
 
             return null;
         }
+
         //====================================================================//
         // Return a New Object
         return  $product;
@@ -139,6 +140,7 @@ class CrudService
 
             return Splash::log()->err($e->getMessage());
         }
+
         //====================================================================//
         // Return Object Id
         return  true;

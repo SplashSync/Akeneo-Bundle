@@ -25,26 +25,26 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
  */
 trait FilesTrait
 {
-//    /**
-//     * FILE - Read Attribute Data with Local & Scope Detection
-//     *
-//     * @param Product   $product   Akeneo Product Object
-//     * @param Attribute $attribute Akeneo Attribute Object
-//     * @param string    $isoLang
-//     * @param string    $channel
-//     *
-//     * @return mixed
-//     */
-//    protected function getFileValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
-//    {
-//        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
-//
-//        if ($value instanceof FileInfo) {
-//            return $this->files->getSplashFile($value);
-//        }
-//
-//        return null;
-//    }
+    //    /**
+    //     * FILE - Read Attribute Data with Local & Scope Detection
+    //     *
+    //     * @param Product   $product   Akeneo Product Object
+    //     * @param Attribute $attribute Akeneo Attribute Object
+    //     * @param string    $isoLang
+    //     * @param string    $channel
+    //     *
+    //     * @return mixed
+    //     */
+    //    protected function getFileValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
+    //    {
+    //        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+    //
+    //        if ($value instanceof FileInfo) {
+    //            return $this->files->getSplashFile($value);
+    //        }
+    //
+    //        return null;
+    //    }
 
     /**
      * FILE - Write Attribute Data with Local & Scope Detection

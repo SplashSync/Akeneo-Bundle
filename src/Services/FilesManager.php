@@ -64,6 +64,7 @@ class FilesManager implements FileProviderInterface
             if (empty($file->getKey()) || !$this->mount->has($path)) {
                 return null;
             }
+
             //====================================================================//
             // Build File Info Array
             return array(
@@ -121,6 +122,7 @@ class FilesManager implements FileProviderInterface
         if (!$writeFile) {
             return null;
         }
+
         //====================================================================//
         // Add File to Akeneo Storage
         try {

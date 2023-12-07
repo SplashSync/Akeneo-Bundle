@@ -68,6 +68,7 @@ trait CrudTrait
         if (null === $product) {
             return Splash::log()->errNull("Akeneo Product Create Failed");
         }
+
         //====================================================================//
         // Return a New Object
         return  $product;
@@ -93,6 +94,7 @@ trait CrudTrait
         if (!$this->crud->update($this->object)) {
             return null;
         }
+
         //====================================================================//
         // Return Object Id
         return  $this->getObjectIdentifier();
@@ -113,6 +115,7 @@ trait CrudTrait
         if (!$product) {
             return true;
         }
+
         //====================================================================//
         // Forward to Crud Service
         return $this->crud->delete($product);

@@ -79,17 +79,17 @@ class ModelsManager
 
         //$familyVariant->getLevelForAttributeCode($attributeCode)
 
-//        //====================================================================//
-//        // If family Code is Given
-//        if(isset($inputs["family_code"]) && !empty($inputs["family_code"])) {
-//            return $this->variants->findFamilyVariantByCode($inputs["family_code"]);
-//        }
-//
-//        //====================================================================//
-//        // If Attributes are Given
-//        if(isset($inputs["attributes"]) && is_iterable($inputs["attributes"])) {
-//            return $this->variants->findFamilyVariantByAttributes($inputs["attributes"]);
-//        }
+        //        //====================================================================//
+        //        // If family Code is Given
+        //        if(isset($inputs["family_code"]) && !empty($inputs["family_code"])) {
+        //            return $this->variants->findFamilyVariantByCode($inputs["family_code"]);
+        //        }
+        //
+        //        //====================================================================//
+        //        // If Attributes are Given
+        //        if(isset($inputs["attributes"]) && is_iterable($inputs["attributes"])) {
+        //            return $this->variants->findFamilyVariantByAttributes($inputs["attributes"]);
+        //        }
 
         return $model;
     }

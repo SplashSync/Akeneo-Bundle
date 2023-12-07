@@ -150,6 +150,7 @@ trait MetricTrait
         } catch (\InvalidArgumentException $ex) {
             Splash::log()->war($ex->getMessage());
         }
+
         //====================================================================//
         // Try to Get Translated Unit Name
         return $this->locales->trans("pim_measure.units.".$value->getUnit(), array(), "messages", $isoLang);

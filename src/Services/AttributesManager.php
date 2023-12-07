@@ -151,6 +151,7 @@ class AttributesManager
                     ),
                 );
             }
+
             //====================================================================//
             // Load Attribute Value
             return array(
@@ -283,6 +284,7 @@ class AttributesManager
             if (null == $baseFieldName) {
                 continue;
             }
+
             //====================================================================//
             // Load Attribute Value
             return $this->setData(
@@ -399,6 +401,7 @@ class AttributesManager
                 }
             }
         }
+
         //====================================================================//
         // ISO Lang Provided => Search by Label
         return $this->getByCode(

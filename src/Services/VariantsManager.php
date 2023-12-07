@@ -92,6 +92,7 @@ class VariantsManager
         if (!($parentModel instanceof ProductModel)) {
             return array();
         }
+
         //====================================================================//
         // PRODUCT PARENT MODEL
         return $this->getModelProducts($parentModel, $entities);
@@ -348,6 +349,7 @@ class VariantsManager
         if (!$model) {
             return array($product->getUuid()->toString());
         }
+
         //====================================================================//
         // Get Children Uuids
         return array($model->getId() => self::getChildrenUuids($model));

@@ -209,6 +209,7 @@ trait AttributesTrait
         if (!$this->isValidAttributeDefinition($attrItem, $attrCodeKey)) {
             return;
         }
+
         //====================================================================//
         // Touch Product Attribute
         try {

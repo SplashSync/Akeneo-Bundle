@@ -135,6 +135,7 @@ trait CoreTrait
 
             return true;
         }
+
         //====================================================================//
         // Get Level For Field
         try {

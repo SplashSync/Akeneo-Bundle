@@ -225,6 +225,7 @@ trait SelectTrait
         $option = new AttributeOption();
         $option->setAttribute($attribute);
         $option->setCode($data);
+
         //====================================================================//
         // Save new Option
         try {

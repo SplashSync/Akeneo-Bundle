@@ -75,6 +75,7 @@ trait CrudTrait
         /** @var Category $category */
         $category = $this->factory->create();
         $category->setCode($this->in['code']);
+
         //====================================================================//
         // Forward to Saver Service
         try {
@@ -84,6 +85,7 @@ trait CrudTrait
 
             return Splash::log()->errNull("Akeneo Category Create Failed");
         }
+
         //====================================================================//
         // Return a New Object
         return  $category;
@@ -109,6 +111,7 @@ trait CrudTrait
         } catch (Exception $e) {
             return Splash::log()->errNull($e->getMessage());
         }
+
         //====================================================================//
         // Return Object Id
         return  $this->getObjectIdentifier();
@@ -129,6 +132,7 @@ trait CrudTrait
         if (!$category) {
             return true;
         }
+
         //====================================================================//
         // Forward to Remover Service
         try {
