@@ -556,7 +556,10 @@ class AttributesManager
         //====================================================================//
         // is Field Primary ?
         if (TypesConverter::isPrimary($attrType)) {
-            $factory->isPrimary();
+            $factory
+                ->microData("http://schema.org/Product", "model")
+                ->isPrimary()
+            ;
         }
         //====================================================================//
         // Is Field Read Only ?

@@ -39,7 +39,7 @@ trait CoreTrait
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
             ->identifier("identifier")
             ->name("Product SKU")
-            ->microData("http://schema.org/Product", "model")
+            ->microData("http://schema.org/Product", "identifier")
             ->isListed()
             ->isReadOnly()
         ;
