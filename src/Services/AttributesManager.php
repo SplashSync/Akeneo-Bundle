@@ -410,6 +410,38 @@ class AttributesManager
     }
 
     /**
+     * Get All Product Attribute by Type
+     *
+     * @param string      $type     Attribute Type
+     *
+     * @throws Exception
+     *
+     * @return array<string, Attribute>
+     */
+    public function findByType(string $type): array
+    {
+        /** @var null|array<string, Attribute> $attributes */
+        static $attributes;
+
+        if (!isset($attributes)) {
+            //====================================================================//
+            // Init Cache
+            $attributes = array();
+            //====================================================================//
+            // Walk on All Available Attributes
+            /** @var Attribute $attribute */
+            foreach ($this->attributes->findAll() as $attribute) {
+                if ($attribute->getType() === $type) {
+                    $attributes[$attribute->getCode()] = $attribute;
+
+                }
+            }
+        }
+
+        return $attributes;
+    }
+
+    /**
      * Get Product Label Attribute Code
      *
      * @param Product $product

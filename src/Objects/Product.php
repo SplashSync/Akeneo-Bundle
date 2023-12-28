@@ -27,6 +27,7 @@ use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Akeneo\Services\GalleryManager as Gallery;
 use Splash\Akeneo\Services\LocalesManager as Locales;
 use Splash\Akeneo\Services\VariantsManager as Variants;
+use Splash\Akeneo\Services\DocumentsManager as Documents;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Client\Splash;
 use Splash\Models\FileProviderInterface;
@@ -64,6 +65,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
     use Product\AttributesTrait;
     use Product\ObjectsListTrait;
     use Product\FilesTrait;
+    use Product\DocumentTrait;
 
     //====================================================================//
     // Object Definition Parameters
@@ -133,7 +135,8 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
         protected Files         $files,
         protected Gallery       $gallery,
         protected Configuration $configuration,
-        protected Locales       $locales
+        protected Locales       $locales,
+        protected Documents     $documents
     ) {
         //====================================================================//
         // Setup Splash Akeneo Connector
