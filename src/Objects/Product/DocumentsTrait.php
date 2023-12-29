@@ -15,21 +15,15 @@
 
 namespace Splash\Akeneo\Objects\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Exception;
-use Splash\Akeneo\Objects\Product\Attributes\FilesTrait as FilesTrait;
-use Splash\Models\Objects\DocumentsTrait as DocumentsTrait;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
 
 /**
  * Access to Product Documents Fields
  */
-trait DocumentTrait
+trait DocumentsTrait
 {
-    use DocumentsTrait;
-    use FilesTrait;
-
-
     /**
      * Build Fields using FieldFactory
      *
@@ -47,11 +41,22 @@ trait DocumentTrait
         // Product Documents List
         $this->fieldsFactory()->create(SPL_T_FILE)
             ->identifier("document")
-            ->inList("documents")
             ->name("Document")
+            ->inList("documents")
             ->group($groupName)
-            ->microData("http://schema.org/Product", "document")
-            ->isNotTested();
+            ->microData("https://schema.org/DigitalDocument", "document")
+            ->isReadOnly()
+        ;
+        //====================================================================//
+        // Product Documents => Code
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->identifier("code")
+            ->inList("documents")
+            ->name("Code")
+            ->group($groupName)
+            ->microData("https://schema.org/Product", "name")
+            ->isReadOnly()
+        ;
         //====================================================================//
         // Product Documents => Label
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
@@ -59,8 +64,9 @@ trait DocumentTrait
             ->inList("documents")
             ->name("Label")
             ->group($groupName)
-            ->microData("http://schema.org/Product", "labelDocument")
-            ->isNotTested();
+            ->microData("https://schema.org/Product", "labelDocument")
+            ->isReadOnly()
+        ;
         //====================================================================//
         // Product Documents => Position
         $this->fieldsFactory()->create(SPL_T_INT)
@@ -68,31 +74,32 @@ trait DocumentTrait
             ->inList("documents")
             ->name("Position")
             ->group($groupName)
-            ->microData("http://schema.org/Product", "positionDocument")
-            ->isNotTested();
+            ->microData("https://schema.org/Product", "positionDocument")
+            ->isReadOnly()
+        ;
     }
 
     /**
      * Read requested Document Data
      *
-     * @param string $key Input List Key
+     * @param string $key       Input List Key
      * @param string $fieldName Document Field Identifier / Name
-     * @return void
+     *
      * @throws Exception
+     *
+     * @return void
      */
     protected function getDocumentFields(string $key, string $fieldName): void
     {
-        //====================================================================//
-        // Load all Files Attributes
-        $documents = $this->getAllDocuments($this->object);
-
         //====================================================================//
         // Check if List field & Init List Array
         $fieldId = self::lists()->initOutput($this->out, "documents", $fieldName);
         if (!$fieldId) {
             return;
         }
-
+        //====================================================================//
+        // Load all Files Attributes
+        $documents = $this->getAllDocuments($this->object);
         //====================================================================//
         // Walk on Files Attributes
         $index = 0;
@@ -101,53 +108,62 @@ trait DocumentTrait
             // READ Fields
             switch ($fieldId) {
                 //====================================================================//
-                // DOCUMENTS INFORMATIONS
+                // DOCUMENTS INFORMATION
                 //====================================================================//
                 case 'document':
-                    $value = $this->documents->getSplashDocument($document);
-                    break;
+                    $value = $document["document"];
 
+                    break;
                 case 'position':
                     $value = $index;
-                    break;
 
+                    break;
+                case 'code':
+                    $value = $document["code"];
+
+                    break;
                 case 'label':
                     $value = $document["label"];
-                    break;
 
+                    break;
                 default:
                     return;
             }
             self::lists()->insert($this->out, "documents", $fieldName, $index, $value);
-            unset($this->in[$fieldName]);
             $index++;
         }
+        unset($this->in[$key]);
     }
-
 
     /**
      * @param AkeneoProduct $product
      *
-     * @return array<Attribute de type Documents>
      * @throws Exception
+     *
+     * @return array<int<0, max>,array{code: string, label: null|string, position: int<0, max>, document: mixed}>
      */
     private function getAllDocuments(AkeneoProduct $product): array
     {
-        /** @var string[] $code * */
         $attributes = $this->attr->findByType(AttributeTypes::FILE);
 
         $index = 0;
         foreach ($attributes as $attribute) {
-            $splDoc = $this->getFileValue($product, $attribute, $this->getParameter("locale", "en_US"), $this->configuration->getChannel());
+            $splDoc = $this->attr->get($product, $attribute->getCode());
+            if ($document = $splDoc[$attribute->getCode()] ?? null) {
+                $defaultTranslation = $this->locales->getDefault();
+                $label = null;
 
-            if ($splDoc) {
+                if (null !== $defaultTranslation) {
+                    $translation = $attribute->getTranslation($defaultTranslation);
+
+                    $label = $translation?->getLabel();
+                }
                 $list[] = array(
                     "code" => $attribute->getCode(),
-                    "label" => $attribute->getLabel(),
+                    "label" => $label,
                     "position" => $index,
-                    "document" => $splDoc,
+                    "document" => $document,
                 );
-
             }
             $index++;
         }

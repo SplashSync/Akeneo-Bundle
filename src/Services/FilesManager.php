@@ -55,6 +55,39 @@ class FilesManager implements FileProviderInterface
      *
      * @return null|array
      */
+    public function getSplashFile(FileInfo $file): ?array
+    {
+        try {
+            $path = $file->getStorage()."://".$file->getKey();
+            //====================================================================//
+            // Ensure Image Exists in File System
+            if (empty($file->getKey()) || !$this->mount->has($path)) {
+                return null;
+            }
+
+            //====================================================================//
+            // Build File Info Array
+            return array(
+                "name" => $file->getOriginalFilename(),
+                "filename" => $file->getOriginalFilename(),
+                "path" => $path,
+                "md5" => $this->mount->checksum($path),
+                "size" => $this->mount->fileSize($path),
+            );
+        } catch (Exception|FilesystemException $exception) {
+            Splash::log()->report($exception);
+
+            return null;
+        }
+    }
+
+    /**
+     * Convert an Akeneo File Info to Splash Image Array
+     *
+     * @param FileInfo $file
+     *
+     * @return null|array
+     */
     public function getSplashImage(FileInfo $file): ?array
     {
         try {

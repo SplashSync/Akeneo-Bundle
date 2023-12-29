@@ -23,15 +23,6 @@ services:
             -   "@oneup_flysystem.mount_manager"
 
     ########################################################################
-    # Akeneo Documents Manager
-    Splash\Akeneo\Services\DocumentsManager:
-        arguments:
-            -   "@akeneo_file_storage.file_storage.file.file_storer"
-            -   "@akeneo_file_storage.remover.file"
-            -   "@akeneo_file_storage.repository.file_info"
-            -   "@oneup_flysystem.mount_manager"
-
-    ########################################################################
     # Akeneo Connector Locales Manager
     Splash\Akeneo\Services\LocalesManager:
         arguments:
