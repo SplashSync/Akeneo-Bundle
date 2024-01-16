@@ -57,3 +57,6 @@ products:
         itemtype:       http://schema.org/Product
         itemprop:       gtin13  
         
+    document:
+        itemtype:       http://schema.org/DigitalDocument
+        itemprop:       document

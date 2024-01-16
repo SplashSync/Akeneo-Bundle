@@ -25,7 +25,7 @@ if [ ! -f /home/module.installed.lock ]; then
     echo -e "\e[45m *********************************** \e[49m"
     ################################################################################
     echo "Install Symfony Flex & Phpunit"
-    composer require symfony/flex phpunit/phpunit:^9.0 --no-scripts --no-progress
+    composer require symfony/flex symfony/browser-kit phpunit/phpunit:^9.0 --no-scripts --no-progress
     ################################################################################
     echo "Configure Splash DEV Module via Composer"
     composer config extra.symfony.allow-contrib true

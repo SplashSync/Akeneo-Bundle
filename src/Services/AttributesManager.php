@@ -211,7 +211,7 @@ class AttributesManager
             case SPL_T_PRICE:
                 return $this->getPriceValue($product, $attr, $iso, $channel);
             case SPL_T_FILE:
-                return array();
+                return $this->getFileValue($product, $attr, $iso, $channel);
             case SPL_T_IMG:
                 return $this->getImageValue($product, $attr, $iso, $channel);
         }
@@ -407,6 +407,37 @@ class AttributesManager
         return $this->getByCode(
             (string) array_search($codeOrLabel, $attributesLabels[$isoCode], true)
         )->getCode();
+    }
+
+    /**
+     * Get All Product Attribute by Type
+     *
+     * @param string $type Attribute Type
+     *
+     * @throws Exception
+     *
+     * @return array<string, Attribute>
+     */
+    public function findByType(string $type): array
+    {
+        /** @var null|array<string, Attribute> $attributes */
+        static $attributes;
+
+        if (!isset($attributes)) {
+            //====================================================================//
+            // Init Cache
+            $attributes = array();
+            //====================================================================//
+            // Walk on All Available Attributes
+            /** @var Attribute $attribute */
+            foreach ($this->attributes->findAll() as $attribute) {
+                if ($attribute->getType() === $type) {
+                    $attributes[$attribute->getCode()] = $attribute;
+                }
+            }
+        }
+
+        return $attributes;
     }
 
     /**

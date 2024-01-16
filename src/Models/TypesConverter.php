@@ -76,7 +76,7 @@ class TypesConverter
         AttributeTypes::TEXT => SPL_T_VARCHAR,
         AttributeTypes::TEXTAREA => SPL_T_TEXT,
         AttributeTypes::OPTION_MULTI_SELECT => SPL_T_VARCHAR,
-        // AttributeTypes::FILE => SPL_T_FILE,
+        AttributeTypes::FILE => SPL_T_FILE,
     );
 
     /**

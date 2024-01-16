@@ -64,6 +64,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
     use Product\AttributesTrait;
     use Product\ObjectsListTrait;
     use Product\FilesTrait;
+    use Product\DocumentsTrait;
 
     //====================================================================//
     // Object Definition Parameters
@@ -133,7 +134,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
         protected Files         $files,
         protected Gallery       $gallery,
         protected Configuration $configuration,
-        protected Locales       $locales
+        protected Locales       $locales,
     ) {
         //====================================================================//
         // Setup Splash Akeneo Connector
