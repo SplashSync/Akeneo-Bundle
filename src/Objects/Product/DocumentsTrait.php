@@ -54,7 +54,7 @@ trait DocumentsTrait
             ->inList("documents")
             ->name("Code")
             ->group($groupName)
-            ->microData("https://schema.org/Product", "name")
+            ->microData("https://schema.org/DigitalDocument", "identifier")
             ->isReadOnly()
         ;
         //====================================================================//
@@ -64,7 +64,7 @@ trait DocumentsTrait
             ->inList("documents")
             ->name("Label")
             ->group($groupName)
-            ->microData("https://schema.org/Product", "labelDocument")
+            ->microData("https://schema.org/DigitalDocument", "name")
             ->isReadOnly()
         ;
         //====================================================================//
@@ -74,7 +74,7 @@ trait DocumentsTrait
             ->inList("documents")
             ->name("Position")
             ->group($groupName)
-            ->microData("https://schema.org/Product", "positionDocument")
+            ->microData("https://schema.org/DigitalDocument", "position")
             ->isReadOnly()
         ;
     }

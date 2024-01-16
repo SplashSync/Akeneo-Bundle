@@ -155,9 +155,3 @@ tests:v7-php-8.1:
     variables:
         AKENEO_VERSION:   ^7.0
     <<: *functional
-
-#tests:v5-php-7.4:
-#  image:    akeneo/pim-php-dev:5.0
-#  variables:
-#        AKENEO_VERSION:   5.0.18
-#  <<: *core_tests
