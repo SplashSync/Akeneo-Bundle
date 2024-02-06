@@ -16,7 +16,6 @@ includes:
 	- %currentWorkingDirectory%/vendor/phpstan/phpstan-doctrine/extension.neon
 parameters:
     bootstrapFiles:
-        - "%currentWorkingDirectory%/vendor/splash/phpcore/Resources/grumphp/phpstan.php"
         - "%currentWorkingDirectory%/vendor/splash/phpcore/inc/Splash.Inc.php"
         - "%currentWorkingDirectory%/vendor/splash/phpcore/inc/defines.inc.php"
     checkMissingIterableValueType: false
