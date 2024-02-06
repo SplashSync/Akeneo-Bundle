@@ -15,6 +15,8 @@
 
 namespace   Splash\Akeneo\Services;
 
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface as Repository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -38,9 +40,16 @@ class LocalesManager
     private string $default = self::FALLBACK_LOCALE;
 
     /**
+     * Default Channel
+     *
+     * @var null|ChannelInterface
+     */
+    private ?ChannelInterface $channel = null;
+
+    /**
      * List of All Available Languages Codes
      *
-     * @var null|array
+     * @var null|string[]
      */
     private ?array $locales;
 
@@ -60,11 +69,12 @@ class LocalesManager
      *
      * @return self
      */
-    public function setDefault(string $locale = null): self
+    public function setDefault(string $locale = null, ChannelInterface $channel = null): self
     {
         if (!empty($locale)) {
             $this->default = $locale;
         }
+        $this->channel = $channel;
 
         return $this;
     }
@@ -101,7 +111,21 @@ class LocalesManager
         //====================================================================//
         // Load From Cache
         if (!isset($this->locales)) {
-            $this->locales = $this->repository->getActivatedLocaleCodes();
+            //====================================================================//
+            // A Channel was Chosen
+            if (isset($this->channel)) {
+                //====================================================================//
+                // Load list of Locales from Channel
+                $this->locales = array();
+                /** @var LocaleInterface $locale */
+                foreach ($this->channel->getLocales() as $locale) {
+                    $this->locales[] = $locale->getCode();
+                }
+            } else {
+                //====================================================================//
+                // Load list of Locales from System
+                $this->locales = $this->repository->getActivatedLocaleCodes();
+            }
         }
 
         return $this->locales;

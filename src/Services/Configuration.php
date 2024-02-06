@@ -116,7 +116,7 @@ class Configuration
 
         //====================================================================//
         // Default Language
-        $this->locales->setDefault($locale);
+        $this->locales->setDefault($locale, $this->getChannelObject());
 
         return $this;
     }
