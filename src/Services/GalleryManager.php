@@ -220,10 +220,10 @@ class GalleryManager
     /**
      * Add an Image to Gallery
      *
-     * @param ProductInterface $product
-     * @param GalleryImage|null $galleryImage
-     * @param string $attrCode
-     * @param null|string $labelCode
+     * @param ProductInterface  $product
+     * @param null|GalleryImage $galleryImage
+     * @param string            $attrCode
+     * @param null|string       $labelCode
      *
      * @return void
      */
