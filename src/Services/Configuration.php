@@ -63,7 +63,9 @@ class Configuration
     /**
      * List of Attributes Images parts of Image Gallery
      *
-     * @var string[]
+     * @var array[]
+     *
+     * @phpstan-var array{'code': string, 'label': null|string}[]
      */
     private array $imagesCodes = array();
 
@@ -97,7 +99,7 @@ class Configuration
         $learningMode = $object->getParameter("learning_mode", false);
         /** @var bool $catalogMode */
         $catalogMode = $object->getParameter("catalog_mode", false);
-        /** @var string[] $imagesCodes */
+        /** @var array $imagesCodes */
         $imagesCodes = $object->getParameter("images", array());
 
         //====================================================================//
@@ -106,7 +108,9 @@ class Configuration
         $this->currency = $currency;
         $this->learningMode = (bool) $learningMode;
         $this->catalogMode = (bool) $catalogMode;
-        $this->imagesCodes = $imagesCodes;
+        //====================================================================//
+        // Setup Images Codes
+        $this->setupImageCodes($imagesCodes);
 
         //====================================================================//
         // Reset Channel if Needed
@@ -184,7 +188,7 @@ class Configuration
     /**
      * Get List of Attributes Used for Product Image Galley
      *
-     * @return string[]
+     * @return array{'code': string, 'label': null|string}[]
      */
     public function getImagesCodes(): array
     {
@@ -216,5 +220,33 @@ class Configuration
         $this->channelObject = ($channel instanceof ChannelInterface) ? $channel : null;
 
         return $this->channelObject;
+    }
+
+    /**
+     * Configure Gallery Images Codes
+     *
+     * @param array $imagesCodes
+     *
+     * @return void
+     */
+    private function setupImageCodes(array $imagesCodes): void
+    {
+        $this->imagesCodes = array();
+        foreach ($imagesCodes as $imagesCode) {
+            if (is_string($imagesCode)) {
+                $this->imagesCodes[$imagesCode] = array(
+                    'code' => $imagesCode,
+                    'label' => null
+                );
+            }
+            if (is_array($imagesCode) && is_string($imagesCode['code'] ?? null)) {
+                $this->imagesCodes[$imagesCode['code']] = array(
+                    'code' => $imagesCode['code'],
+                    'label' => is_string($imagesCode['label'] ?? null)
+                        ? $imagesCode['label']
+                        : null
+                );
+            }
+        }
     }
 }

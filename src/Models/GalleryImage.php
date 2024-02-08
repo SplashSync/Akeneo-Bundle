@@ -35,6 +35,11 @@ class GalleryImage
     private array $uuids = array();
 
     /**
+     * @var array<string, null|string>
+     */
+    private array $labels = array();
+
+    /**
      * @param array       $splashImage Splash Image
      * @param bool        $isCover
      * @param null|string $code        Attribute Code
@@ -64,6 +69,16 @@ class GalleryImage
     public function setImage(array $splashImage): self
     {
         $this->splashImage = $splashImage;
+
+        return $this;
+    }
+
+    /**
+     * Set up Label for this Image
+     */
+    public function setLabel(string $isoLang, ?string $label): self
+    {
+        $this->labels[$isoLang] = $label;
 
         return $this;
     }
@@ -262,6 +277,14 @@ class GalleryImage
     public function uuids(): array
     {
         return $this->uuids;
+    }
+
+    /**
+     * Get Image Label
+     */
+    public function label(string $isoCode): ?string
+    {
+        return $this->labels[$isoCode] ?? null;
     }
 
     /**

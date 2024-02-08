@@ -39,6 +39,10 @@ trait ImagesTrait
         }
 
         //====================================================================//
+        // Setup Field Factory
+        $this->fieldsFactory()->setDefaultLanguage($this->locales->getDefault());
+
+        //====================================================================//
         // PRODUCT IMAGES
         //====================================================================//
 
@@ -84,6 +88,21 @@ trait ImagesTrait
             ->group($groupName)
             ->isNotTested()
         ;
+
+        //====================================================================//
+        // Walk on Each Available Languages
+        foreach ($this->locales->getAll() as $isoLang) {
+            //====================================================================//
+            // Name without Options
+            $this->fieldsFactory()->create(SPL_T_VARCHAR)
+                ->identifier("label")
+                ->setMultilang($isoLang)
+                ->name("Label")
+                ->microData("http://schema.org/Product", "name")
+                ->inList("images")
+                ->isReadOnly()
+            ;
+        }
     }
 
     /**
@@ -134,6 +153,50 @@ trait ImagesTrait
             //====================================================================//
             // Insert Data in List
             self::lists()->insert($this->out, "images", $fieldName, $index, $value);
+            $index++;
+        }
+        unset($this->in[$key]);
+    }
+
+    /**
+     * Read requested Field
+     *
+     * @param string $key       Input List Key
+     * @param string $fieldName Field Identifier / Name
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    protected function getImagesLabelsFields(string $key, string $fieldName): void
+    {
+        //====================================================================//
+        // Check if List field & Init List Array
+        $fieldId = self::lists()->initOutput($this->out, "images", $fieldName);
+        if (!$fieldId || !str_contains($fieldId, "label")) {
+            return;
+        }
+        $galleryImages = $this->gallery->getGalleryImages($this->object);
+        //====================================================================//
+        // For All Available Product Images
+        $index = 0;
+        foreach ($galleryImages as $galleryImage) {
+            //====================================================================//
+            // Walk on Each Available Languages
+            foreach ($this->locales->getAll() as $isoLang) {
+                //====================================================================//
+                // Decode Multi-Lang Field Name
+                $baseFieldName = $this->locales->decode($fieldId, $isoLang);
+                //====================================================================//
+                // Prepare
+                if ("label" != $baseFieldName) {
+                    continue;
+                }
+                $value = $galleryImage->label($isoLang);
+                //====================================================================//
+                // Insert Data in List
+                self::lists()->insert($this->out, "images", $fieldId, $index, $value);
+            }
             $index++;
         }
         unset($this->in[$key]);

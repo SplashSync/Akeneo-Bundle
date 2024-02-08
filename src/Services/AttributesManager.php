@@ -599,7 +599,7 @@ class AttributesManager
         }
         //====================================================================//
         // Is Field A Gallery Image ?
-        if (in_array($attribute->getCode(), $this->conf->getImagesCodes(), true)) {
+        if (in_array($attribute->getCode(), array_keys($this->conf->getImagesCodes()), true)) {
             $factory->isReadOnly();
         }
         //====================================================================//

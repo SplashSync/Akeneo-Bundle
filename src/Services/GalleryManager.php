@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Exception;
 use Splash\Akeneo\Models\GalleryImage;
 use Splash\Akeneo\Models\GalleryUpdater;
+use Splash\Client\Splash;
 
 /**
  * Manage Product Images Gallery Updates
@@ -42,6 +43,7 @@ class GalleryManager
     public function __construct(
         private readonly AttributesManager $attr,
         private readonly VariantsManager   $variants,
+        private readonly LocalesManager    $locales,
         private readonly Configuration     $config,
     ) {
     }
@@ -68,8 +70,8 @@ class GalleryManager
             GalleryImage::setStaticUuids($this->getVariantsUuids($product));
             //====================================================================//
             // Load Complete Product Images Gallery
-            foreach ($this->config->getImagesCodes() as $attrCode) {
-                $this->addAttributeToGallery($product, $attrCode);
+            foreach ($this->config->getImagesCodes() as $imageCode) {
+                $this->addAttributeToGallery($product, $imageCode);
             }
         }
 
@@ -119,7 +121,7 @@ class GalleryManager
      */
     public function isGalleryImage(string $attrCode): bool
     {
-        return in_array($attrCode, $this->config->getImagesCodes(), true);
+        return in_array($attrCode, array_keys($this->config->getImagesCodes()), true);
     }
 
     /**
@@ -137,15 +139,16 @@ class GalleryManager
     /**
      * Fetch Product Images Information for an Attribute Code, with Variants Detection
      *
-     * @param ProductInterface $product
-     * @param string           $attrCode
+     * @param ProductInterface                            $product
+     * @param array{'code': string, 'label': null|string} $imageCode
      *
      * @throws Exception
      *
      * @return void
      */
-    private function addAttributeToGallery(ProductInterface $product, string $attrCode): void
+    private function addAttributeToGallery(ProductInterface $product, array $imageCode): void
     {
+        $attrCode = $imageCode['code'];
         //====================================================================//
         // Safety Check => Verify if FieldName is An Attribute Type
         if (!$this->attr->has($attrCode)) {
@@ -157,7 +160,8 @@ class GalleryManager
         if ($splImage) {
             //====================================================================//
             // Add Image to Product Gallery
-            $this->addImageToGallery($product, $attrCode, $splImage);
+            $galleryImage = $this->addImageToGallery($product, $attrCode, $splImage);
+            $this->addLabelsToGallery($product, $galleryImage, $attrCode, $imageCode['label'] ?? null);
         }
         //====================================================================//
         // Complete Cache with Other Variants Images
@@ -173,7 +177,8 @@ class GalleryManager
             if ($splImage) {
                 //====================================================================//
                 // Add Image to Product Gallery
-                $this->addImageToGallery($variant, $attrCode, $splImage);
+                $galleryImage = $this->addImageToGallery($variant, $attrCode, $splImage);
+                $this->addLabelsToGallery($product, $galleryImage, $attrCode, $imageCode['label'] ?? null);
             }
         }
     }
@@ -185,9 +190,9 @@ class GalleryManager
      * @param string           $attrCode
      * @param array            $splashImage
      *
-     * @return void
+     * @return null|GalleryImage
      */
-    private function addImageToGallery(ProductInterface $product, string $attrCode, array $splashImage): void
+    private function addImageToGallery(ProductInterface $product, string $attrCode, array $splashImage): ?GalleryImage
     {
         //====================================================================//
         // Safety Checks
@@ -195,7 +200,7 @@ class GalleryManager
         $md5 = $splashImage["md5"] ?? null;
         $uuid = $product->getUuid()->toString();
         if (!$md5 || !$uuid) {
-            return;
+            return null;
         }
         //====================================================================//
         // Add Image to Collection
@@ -208,6 +213,63 @@ class GalleryManager
             );
         }
         self::$cache[$md5]->setVisibility($uuid, true);
+
+        return self::$cache[$md5];
+    }
+
+    /**
+     * Add an Image to Gallery
+     *
+     * @param ProductInterface $product
+     * @param GalleryImage|null $galleryImage
+     * @param string $attrCode
+     * @param null|string $labelCode
+     *
+     * @return void
+     */
+    private function addLabelsToGallery(
+        ProductInterface $product,
+        ?GalleryImage $galleryImage,
+        string $attrCode,
+        ?string $labelCode
+    ): void {
+        if (!$galleryImage) {
+            return;
+        }
+
+        //====================================================================//
+        // Walk on Each Available Languages
+        foreach ($this->locales->getAll() as $isoLang) {
+            try {
+                //====================================================================//
+                // Read Label from Attribute Definition
+                if (!$labelCode) {
+                    $attribute = $this->attr->find($attrCode);
+                    $galleryImage->setLabel(
+                        $isoLang,
+                        $attribute->getTranslation($isoLang)?->getLabel() ?? $attribute->getLabel()
+                    );
+
+                    continue;
+                }
+                //====================================================================//
+                // Read Label from Product Attribute
+                if ($this->locales->isDefault($isoLang)) {
+                    $label = $this->attr->get($product, $labelCode)[$labelCode] ?? null;
+                } else {
+                    $attrCodeWithLang = $labelCode."_".$isoLang;
+                    $label = $this->attr->get($product, $attrCodeWithLang)[$attrCodeWithLang] ?? null;
+                }
+                $galleryImage->setLabel(
+                    $isoLang,
+                    is_string($label) ? $label : null
+                );
+            } catch (Exception $e) {
+                Splash::log()->report($e);
+
+                continue;
+            }
+        }
     }
 
     //====================================================================//
@@ -258,7 +320,7 @@ class GalleryManager
     private function getFamilyVariantLevels(ProductInterface $product): array
     {
         $levels = array();
-        foreach ($this->config->getImagesCodes() as $attrCode) {
+        foreach (array_keys($this->config->getImagesCodes()) as $attrCode) {
             $levels[$attrCode] = $this->getFamilyVariantLevel($product, $attrCode);
         }
         asort($levels);
