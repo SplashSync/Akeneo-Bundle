@@ -98,7 +98,7 @@ trait ImagesTrait
                 ->identifier("label")
                 ->setMultilang($isoLang)
                 ->name("Label")
-                ->microData("http://schema.org/Product", "name")
+                ->microData("http://schema.org/Product", "imageName")
                 ->inList("images")
                 ->isReadOnly()
             ;
