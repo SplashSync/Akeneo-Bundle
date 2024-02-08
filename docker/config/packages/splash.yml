@@ -11,8 +11,7 @@ splash:
                 locale:         en_US
                 travis:         true
                 images:
-                    - { code: 'picture', label: 'meta_title' }
-                    - 'image'
+                    - { code: 'image', label: 'meta_title' }
                     - 'image_2'
                     - 'image_3'
                     - 'image_4'
