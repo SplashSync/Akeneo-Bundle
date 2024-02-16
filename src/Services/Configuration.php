@@ -16,8 +16,9 @@
 namespace Splash\Akeneo\Services;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface as ChannelRepository;
-use Splash\Akeneo\Services\LocalesManager as Locales;
+use Doctrine\Common\Collections\Collection;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 
 /**
@@ -26,11 +27,16 @@ use Splash\Bundle\Models\AbstractStandaloneObject;
 class Configuration
 {
     /**
-     * Default Scope Code
+     * Default Channel Code
+     */
+    private string $channel;
+
+    /**
+     * Default Locale Code
      *
      * @var string
      */
-    private string $channel;
+    private string $locale;
 
     /**
      * Default Channel
@@ -74,7 +80,6 @@ class Configuration
      */
     public function __construct(
         private readonly ChannelRepository $channelRepository,
-        private readonly Locales $locales
     ) {
     }
 
@@ -95,7 +100,7 @@ class Configuration
         $currency = $object->getParameter("currency", "EUR");
         /** @var string $locale */
         $locale = $object->getParameter("locale", "en_US");
-        /** @var bool $learningMode */
+        /** @var null|bool $learningMode */
         $learningMode = $object->getParameter("learning_mode", false);
         /** @var bool $catalogMode */
         $catalogMode = $object->getParameter("catalog_mode", false);
@@ -105,22 +110,18 @@ class Configuration
         //====================================================================//
         // Setup Configuration
         $this->channel = $channel;
+        $this->locale = $locale;
         $this->currency = $currency;
         $this->learningMode = (bool) $learningMode;
         $this->catalogMode = (bool) $catalogMode;
         //====================================================================//
         // Setup Images Codes
         $this->setupImageCodes($imagesCodes);
-
         //====================================================================//
         // Reset Channel if Needed
         if (isset($this->channelObject) && ($channel != $this->channelObject->getCode())) {
             $this->channelObject = null;
         }
-
-        //====================================================================//
-        // Default Language
-        $this->locales->setDefault($locale, $this->getChannelObject());
 
         return $this;
     }
@@ -143,6 +144,24 @@ class Configuration
     public function getChannelId(): ?int
     {
         return $this->getChannelObject()?->getId();
+    }
+
+    /**
+     * Get Connector Default Channel Locales
+     *
+     * @return null|Collection<LocaleInterface>
+     */
+    public function getChannelLocales(): ?Collection
+    {
+        return $this->getChannelObject()?->getLocales();
+    }
+
+    /**
+     * Get Connector Default Locale
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
     }
 
     /**

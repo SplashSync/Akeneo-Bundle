@@ -15,7 +15,6 @@
 
 namespace   Splash\Akeneo\Services;
 
-use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface as Repository;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,27 +24,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class LocalesManager
 {
-    /**
-     * Fallback Language
-     *
-     * @var string
-     */
-    const FALLBACK_LOCALE = "en_US";
-
-    /**
-     * Default Language Code
-     *
-     * @var string
-     */
-    private string $default = self::FALLBACK_LOCALE;
-
-    /**
-     * Default Channel
-     *
-     * @var null|ChannelInterface
-     */
-    private ?ChannelInterface $channel = null;
-
     /**
      * List of All Available Languages Codes
      *
@@ -58,25 +36,9 @@ class LocalesManager
      */
     public function __construct(
         private readonly Repository          $repository,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly Configuration       $configuration,
     ) {
-    }
-
-    /**
-     * Get Default Local Language ISO Code
-     *
-     * @param null|string $locale
-     *
-     * @return self
-     */
-    public function setDefault(string $locale = null, ChannelInterface $channel = null): self
-    {
-        if (!empty($locale)) {
-            $this->default = $locale;
-        }
-        $this->channel = $channel;
-
-        return $this;
     }
 
     /**
@@ -86,7 +48,7 @@ class LocalesManager
      */
     public function getDefault(): string
     {
-        return $this->default;
+        return $this->configuration->getLocale();
     }
 
     /**
@@ -113,12 +75,12 @@ class LocalesManager
         if (!isset($this->locales)) {
             //====================================================================//
             // A Channel was Chosen
-            if (isset($this->channel)) {
+            if ($channelLocales = $this->configuration->getChannelLocales()) {
                 //====================================================================//
                 // Load list of Locales from Channel
                 $this->locales = array();
                 /** @var LocaleInterface $locale */
-                foreach ($this->channel->getLocales() as $locale) {
+                foreach ($channelLocales as $locale) {
                     $this->locales[] = $locale->getCode();
                 }
             } else {
