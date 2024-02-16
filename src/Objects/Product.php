@@ -61,10 +61,10 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
     use Product\ImagesTrait;
     use Product\CategoriesTrait;
     use Product\CategoriesLinksTrait;
+    use Product\DocumentsTrait;
     use Product\AttributesTrait;
     use Product\ObjectsListTrait;
     use Product\FilesTrait;
-    use Product\DocumentsTrait;
 
     //====================================================================//
     // Object Definition Parameters
