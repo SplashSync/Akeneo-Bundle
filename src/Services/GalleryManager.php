@@ -241,29 +241,25 @@ class GalleryManager
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
             try {
-                //====================================================================//
-                // Read Label from Attribute Definition
-                if (!$labelCode) {
-                    $attribute = $this->attr->find($attrCode);
-                    $galleryImage->setLabel(
-                        $isoLang,
-                        $attribute->getTranslation($isoLang)?->getLabel() ?? $attribute->getLabel()
-                    );
-
-                    continue;
-                }
+                $imgLabel = null;
                 //====================================================================//
                 // Read Label from Product Attribute
-                if ($this->locales->isDefault($isoLang)) {
-                    $label = $this->attr->get($product, $labelCode)[$labelCode] ?? null;
-                } else {
-                    $attrCodeWithLang = $labelCode."_".$isoLang;
-                    $label = $this->attr->get($product, $attrCodeWithLang)[$attrCodeWithLang] ?? null;
+                if ($labelCode) {
+                    if ($this->locales->isDefault($isoLang)) {
+                        $imgLabel = $this->attr->get($product, $labelCode)[$labelCode] ?? null;
+                    } else {
+                        $attrCodeWithLang = $labelCode."_".$isoLang;
+                        $imgLabel = $this->attr->get($product, $attrCodeWithLang)[$attrCodeWithLang] ?? null;
+                    }
                 }
-                $galleryImage->setLabel(
-                    $isoLang,
-                    is_string($label) ? $label : null
-                );
+                //====================================================================//
+                // Read Label from Attribute Definition
+                if (!$imgLabel) {
+                    $attribute = $this->attr->find($attrCode);
+                    $imgLabel = $attribute->getTranslation($isoLang)?->getLabel() ?? $attribute->getLabel();
+                }
+
+                $galleryImage->setLabel($isoLang, $imgLabel);
             } catch (Exception $e) {
                 Splash::log()->report($e);
 
