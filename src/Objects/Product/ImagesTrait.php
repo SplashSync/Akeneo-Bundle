@@ -96,9 +96,9 @@ trait ImagesTrait
             // Name without Options
             $this->fieldsFactory()->create(SPL_T_VARCHAR)
                 ->identifier("label")
-                ->setMultilang($isoLang)
                 ->name("Label")
                 ->microData("http://schema.org/Product", "imageName")
+                ->setMultilang($isoLang)
                 ->inList("images")
                 ->isReadOnly()
             ;
