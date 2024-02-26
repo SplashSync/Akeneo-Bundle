@@ -688,7 +688,6 @@ class AttributesManager
         if (TypesConverter::isMultiSelect($attribute->getType())) {
             $clonedAttr = clone $attribute;
             $clonedAttr->setCode(TypesConverter::MULTI2TRANS.$attribute->getCode());
-            $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
                 $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name", true);
