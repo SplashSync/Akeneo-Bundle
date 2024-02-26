@@ -523,7 +523,8 @@ class AttributesManager
         FieldsFactory $factory,
         Attribute $attribute,
         string $isoLang,
-        string $suffix = ""
+        string $suffix = "",
+        bool $isVirtual = false
     ): void {
         //====================================================================//
         // Get Attribute Type
@@ -562,7 +563,9 @@ class AttributesManager
         $this->addFieldMetadata($factory, $attribute, $isoLang);
         //====================================================================//
         // ADD Virtual Fields to Factory
-        $this->buildVirtualField($factory, $attribute, $isoLang);
+        if (!$isVirtual) {
+            $this->buildVirtualField($factory, $attribute, $isoLang);
+        }
     }
 
     /**
@@ -651,7 +654,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang);
+                $this->buildField($factory, $clonedAttr, $isoLang, "", true);
                 $factory->isReadOnly();
             }
         }
@@ -663,7 +666,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name");
+                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name", true);
                 $factory->isReadOnly();
             }
         }
@@ -676,7 +679,7 @@ class AttributesManager
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
                 // In Catalog Mode, Virtual Translations is Main Metadata
-                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name");
+                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name", true);
                 $factory->isReadOnly();
             }
         }
@@ -688,7 +691,7 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::TEXT);
             $clonedAttr->setLocalizable(true);
             foreach ($this->locales->getAll() as $isoLang) {
-                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name");
+                $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name", true);
                 $factory->isReadOnly();
             }
         }
