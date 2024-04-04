@@ -20,6 +20,7 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 use Splash\Akeneo\Models\CategoriesUpdater;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\Helpers\InlineHelper;
 
 /**
@@ -84,6 +85,11 @@ trait CategoriesTrait
                 $categoriesCodes = array();
                 /** @var Category $category */
                 foreach ($this->object->getCategories() as $category) {
+                    //====================================================================//
+                    // Safety Check =>> Category Root is Allowed
+                    if (!$this->configuration->isAllowedCategory($category)) {
+                        continue;
+                    }
                     $categoriesCodes[] = $category->getCode();
                 }
                 $this->out[$fieldName] = InlineHelper::fromArray($categoriesCodes);
@@ -121,6 +127,11 @@ trait CategoriesTrait
             $categoriesNames = array();
             /** @var Category $category */
             foreach ($this->object->getCategories() as $category) {
+                //====================================================================//
+                // Safety Check =>> Category Root is Allowed
+                if (!$this->configuration->isAllowedCategory($category)) {
+                    continue;
+                }
                 /** @var CategoryTranslation $translation */
                 $translation = $category->getTranslation($isoLang);
                 $categoriesNames[] = $translation->getLabel();

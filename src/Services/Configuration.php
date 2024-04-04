@@ -15,11 +15,13 @@
 
 namespace Splash\Akeneo\Services;
 
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as Category;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface as ChannelRepository;
 use Doctrine\Common\Collections\Collection;
 use Splash\Bundle\Models\AbstractStandaloneObject;
+use Splash\Client\Splash;
 
 /**
  * Manage General Configuration for Splash Connector
@@ -175,6 +177,22 @@ class Configuration
     }
 
     /**
+     * Check if Category is in Configured Channel Tree
+     */
+    public function isAllowedCategory(Category $category): bool
+    {
+        $rootId = $category->getRoot();
+        $channelRootId = $this->getRootCategoryId();
+        //====================================================================//
+        // Safety Check =>> Category Root is Allowed
+        if (!$rootId || !$channelRootId) {
+            return true;
+        }
+
+        return ($rootId == $channelRootId);
+    }
+
+    /**
      * Get Connector Default Currency
      *
      * @return string
@@ -240,6 +258,8 @@ class Configuration
 
         return $this->channelObject;
     }
+
+
 
     /**
      * Configure Gallery Images Codes

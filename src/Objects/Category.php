@@ -46,6 +46,7 @@ class Category extends AbstractStandaloneObject
     use Category\CrudTrait;
     use Category\CoreTrait;
     use Category\ParentTrait;
+    use Category\RootTrait;
     use Category\ObjectsListTrait;
 
     //====================================================================//

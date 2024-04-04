@@ -81,6 +81,11 @@ trait CategoriesLinksTrait
         $index = 0;
         foreach ($categories as $category) {
             //====================================================================//
+            // Safety Check =>> Category Root is Allowed
+            if (!$this->configuration->isAllowedCategory($category)) {
+                continue;
+            }
+            //====================================================================//
             // Prepare
             switch ($fieldId) {
                 case "id":

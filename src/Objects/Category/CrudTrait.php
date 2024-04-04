@@ -42,12 +42,17 @@ trait CrudTrait
         $this->configuration->setup($this);
         //====================================================================//
         // Load Product from Repository
-        $product = $this->repository->find($objectId);
-        if (!($product instanceof Category)) {
+        $category = $this->repository->find($objectId);
+        if (!($category instanceof Category)) {
             return Splash::log()->errNull("Unable to find Akeneo Category ".$objectId);
         }
+        //====================================================================//
+        // Safety Check =>> Category Root is Allowed
+        if (!$this->configuration->isAllowedCategory($category)) {
+            return Splash::log()->errNull("Forbidden. This Category is not in channel tree");
+        }
 
-        return $product;
+        return $category;
     }
 
     //====================================================================//
@@ -62,9 +67,6 @@ trait CrudTrait
         //====================================================================//
         // Setup Splash Akeneo Connector
         $this->configuration->setup($this);
-
-        Splash::log()->dump($this->in);
-
         //====================================================================//
         // Check Customer Name is given
         if (empty($this->in["code"]) || !is_string($this->in["code"])) {

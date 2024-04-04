@@ -38,6 +38,9 @@ trait ObjectsListTrait
     protected function configureObjectListQueryBuilder(QueryBuilder $queryBuilder): self
     {
         //====================================================================//
+        // Setup Splash Akeneo Connector
+        $this->configuration->setup($this);
+        //====================================================================//
         // Filter Categories on Default Channel
         $rootCategoryId = $this->configuration->getRootCategoryId();
         if ($rootCategoryId) {
