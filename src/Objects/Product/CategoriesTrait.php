@@ -20,7 +20,6 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 use Splash\Akeneo\Models\CategoriesUpdater;
-use Splash\Core\SplashCore as Splash;
 use Splash\Models\Helpers\InlineHelper;
 
 /**

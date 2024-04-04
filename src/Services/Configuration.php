@@ -259,8 +259,6 @@ class Configuration
         return $this->channelObject;
     }
 
-
-
     /**
      * Configure Gallery Images Codes
      *

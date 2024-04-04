@@ -15,6 +15,8 @@
 
 namespace Splash\Akeneo\Objects\Category;
 
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+
 /**
  * Category Root Fields Access
  */
@@ -53,6 +55,7 @@ trait RootTrait
             case 'root_code':
                 $root = null;
                 if ($rootId = $this->object->getRoot()) {
+                    /** @var null|CategoryInterface $root */
                     $root = $this->repository->find($rootId);
                 }
                 $this->out[$fieldName] = $root?->getCode();
