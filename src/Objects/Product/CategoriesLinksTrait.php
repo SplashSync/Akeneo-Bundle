@@ -56,6 +56,25 @@ trait CategoriesLinksTrait
             ->inList(self::$catListName)
             ->isReadOnly()
         ;
+        //====================================================================//
+        // Is First Category
+        $this->fieldsFactory()->create(SPL_T_BOOL)
+            ->identifier("first")
+            ->name("Is first")
+            ->description("Is the first tagged category")
+            ->inList(self::$catListName)
+            ->isReadOnly()
+        ;
+        //====================================================================//
+        // Is Lowest Category
+        $this->fieldsFactory()->create(SPL_T_BOOL)
+            ->identifier("lowest")
+            ->name("Is lowest")
+            ->description("Is the lowest tagged category")
+            ->microData("http://schema.org/Product", "defaultCategory")
+            ->inList(self::$catListName)
+            ->isReadOnly()
+        ;
     }
 
     /**
@@ -76,6 +95,8 @@ trait CategoriesLinksTrait
         }
         /** @var ArrayCollection<Category> $categories */
         $categories = $this->object->getCategories();
+        $lowerId = $this->getLowerCategoryId($categories);
+
         //====================================================================//
         // For All Available Product Categories
         $index = 0;
@@ -96,6 +117,14 @@ trait CategoriesLinksTrait
                     $value = $category->getCode();
 
                     break;
+                case "first":
+                    $value = empty($index);
+
+                    break;
+                case "lowest":
+                    $value = ($category->getId() == $lowerId);
+
+                    break;
                 default:
                     return;
             }
@@ -105,5 +134,32 @@ trait CategoriesLinksTrait
             $index++;
         }
         unset($this->in[$key]);
+    }
+
+    /**
+     * Get ID of Deepest Tagged Category
+     *
+     * @param ArrayCollection<Category> $categories
+     */
+    private function getLowerCategoryId(ArrayCollection $categories): ?int
+    {
+        $lowestId = null;
+        $maxLevel = 0;
+
+        //====================================================================//
+        // For All Available Product Categories
+        foreach ($categories as $category) {
+            //====================================================================//
+            // Safety Check =>> Category Root is Allowed
+            if (!$this->configuration->isAllowedCategory($category)) {
+                continue;
+            }
+            if ($category->getLevel() > $maxLevel) {
+                $maxLevel = $category->getLevel();
+                $lowestId = $category->getId();
+            }
+        }
+
+        return $lowestId;
     }
 }
