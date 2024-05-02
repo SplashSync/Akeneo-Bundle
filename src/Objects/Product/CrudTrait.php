@@ -16,6 +16,7 @@
 namespace Splash\Akeneo\Objects\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
+use Splash\Akeneo\Models\CategoriesPresence;
 use Splash\Core\SplashCore as Splash;
 
 /**
@@ -46,6 +47,13 @@ trait CrudTrait
             return Splash::log()->errNull("Unable to find Akeneo Product ".$objectId);
         }
         $this->gallery->clear();
+        //====================================================================//
+        // Ensure Product is Not Filtered by Category
+        if (!$this->isInAllowedCategory($product)) {
+            Splash::log()->war("This product isn't in Allowed Category tree.");
+
+            return null;
+        }
 
         return $product;
     }
@@ -131,5 +139,20 @@ trait CrudTrait
         }
 
         return $this->object->getUuid()->toString();
+    }
+
+    /**
+     * If Categories Filter is Active, Ensure Product is part of it!
+     */
+    private function isInAllowedCategory(Product $product): bool
+    {
+        //====================================================================//
+        // Get List of Categories for this Connection
+        $categoryCodes = $this->getParameter("categories", array());
+        if (!is_array($categoryCodes) || empty($categoryCodes)) {
+            return true;
+        }
+
+        return CategoriesPresence::isInCategoriesTree($product, $categoryCodes);
     }
 }

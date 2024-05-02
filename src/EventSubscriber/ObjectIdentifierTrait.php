@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Exception;
+use Splash\Akeneo\Models\CategoriesPresence;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Client\Splash;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -53,27 +54,15 @@ trait ObjectIdentifierTrait
             return array();
         }
         //====================================================================//
-        // Get List of Categories for this Connection
-        $categoryCodes = $connector->getParameter("categories", array());
-        if (!is_array($categoryCodes) || empty($categoryCodes)) {
-            return ($product instanceof ProductModel)
-                ? self::getProductModelIdentifiers($product)
-                : array($product->getUuid()->toString())
-            ;
-        }
-        //====================================================================//
-        // Walk on Product Categories
-        /** @var CategoryInterface $category */
-        foreach ($product->getCategories() as $category) {
-            if ($this->isInFilteredCategories($categoryCodes, $category)) {
-                return ($product instanceof ProductModel)
-                    ? self::getProductModelIdentifiers($product)
-                    : array($product->getUuid()->toString())
-                ;
-            }
+        // Ensure Product is Not Filtered by Categories
+        if (!$this->isInAllowedCategory($connector, $product)) {
+            return array();
         }
 
-        return array();
+        return ($product instanceof ProductModel)
+            ? self::getProductModelIdentifiers($product)
+            : array($product->getUuid()->toString())
+        ;
     }
 
     /**
@@ -161,23 +150,17 @@ trait ObjectIdentifierTrait
     }
 
     /**
-     * Check if category is in Filtered Categories Tree
-     *
-     * @param array             $categoryCodes
-     * @param CategoryInterface $category
-     *
-     * @return bool
+     * If Categories Filter is Active, Ensure Product is part of it!
      */
-    private function isInFilteredCategories(array $categoryCodes, CategoryInterface $category): bool
+    private function isInAllowedCategory(AbstractConnector $connector, Product|ProductModel $product): bool
     {
-        if (in_array($category->getCode(), $categoryCodes, true)) {
+        //====================================================================//
+        // Get List of Categories for this Connection
+        $categoryCodes = $connector->getParameter("categories", array());
+        if (!is_array($categoryCodes) || empty($categoryCodes)) {
             return true;
         }
-        $parent = $category->getParent();
-        if (null !== $parent) {
-            return $this->isInFilteredCategories($categoryCodes, $parent);
-        }
 
-        return false;
+        return CategoriesPresence::isInCategoriesTree($product, $categoryCodes);
     }
 }
