@@ -35,8 +35,6 @@
 ################################################################################
 
 
-version: '3.4'
-
 services:
 
     ################################################################################
@@ -52,22 +50,6 @@ services:
         networks:
             akeneo:         { ipv4_address: 172.105.0.70, aliases: [ v7.akeneo.local ] }
             splashsync:     { aliases: [ v7.akeneo.local ] }
-
-    ################################################################################
-    # Akeneo V6 All-In-One Container
-#    v6:
-#        build:
-#            context:        docker
-#            dockerfile:     akeneo-v6-php-8.0.Dockerfile
-#        container_name:             v6.akeneo.local
-#        environment:
-#            APP_DATABASE_NAME:       akeneo_v7
-#        volumes:
-#            - ./:/builds/SplashSync/Akeneo-Bundle:ro
-#        hostname:           v6.akeneo.local
-#        networks:
-#            akeneo:         { ipv4_address: 172.105.0.60, aliases: [ v6.akeneo.local ] }
-#            splashsync:     { aliases: [ v6.akeneo.local ] }
 
     ################################################################################
     # Splash Toolkit Container   
