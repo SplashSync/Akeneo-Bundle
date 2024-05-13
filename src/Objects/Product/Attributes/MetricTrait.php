@@ -51,17 +51,23 @@ trait MetricTrait
      * @param string    $isoLang
      * @param string    $channel
      *
-     * @return float
+     * @return null|float
      */
-    protected function getMetricValue(Product $product, Attribute $attribute, string $isoLang, string $channel): float
+    protected function getMetricValue(Product $product, Attribute $attribute, string $isoLang, string $channel): ?float
     {
         //====================================================================//
         // Load Raw Attribute Value
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+
         //====================================================================//
         // Extract Generic Converted Value
         if ($value instanceof Metric) {
             return (float) $value->getBaseData();
+        }
+        //====================================================================//
+        // No Value Defined
+        if (null === $value) {
+            return null;
         }
 
         return is_scalar($value) ? (float) $value : 0.0;
@@ -69,20 +75,13 @@ trait MetricTrait
 
     /**
      * DOUBLE - Read Attribute Data with Local & Scope Detection
-     *
-     * @param Product   $product   Akeneo Product Object
-     * @param Attribute $attribute Akeneo Attribute Object
-     * @param string    $isoLang
-     * @param string    $channel
-     *
-     * @return string
      */
     protected function getMetricAsStringValue(
         Product $product,
         Attribute $attribute,
         string $isoLang,
         string $channel
-    ): string {
+    ): ?string {
         //====================================================================//
         // Load Raw Attribute Value
         $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
@@ -92,7 +91,7 @@ trait MetricTrait
             return (string) sprintf('%.2F', $value->getData())." ".$this->getMetricSymbol($value, $isoLang);
         }
 
-        return is_scalar($value) ? (string) $value : "0";
+        return is_scalar($value) ? (string) $value : null;
     }
 
     /**
@@ -131,7 +130,7 @@ trait MetricTrait
     }
 
     /**
-     * DOUBLE - Try to Ftech metric Symbol from Measure Manager or Translations
+     * DOUBLE - Try to Fetch metric Symbol from Measure Manager or Translations
      *
      * @param Metric $value   Akeneo Measure
      * @param string $isoLang Current Language ISO Code

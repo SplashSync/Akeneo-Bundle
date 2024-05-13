@@ -25,17 +25,20 @@ trait NumberTrait
 {
     /**
      * NUMBER - Read Attribute Data with Local & Scope Detection
-     *
-     * @param Product   $product   Akeneo Product Object
-     * @param Attribute $attribute Akeneo Attribute Object
-     * @param string    $isoLang
-     * @param string    $channel
-     *
-     * @return float|int
      */
-    protected function getNumberValue(Product $product, Attribute $attribute, string $isoLang, string $channel)
-    {
+    protected function getNumberValue(
+        Product $product,
+        Attribute $attribute,
+        string $isoLang,
+        string $channel
+    ): float|int|null {
         $data = $this->getScalarValue($product, $attribute, $isoLang, $channel);
+
+        //====================================================================//
+        // No Value Defined
+        if (null === $data) {
+            return null;
+        }
 
         return $attribute->isDecimalsAllowed() ? (float) $data : (int) $data;
     }
