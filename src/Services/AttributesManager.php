@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Akeneo\Services;
+namespace Splash\Akeneo\Services;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
@@ -29,7 +29,6 @@ use Exception;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Akeneo\Objects\Product\Attributes as SplashAttributes;
 use Splash\Akeneo\Services\FilesManager as Files;
-use Splash\Client\Splash;
 use Splash\Components\FieldsFactory;
 use Splash\Models\Objects\FieldsFactoryTrait;
 

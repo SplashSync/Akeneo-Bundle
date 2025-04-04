@@ -13,11 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Akeneo\Models;
+namespace Splash\Akeneo\Models;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
-use Splash\Core\SplashCore      as Splash;
 
 /**
  * Map Akeneo Attributes Type to Splash Field Type

@@ -17,8 +17,7 @@ namespace Splash\Akeneo\Objects\Product\Variants;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use Exception;
-use Splash\Akeneo\Objects\Product;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * Prestashop Product Variants Attributes Data Access

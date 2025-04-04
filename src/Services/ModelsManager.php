@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Akeneo\Services;
+namespace Splash\Akeneo\Services;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface as Model;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface as Family;

@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Akeneo\Services;
+namespace Splash\Akeneo\Services;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder as Builder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;

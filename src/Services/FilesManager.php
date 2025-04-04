@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Akeneo\Services;
+namespace Splash\Akeneo\Services;
 
 use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
