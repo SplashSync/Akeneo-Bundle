@@ -60,6 +60,12 @@ services:
     Splash\Akeneo\Services\GalleryManager: ~
 
     ########################################################################
+    # Akeneo Products Association Manager
+    Splash\Akeneo\Services\AssociationManager:
+        arguments:
+            - "@pim_catalog.repository.association_type"
+
+    ########################################################################
     # Akeneo Products Event EventSubscriber
     splash.akeneo.product.events:
         class:      Splash\Akeneo\EventSubscriber\DoctrineEventsSubscriber

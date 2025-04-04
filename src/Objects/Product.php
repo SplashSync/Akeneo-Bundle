@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProd
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface as Repository;
 use Splash\Akeneo\Configurators\Product\CatalogModeConfigurator;
 use Splash\Akeneo\Configurators\Product\LearningModeConfigurator;
+use Splash\Akeneo\Services\AssociationManager as Association;
 use Splash\Akeneo\Services\AttributesManager as Attributes;
 use Splash\Akeneo\Services\Configuration;
 use Splash\Akeneo\Services\CrudService as Crud;
@@ -65,6 +66,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
     use Product\AttributesTrait;
     use Product\ObjectsListTrait;
     use Product\FilesTrait;
+    use Product\AssociationsTrait;
 
     //====================================================================//
     // Object Definition Parameters
@@ -124,6 +126,8 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
 
     /**
      * Service Constructor
+     *
+     * @SuppressWarnings(ExcessiveParameterList)
      */
     public function __construct(
         protected Repository    $repository,
@@ -133,6 +137,7 @@ class Product extends AbstractStandaloneObject implements FileProviderInterface,
         protected Variants      $variants,
         protected Files         $files,
         protected Gallery       $gallery,
+        protected Association   $association,
         protected Configuration $configuration,
         protected Locales       $locales,
     ) {
