@@ -196,25 +196,23 @@ class GalleryManager
     {
         //====================================================================//
         // Safety Checks
-        /** @var null|string $md5 */
-        $md5 = $splashImage["md5"] ?? null;
         $uuid = $product->getUuid()->toString();
-        if (!$md5 || !$uuid) {
+        if (!$attrCode || !$uuid) {
             return null;
         }
         //====================================================================//
         // Add Image to Collection
-        if (!isset(self::$cache[$md5])) {
-            self::$cache[$md5] = new GalleryImage(
+        if (!isset(self::$cache[$attrCode])) {
+            self::$cache[$attrCode] = new GalleryImage(
                 $splashImage,
                 ($attrCode == $this->getCoverAttributeCode($product)),
                 $attrCode,
                 $this->getFamilyVariantLevel($product, $attrCode),
             );
         }
-        self::$cache[$md5]->setVisibility($uuid, true);
+        self::$cache[$attrCode]->setVisibility($uuid, true);
 
-        return self::$cache[$md5];
+        return self::$cache[$attrCode];
     }
 
     /**
