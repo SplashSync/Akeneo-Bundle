@@ -32,7 +32,8 @@
     },
     "require-dev": {
         "splash/console":                               "dev-master",
-        "badpixxel/php-sdk":                            "^2.0"
+        "badpixxel/php-sdk":                            "^2.0",
+        "phpunit/phpunit":                              "^9.5"
     },
     "extra": {
         "symfony": {
