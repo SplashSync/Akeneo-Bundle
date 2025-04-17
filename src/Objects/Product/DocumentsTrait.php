@@ -17,13 +17,41 @@ namespace Splash\Akeneo\Objects\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as AkeneoProduct;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use Exception;
+use Splash\Models\Helpers\InlineHelper;
 
 /**
  * Access to Product Documents Fields
+ *
+ * @phpstan-type DocumentArray array{
+ *     code: string,
+ *     label: null|string,
+ *     position: int<0, max>,
+ *     visible: bool,
+ *     document: mixed,
+ *     checksum: string,
+ *     skus: string[],
+ * }
  */
 trait DocumentsTrait
 {
+    /**
+     * Documents Information Cache
+     *
+     * @var null|array<string, DocumentArray>
+     */
+    private static ?array $documentsCache = null;
+
+    /**
+     * Empty Cache for Product Documents
+     */
+    public function clearDocumentsCache(): void
+    {
+        self::$documentsCache = null;
+    }
+
     /**
      * Build Fields using FieldFactory
      *
@@ -68,6 +96,15 @@ trait DocumentsTrait
             ->isReadOnly()
         ;
         //====================================================================//
+        // Product Documents => Skus
+        $this->fieldsFactory()->create(SPL_T_INLINE)
+            ->identifier("skus")
+            ->inList("documents")
+            ->name("Refrences")
+            ->group($groupName)
+            ->isReadOnly()
+        ;
+        //====================================================================//
         // Product Documents => Position
         $this->fieldsFactory()->create(SPL_T_INT)
             ->identifier("position")
@@ -75,6 +112,16 @@ trait DocumentsTrait
             ->name("Position")
             ->group($groupName)
             ->microData("https://schema.org/DigitalDocument", "position")
+            ->isReadOnly()
+        ;
+        //====================================================================//
+        // Product Documents => Position
+        $this->fieldsFactory()->create(SPL_T_BOOL)
+            ->identifier("visible")
+            ->inList("documents")
+            ->name("Visible")
+            ->group($groupName)
+            ->microData("https://schema.org/DigitalDocument", "visible")
             ->isReadOnly()
         ;
     }
@@ -102,7 +149,7 @@ trait DocumentsTrait
         $documents = $this->getAllDocuments($this->object);
         //====================================================================//
         // Walk on Files Attributes
-        $index = 0;
+        $index = 1;
         foreach ($documents as $document) {
             //====================================================================//
             // READ Fields
@@ -111,19 +158,15 @@ trait DocumentsTrait
                 // DOCUMENTS INFORMATION
                 //====================================================================//
                 case 'document':
-                    $value = $document["document"];
-
-                    break;
                 case 'position':
-                    $value = $index;
-
-                    break;
+                case 'visible':
                 case 'code':
-                    $value = $document["code"];
+                case 'label':
+                    $value = $document[$fieldId] ?? null;
 
                     break;
-                case 'label':
-                    $value = $document["label"];
+                case 'skus':
+                    $value = InlineHelper::fromArray($document["skus"]);
 
                     break;
                 default:
@@ -140,34 +183,85 @@ trait DocumentsTrait
      *
      * @throws Exception
      *
-     * @return array<int<0, max>,array{code: string, label: null|string, position: int<0, max>, document: mixed}>
+     * @return array<string, DocumentArray>
      */
     private function getAllDocuments(AkeneoProduct $product): array
     {
+        //====================================================================//
+        // Cache Already Loaded
+        if (isset(self::$documentsCache)) {
+            return self::$documentsCache;
+        }
+        //====================================================================//
+        // Walk on Documents Attributes
         $attributes = $this->attr->findByType(AttributeTypes::FILE);
-
         $index = 0;
         foreach ($attributes as $attribute) {
-            $splDoc = $this->attr->get($product, $attribute->getCode());
-            if ($document = $splDoc[$attribute->getCode()] ?? null) {
-                $defaultTranslation = $this->locales->getDefault();
-                $label = null;
-
-                if (null !== $defaultTranslation) {
-                    $translation = $attribute->getTranslation($defaultTranslation);
-
-                    $label = $translation?->getLabel();
+            //====================================================================//
+            // Read Attribute for Current Product
+            $this->getAddDocumentToCache($product, $attribute, $index, true);
+            //====================================================================//
+            // Walk on Other Product Variants
+            foreach ($this->variants->getVariantsList($product, true) as $variant) {
+                //====================================================================//
+                // Skip Current Product
+                if ($variant->getUuid() === $product->getUuid()) {
+                    continue;
                 }
-                $list[] = array(
-                    "code" => $attribute->getCode(),
-                    "label" => $label,
-                    "position" => $index,
-                    "document" => $document,
-                );
+                //====================================================================//
+                // Read Attribute for Product Variant
+                $this->getAddDocumentToCache($variant, $attribute, $index, false);
             }
             $index++;
         }
 
-        return $list ?? array();
+        return self::$documentsCache ?? array();
+    }
+
+    /**
+     * Add Product Attribute to Documents Cache
+     *
+     * @throws Exception
+     */
+    private function getAddDocumentToCache(
+        AkeneoProduct $product,
+        AttributeInterface $attribute,
+        int $position,
+        bool $visible
+    ): void {
+        //====================================================================//
+        // Fetch Product Document Attribute
+        $splDoc = $this->attr->get($product, $attribute->getCode());
+        if (!$document = $splDoc[$attribute->getCode()] ?? null) {
+            return;
+        }
+        if ((!$checksum = $document["md5"] ?? null) || !is_string($checksum)) {
+            return;
+        }
+        //====================================================================//
+        // Get Document Label Translation
+        $defaultLocale = $this->locales->getDefault();
+        $label = null;
+        if ($defaultLocale) {
+            /** @var AttributeTranslation $translation */
+            $translation = $attribute->getTranslation($defaultLocale);
+            $label = $translation->getLabel();
+        }
+        //====================================================================//
+        // Populate Documents Cache
+        $key = sprintf("%s-%s", $attribute->getCode(), $checksum);
+        self::$documentsCache[$key] ??= array(
+            "code" => $attribute->getCode(),
+            "label" => $label,
+            "position" => abs($position),
+            "visible" => false,
+            "document" => $document,
+            "checksum" => $checksum,
+            "skus" => array(),
+        );
+        self::$documentsCache[$key]["skus"][] = $product->getReference();
+        if ($visible) {
+            self::$documentsCache[$key]["visible"] = true;
+        }
     }
 }

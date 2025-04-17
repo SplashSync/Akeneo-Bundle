@@ -47,6 +47,7 @@ trait CrudTrait
             return Splash::log()->errNull("Unable to find Akeneo Product ".$objectId);
         }
         $this->gallery->clear();
+        $this->clearDocumentsCache();
         //====================================================================//
         // Ensure Product is Not Filtered by Category
         if (!$this->isInAllowedCategory($product)) {
