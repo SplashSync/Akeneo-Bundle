@@ -31,7 +31,7 @@
         "akeneo/pim-community-dev":                     "^7.0"
     },
     "require-dev": {
-        "splash/console":                               "dev-master",
+        "splash/console":                               "2.0.x-dev",
         "badpixxel/php-sdk":                            "^2.0",
         "phpunit/phpunit":                              "^9.5"
     },
