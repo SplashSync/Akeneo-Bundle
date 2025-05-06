@@ -96,11 +96,21 @@ trait DocumentsTrait
             ->isReadOnly()
         ;
         //====================================================================//
+        // Product Documents => Label
+        $this->fieldsFactory()->create(SPL_T_VARCHAR)
+            ->identifier("label_with_skus")
+            ->inList("documents")
+            ->name("Label with SKUs")
+            ->group($groupName)
+            ->microData("https://schema.org/DigitalDocument", "alternateName")
+            ->isReadOnly()
+        ;
+        //====================================================================//
         // Product Documents => Skus
         $this->fieldsFactory()->create(SPL_T_INLINE)
             ->identifier("skus")
             ->inList("documents")
-            ->name("Refrences")
+            ->name("References")
             ->group($groupName)
             ->isReadOnly()
         ;
@@ -163,6 +173,13 @@ trait DocumentsTrait
                 case 'code':
                 case 'label':
                     $value = $document[$fieldId] ?? null;
+
+                    break;
+                case 'label_with_skus':
+                    if (!empty($document["skus"])) {
+                        $skus = sprintf("[%s]", implode(", ", $document["skus"]));
+                    }
+                    $value = sprintf("%s %s", $skus ?? null, $document['label'] ?? null);
 
                     break;
                 case 'skus':
