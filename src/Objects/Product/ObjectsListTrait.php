@@ -67,9 +67,15 @@ trait ObjectsListTrait
         //====================================================================//
         // Setup QueryBuilder
         Splash::log()->deb('List Filtered on '.count($childCategoryIds)." Categories");
+        $subQuery = $queryBuilder->getEntityManager()->createQueryBuilder()
+            ->select('1')
+            ->from(Category::class, 'cat')
+            ->where('cat MEMBER OF c.categories')
+            ->andWhere($queryBuilder->expr()->in('cat.id', ':categories'))
+            ->getDQL()
+        ;
         $queryBuilder
-            ->innerJoin('c.categories', 'cat')
-            ->andWhere($queryBuilder->expr()->in('cat.id', ":categories"))
+            ->andWhere($queryBuilder->expr()->exists($subQuery))
             ->setParameter('categories', $childCategoryIds)
         ;
 
