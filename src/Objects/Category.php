@@ -44,6 +44,7 @@ class Category extends AbstractStandaloneObject
     //====================================================================//
     // Category Traits
     use Category\CrudTrait;
+    use Category\SelfTestTrait;
     use Category\CoreTrait;
     use Category\ParentTrait;
     use Category\RootTrait;
