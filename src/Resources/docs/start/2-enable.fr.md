@@ -1,5 +1,5 @@
 ---
-lang: en
+lang: fr
 permalink: start/enable
 title: Activer le Bundle
 ---
@@ -42,8 +42,6 @@ Méthode moins diplomate...
 $ rm -Rf var/cache/*
 ```
 
-### Test & Declare your server
-
 ### Testez et déclarez votre serveur
 
 A ce stade, votre application Akeneo devrait fonctionner normalement!
@@ -52,16 +50,16 @@ Vérifions que Splash est correctement installé et déclarons la configuration 
 
 Dans votre navigateur, accédez à **https://akeneo.exemple.com/ws/splash?node=ThisIsSplashWsId**
 
-![]({{ "/assets/img/server-test-ok.png"|relative_url}})
+![Page de test du serveur Splash, avec une réponse valide](../assets/img/server-test-ok.png)
 
+> [!NOTE]
 > Cela doit fonctionner même si vous n'êtes pas connecté à Akeneo.
 
 ### Voir plus de détails?
 
 Connectez-vous maintenant à Akeneo et accédez à l'adresse suivante: **https://akeneo.exemple.com/ws/splash-test?node=ThisIsSplashWsId**
 
-![]({{ "/assets/img/server-details.png"|relative_url}})
+![Page de détails du serveur Splash, une fois connecté à Akeneo](../assets/img/server-details.png)
 
-<div class="warning">
-    Cela doit fonctionner <b>uniquement</b> si vous êtes connecté à Akeneo.
-</div>
+> [!NOTE]
+> Cela doit fonctionner **uniquement** si vous êtes connecté à Akeneo.

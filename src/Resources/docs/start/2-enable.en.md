@@ -52,16 +52,16 @@ Let's check Splash is correctly installed & declare our server configuration to 
 
 In your browser, go to **https://akeneo.exemple.com/ws/splash?node=ThisIsSplashWsId**
 
-![]({{ "/assets/img/server-test-ok.png"|relative_url}})
+![Splash server test page, with a valid answer](../assets/img/server-test-ok.png)
 
+> [!NOTE]
 > This must work even if you are disconnected from Akeneo.
 
 ### See more details ?
 
 Now sign in Akeneo, and go to **https://akeneo.exemple.com/ws/splash-test?node=ThisIsSplashWsId**
 
-![]({{ "/assets/img/server-details.png"|relative_url}})
+![Splash server details page, once signed in Akeneo](../assets/img/server-details.png)
 
-<div class="warning">
-	This must work <b>only</b> if you are connected to Akeneo.
-</div>
+> [!NOTE]
+> This must work **only** if you are connected to Akeneo.

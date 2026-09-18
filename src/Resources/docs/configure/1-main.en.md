@@ -1,7 +1,9 @@
 ---
 lang: en
-permalink: docs/configuration
+permalink: configure/main
 title: Main Configuration
+description: Locale, channel, currency & images attributes used by the connector.
+updated: 2026-09-18
 ---
 
 ### Change default Locale

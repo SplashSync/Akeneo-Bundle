@@ -17,8 +17,10 @@
 
 ################################################################
 # Include Pipeline Templates
-include:
-  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
+# Documentation is now published on www.splashsync.com, from src/Resources/docs:
+# GitLab Pages job is disabled.
+#include:
+#  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
 
 ################################################################
 # Set any variables we need

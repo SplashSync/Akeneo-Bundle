@@ -1,7 +1,9 @@
 ---
 lang: fr
-permalink: docs/intro
-title: Introduction
+permalink: overview
+title: Connecteur Splash pour Akeneo
+description: Ce que le bundle Splash apporte à votre PIM Akeneo, et les données qu'il synchronise.
+updated: 2026-09-18
 ---
 
 Akeneo est désormais reconnu comme l’un des meilleurs PIM (Product Information Manager) du monde.

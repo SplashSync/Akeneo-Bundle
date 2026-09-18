@@ -1,6 +1,6 @@
 ---
 lang: fr
-permalink: docs/configuration
+permalink: configure/main
 title: Configuration Principale
 ---
 
