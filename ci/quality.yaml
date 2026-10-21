@@ -1,0 +1,58 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+################################################################
+# Quality Stage — BadPixxel SDK GrumPHP suites, per Akeneo version
+################################################################
+
+.quality:
+    stage:      Quality
+    tags:       [ Dedicated ]
+    services:
+        - mysql:8.0
+    ################################################################################
+    # Install & Configure Environnement
+    before_script:
+        ################################################################################
+        # Install Libs
+        - bash docker/scripts/install-imagick.sh
+        ################################################################################
+        # Run Composer
+        - composer require akeneo/pim-community-dev $AKENEO_VERSION --with-all-dependencies --no-interaction --prefer-dist --no-scripts --no-plugins
+    ################################################################################
+    # Run Test Script
+    script:
+        # Execute Grumphp Testsuite
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+    ################################################################################
+    # Run After Script
+    after_script:
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
+
+################################################################
+# Akeneo 7 - PHP 8.1
+quality:v7-php-8.1:
+    extends:    .quality
+    image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    variables:
+        AKENEO_VERSION:   ^7.0
+
+################################################################
+# Akeneo 2026 - PHP 8.3
+quality:v2026-php-8.3:
+    extends:    .quality
+    image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+    variables:
+        AKENEO_VERSION:   ^2026.4

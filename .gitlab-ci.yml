@@ -16,160 +16,43 @@
 ################################################################################
 
 ################################################################
-# Include Pipeline Templates
+# Splash Sync Bundle for Akeneo PIM — CI/CD Pipeline
+#
+# Docker      : prebuilt Akeneo 7 & 2026 images (core + assets)
+#               -> ci/docker.yaml
+# Quality     : BadPixxel SDK GrumPHP suites, per Akeneo version
+#               -> ci/quality.yaml
+# Functional  : PhpUnit tests on prebuilt Akeneo images
+#               -> ci/functional.yaml
+#
 # Documentation is now published on www.splashsync.com, from src/Resources/docs:
 # GitLab Pages job is disabled.
 #include:
 #  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
+################################################################
 
 ################################################################
 # Set any variables we need
 variables:
     # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-    MYSQL_DATABASE:         akeneo_pim
-    MYSQL_ROOT_PASSWORD:    akeneo_pim
-    MYSQL_USER:             akeneo_pim
-    MYSQL_PASSWORD:         akeneo_pim
-    COMPOSER_MEMORY_LIMIT:  -1
+    MYSQL_DATABASE:                 akeneo_pim
+    MYSQL_ROOT_PASSWORD:            akeneo_pim
+    MYSQL_USER:                     akeneo_pim
+    MYSQL_PASSWORD:                 akeneo_pim
+    COMPOSER_MEMORY_LIMIT:          -1
     # Akeneo pins dependencies flagged by security advisories: do not block them
     COMPOSER_NO_SECURITY_BLOCKING:  1
-    SYMFONY_DEPRECATIONS_HELPER:  disabled
+    SYMFONY_DEPRECATIONS_HELPER:    disabled
 
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - Docker
-  - Quality
-  - Functional
-  - Builds
+    - Docker
+    - Quality
+    - Functional
+    - Builds
 
-################################################################
-# Build Docker Images for Testing
-################################################################
-docker:
-#    when:         manual
-    stage:        Docker
-    image:        docker:stable
-    tags:         [ Dedicated-Docker ]
-    services:
-      - docker:dind
-    variables:
-        IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_JOB_NAME"
-    before_script:
-      - docker info
-    script:
-      ################################################################
-      # Connect Docker to GitLab
-      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-      ################################################################
-      # Build & Upload Splash Docker Image
-      - docker build -t registry.gitlab.com/splashsync/akeneo-bundle:7.0 docker -f docker/akeneo-v7-php-8.1.Dockerfile
-      - docker push registry.gitlab.com/splashsync/akeneo-bundle:7.0
-      - docker build -t registry.gitlab.com/splashsync/akeneo-bundle:2026 docker -f docker/akeneo-v2026-php-8.3.Dockerfile
-      - docker push registry.gitlab.com/splashsync/akeneo-bundle:2026
-    only:
-      changes:
-        - docker/**/*
-        - .gitlab-ci.yml
-
-################################################################
-# Code Quality Tests
-################################################################
-
-.quality:    &quality
-#    when:       manual
-    stage:      Quality
-    tags:
-        - Dedicated
-    services:
-        - mysql:8.0
-    ################################################################################
-    # Install & Configure Environnement
-    before_script:
-        ################################################################################
-        # Install Libs
-        - bash docker/scripts/install-imagick.sh
-        ################################################################################
-        # Run Composer
-        - composer require akeneo/pim-community-dev $AKENEO_VERSION --with-all-dependencies --no-interaction --prefer-dist --no-scripts --no-plugins
-    ################################################################################
-    # Run Test Script
-    script:
-        # Execute Grumphp Testsuite
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-    ################################################################################
-    # Run After Script
-    after_script:
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
-
-quality:v7-php-8.1:
-    image:                registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    variables:
-        AKENEO_VERSION:   ^7.0
-    <<: *quality
-
-quality:v2026-php-8.3:
-    image:                registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
-    variables:
-        AKENEO_VERSION:   ^2026.4
-    <<: *quality
-
-#quality:v6-php-7.4:
-#    image:                registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-#    allow_failure:        true
-#    variables:
-#        AKENEO_VERSION:   ^6.0
-#    <<: *quality
-
-
-################################################################
-# Functional Tests
-################################################################
-
-.functional:    &functional
-#    when:       manual
-    stage:      Functional
-    tags:
-        - Dedicated
-    services:
-        - name: mysql:8.0
-          command: ['--default-authentication-plugin=mysql_native_password']
-        - name: elasticsearch:7.5.1
-          alias: elasticsearch
-          command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
-    artifacts:
-        when: always
-        reports:
-            junit: "$CI_PROJECT_DIR/*-report.xml"
-    ################################################################################
-    # Install & Configure Environnement
-    before_script:
-      - cd /var/www/html
-      ################################################################################
-      # Check if Akeneo Core is Installed
-      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-core.sh
-      ################################################################################
-      # Check if Akeneo Fixtures are Installed
-      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/override-akeneo-fixtures.sh
-      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-fixtures.sh
-      ################################################################################
-      # Install DEV Module
-      - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-dev-module.sh
-    ################################################################################
-    # Run Test Script
-    script:
-      # Execute PhpUnit Tests
-      - php vendor/bin/phpunit --version
-      - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/main-report.xml
-
-tests:v7-php-8.1:
-    image:        registry.gitlab.com/splashsync/akeneo-bundle:7.0
-    variables:
-        AKENEO_VERSION:   ^7.0
-    <<: *functional
-
-tests:v2026-php-8.3:
-    image:        registry.gitlab.com/splashsync/akeneo-bundle:2026
-    variables:
-        AKENEO_VERSION:   ^2026.4
-    <<: *functional
+include:
+    - local:    ci/docker.yaml
+    - local:    ci/quality.yaml
+    - local:    ci/functional.yaml

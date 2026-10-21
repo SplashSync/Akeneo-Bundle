@@ -32,6 +32,17 @@ if [ ! -f public/dist/main.min.js ]; then
     echo -e "\e[45m *********************************** \e[49m"
     echo -e "\e[45m ** Build Webpack Assets            \e[49m"
     echo -e "\e[45m *********************************** \e[49m"
+    ################################################################################
+    # Limit Webpack Memory Usage: CI runners have many CPUs but limited memory
+    # Akeneo spawns one Terser & Thread-Loader worker per CPU and builds source maps
+    WEBPACK_CONFIG=vendor/akeneo/pim-community-dev/webpack.config.js
+    sed -i \
+        -e "s/parallel: true,/parallel: ${WEBPACK_WORKERS:-2},/" \
+        -e "s/devtool: 'source-map',/devtool: false,/" \
+        -e "s/'thread-loader',/{loader: 'thread-loader', options: {workers: ${WEBPACK_WORKERS:-2}}},/" \
+        $WEBPACK_CONFIG
+    grep -nE "parallel:|devtool:|thread-loader" $WEBPACK_CONFIG
+    ################################################################################
     yarn install
     yarn run less
     yarn run update-extensions

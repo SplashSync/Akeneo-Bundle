@@ -1,0 +1,70 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+################################################################
+# Functional Stage — PhpUnit tests on prebuilt Akeneo images
+#
+# Images are built by ci/docker.yaml
+################################################################
+
+.functional:
+    stage:      Functional
+    tags:       [ Dedicated ]
+    services:
+        - name: mysql:8.0
+          command: ['--default-authentication-plugin=mysql_native_password']
+        - name: elasticsearch:7.5.1
+          alias: elasticsearch
+          command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
+    artifacts:
+        when: always
+        reports:
+            junit: "$CI_PROJECT_DIR/*-report.xml"
+    ################################################################################
+    # Install & Configure Environnement
+    before_script:
+        - cd /var/www/html
+        ################################################################################
+        # Check if Akeneo Core is Installed
+        - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-core.sh
+        ################################################################################
+        # Check if Akeneo Fixtures are Installed
+        - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/override-akeneo-fixtures.sh
+        - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-akeneo-fixtures.sh
+        ################################################################################
+        # Install DEV Module
+        - bash /builds/SplashSync/Akeneo-Bundle/docker/scripts/install-dev-module.sh
+    ################################################################################
+    # Run Test Script
+    script:
+        # Execute PhpUnit Tests
+        - php vendor/bin/phpunit --version
+        - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/main-report.xml
+
+################################################################
+# Akeneo 7 - PHP 8.1
+tests:v7-php-8.1:
+    extends:    .functional
+    image:      registry.gitlab.com/splashsync/akeneo-bundle:7.0
+    variables:
+        AKENEO_VERSION:   ^7.0
+
+################################################################
+# Akeneo 2026 - PHP 8.3
+tests:v2026-php-8.3:
+    extends:    .functional
+    image:      registry.gitlab.com/splashsync/akeneo-bundle:2026
+    variables:
+        AKENEO_VERSION:   ^2026.4

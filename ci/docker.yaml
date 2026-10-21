@@ -1,0 +1,70 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+################################################################################
+
+################################################################
+# Docker Stage — prebuilt Akeneo 7 & 2026 images
+#
+# Images ship an installed Akeneo core with compiled assets,
+# vendor folder is cleaned before upload.
+#
+#   registry.gitlab.com/splashsync/akeneo-bundle:7.0   <- docker/akeneo-v7-php-8.1.Dockerfile
+#   registry.gitlab.com/splashsync/akeneo-bundle:2026  <- docker/akeneo-v2026-php-8.3.Dockerfile
+#
+# Built when the image sources change, otherwise manual only.
+# Local equivalent: docker compose build v7 v2026
+################################################################
+
+.docker:
+    image:      docker:stable
+    stage:      Docker
+    tags:       [ Dedicated-Docker ]
+    services:
+        - docker:dind
+    before_script:
+        - docker info
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    script:
+        - docker build -t registry.gitlab.com/splashsync/akeneo-bundle:${IMAGE_TAG} docker -f docker/${DOCKERFILE}
+        - docker push registry.gitlab.com/splashsync/akeneo-bundle:${IMAGE_TAG}
+
+################################################################
+# Akeneo 7 - PHP 8.1
+docker:v7-php-8.1:
+    extends:    .docker
+    variables:
+        IMAGE_TAG:      "7.0"
+        DOCKERFILE:     akeneo-v7-php-8.1.Dockerfile
+    rules:
+        - changes:
+              - docker/akeneo-v7-php-8.1.Dockerfile
+              - docker/scripts/**/*
+              - ci/docker.yaml
+        - when:           manual
+          allow_failure:  true
+
+################################################################
+# Akeneo 2026 - PHP 8.3
+docker:v2026-php-8.3:
+    extends:    .docker
+    variables:
+        IMAGE_TAG:      "2026"
+        DOCKERFILE:     akeneo-v2026-php-8.3.Dockerfile
+    rules:
+        - changes:
+              - docker/akeneo-v2026-php-8.3.Dockerfile
+              - docker/scripts/**/*
+              - ci/docker.yaml
+        - when:           manual
+          allow_failure:  true
