@@ -25,6 +25,8 @@ LABEL description="Akeneo V7 with PHP 8.1 for SplashSync"
 ################################################################################
 # Conposer Config
 ENV COMPOSER_MEMORY_LIMIT   -1
+# Akeneo pins dependencies flagged by security advisories: do not block them
+ENV COMPOSER_NO_SECURITY_BLOCKING   1
 ENV COMPOSER_HOME           /var/www/.composer/
 # Node JS Configs
 ENV NODEJS_VERSION          18

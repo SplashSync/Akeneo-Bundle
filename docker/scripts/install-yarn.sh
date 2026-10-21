@@ -19,8 +19,13 @@
 ################################################################################
 # Check if Yarn is Installed
 if [ ! -f /home/yarn.installed.lock ]; then
-    wall-e auto --ansi
+    if command -v apk > /dev/null; then
+        # Alpine Images: Wall-E only supports APT
+        apk add --no-cache nodejs npm yarn
+    else
+        wall-e auto --ansi
+    fi
     echo "YEP" > /home/yarn.installed.lock
 else
-    echo "SKIP >> Yarn for Ubuntu Already Installed"
+    echo "SKIP >> Yarn Already Installed"
 fi

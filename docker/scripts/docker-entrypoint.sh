@@ -45,7 +45,10 @@ chown www-data:www-data -Rf /var/www/html/var
 chown www-data:www-data -Rf /var/www/html/public
 #################################################################################
 echo "Serving App..."
-exec apache2-foreground
+if command -v apache2-foreground > /dev/null; then
+    exec apache2-foreground
+fi
+exec frankenphp run --config /etc/frankenphp/Caddyfile --adapter caddyfile
 
 
 

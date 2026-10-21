@@ -17,8 +17,10 @@
 ################################################################################
 
 ################################################################################
-# Check if ext-imagick is Installed
-if [ ! -f /home/imagick.installed.lock ]; then
+# Check if ext-imagick is Installed (already shipped by recent PHP SDK images)
+if php -m | grep -qi "^imagick$"; then
+    echo "SKIP >> Php Imagick Already Loaded"
+elif [ ! -f /home/imagick.installed.lock ]; then
     apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
     printf "\n" | pecl install imagick
     docker-php-ext-enable imagick

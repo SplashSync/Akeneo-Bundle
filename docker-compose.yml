@@ -28,6 +28,7 @@
 # 172.105.0.50        v5.akeneo.local
 # 172.105.0.60        v6.akeneo.local
 # 172.105.0.70        v7.akeneo.local
+# 172.105.0.80        v2026.akeneo.local
 
 # 172.105.0.11        toolkit.akeneo.local
 # 172.105.0.12        phpmyadmin.akeneo.local
@@ -50,6 +51,20 @@ services:
         networks:
             akeneo:         { ipv4_address: 172.105.0.70, aliases: [ v7.akeneo.local ] }
             splashsync:     { aliases: [ v7.akeneo.local ] }
+
+    ################################################################################
+    # Akeneo 2026 All-In-One Container
+    v2026:
+        build:
+            context:        docker
+            dockerfile:     akeneo-v2026-php-8.3.Dockerfile
+        container_name:             v2026.akeneo.local
+        volumes:
+            - ./:/builds/SplashSync/Akeneo-Bundle:ro
+        hostname:           v2026.akeneo.local
+        networks:
+            akeneo:         { ipv4_address: 172.105.0.80, aliases: [ v2026.akeneo.local ] }
+            splashsync:     { aliases: [ v2026.akeneo.local ] }
 
     ################################################################################
     # Splash Toolkit Container   

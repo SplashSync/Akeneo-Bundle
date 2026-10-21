@@ -31,6 +31,8 @@ variables:
     MYSQL_USER:             akeneo_pim
     MYSQL_PASSWORD:         akeneo_pim
     COMPOSER_MEMORY_LIMIT:  -1
+    # Akeneo pins dependencies flagged by security advisories: do not block them
+    COMPOSER_NO_SECURITY_BLOCKING:  1
     SYMFONY_DEPRECATIONS_HELPER:  disabled
 
 ################################################################
@@ -63,6 +65,8 @@ docker:
       # Build & Upload Splash Docker Image
       - docker build -t registry.gitlab.com/splashsync/akeneo-bundle:7.0 docker -f docker/akeneo-v7-php-8.1.Dockerfile
       - docker push registry.gitlab.com/splashsync/akeneo-bundle:7.0
+      - docker build -t registry.gitlab.com/splashsync/akeneo-bundle:2026 docker -f docker/akeneo-v2026-php-8.3.Dockerfile
+      - docker push registry.gitlab.com/splashsync/akeneo-bundle:2026
     only:
       changes:
         - docker/**/*
@@ -87,7 +91,7 @@ docker:
         - bash docker/scripts/install-imagick.sh
         ################################################################################
         # Run Composer
-        - composer require akeneo/pim-community-dev $AKENEO_VERSION --no-interaction --prefer-dist --no-scripts --no-plugins
+        - composer require akeneo/pim-community-dev $AKENEO_VERSION --with-all-dependencies --no-interaction --prefer-dist --no-scripts --no-plugins
     ################################################################################
     # Run Test Script
     script:
@@ -102,6 +106,12 @@ quality:v7-php-8.1:
     image:                registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     variables:
         AKENEO_VERSION:   ^7.0
+    <<: *quality
+
+quality:v2026-php-8.3:
+    image:                registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+    variables:
+        AKENEO_VERSION:   ^2026.4
     <<: *quality
 
 #quality:v6-php-7.4:
@@ -156,4 +166,10 @@ tests:v7-php-8.1:
     image:        registry.gitlab.com/splashsync/akeneo-bundle:7.0
     variables:
         AKENEO_VERSION:   ^7.0
+    <<: *functional
+
+tests:v2026-php-8.3:
+    image:        registry.gitlab.com/splashsync/akeneo-bundle:2026
+    variables:
+        AKENEO_VERSION:   ^2026.4
     <<: *functional

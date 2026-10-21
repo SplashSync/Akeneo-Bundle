@@ -1,0 +1,66 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+#
+#  Copyright (C) Splash Sync <www.splashsync.com>
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+#
+#  @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+
+FROM registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+
+LABEL description="Akeneo 2026 with PHP 8.3 for SplashSync"
+
+################################################################################
+# Declare Env Variables
+################################################################################
+# Conposer Config
+ENV COMPOSER_MEMORY_LIMIT   -1
+# Akeneo pins dependencies flagged by security advisories: do not block them
+ENV COMPOSER_NO_SECURITY_BLOCKING   1
+ENV COMPOSER_HOME           /var/www/.composer/
+# Node JS Configs
+ENV NODEJS_VERSION          18
+ENV YARN_VERSION            "any"
+# Akeneor App Config
+ENV AKENEO_VERSION          ^2026.4
+ENV AKENEO_FIXTURES         vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+ENV APP_ENV                 dev
+ENV APP_DEBUG               1
+ENV LOGGING_LEVEL           WARNING
+# FrankenPHP Config
+ENV SERVER_ROOT             /var/www/html/public
+# Directories
+ENV INSTALL_DIR             /var/www/html
+ENV MODULE_DIR              /builds/SplashSync/Akeneo-Bundle
+
+################################################################################
+# COPY Configs, Scripts, Etc...
+################################################################################
+COPY ./scripts/ /usr/local/bin
+RUN chmod +x /usr/local/bin/*.sh
+
+################################################################################
+# Install Libs
+################################################################################
+RUN   install-imagick.sh
+RUN   install-yarn.sh
+RUN   install-akeneo-core.sh \
+        && install-akeneo-assets.sh \
+        && clean.sh
+#RUN     install-prod-module.sh
+
+################################################################################
+# Configure Run Command
+# Keep PHP default entrypoint: SDK one would be overridden by our scripts
+ENTRYPOINT  [ "docker-php-entrypoint" ]
+CMD         [ "docker-entrypoint.sh" ]

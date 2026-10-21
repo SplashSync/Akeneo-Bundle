@@ -28,7 +28,7 @@
     "require": {
         "php":                                          "^8.1",
         "splash/php-bundle":                            "^2.0.0",
-        "akeneo/pim-community-dev":                     "^7.0"
+        "akeneo/pim-community-dev":                     "^7.0 || ^2026.3"
     },
     "require-dev": {
         "splash/console":                               "2.0.x-dev",
