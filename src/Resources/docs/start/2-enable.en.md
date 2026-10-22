@@ -4,30 +4,20 @@ permalink: start/enable
 title: Enable the Bundle
 ---
 
-### Activate Splash Bundle in your App Kernel
+### Activate Splash Bundle in your Application
 
-Now that bundle is installed and configured, you have to activate it on Symfony Kernel.
+Now that bundle is installed and configured, you have to activate it in Symfony.
 
-Two bundles needs to be activated, your Akeneo Bundle, plus our fundation bundle for Symfony.
-
+Two bundles need to be activated, your Akeneo Bundle, plus our foundation bundle for Symfony.
 
 ```php
-
-    /**
-     * Registers your custom bundles
-     *
-     * @return array
-     */
-    protected function registerProjectBundles()
-    {
-        return array(
-            new \Splash\Bundle\SplashBundle(),
-            new \Splash\Akeneo\SplashAkeneoBundle(),
-        );
-    }
-
+// config/bundles.php
+return [
+    // ...
+    Splash\Bundle\SplashBundle::class           => ['all' => true],
+    Splash\Akeneo\SplashAkeneoBundle::class     => ['all' => true],
+];
 ```
-
 
 ### Clear Cache & Restart your application
 
@@ -43,10 +33,9 @@ Less Diplomatic method...
 $ rm -Rf var/cache/*
 ```
 
-
 ### Test & Declare your server
 
-At this step, your akeneo application should work normaly!
+At this step, your akeneo application should work normally!
 
 Let's check Splash is correctly installed & declare our server configuration to Splash.
 

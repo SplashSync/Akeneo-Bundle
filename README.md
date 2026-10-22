@@ -30,19 +30,15 @@ $ php composer.phar require splash/akeneo-bundle
 
 Composer will install the bundle to `vendor/splash` directory.
 
-### Adding bundle to your application kernel
+### Adding bundle to your application
 
 ```php
-// app/AppKernel.php
-public function registerBundles()
-{
-    $bundles = array(
-        // ...
-            new \Splash\Bundle\SplashBundle(),          // Splash Sync Core PHP Bundle 
-            new \Splash\Akeneo\SplashAkeneoBundle(),    // Splash Bundle for Akeneo
-        // ...
-    );
-}
+// config/bundles.php
+return [
+    // ...
+    Splash\Bundle\SplashBundle::class           => ['all' => true],     // Splash Sync Core PHP Bundle
+    Splash\Akeneo\SplashAkeneoBundle::class     => ['all' => true],     // Splash Bundle for Akeneo
+];
 ```
 
 ### Configure Splash Bundles
@@ -50,6 +46,7 @@ public function registerBundles()
 Here is the default configuration for Splash bundles:
 
 ```yml
+# config/packages/splash.yml
 splash:
     connections:
         akeneo:    

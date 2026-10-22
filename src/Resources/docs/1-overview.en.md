@@ -3,19 +3,19 @@ lang: en
 permalink: overview
 title: Splash Connector for Akeneo
 description: What the Splash bundle brings to your Akeneo PIM, and which data it synchronizes.
-updated: 2026-09-18
+updated: 2026-10-22
 ---
 
-Akeneo is now know as one of the best PIM (Product Informations manager) is the world. 
-But it's not only the best, it's also an Open-Sources software you could use for free!
+Akeneo is now known as one of the best PIM (Product Information Manager) in the world.
+But it's not only the best, it's also an Open-Source software you can use for free!
 
-Splash Bundle for Akeneo offer a full accesss for your Product catalog to your others applications, alike e-commerce & ERP.
+Splash Bundle for Akeneo offers full access to your Product catalog for your other applications, like e-commerce & ERP.
 
 ### Manage all your Products Catalog on a single place
 
-Connected to your Splash account, Akeneo will manage all your products informations on a single, confortable and flexible interface.
+Connected to your Splash account, Akeneo will manage all your products information on a single, comfortable and flexible interface.
 
-* ERP Informations
+* ERP Information
 * Characteristics
 * SEO Data
 * Products Pictures
@@ -25,4 +25,18 @@ Connected to your Splash account, Akeneo will manage all your products informati
 
 Thanks to its intelligent architecture, Splash is able to synchronize all types of attributes offered by Akeneo.
 
-Even prices, metrics & images!  
+Even prices, metrics & images!
+
+### Compatibility
+
+| Akeneo PIM          | PHP   | Bundle branch |
+|---------------------|-------|---------------|
+| 7.0                 | 8.1   | 7.0           |
+| 2026.x              | 8.3   | 7.0           |
+| 4.0 & 5.0           | 7.3+  | 5.0           |
+
+Install the bundle with Composer, the right version is selected from your Akeneo version:
+
+```bash
+composer require splash/akeneo-bundle
+```

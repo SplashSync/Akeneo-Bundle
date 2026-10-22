@@ -4,29 +4,20 @@ permalink: start/enable
 title: Activer le Bundle
 ---
 
-### Activer Splash Bundle dans le kernel de votre application
+### Activer Splash Bundle dans votre application
 
-Maintenant que ce paquet est installé et configuré, vous devez l'activer sur le kernel Symfony.
+Maintenant que ce paquet est installé et configuré, vous devez l'activer dans Symfony.
 
 Deux bundles doivent être activés, votre bundle Akeneo, ainsi que notre bundle de base pour Symfony.
 
 ```php
-
-    /**
-     * Registers your custom bundles
-     *
-     * @return array
-     */
-    protected function registerProjectBundles()
-    {
-        return array(
-            new \Splash\Bundle\SplashBundle(),
-            new \Splash\Akeneo\SplashAkeneoBundle(),
-        );
-    }
-
+// config/bundles.php
+return [
+    // ...
+    Splash\Bundle\SplashBundle::class           => ['all' => true],
+    Splash\Akeneo\SplashAkeneoBundle::class     => ['all' => true],
+];
 ```
-
 
 ### Effacer le cache et redémarrer votre application
 
@@ -44,7 +35,7 @@ $ rm -Rf var/cache/*
 
 ### Testez et déclarez votre serveur
 
-A ce stade, votre application Akeneo devrait fonctionner normalement!
+À ce stade, votre application Akeneo devrait fonctionner normalement !
 
 Vérifions que Splash est correctement installé et déclarons la configuration de notre serveur à Splash.
 
@@ -55,9 +46,9 @@ Dans votre navigateur, accédez à **https://akeneo.exemple.com/ws/splash?node=T
 > [!NOTE]
 > Cela doit fonctionner même si vous n'êtes pas connecté à Akeneo.
 
-### Voir plus de détails?
+### Voir plus de détails ?
 
-Connectez-vous maintenant à Akeneo et accédez à l'adresse suivante: **https://akeneo.exemple.com/ws/splash-test?node=ThisIsSplashWsId**
+Connectez-vous maintenant à Akeneo et accédez à l'adresse suivante : **https://akeneo.exemple.com/ws/splash-test?node=ThisIsSplashWsId**
 
 ![Page de détails du serveur Splash, une fois connecté à Akeneo](../assets/img/server-details.png)
 

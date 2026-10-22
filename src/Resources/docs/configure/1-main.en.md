@@ -3,42 +3,41 @@ lang: en
 permalink: configure/main
 title: Main Configuration
 description: Locale, channel, currency & images attributes used by the connector.
-updated: 2026-09-18
+updated: 2026-10-22
 ---
 
 ### Change default Locale
 
 You can change main locale used by Splash Module for fields definition and synchronization.
 
-Other available languages will remain available, but with indexed tags that may no be available for opther applications.
+Other available languages will remain available, but with indexed tags that may not be available for other applications.
 
 Whatever, all available languages will be accessible with Splash.
 
-Default language is set here: 
+Default language is set here:
 
 ```yaml
-# app/config/config.yml
+# config/packages/splash.yml
 splash:
     connections:
-        akeneo:    
+        akeneo:
             config:
                 locale:         en_US
 ```
-
 
 ### Select the channel to use
 
 Each connection with Splash uses data of a single channel. Attributes values of other channels won't be impacted by Splash.
 
-By default, Splash will connect to ecommerce channel, available in Akeneo demo fixtures. 
+By default, Splash will connect to ecommerce channel, available in Akeneo demo fixtures.
 
-You can change this parameter here: 
+You can change this parameter here:
 
 ```yaml
-# app/config/config.yml
+# config/packages/splash.yml
 splash:
     connections:
-        akeneo:    
+        akeneo:
             config:
                 channel:        ecommerce
 ```
@@ -47,29 +46,43 @@ splash:
 
 By default, Splash will use Euro, feel free to change to your default currency.
 
-You can change this parameter here: 
+You can change this parameter here:
 
 ```yaml
-# app/config/config.yml
+# config/packages/splash.yml
 splash:
     connections:
-        akeneo:    
+        akeneo:
             config:
                 currency:       EUR
 ```
 
 ### Select attributes used for product images gallery
 
-If you want to synchronize your Products Images with other platforms through Splash. 
-You have to tell the bundle which attribute will be used for populating the image gallery.
+If you want to synchronize your Products Images with other platforms through Splash,
+you have to tell the bundle which attributes will be used for populating the image gallery.
 
-You can setup the image gallery here: 
+You can setup the image gallery here:
 
 ```yaml
-# app/config/config.yml
+# config/packages/splash.yml
 splash:
     connections:
-        akeneo:    
+        akeneo:
             config:
                 images:         ['image', 'variation_image']
+```
+
+Each image may also read its label from another product attribute.
+If no label attribute is given, or if it is empty, the image attribute label is used.
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                images:
+                    - { code: 'image', label: 'meta_title' }
+                    - 'variation_image'
 ```
