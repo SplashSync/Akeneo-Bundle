@@ -14,7 +14,7 @@ It provides access to Products Objects for automated synchronisation though Spla
 
 Branch | Akeneo   | PHP | Status | Install |
 ------ |----------| --- | ------ | ------ |
-master   | 7.0  | 7.3+ | Active | composer require splash/akeneo-bundle |
+7.0   | 7.0 & 2026.x | 8.1+ (8.3 for 2026.x) | Active | composer require splash/akeneo-bundle |
 5.0   | 4.0&5.0  | 7.3+ | Active | composer require splash/akeneo-bundle |
 3.0   | 3.0      | 7.2 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:3.0.x-dev |
 2.3   | 2.3      | 7.1 | Deprecated | composer require splash/phpcore:dev-master splash/php-bundle:1.0.0 splash/akeneo-bundle:2.3.x-dev |
@@ -64,13 +64,13 @@ splash:
 
 ## Requirements
 
-* PHP 7.4+
-* Akeneo 4.0+
+* PHP 8.1+ (PHP 8.3 for Akeneo 2026.x)
+* Akeneo 7.0 or 2026.x (use branch 5.0 for Akeneo 4.0 & 5.0)
 * An active Splash Sync User Account
 
 ## Documentation
 
-For the configuration guide and reference, see: [Akeneo Bundle Docmumentation](https://splashsync.github.io/Akeneo-Bundle/)
+For the configuration guide and reference, see: [Akeneo Bundle Documentation](https://www.splashsync.com/integrations/akeneo)
 
 ## Contributing
 

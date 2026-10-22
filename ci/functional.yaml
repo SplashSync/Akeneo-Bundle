@@ -25,9 +25,12 @@
     services:
         - name: mysql:8.0
           command: ['--default-authentication-plugin=mysql_native_password']
+        # Alias "elasticsearch" is derived from image name
         - name: elasticsearch:7.5.1
-          alias: elasticsearch
           command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
+          # Default JVM heap is 1g: keep it low to fit in runners services memory
+          variables:
+              ES_JAVA_OPTS: "-Xms512m -Xmx512m"
     artifacts:
         when: always
         reports:

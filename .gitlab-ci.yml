@@ -50,7 +50,6 @@ stages:
     - Docker
     - Quality
     - Functional
-    - Builds
 
 include:
     - local:    ci/docker.yaml
