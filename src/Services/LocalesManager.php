@@ -127,8 +127,12 @@ class LocalesManager
      *
      * @return string The translated string
      */
-    public function trans(string $id, array $parameters = array(), string $domain = null, string $locale = null): string
-    {
+    public function trans(
+        string $id,
+        array $parameters = array(),
+        ?string $domain = null,
+        ?string $locale = null
+    ): string {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 }

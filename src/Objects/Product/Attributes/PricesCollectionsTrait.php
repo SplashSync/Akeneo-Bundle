@@ -169,7 +169,7 @@ trait PricesCollectionsTrait
      *
      * @return null|array
      */
-    private function buildPrice(float $htPrice, float $vat = null): ?array
+    private function buildPrice(float $htPrice, ?float $vat = null): ?array
     {
         $currency = $this->conf->getCurrency();
 

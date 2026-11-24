@@ -119,7 +119,7 @@ class GalleryImage
      *
      * @return null|int
      */
-    public function getOptimalLevel(array $summary, array $visibleUuids = null, int $level = 0): ?int
+    public function getOptimalLevel(array $summary, ?array $visibleUuids = null, int $level = 0): ?int
     {
         $visibleUuids = $visibleUuids ?? $this->visibleUuids();
         //====================================================================//

@@ -58,7 +58,7 @@ class ModelsManager
      *
      * @return null|Model
      */
-    public function resolveParent($inputs, Family $familyVariant, Model $model = null): ?Model
+    public function resolveParent($inputs, Family $familyVariant, ?Model $model = null): ?Model
     {
         $coreSku = isset($inputs["sku"]) ? $inputs["sku"] : uniqid();
 
