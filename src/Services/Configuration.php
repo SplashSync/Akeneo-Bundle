@@ -29,6 +29,13 @@ use Splash\Client\Splash;
 class Configuration
 {
     /**
+     * Default Separator for Multi-Select Values as String
+     *
+     * @var string
+     */
+    const DEFAULT_MULTISELECT_SEPARATOR = " | ";
+
+    /**
      * Default Channel Code
      */
     private string $channel;
@@ -78,6 +85,13 @@ class Configuration
     private array $imagesCodes = array();
 
     /**
+     * Separator used to Join Multi-Select Values as String
+     *
+     * @var string
+     */
+    private string $multiSelectSeparator = self::DEFAULT_MULTISELECT_SEPARATOR;
+
+    /**
      * Service Constructor
      */
     public function __construct(
@@ -108,6 +122,7 @@ class Configuration
         $catalogMode = $object->getParameter("catalog_mode", false);
         /** @var array $imagesCodes */
         $imagesCodes = $object->getParameter("images", array());
+        $multiSelectSeparator = $object->getParameter("multiselect_separator", self::DEFAULT_MULTISELECT_SEPARATOR);
 
         //====================================================================//
         // Setup Configuration
@@ -116,6 +131,10 @@ class Configuration
         $this->currency = $currency;
         $this->learningMode = (bool) $learningMode;
         $this->catalogMode = (bool) $catalogMode;
+        $this->multiSelectSeparator = is_string($multiSelectSeparator) && ('' !== $multiSelectSeparator)
+            ? $multiSelectSeparator
+            : self::DEFAULT_MULTISELECT_SEPARATOR
+        ;
         //====================================================================//
         // Setup Images Codes
         $this->setupImageCodes($imagesCodes);
@@ -230,6 +249,16 @@ class Configuration
     public function getImagesCodes(): array
     {
         return $this->imagesCodes;
+    }
+
+    /**
+     * Get Separator used to Join Multi-Select Values as String
+     *
+     * @return string
+     */
+    public function getMultiSelectSeparator(): string
+    {
+        return $this->multiSelectSeparator;
     }
 
     /**

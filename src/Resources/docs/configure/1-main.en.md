@@ -2,8 +2,8 @@
 lang: en
 permalink: configure/main
 title: Main Configuration
-description: Locale, channel, currency & images attributes used by the connector.
-updated: 2026-10-22
+description: Locale, channel, currency, images attributes & multi-select separator used by the connector.
+updated: 2026-11-20
 ---
 
 ### Change default Locale
@@ -85,4 +85,23 @@ splash:
                 images:
                     - { code: 'image', label: 'meta_title' }
                     - 'variation_image'
+```
+
+### Multi-select values as text
+
+Each multi-select attribute is also exposed as a read-only text field, named with the `ms2s_` prefix (e.g. `ms2s_languages`).
+It contains the translated option labels, in each available language, joined by a separator: `English | French | Spanish`.
+
+Use it when the target application expects a plain text field instead of a list.
+An option without translation is written with its code.
+
+The default separator is ` | ` (space, vertical bar, space). You can change it here:
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                multiselect_separator:  ", "
 ```

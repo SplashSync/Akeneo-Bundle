@@ -146,7 +146,8 @@ class AttributesManager
                         $product,
                         $this->getByCode($virtualFieldName),
                         $isoLang,
-                        false
+                        false,
+                        $baseFieldName
                     ),
                 );
             }
@@ -221,15 +222,21 @@ class AttributesManager
     /**
      * Get Field Computed Data from Local Object
      *
-     * @param Product   $product
-     * @param Attribute $attr
-     * @param string    $iso
-     * @param bool      $attributeMode
+     * @param Product     $product
+     * @param Attribute   $attr
+     * @param string      $iso
+     * @param bool        $attributeMode
+     * @param null|string $fieldName     Virtual Field Name, with Prefix
      *
      * @return null|string
      */
-    public function getVirtualData(Product $product, Attribute $attr, string $iso, bool $attributeMode): ?string
-    {
+    public function getVirtualData(
+        Product $product,
+        Attribute $attr,
+        string $iso,
+        bool $attributeMode,
+        ?string $fieldName = null
+    ): ?string {
         $attrType = $attr->getType();
         $channel = $this->conf->getChannel();
         //====================================================================//
@@ -246,6 +253,17 @@ class AttributesManager
         // Read & Convert Select as Translated
         if (TypesConverter::isSelect($attrType)) {
             return $this->getSelectValueTranslation($product, $attr, $iso, $channel);
+        }
+        //====================================================================//
+        // Read & Convert Multi-Select as String
+        if (TypesConverter::isMultiSelect($attrType) && self::isMultiToString($fieldName)) {
+            return $this->getMultiSelectAsString(
+                $product,
+                $attr,
+                $iso,
+                $channel,
+                $this->conf->getMultiSelectSeparator()
+            );
         }
         //====================================================================//
         // Read & Convert Multi-Select as Translated
@@ -692,6 +710,16 @@ class AttributesManager
                 $this->buildField($factory, $clonedAttr, $isoLang, $catalogMode ? "" : "Name", true);
                 $factory->isReadOnly();
             }
+            //====================================================================//
+            // Multi-Select Fields => Add Translated Values as String
+            $clonedAttr = clone $attribute;
+            $clonedAttr->setCode(TypesConverter::MULTI2STRING.$attribute->getCode());
+            $clonedAttr->setType(AttributeTypes::TEXT);
+            $clonedAttr->setLocalizable(true);
+            foreach ($this->locales->getAll() as $isoLang) {
+                $this->buildField($factory, $clonedAttr, $isoLang, "String", true);
+                $factory->isReadOnly();
+            }
         }
     }
 
@@ -761,5 +789,17 @@ class AttributesManager
         }
 
         return $attributes[$attrCode];
+    }
+
+    /**
+     * Check if a Virtual Field Name is a Multi-Select as String Field
+     *
+     * @param null|string $fieldName Virtual Field Name, with Prefix
+     *
+     * @return bool
+     */
+    private static function isMultiToString(?string $fieldName): bool
+    {
+        return (null !== $fieldName) && (null !== TypesConverter::isMultiToString($fieldName));
     }
 }

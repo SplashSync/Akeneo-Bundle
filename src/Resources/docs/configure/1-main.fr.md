@@ -2,8 +2,8 @@
 lang: fr
 permalink: configure/main
 title: Configuration Principale
-description: Langue, canal, devise et attributs images utilisés par le connecteur.
-updated: 2026-10-22
+description: Langue, canal, devise, attributs images et séparateur des multi-sélections utilisés par le connecteur.
+updated: 2026-11-20
 ---
 
 ### Modifier la langue par défaut
@@ -85,4 +85,23 @@ splash:
                 images:
                     - { code: 'image', label: 'meta_title' }
                     - 'variation_image'
+```
+
+### Valeurs des multi-sélections en texte
+
+Chaque attribut à sélection multiple est aussi exposé sous forme d'un champ texte en lecture seule, préfixé par `ms2s_` (par exemple `ms2s_languages`).
+Il contient les libellés traduits des options, dans chaque langue disponible, reliés par un séparateur : `English | French | Spanish`.
+
+Utilisez-le lorsque l'application cible attend un simple champ texte plutôt qu'une liste.
+Une option sans traduction est écrite avec son code.
+
+Le séparateur par défaut est ` | ` (espace, barre verticale, espace). Vous pouvez le modifier ici :
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                multiselect_separator:  ", "
 ```

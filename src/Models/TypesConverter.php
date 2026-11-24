@@ -59,6 +59,13 @@ class TypesConverter
     const MULTI2TRANS = "m2t_";
 
     /**
+     * Multi-Select as String Prefix
+     *
+     * @var string
+     */
+    const MULTI2STRING = "ms2s_";
+
+    /**
      * List of Known Akeneo Attributes Types
      *
      * @var array
@@ -286,6 +293,13 @@ class TypesConverter
             return $multiToTrans;
         }
 
+        //====================================================================//
+        // Multi-Select to String
+        $multiToString = self::isMultiToString($fieldName);
+        if ($multiToString) {
+            return $multiToString;
+        }
+
         return null;
     }
 
@@ -371,5 +385,23 @@ class TypesConverter
         }
 
         return substr($fieldName, strlen(self::MULTI2TRANS));
+    }
+
+    /**
+     * Detect & Decode Multi-Select to String FieldName
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Base Field Name or Null
+     */
+    public static function isMultiToString($fieldName): ?string
+    {
+        //====================================================================//
+        // Check if Prefix is in FieldName
+        if (0 !== strpos($fieldName, self::MULTI2STRING)) {
+            return null;
+        }
+
+        return substr($fieldName, strlen(self::MULTI2STRING));
     }
 }
