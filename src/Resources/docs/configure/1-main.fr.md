@@ -2,7 +2,7 @@
 lang: fr
 permalink: configure/main
 title: Configuration Principale
-description: Langue, canal, devise, images, séparateur des multi-sélections et mesures supplémentaires utilisés par le connecteur.
+description: Langue, canal, devise, images, filtre par catégories, séparateur des multi-sélections et mesures supplémentaires utilisés par le connecteur.
 updated: 2026-11-24
 ---
 
@@ -86,6 +86,30 @@ splash:
                     - { code: 'image', label: 'meta_title' }
                     - 'variation_image'
 ```
+
+### Filtrer les produits par catégories
+
+Par défaut, tous les produits sont synchronisés avec Splash.
+
+Vous pouvez limiter la connexion à certaines branches de vos arbres de catégories en listant leurs codes.
+Un produit est synchronisé si au moins une de ses catégories est une catégorie listée, ou l'une de ses sous-catégories.
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                categories:     ['tvs_projectors', 'cameras']
+```
+
+Lorsque ce filtre est actif :
+
+* les produits hors de ces catégories ne sont pas listés et ne peuvent pas être lus par Splash ;
+* leurs modifications ne sont pas envoyées à Splash ;
+* l'auto-test du connecteur vérifie l'intégrité de ces arbres de catégories, et avertit si des erreurs sont trouvées.
+
+Laissez la liste vide, ou retirez le paramètre, pour synchroniser tous les produits.
 
 ### Valeurs des multi-sélections en texte
 

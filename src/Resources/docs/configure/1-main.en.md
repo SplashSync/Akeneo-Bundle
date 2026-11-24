@@ -2,7 +2,7 @@
 lang: en
 permalink: configure/main
 title: Main Configuration
-description: Locale, channel, currency, images, multi-select separator & extra metrics used by the connector.
+description: Locale, channel, currency, images, categories filter, multi-select separator & extra metrics used by the connector.
 updated: 2026-11-24
 ---
 
@@ -86,6 +86,30 @@ splash:
                     - { code: 'image', label: 'meta_title' }
                     - 'variation_image'
 ```
+
+### Filter products by categories
+
+By default, all products are synchronized with Splash.
+
+You can restrict the connection to some branches of your categories trees by listing their codes.
+A product is synchronized if at least one of its categories is a listed category, or one of its sub-categories.
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                categories:     ['tvs_projectors', 'cameras']
+```
+
+When this filter is active:
+
+* products outside these categories are not listed and cannot be read by Splash;
+* their changes are not sent to Splash;
+* the connector self-test checks the integrity of these categories trees, and warns if errors are found.
+
+Leave the list empty, or remove the parameter, to synchronize all products.
 
 ### Multi-select values as text
 
