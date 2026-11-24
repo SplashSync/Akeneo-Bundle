@@ -2,7 +2,7 @@
 lang: fr
 permalink: configure/main
 title: Configuration Principale
-description: Langue, canal, devise, images, filtre par catégories, séparateur des multi-sélections et mesures supplémentaires utilisés par le connecteur.
+description: Langue, canal, devise et prix en double, images, filtre par catégories, séparateur des multi-sélections et mesures supplémentaires utilisés par le connecteur.
 updated: 2026-11-24
 ---
 
@@ -56,6 +56,9 @@ splash:
             config:
                 currency:       EUR
 ```
+
+Chaque attribut prix est aussi exposé sous forme d'un champ `double` en lecture seule, préfixé par `p2d_` (par exemple `p2d_price`).
+Il contient le montant hors taxes dans cette devise, tel que stocké dans Akeneo, avec le même nom et la même microdata que le champ prix.
 
 ### Sélection des attributs utilisés pour la galerie d'images de produit
 

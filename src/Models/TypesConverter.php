@@ -66,6 +66,13 @@ class TypesConverter
     const MULTI2STRING = "ms2s_";
 
     /**
+     * Price as Double Prefix
+     *
+     * @var string
+     */
+    const PRICE2DOUBLE = "p2d_";
+
+    /**
      * Extra Metrics Prefix (Configured Unit & Format)
      *
      * @var string
@@ -217,6 +224,18 @@ class TypesConverter
     }
 
     /**
+     * Check if Attribute type Code is a Price Collection Type
+     *
+     * @param string $attrType Akeneo Attribute Type
+     *
+     * @return bool
+     */
+    public static function isPrice(string $attrType): bool
+    {
+        return self::isKnown($attrType) && (AttributeTypes::PRICE_COLLECTION == $attrType);
+    }
+
+    /**
      * Check if Attribute type Code is a Boolean Type
      *
      * @param string $attrType Akeneo Attribute Type
@@ -252,7 +271,8 @@ class TypesConverter
         }
         //====================================================================//
         // Detect Mapping Exceptions (CATALOG MODE)
-        if (self::isNumber($attrType) && $catalogMode) {
+        // Price as Double Virtual Fields are always Doubles
+        if (self::isNumber($attrType) && $catalogMode && !self::isPriceToDouble($attribute->getCode())) {
             $splashType = SPL_T_VARCHAR;
         }
 
@@ -305,6 +325,13 @@ class TypesConverter
         $multiToString = self::isMultiToString($fieldName);
         if ($multiToString) {
             return $multiToString;
+        }
+
+        //====================================================================//
+        // Price to Double
+        $priceToDouble = self::isPriceToDouble($fieldName);
+        if ($priceToDouble) {
+            return $priceToDouble;
         }
 
         return null;
@@ -410,6 +437,24 @@ class TypesConverter
         }
 
         return substr($fieldName, strlen(self::MULTI2STRING));
+    }
+
+    /**
+     * Detect & Decode Price to Double FieldName
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Base Field Name or Null
+     */
+    public static function isPriceToDouble($fieldName): ?string
+    {
+        //====================================================================//
+        // Check if Prefix is in FieldName
+        if (0 !== strpos($fieldName, self::PRICE2DOUBLE)) {
+            return null;
+        }
+
+        return substr($fieldName, strlen(self::PRICE2DOUBLE));
     }
 
     //====================================================================//

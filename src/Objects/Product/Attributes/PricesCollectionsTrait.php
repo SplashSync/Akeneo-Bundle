@@ -47,9 +47,9 @@ trait PricesCollectionsTrait
     protected function getPriceValue(Product $product, Attribute $attribute, string $isoLang, string $channel): ?array
     {
         //====================================================================//
-        // Load Raw Attribute Value
-        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
-        if (!is_iterable($value)) {
+        // Load Price Amount in Configured Currency
+        $amount = $this->getPriceAmount($product, $attribute, $isoLang, $channel);
+        if (null === $amount) {
             return $this->buildPrice(0);
         }
         //====================================================================//
@@ -67,16 +67,26 @@ trait PricesCollectionsTrait
             }
         }
 
-        //====================================================================//
-        // Search for Currency Price in Collection
-        /** @var Price $prdPrice */
-        foreach ($value as $prdPrice) {
-            if (strtolower($prdPrice->getCurrency()) == strtolower($this->conf->getCurrency())) {
-                return $this->buildPrice((float) $prdPrice->getData(), (float)  $vatValue);
-            }
-        }
+        return $this->buildPrice($amount, (float)  $vatValue);
+    }
 
-        return $this->buildPrice(0);
+    /**
+     * PRICE - Read Attribute Tax Excluded Amount as Double
+     *
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     *
+     * @return float
+     */
+    protected function getPriceAsDouble(
+        Product $product,
+        Attribute $attribute,
+        string $isoLang,
+        string $channel
+    ): float {
+        return $this->getPriceAmount($product, $attribute, $isoLang, $channel) ?? 0.0;
     }
 
     /**
@@ -157,6 +167,40 @@ trait PricesCollectionsTrait
         }
 
         return true;
+    }
+
+    /**
+     * Get Tax Excluded Price Amount in Configured Currency
+     *
+     * @param Product   $product   Akeneo Product Object
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $isoLang
+     * @param string    $channel
+     *
+     * @return null|float
+     */
+    private function getPriceAmount(
+        Product $product,
+        Attribute $attribute,
+        string $isoLang,
+        string $channel
+    ): ?float {
+        //====================================================================//
+        // Load Raw Attribute Value
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        if (!is_iterable($value)) {
+            return null;
+        }
+        //====================================================================//
+        // Search for Currency Price in Collection
+        /** @var Price $prdPrice */
+        foreach ($value as $prdPrice) {
+            if (strtolower($prdPrice->getCurrency()) == strtolower($this->conf->getCurrency())) {
+                return (float) $prdPrice->getData();
+            }
+        }
+
+        return null;
     }
 
     /**

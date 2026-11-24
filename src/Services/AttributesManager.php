@@ -240,7 +240,7 @@ class AttributesManager
      * @param bool        $attributeMode
      * @param null|string $fieldName     Virtual Field Name, with Prefix
      *
-     * @return null|string
+     * @return null|float|string
      */
     public function getVirtualData(
         Product $product,
@@ -248,9 +248,14 @@ class AttributesManager
         string $iso,
         bool $attributeMode,
         ?string $fieldName = null
-    ): ?string {
+    ): null|float|string {
         $attrType = $attr->getType();
         $channel = $this->conf->getChannel();
+        //====================================================================//
+        // Read & Convert Price as Double Value
+        if (TypesConverter::isPrice($attrType) && self::isPriceToDouble($fieldName)) {
+            return $this->getPriceAsDouble($product, $attr, $iso, $channel);
+        }
         //====================================================================//
         // Read & Convert Bool as String Value
         if (TypesConverter::isBool($attrType)) {
@@ -743,6 +748,23 @@ class AttributesManager
                 $factory->isReadOnly();
             }
         }
+        //====================================================================//
+        // Price Fields => Add Tax Excluded Double Values (Same Metadata)
+        if (TypesConverter::isPrice($attribute->getType())) {
+            $clonedAttr = clone $attribute;
+            $clonedAttr->setCode(TypesConverter::PRICE2DOUBLE.$attribute->getCode());
+            $clonedAttr->setType(AttributeTypes::NUMBER);
+            $clonedAttr->setDecimalsAllowed(true);
+            $clonedAttr->setRequired(false);
+            $isoLangs = $attribute->isLocalizable()
+                ? $this->locales->getAll()
+                : array($this->locales->getDefault())
+            ;
+            foreach ($isoLangs as $priceIsoLang) {
+                $this->buildField($factory, $clonedAttr, $priceIsoLang, "", true);
+                $factory->isReadOnly();
+            }
+        }
     }
 
     /**
@@ -944,5 +966,17 @@ class AttributesManager
     private static function isMultiToString(?string $fieldName): bool
     {
         return (null !== $fieldName) && (null !== TypesConverter::isMultiToString($fieldName));
+    }
+
+    /**
+     * Check if a Virtual Field Name is a Price as Double Field
+     *
+     * @param null|string $fieldName Virtual Field Name, with Prefix
+     *
+     * @return bool
+     */
+    private static function isPriceToDouble(?string $fieldName): bool
+    {
+        return (null !== $fieldName) && (null !== TypesConverter::isPriceToDouble($fieldName));
     }
 }

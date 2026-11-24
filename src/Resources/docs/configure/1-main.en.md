@@ -2,7 +2,7 @@
 lang: en
 permalink: configure/main
 title: Main Configuration
-description: Locale, channel, currency, images, categories filter, multi-select separator & extra metrics used by the connector.
+description: Locale, channel, currency & prices as doubles, images, categories filter, multi-select separator & extra metrics used by the connector.
 updated: 2026-11-24
 ---
 
@@ -56,6 +56,9 @@ splash:
             config:
                 currency:       EUR
 ```
+
+Each price attribute is also exposed as a read-only `double` field, named with the `p2d_` prefix (e.g. `p2d_price`).
+It holds the tax excluded amount in this currency, as stored in Akeneo, and uses the same name and microdata as the price field.
 
 ### Select attributes used for product images gallery
 
