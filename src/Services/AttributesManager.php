@@ -756,14 +756,9 @@ class AttributesManager
             $clonedAttr->setType(AttributeTypes::NUMBER);
             $clonedAttr->setDecimalsAllowed(true);
             $clonedAttr->setRequired(false);
-            $isoLangs = $attribute->isLocalizable()
-                ? $this->locales->getAll()
-                : array($this->locales->getDefault())
-            ;
-            foreach ($isoLangs as $priceIsoLang) {
-                $this->buildField($factory, $clonedAttr, $priceIsoLang, "", true);
-                $factory->isReadOnly();
-            }
+            $clonedAttr->setLocalizable(false);
+            $this->buildField($factory, $clonedAttr, $this->locales->getDefault(), "", true);
+            $factory->isReadOnly();
         }
     }
 
