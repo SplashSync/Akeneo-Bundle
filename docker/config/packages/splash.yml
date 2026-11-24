@@ -19,5 +19,8 @@ splash:
                     - 'variation_image_2'
                     - 'variation_image_3'
                     - 'variation_image_4'
+                extra_metrics:
+                    weight_g:       { attribute: 'weight',            unit: 'GRAM',        format: 'int' }
+                    diagonal_cm:    { attribute: 'display_diagonal',  unit: 'CENTIMETER' }
     test:
         VAT:                0

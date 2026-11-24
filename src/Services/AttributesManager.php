@@ -23,13 +23,16 @@ use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Attribute;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute as Group;
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as Repository;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
 use Exception;
+use Splash\Akeneo\Models\ExtraMetric;
 use Splash\Akeneo\Models\TypesConverter;
 use Splash\Akeneo\Objects\Product\Attributes as SplashAttributes;
 use Splash\Akeneo\Services\FilesManager as Files;
 use Splash\Components\FieldsFactory;
+use Splash\Core\SplashCore as Splash;
 use Splash\Models\Objects\FieldsFactoryTrait;
 
 /**
@@ -61,6 +64,7 @@ class AttributesManager
         protected Repository        $attributes,
         protected BaseSaver           $optionSaver,
         protected MeasureManager      $measure,
+        protected MeasureConverter    $converter,
         protected Files               $files,
         protected Configuration       $conf,
         protected LocalesManager      $locales
@@ -103,6 +107,9 @@ class AttributesManager
                 $this->buildField($factory, $attribute, $isoLang);
             }
         }
+        //====================================================================//
+        // Add Configured Extra Metrics
+        $this->buildExtraMetricFields($factory);
     }
 
     //====================================================================//
@@ -121,6 +128,11 @@ class AttributesManager
      */
     public function get(Product $product, string $fieldName): array
     {
+        //====================================================================//
+        // Detect Extra Metric Field
+        if (null !== TypesConverter::isExtraMetric($fieldName)) {
+            return $this->getExtraMetricData($product, $fieldName);
+        }
         //====================================================================//
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
@@ -288,6 +300,11 @@ class AttributesManager
     public function set(Product $product, string $fieldName, $fieldData): bool
     {
         //====================================================================//
+        // Extra Metric Fields are Read Only
+        if (null !== TypesConverter::isExtraMetric($fieldName)) {
+            return false;
+        }
+        //====================================================================//
         // Walk on Each Available Languages
         foreach ($this->locales->getAll() as $isoLang) {
             //====================================================================//
@@ -349,6 +366,11 @@ class AttributesManager
      */
     public function hasForLocale(string $fieldName, string $isoLang): bool
     {
+        //====================================================================//
+        // Extra Metric Fields => Mono-Lang
+        if (null !== TypesConverter::isExtraMetric($fieldName)) {
+            return ($isoLang == $this->locales->getDefault()) && (null !== $this->resolveExtraMetric($fieldName));
+        }
         //====================================================================//
         // Decode Multilang Field Name
         $baseFieldName = $this->locales->decode($fieldName, $isoLang);
@@ -789,6 +811,127 @@ class AttributesManager
         }
 
         return $attributes[$attrCode];
+    }
+
+    /**
+     * Generate Extra Metrics Fields Definition
+     *
+     * @param FieldsFactory $factory
+     *
+     * @return void
+     */
+    private function buildExtraMetricFields(FieldsFactory $factory): void
+    {
+        foreach ($this->conf->getExtraMetrics() as $extraMetric) {
+            //====================================================================//
+            // Validate Extra Metric against Akeneo Attributes & Units
+            $attribute = $this->getExtraMetricAttribute($extraMetric, true);
+            if (!$attribute) {
+                continue;
+            }
+            /** @var Group $group */
+            $group = $attribute->getGroup();
+            /** @var AttributeTranslation $attrTrans */
+            $attrTrans = $attribute->getTranslation($this->locales->getDefault());
+            /** @var GroupTranslation $groupTrans */
+            $groupTrans = $group->getTranslation($this->locales->getDefault());
+            //====================================================================//
+            // Field Name => Attribute Label with Target Unit Symbol
+            $fieldName = sprintf(
+                "%s (%s)",
+                $attrTrans->getLabel() ?: $attribute->getCode(),
+                $this->getMetricUnitSymbol($attribute, $extraMetric->unit)
+            );
+            //====================================================================//
+            // Add Read Only Field
+            $factory
+                ->create($extraMetric->getSplashType())
+                ->identifier($extraMetric->getFieldId())
+                ->name($fieldName)
+                ->description(sprintf("[%s] %s", $groupTrans->getLabel(), $fieldName))
+                ->microData(
+                    "http://schema.org/Product",
+                    ($attrTrans->getLabel() ?: $attribute->getCode()).$extraMetric->getUnitPascalCase()
+                )
+                ->group($groupTrans->getLabel())
+                ->isReadOnly()
+            ;
+        }
+    }
+
+    /**
+     * Read Extra Metric Field Data
+     *
+     * @param Product $product
+     * @param string  $fieldName
+     *
+     * @return array
+     */
+    private function getExtraMetricData(Product $product, string $fieldName): array
+    {
+        $extraMetric = $this->resolveExtraMetric($fieldName);
+        $attribute = $extraMetric ? $this->getExtraMetricAttribute($extraMetric, false) : null;
+        if (!$extraMetric || !$attribute) {
+            return array();
+        }
+
+        return array(
+            $fieldName => $this->getMetricConvertedValue(
+                $product,
+                $attribute,
+                $extraMetric,
+                $this->locales->getDefault(),
+                $this->conf->getChannel()
+            ),
+        );
+    }
+
+    /**
+     * Get Configured Extra Metric from Field Name
+     *
+     * @param string $fieldName
+     *
+     * @return null|ExtraMetric
+     */
+    private function resolveExtraMetric(string $fieldName): ?ExtraMetric
+    {
+        $name = TypesConverter::isExtraMetric($fieldName);
+
+        return (null !== $name) ? $this->conf->getExtraMetric($name) : null;
+    }
+
+    /**
+     * Get & Validate Source Attribute of an Extra Metric
+     *
+     * @param ExtraMetric $extraMetric Extra Metric Definition
+     * @param bool        $verbose     Log a Warning if Invalid
+     *
+     * @return null|Attribute
+     */
+    private function getExtraMetricAttribute(ExtraMetric $extraMetric, bool $verbose): ?Attribute
+    {
+        $attribute = $this->getAll()[$extraMetric->attribute] ?? null;
+        $error = null;
+        //====================================================================//
+        // Attribute shall Exists & be a Metric
+        if (!$attribute || !TypesConverter::isMetric($attribute->getType())) {
+            $error = sprintf("%s is not a metric attribute", $extraMetric->attribute);
+        } elseif (!$this->isMetricUnitAllowed($attribute, $extraMetric->unit)) {
+            //====================================================================//
+            // Unit shall Exists in Attribute Metric Family
+            $error = sprintf("unit %s is not in %s family", $extraMetric->unit, $attribute->getMetricFamily());
+        }
+        //====================================================================//
+        // Invalid Extra Metric
+        if (null !== $error) {
+            if ($verbose) {
+                Splash::log()->war(sprintf("Extra metric %s: %s", $extraMetric->name, $error));
+            }
+
+            return null;
+        }
+
+        return $attribute;
     }
 
     /**

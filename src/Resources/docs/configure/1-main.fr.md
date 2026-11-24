@@ -2,8 +2,8 @@
 lang: fr
 permalink: configure/main
 title: Configuration Principale
-description: Langue, canal, devise, attributs images et séparateur des multi-sélections utilisés par le connecteur.
-updated: 2026-11-20
+description: Langue, canal, devise, images, séparateur des multi-sélections et mesures supplémentaires utilisés par le connecteur.
+updated: 2026-11-24
 ---
 
 ### Modifier la langue par défaut
@@ -105,3 +105,43 @@ splash:
             config:
                 multiselect_separator:  ", "
 ```
+
+### Mesures dans d'autres unités
+
+Les attributs de type mesure sont exposés dans l'unité de base de leur famille (par exemple mètres, kilogrammes).
+Cette valeur est partagée avec toutes vos applications connectées et n'est jamais modifiée.
+
+Lorsqu'une application attend une autre unité, ou un entier, vous pouvez ajouter des champs supplémentaires en lecture seule.
+Chaque entrée convertit un attribut de mesure dans une unité cible, et l'expose en entier (`int`, arrondi) ou en décimal (`double`, par défaut).
+
+L'identifiant du champ est la clé de l'entrée, préfixée par `m2u_` (par exemple `m2u_width_cm`).
+Le champ porte le libellé de l'attribut, suivi du symbole de l'unité (par exemple `Width (cm)`) :
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                extra_metrics:
+                    width_cm:       { attribute: 'width',             unit: 'CENTIMETER',  format: 'int' }
+                    width_inch:     { attribute: 'width',             unit: 'INCH' }
+                    diagonal_inch:  { attribute: 'display_diagonal',  unit: 'INCH',        format: 'int' }
+```
+
+Vous pouvez aussi donner le nom de l'identifiant explicitement, avec une liste d'entrées :
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                extra_metrics:
+                    - { name: 'width_cm',  attribute: 'width',   unit: 'CENTIMETER',  format: 'int' }
+                    - { name: 'weight_g',  attribute: 'weight',  unit: 'GRAM',        format: 'int' }
+```
+
+* `name` : lettres, chiffres et tirets bas uniquement. Prend le pas sur la clé de l'entrée si les deux sont donnés.
+* `unit` : un code d'unité Akeneo de la famille de mesure de l'attribut (par exemple `CENTIMETER`, `INCH`, `GRAM`).
+* Les entrées invalides (attribut inconnu, unité d'une autre famille...) sont ignorées, avec un avertissement dans les logs Splash.

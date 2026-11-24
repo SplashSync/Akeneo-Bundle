@@ -18,8 +18,10 @@ namespace Splash\Akeneo\Objects\Product\Attributes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric as Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface as Product;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface as Attribute;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Exception;
+use Splash\Akeneo\Models\ExtraMetric;
 use Splash\Core\SplashCore as Splash;
 
 /**
@@ -34,6 +36,13 @@ trait MetricTrait
      * @var MeasureManager
      */
     protected MeasureManager $measure;
+
+    /**
+     * Akeneo Measures Converter
+     *
+     * @var MeasureConverter
+     */
+    protected MeasureConverter $converter;
 
     /**
      * @var array
@@ -92,6 +101,95 @@ trait MetricTrait
         }
 
         return is_scalar($value) ? (string) $value : null;
+    }
+
+    /**
+     * EXTRA METRIC - Read Attribute Data Converted to Configured Unit & Format
+     *
+     * @param Product     $product     Akeneo Product Object
+     * @param Attribute   $attribute   Akeneo Attribute Object
+     * @param ExtraMetric $extraMetric Extra Metric Definition
+     * @param string      $isoLang
+     * @param string      $channel
+     *
+     * @return null|float|int
+     */
+    protected function getMetricConvertedValue(
+        Product $product,
+        Attribute $attribute,
+        ExtraMetric $extraMetric,
+        string $isoLang,
+        string $channel
+    ): null|float|int {
+        //====================================================================//
+        // Load Raw Attribute Value
+        $value = $this->getCoreValue($product, $attribute, $isoLang, $channel);
+        if (!$value instanceof Metric) {
+            return null;
+        }
+        //====================================================================//
+        // Empty Amount => No Value (Data may be Null despite Akeneo Typings)
+        /** @var mixed $amount */
+        $amount = $value->getData();
+        if (!is_numeric($amount)) {
+            return null;
+        }
+
+        //====================================================================//
+        // Convert Value to Target Unit
+        try {
+            $converted = $this->converter
+                ->setFamily($value->getFamily())
+                ->convert($value->getUnit(), $extraMetric->unit, $amount)
+            ;
+        } catch (Exception $ex) {
+            Splash::log()->war(sprintf(
+                "Unable to convert %s to %s: %s",
+                $attribute->getCode(),
+                $extraMetric->unit,
+                $ex->getMessage()
+            ));
+
+            return null;
+        }
+
+        return $extraMetric->format((float) $converted);
+    }
+
+    /**
+     * EXTRA METRIC - Get Unit Symbol for Attribute Metric Family
+     *
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $unit      Unit Code
+     *
+     * @return string Unit Symbol, or Unit Code if not Found
+     */
+    protected function getMetricUnitSymbol(Attribute $attribute, string $unit): string
+    {
+        try {
+            $familySymbols = $this->measure->getUnitSymbolsForFamily($attribute->getMetricFamily());
+        } catch (Exception $ex) {
+            return $unit;
+        }
+
+        return is_scalar($familySymbols[$unit] ?? null) ? (string) $familySymbols[$unit] : $unit;
+    }
+
+    /**
+     * EXTRA METRIC - Check if Unit Exists for Attribute Metric Family
+     *
+     * @param Attribute $attribute Akeneo Attribute Object
+     * @param string    $unit      Unit Code
+     *
+     * @return bool
+     */
+    protected function isMetricUnitAllowed(Attribute $attribute, string $unit): bool
+    {
+        try {
+            return (bool) $this->measure->unitCodeExistsInFamily($unit, $attribute->getMetricFamily());
+        } catch (Exception $ex) {
+            return false;
+        }
     }
 
     /**

@@ -2,8 +2,8 @@
 lang: en
 permalink: configure/main
 title: Main Configuration
-description: Locale, channel, currency, images attributes & multi-select separator used by the connector.
-updated: 2026-11-20
+description: Locale, channel, currency, images, multi-select separator & extra metrics used by the connector.
+updated: 2026-11-24
 ---
 
 ### Change default Locale
@@ -105,3 +105,43 @@ splash:
             config:
                 multiselect_separator:  ", "
 ```
+
+### Metrics in other units
+
+Metric attributes are exposed in the base unit of their family (e.g. meters, kilograms).
+This value is shared with all your connected applications and is never changed.
+
+When an application expects another unit, or an integer, you can add extra read-only fields.
+Each entry converts a metric attribute to a target unit, and exposes it as an integer (`int`, rounded) or a decimal (`double`, default).
+
+The field identifier is the entry key, prefixed with `m2u_` (e.g. `m2u_width_cm`).
+The field is named after the attribute label, followed by the unit symbol (e.g. `Width (cm)`):
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                extra_metrics:
+                    width_cm:       { attribute: 'width',             unit: 'CENTIMETER',  format: 'int' }
+                    width_inch:     { attribute: 'width',             unit: 'INCH' }
+                    diagonal_inch:  { attribute: 'display_diagonal',  unit: 'INCH',        format: 'int' }
+```
+
+You may also give the identifier name explicitly, with a list of entries:
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                extra_metrics:
+                    - { name: 'width_cm',  attribute: 'width',   unit: 'CENTIMETER',  format: 'int' }
+                    - { name: 'weight_g',  attribute: 'weight',  unit: 'GRAM',        format: 'int' }
+```
+
+* `name`: letters, digits and underscores only. Overrides the entry key when both are given.
+* `unit`: an Akeneo unit code of the attribute measurement family (e.g. `CENTIMETER`, `INCH`, `GRAM`).
+* Invalid entries (unknown attribute, unit from another family...) are ignored, with a warning in Splash logs.

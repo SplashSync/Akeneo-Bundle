@@ -20,8 +20,10 @@ use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface as ChannelRepository;
 use Doctrine\Common\Collections\Collection;
+use Splash\Akeneo\Models\ExtraMetric;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Client\Splash;
+use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 
 /**
  * Manage General Configuration for Splash Connector
@@ -92,6 +94,13 @@ class Configuration
     private string $multiSelectSeparator = self::DEFAULT_MULTISELECT_SEPARATOR;
 
     /**
+     * Extra Metrics Virtual Fields, Indexed by Name
+     *
+     * @var array<string, ExtraMetric>
+     */
+    private array $extraMetrics = array();
+
+    /**
      * Service Constructor
      */
     public function __construct(
@@ -123,6 +132,7 @@ class Configuration
         /** @var array $imagesCodes */
         $imagesCodes = $object->getParameter("images", array());
         $multiSelectSeparator = $object->getParameter("multiselect_separator", self::DEFAULT_MULTISELECT_SEPARATOR);
+        $extraMetrics = $object->getParameter("extra_metrics", array());
 
         //====================================================================//
         // Setup Configuration
@@ -138,6 +148,9 @@ class Configuration
         //====================================================================//
         // Setup Images Codes
         $this->setupImageCodes($imagesCodes);
+        //====================================================================//
+        // Setup Extra Metrics
+        $this->setupExtraMetrics(is_array($extraMetrics) ? $extraMetrics : array());
         //====================================================================//
         // Reset Channel if Needed
         if (isset($this->channelObject) && ($channel != $this->channelObject->getCode())) {
@@ -262,6 +275,28 @@ class Configuration
     }
 
     /**
+     * Get List of Configured Extra Metrics Virtual Fields
+     *
+     * @return array<string, ExtraMetric>
+     */
+    public function getExtraMetrics(): array
+    {
+        return $this->extraMetrics;
+    }
+
+    /**
+     * Get Configured Extra Metric by Name
+     *
+     * @param string $name Extra Metric Name
+     *
+     * @return null|ExtraMetric
+     */
+    public function getExtraMetric(string $name): ?ExtraMetric
+    {
+        return $this->extraMetrics[$name] ?? null;
+    }
+
+    /**
      * Get Connector Default Channel Object
      *
      * @return null|ChannelInterface
@@ -313,6 +348,35 @@ class Configuration
                         : null
                 );
             }
+        }
+    }
+
+    /**
+     * Configure Extra Metrics Virtual Fields
+     *
+     * Invalid or duplicated entries are skipped with a warning.
+     *
+     * @param array $extraMetrics Raw Configuration
+     *
+     * @return void
+     */
+    private function setupExtraMetrics(array $extraMetrics): void
+    {
+        $this->extraMetrics = array();
+        foreach ($extraMetrics as $key => $entry) {
+            try {
+                $extraMetric = ExtraMetric::fromConfig($key, $entry);
+            } catch (ExceptionInterface $ex) {
+                Splash::log()->war(sprintf("Invalid extra metric configuration '%s': %s", $key, $ex->getMessage()));
+
+                continue;
+            }
+            if (isset($this->extraMetrics[$extraMetric->name])) {
+                Splash::log()->war(sprintf("Duplicated extra metric name: %s", $extraMetric->name));
+
+                continue;
+            }
+            $this->extraMetrics[$extraMetric->name] = $extraMetric;
         }
     }
 }

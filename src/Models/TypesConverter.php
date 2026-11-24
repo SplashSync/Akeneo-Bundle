@@ -66,6 +66,13 @@ class TypesConverter
     const MULTI2STRING = "ms2s_";
 
     /**
+     * Extra Metrics Prefix (Configured Unit & Format)
+     *
+     * @var string
+     */
+    const EXTRA_METRIC = "m2u_";
+
+    /**
      * List of Known Akeneo Attributes Types
      *
      * @var array
@@ -403,5 +410,29 @@ class TypesConverter
         }
 
         return substr($fieldName, strlen(self::MULTI2STRING));
+    }
+
+    //====================================================================//
+    // Extra Metrics Detection
+    //====================================================================//
+
+    /**
+     * Detect & Decode Extra Metric FieldName
+     *
+     * Extra Metrics are not Attributes Codes Based: they are not detected by isVirtual().
+     *
+     * @param string $fieldName Complete Field Name
+     *
+     * @return null|string Extra Metric Name or Null
+     */
+    public static function isExtraMetric(string $fieldName): ?string
+    {
+        //====================================================================//
+        // Check if Prefix is in FieldName
+        if (0 !== strpos($fieldName, self::EXTRA_METRIC)) {
+            return null;
+        }
+
+        return substr($fieldName, strlen(self::EXTRA_METRIC));
     }
 }

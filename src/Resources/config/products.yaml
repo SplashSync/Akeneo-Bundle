@@ -34,10 +34,11 @@ services:
     # Akeneo Products Crud Manager
     Splash\Akeneo\Services\AttributesManager:
         arguments:
-            -   "@pim_catalog.updater.property_setter"
-            -   "@pim_catalog.repository.attribute"
-            -   "@pim_catalog.saver.attribute_option"
-            -   "@akeneo_measure.manager"
+            $setter:        "@pim_catalog.updater.property_setter"
+            $attributes:    "@pim_catalog.repository.attribute"
+            $optionSaver:   "@pim_catalog.saver.attribute_option"
+            $measure:       "@akeneo_measure.manager"
+            $converter:     "@akeneo_measure.measure_converter"
 
     ########################################################################
     # Akeneo Products Variant Manager

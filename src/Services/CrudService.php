@@ -308,7 +308,7 @@ class CrudService
      *
      * @return bool
      */
-    private function isReadyToCreate(array $inputs, Familly $family = null): bool
+    private function isReadyToCreate(array $inputs, ?Familly $family = null): bool
     {
         //====================================================================//
         // Verify Product Sku is Given
