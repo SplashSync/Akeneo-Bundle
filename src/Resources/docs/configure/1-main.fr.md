@@ -2,8 +2,8 @@
 lang: fr
 permalink: configure/main
 title: Configuration Principale
-description: Langue, canal, devise et prix en double, images, filtre par catégories, séparateur des multi-sélections et mesures supplémentaires utilisés par le connecteur.
-updated: 2026-11-24
+description: Langue, canal, devise et prix en double, images, filtres par catégories, séparateur des multi-sélections et mesures supplémentaires utilisés par le connecteur.
+updated: 2026-11-26
 ---
 
 ### Modifier la langue par défaut
@@ -113,6 +113,24 @@ Lorsque ce filtre est actif :
 * l'auto-test du connecteur vérifie l'intégrité de ces arbres de catégories, et avertit si des erreurs sont trouvées.
 
 Laissez la liste vide, ou retirez le paramètre, pour synchroniser tous les produits.
+
+### Catégories de tous les arbres
+
+Par défaut, Splash ne travaille qu'avec l'arbre de catégories du canal configuré :
+les catégories des autres arbres ne sont pas listées, et sont ignorées dans les champs catégories des produits.
+
+Pour travailler avec tous vos arbres de catégories, désactivez ce filtre :
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                channel_categories:     false
+```
+
+Ce paramètre ne change que les catégories visibles. Pour limiter les produits synchronisés, utilisez le paramètre `categories` ci-dessus.
 
 ### Valeurs des multi-sélections en texte
 

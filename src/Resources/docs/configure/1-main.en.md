@@ -2,8 +2,8 @@
 lang: en
 permalink: configure/main
 title: Main Configuration
-description: Locale, channel, currency & prices as doubles, images, categories filter, multi-select separator & extra metrics used by the connector.
-updated: 2026-11-24
+description: Locale, channel, currency & prices as doubles, images, categories filters, multi-select separator & extra metrics used by the connector.
+updated: 2026-11-26
 ---
 
 ### Change default Locale
@@ -113,6 +113,24 @@ When this filter is active:
 * the connector self-test checks the integrity of these categories trees, and warns if errors are found.
 
 Leave the list empty, or remove the parameter, to synchronize all products.
+
+### Categories from all trees
+
+By default, Splash only works with the categories tree of the configured channel:
+categories from other trees are not listed, and are ignored on products categories fields.
+
+To work with all your categories trees, disable this filter:
+
+```yaml
+# config/packages/splash.yml
+splash:
+    connections:
+        akeneo:
+            config:
+                channel_categories:     false
+```
+
+This parameter only changes which categories are visible. To restrict which products are synchronized, use the `categories` parameter above.
 
 ### Multi-select values as text
 

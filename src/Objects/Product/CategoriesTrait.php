@@ -193,16 +193,15 @@ trait CategoriesTrait
         $choices = array();
         //====================================================================//
         // Filter Categories on Default Channel
+        // No Channel Root Category => All Categories Trees
         $rootCategoryId = $this->configuration->getRootCategoryId();
-        if (empty($rootCategoryId)) {
-            return $choices;
-        }
         //====================================================================//
         // Get All Categories
         /** @var CategoryInterface[] $categories */
-        $categories = $this->categoryRepository->findBy(array(
-            'root' => (string) $rootCategoryId
-        ));
+        $categories = empty($rootCategoryId)
+            ? $this->categoryRepository->findAll()
+            : $this->categoryRepository->findBy(array('root' => (string) $rootCategoryId))
+        ;
         foreach ($categories as $category) {
             $choices[$category->getCode()] = sprintf(
                 "[%s] %s",

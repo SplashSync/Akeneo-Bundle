@@ -78,6 +78,13 @@ class Configuration
     private bool $catalogMode = false;
 
     /**
+     * Filter Categories on Configured Channel Root Category
+     *
+     * @var bool
+     */
+    private bool $channelCategories = true;
+
+    /**
      * List of Attributes Images parts of Image Gallery
      *
      * @var array[]
@@ -129,6 +136,8 @@ class Configuration
         $learningMode = $object->getParameter("learning_mode", false);
         /** @var bool $catalogMode */
         $catalogMode = $object->getParameter("catalog_mode", false);
+        /** @var null|bool $channelCategories */
+        $channelCategories = $object->getParameter("channel_categories", true);
         /** @var array $imagesCodes */
         $imagesCodes = $object->getParameter("images", array());
         $multiSelectSeparator = $object->getParameter("multiselect_separator", self::DEFAULT_MULTISELECT_SEPARATOR);
@@ -141,6 +150,7 @@ class Configuration
         $this->currency = $currency;
         $this->learningMode = (bool) $learningMode;
         $this->catalogMode = (bool) $catalogMode;
+        $this->channelCategories = (bool) ($channelCategories ?? true);
         $this->multiSelectSeparator = is_string($multiSelectSeparator) && ('' !== $multiSelectSeparator)
             ? $multiSelectSeparator
             : self::DEFAULT_MULTISELECT_SEPARATOR
@@ -201,11 +211,27 @@ class Configuration
     /**
      * Get Connector Default Category ID
      *
+     * Null if Channel Categories Filtering is Disabled: all Categories Trees are Allowed.
+     *
      * @return null|int
      */
     public function getRootCategoryId(): ?int
     {
+        if (!$this->channelCategories) {
+            return null;
+        }
+
         return $this->getChannelObject()?->getCategory()->getId();
+    }
+
+    /**
+     * Are Categories Filtered on Configured Channel Root Category
+     *
+     * @return bool
+     */
+    public function isChannelCategories(): bool
+    {
+        return $this->channelCategories;
     }
 
     /**
